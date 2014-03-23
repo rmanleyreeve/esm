@@ -113,7 +113,7 @@ public class SpacesListView {
 	  	    @Override
 	  	    public Object get(Row r) {
 	  	        int v = (r.getID() * 20);
-	  	    	return "/img/Percent-"+ v +".png";
+	  	    	return "/img/Percent_"+ v +".png";
 	  	    }
 	  	}));
 	  	col.build();
@@ -139,11 +139,11 @@ public class SpacesListView {
 	  	col.build();
 	  	
 	  	// signed off --------------------------------------------------------------------------------------
-	  	col = tvb.createColumn("Signed Off");
+	  	col = tvb.createColumn("S/O");
 	  	
-	  	col.setPercentWidth(10);
+	  	col.setPercentWidth(5);
 	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/OK32.png"))); 
+	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/bluetick.png"))); 
 	  	col.build();
 
 	  	
