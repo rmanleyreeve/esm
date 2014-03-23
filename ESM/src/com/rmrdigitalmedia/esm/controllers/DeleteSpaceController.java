@@ -1,5 +1,7 @@
 package com.rmrdigitalmedia.esm.controllers;
 
+import java.sql.SQLException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -14,29 +16,39 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.models.EntrypointCommentsTable;
+import com.rmrdigitalmedia.esm.models.EntrypointsTable;
+import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
+import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 @SuppressWarnings("unused")
-public class UpdateController {
+public class DeleteSpaceController {
 	
 	private FormData fd_lblAProgramUpdate;
-	private String latestVersion;
+	int spaceID;
+	boolean formOK = false;
 	
 	
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			UpdateController ud = new UpdateController("1.0.2");			
+			DeleteSpaceController dsc = new DeleteSpaceController();
+			dsc.deleteOK(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public UpdateController(String _latestVersion) {
+	public DeleteSpaceController() {
 	  	LogController.log("Running class " + this.getClass().getName());		
-	  	latestVersion = _latestVersion;
+	}
+	
+	
+	public boolean deleteOK(int _id) {
+		this.spaceID = _id;
 		Display display = Display.getDefault();
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
-		dialog.setSize(234, 131);
+		dialog.setSize(250, 130);
 		dialog.setText("ESM Alert");
 		FormLayout formLayout = new FormLayout ();
 		formLayout.marginWidth = 10;
@@ -46,7 +58,7 @@ public class UpdateController {
 
 		Label lblAProgramUpdate = new Label (dialog, SWT.NONE);
 		lblAProgramUpdate.setFont(Constants.FONT_10);
-		lblAProgramUpdate.setText ("A program update ("+latestVersion+") is available.\nWould you like to download it now?");
+		lblAProgramUpdate.setText ("Are you sure?");
 		FormData data;
 		fd_lblAProgramUpdate = new FormData ();
 		lblAProgramUpdate.setLayoutData (fd_lblAProgramUpdate);
@@ -63,7 +75,7 @@ public class UpdateController {
 		cancel.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				LogController.log("User cancelled update dialog");
+				LogController.log("User cancelled delete dialog");
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e1) {}
@@ -82,13 +94,35 @@ public class UpdateController {
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				// get URL
-				InternetController.open(Constants.UPDATE_URL);
+				try {
+					/*
+					for(EntrypointsTable.Row entryPoint:EntrypointsTable.getRows("SPACE_ID", ""+spaceID)) {
+						for(EntrypointCommentsTable.Row entryComment:EntrypointCommentsTable.getRows("ENTRYPOINT_ID", entryPoint.getID())) {
+							LogController.log("Deleted entrypoint comment " + entryComment.getID());
+							//entryComment.delete();
+						}
+						LogController.log("Deleted entrypoint " + entryPoint.getID());
+						//entryPoint.delete();
+					}
+					for (SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("SPACE_ID", ""+spaceID)) {
+						LogController.log("Deleted space comment " + spaceComment.getID());
+						//spaceComment.delete();						
+					}
+					SpacesTable.Row space = SpacesTable.getRow(spaceID);
+					LogController.log("Deleted space " + spaceID);
+					//space.delete();					
+					formOK = true;
+					*/
+					SpacesTable.Row space = SpacesTable.getRow(spaceID);
+					space.setDeleted("TRUE");
+					space.update();
+					LogController.log("Marked space " + spaceID + " as deleted");
+					formOK = true;
+				} catch (SQLException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}				
 				dialog.close();
-				LogController.log("User selected program update");
-				LogController.log(Constants.EXIT_MSG);
-				Display.getDefault().dispose();
-				System.exit(0);
 			}
 		});
 		dialog.setDefaultButton (cancel);
@@ -104,7 +138,8 @@ public class UpdateController {
 		while (!dialog.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("Update dialog closed");		
+		LogController.log("Delete dialog closed");
+		return formOK;
 	}
 
 	

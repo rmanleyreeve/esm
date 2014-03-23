@@ -40,7 +40,7 @@ public class SpacesListView {
 			SpacesListView.buildTable(comp);
 			shell.open();
 			try {
-				rows = SpacesTable.getAllRows();
+				rows = SpacesTable.getRows("DELETED=FALSE");
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
@@ -122,7 +122,7 @@ public class SpacesListView {
 	  	col = tvb.createColumn("Internal Classification");
 	  	col.setPercentWidth(15);
 	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/comment-edit16.png"))); 
+	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/amber.png"))); 
 	  	col.build();
 	  	
 	  	// entry points classification --------------------------------------------------------------------------------------
@@ -135,7 +135,7 @@ public class SpacesListView {
 	  	});
 	  	col.setPixelWidth(150);
 	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/comment-edit16.png"))); 
+	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/5lights.png"))); 
 	  	col.build();
 	  	
 	  	// signed off --------------------------------------------------------------------------------------
@@ -175,21 +175,4 @@ public class SpacesListView {
   	
 	}
 
-
 }
-
-
-
-/*
- 
-//  	col.format(new ICellFormatter() {
-//  	    @Override
-//			public void formatCell(ViewerCell c, Object value) {
-//  	    	//cell.setFont(Constants.FONT_12);
-//  	    	//c.setImage(Constants.getImage("/img/Percent-40.png"));
-//  	    	//c.getViewerRow().setImage(0, Constants.getImage("/img/Percent-40.png"));
-//  	    	System.out.println(c.getImageBounds());
-//  	    }
-//  	});    	
-
-*/
