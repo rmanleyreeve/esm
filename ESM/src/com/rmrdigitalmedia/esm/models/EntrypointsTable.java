@@ -54,10 +54,11 @@ public class EntrypointsTable
     public static final String authorIDColumnName = "AUTHOR_ID";
     public static final String createdDateColumnName = "CREATED_DATE";
     public static final String updateDateColumnName = "UPDATE_DATE";
+    public static final String deletedColumnName = "DELETED";
 
     private static String[] allColumns =
     {
-        idColumnName , spaceIDColumnName , nameColumnName , descriptionColumnName , authorIDColumnName , createdDateColumnName , updateDateColumnName , 
+        idColumnName , spaceIDColumnName , nameColumnName , descriptionColumnName , authorIDColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -244,6 +245,7 @@ public class EntrypointsTable
         private int authorID ;
         private Timestamp createdDate ;
         private Timestamp updateDate ;
+        private String deleted ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -261,6 +263,7 @@ public class EntrypointsTable
                 this.authorID =  Str.toInt( data[4] );
                 this.createdDate = Str.toTimestamp( data[5] );
                 this.updateDate = Str.toTimestamp( data[6] );
+                this.deleted = data[7];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -347,6 +350,17 @@ public class EntrypointsTable
         }
 
 
+        public String getDeleted()
+        {
+            return deleted ;
+        }
+
+        public void setDeleted( String deleted )
+        {
+            this.deleted = deleted ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -364,6 +378,7 @@ public class EntrypointsTable
             data.put( authorIDColumnName , String.valueOf(  this.authorID ) );
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
             data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );
+            data.put( deletedColumnName , this.deleted );
             return data ;
         }
 
