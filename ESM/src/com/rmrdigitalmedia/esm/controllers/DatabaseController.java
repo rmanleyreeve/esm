@@ -148,7 +148,7 @@ public class DatabaseController {
 		boolean ok = false;
 		LogController.log("Checking Admin User...");
 		try {
-			EsmUsersTable.Row[] rows = EsmUsersTable.getRows("ACCESS_LEVEL=9");
+			EsmUsersTable.Row[] rows = EsmUsersTable.getRows("ACCESS_LEVEL=9 AND DELETED=FALSE");
 			LogController.log("checkAdmin Row Count: "+rows.length);
 			if(rows.length==1){
 				EsmUsersTable.Row row = rows[0];

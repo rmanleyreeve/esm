@@ -53,10 +53,11 @@ public class SpaceCommentsTable
     public static final String commentColumnName = "COMMENT";
     public static final String createdDateColumnName = "CREATED_DATE";
     public static final String updateDateColumnName = "UPDATE_DATE";
+    public static final String deletedColumnName = "DELETED";
 
     private static String[] allColumns =
     {
-        idColumnName , spaceIDColumnName , authorIDColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , 
+        idColumnName , spaceIDColumnName , authorIDColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -242,6 +243,7 @@ public class SpaceCommentsTable
         private String comment ;
         private Timestamp createdDate ;
         private Timestamp updateDate ;
+        private String deleted ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -258,6 +260,7 @@ public class SpaceCommentsTable
                 this.comment = data[3];
                 this.createdDate = Str.toTimestamp( data[4] );
                 this.updateDate = Str.toTimestamp( data[5] );
+                this.deleted = data[6];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -333,6 +336,17 @@ public class SpaceCommentsTable
         }
 
 
+        public String getDeleted()
+        {
+            return deleted ;
+        }
+
+        public void setDeleted( String deleted )
+        {
+            this.deleted = deleted ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -349,6 +363,7 @@ public class SpaceCommentsTable
             data.put( commentColumnName , this.comment );
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
             data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );
+            data.put( deletedColumnName , this.deleted );
             return data ;
         }
 

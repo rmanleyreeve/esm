@@ -261,7 +261,7 @@ public class WindowController {
 		          
 		          	DeleteSpaceController dsc = new DeleteSpaceController();					
 					if(dsc.deleteOK(_id)) {
-						LogController.log("Space "+_id+"marked as deleted in database");
+						LogController.log("Space "+_id+" marked as deleted in database");
 						showSpacesList();						
 					} else {
 						LogController.log("Error occurred deleting space " + _id);

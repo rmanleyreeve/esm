@@ -59,10 +59,11 @@ public class EsmUsersTable
     public static final String dobColumnName = "DOB";
     public static final String createdDateColumnName = "CREATED_DATE";
     public static final String updateDateColumnName = "UPDATE_DATE";
+    public static final String deletedColumnName = "DELETED";
 
     private static String[] allColumns =
     {
-        idColumnName , usernameColumnName , passwordColumnName , forenameColumnName , surnameColumnName , rankColumnName , jobTitleColumnName , workIdentifierColumnName , accessLevelColumnName , dobColumnName , createdDateColumnName , updateDateColumnName , 
+        idColumnName , usernameColumnName , passwordColumnName , forenameColumnName , surnameColumnName , rankColumnName , jobTitleColumnName , workIdentifierColumnName , accessLevelColumnName , dobColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -255,6 +256,7 @@ public class EsmUsersTable
         private String dob ;
         private Timestamp createdDate ;
         private Timestamp updateDate ;
+        private String deleted ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -278,6 +280,7 @@ public class EsmUsersTable
                 this.dob = data[9];
                 this.createdDate = Str.toTimestamp( data[10] );
                 this.updateDate = Str.toTimestamp( data[11] );
+                this.deleted = data[12];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -447,6 +450,17 @@ public class EsmUsersTable
         }
 
 
+        public String getDeleted()
+        {
+            return deleted ;
+        }
+
+        public void setDeleted( String deleted )
+        {
+            this.deleted = deleted ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -469,6 +483,7 @@ public class EsmUsersTable
             data.put( dobColumnName , this.dob );
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
             data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );
+            data.put( deletedColumnName , this.deleted );
             return data ;
         }
 

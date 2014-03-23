@@ -97,15 +97,15 @@ public class DeleteSpaceController {
 				try {
 					/*
 					// THE DESTRUCTIVE WAY
-					for(EntrypointsTable.Row entryPoint:EntrypointsTable.getRows("SPACE_ID", ""+spaceID)) {
-						for(EntrypointCommentsTable.Row entryComment:EntrypointCommentsTable.getRows("ENTRYPOINT_ID", entryPoint.getID())) {
+					for(EntrypointsTable.Row entryPoint:EntrypointsTable.getRows("SPACE_ID="+spaceID+" AND DELETED=FALSE")) {
+						for(EntrypointCommentsTable.Row entryComment:EntrypointCommentsTable.getRows("ENTRYPOINT_ID="+entryPoint.getID()+" AND DELETED=FALSE")) {
 							LogController.log("Deleted entrypoint comment " + entryComment.getID());
 							//entryComment.delete();
 						}
 						LogController.log("Deleted entrypoint " + entryPoint.getID());
 						//entryPoint.delete();
 					}
-					for (SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("SPACE_ID", ""+spaceID)) {
+					for (SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("SPACE_ID="+spaceID+" AND DELETED=FALSE")) {
 						LogController.log("Deleted space comment " + spaceComment.getID());
 						//spaceComment.delete();						
 					}
