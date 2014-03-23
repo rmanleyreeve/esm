@@ -96,6 +96,7 @@ public class DeleteSpaceController {
 			public void widgetSelected (SelectionEvent e) {
 				try {
 					/*
+					// THE DESTRUCTIVE WAY
 					for(EntrypointsTable.Row entryPoint:EntrypointsTable.getRows("SPACE_ID", ""+spaceID)) {
 						for(EntrypointCommentsTable.Row entryComment:EntrypointCommentsTable.getRows("ENTRYPOINT_ID", entryPoint.getID())) {
 							LogController.log("Deleted entrypoint comment " + entryComment.getID());
@@ -113,6 +114,7 @@ public class DeleteSpaceController {
 					//space.delete();					
 					formOK = true;
 					*/
+					//NON-DESTRUCTIVE
 					SpacesTable.Row space = SpacesTable.getRow(spaceID);
 					space.setDeleted("TRUE");
 					space.update();
