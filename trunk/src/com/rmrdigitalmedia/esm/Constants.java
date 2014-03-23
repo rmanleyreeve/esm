@@ -53,7 +53,7 @@ public final class Constants {
 	
 	// message properties
 	public static String NEW_VERSION_ALERT = "New version available!";
-	public static String EXIT_MSG = "***** PROGRAM EXIT ****\n\n";
+	public static String EXIT_MSG = "***** PROGRAM EXIT ****\n\n\n";
 	public static String LOGIN_FAIL_MSG = "Username or Password not recognised.\nPlease try again.";
 	
 	// app screen titles
