@@ -6,10 +6,18 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.wb.swt.SWTResourceManager;
+
+import com.rmrdigitalmedia.esm.Constants;
 
 import de.ralfebert.rcputils.properties.IValue;
 
+/**
+ * DynamicImageCell generates a cell image using a defined image name
+ * @param imageName an {@link IValue} object that returns a String
+ * 
+ */
+
+@SuppressWarnings("javadoc")
 public class DynamicImageCell extends StyledCellLabelProvider {
 	
 	private Image image;
@@ -23,7 +31,7 @@ public class DynamicImageCell extends StyledCellLabelProvider {
 	protected void paint(Event event, Object element) {
 		String imgName = imageName.getValue(element).toString();
 		//System.out.println(imgName);
-		image = SWTResourceManager.getImage(this.getClass(), imgName);
+		image = Constants.getImage(imgName);
 		super.paint(event, element);
 		if (image == null) {
 			return;

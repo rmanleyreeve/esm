@@ -103,7 +103,7 @@ public class AppLoader {
     msg.setLayoutData(msgData);   
     
     Label label = new Label(splash, SWT.NONE);
-    label.setImage(SWTResourceManager.getImage(AppLoader.class, "/img/splash2.jpg"));
+    label.setImage(Constants.getImage("/img/splash2.jpg"));
     FormData labelData = new FormData();
     labelData.right = new FormAttachment(100, 0);
     labelData.bottom = new FormAttachment(100, 0);

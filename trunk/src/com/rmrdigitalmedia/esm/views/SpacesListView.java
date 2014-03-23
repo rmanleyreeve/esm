@@ -88,6 +88,13 @@ public class SpacesListView {
 		
 		// ID --------------------------------------------------------------------------------------
 		col = tvb.createColumn("ID");
+		// set spacer image to force row height
+	  	col.format(new ICellFormatter() {
+		    @Override
+			public void formatCell(ViewerCell c, Object value) {
+		    	c.setImage(Constants.getImage("/img/1x36.png"));
+		    }
+	  	});    	
 	  	col.bindToProperty("ID");
 	  	col.setPixelWidth(75);
 	  	col.useAsDefaultSortColumn();
@@ -116,7 +123,7 @@ public class SpacesListView {
 	  	col = tvb.createColumn("Internal Classification");
 	  	col.setPercentWidth(15);
 	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(SWTResourceManager.getImage(WindowController.class, "/img/comment-edit16.png"))); 
+	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/comment-edit16.png"))); 
 	  	col.build();
 	  	
 	  	// entry points classification --------------------------------------------------------------------------------------
@@ -129,7 +136,7 @@ public class SpacesListView {
 	  	});
 	  	col.setPixelWidth(150);
 	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(SWTResourceManager.getImage(WindowController.class, "/img/comment-edit16.png"))); 
+	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/comment-edit16.png"))); 
 	  	col.build();
 	  	
 	  	// signed off --------------------------------------------------------------------------------------
@@ -137,12 +144,7 @@ public class SpacesListView {
 	  	
 	  	col.setPercentWidth(10);
 	  	col.alignCenter();
-	  	col.format(new ICellFormatter() {
-		    @Override
-			public void formatCell(ViewerCell c, Object value) {
-		    	c.setImage(SWTResourceManager.getImage(WindowController.class, "/img/OK32.png"));
-		    }
-		});    	
+	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/OK32.png"))); 
 	  	col.build();
 
 	  	
@@ -185,8 +187,8 @@ public class SpacesListView {
 //  	    @Override
 //			public void formatCell(ViewerCell c, Object value) {
 //  	    	//cell.setFont(Constants.FONT_12);
-//  	    	//c.setImage(SWTResourceManager.getImage(WindowController.class, "/img/Percent-40.png"));
-//  	    	//c.getViewerRow().setImage(0, SWTResourceManager.getImage(WindowController.class, "/img/Percent-40.png"));
+//  	    	//c.setImage(Constants.getImage("/img/Percent-40.png"));
+//  	    	//c.getViewerRow().setImage(0, Constants.getImage("/img/Percent-40.png"));
 //  	    	System.out.println(c.getImageBounds());
 //  	    }
 //  	});    	

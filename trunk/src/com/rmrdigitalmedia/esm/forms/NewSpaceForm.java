@@ -81,7 +81,7 @@ public class NewSpaceForm {
 		header.setLayoutData(fd_header);
 		
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(SWTResourceManager.getImage(NewSpaceForm.class, "/img/space_icon.png"));
+		lblImg.setImage(Constants.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
