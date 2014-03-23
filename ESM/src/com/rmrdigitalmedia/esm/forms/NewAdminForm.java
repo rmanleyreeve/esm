@@ -232,6 +232,7 @@ public class NewAdminForm {
 						row.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());
 						row.setCreatedDate(new Timestamp(new Date().getTime()));
 						row.setUpdateDate(new Timestamp(new Date().getTime()));
+						row.setDeleted("FALSE");
 						row.insert();
 						formOK = true;
 						LogController.log("Admin User added to database");
