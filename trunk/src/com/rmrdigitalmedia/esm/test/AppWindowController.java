@@ -381,7 +381,7 @@ public class AppWindowController {
 		// graphic elements etc
 		Label logo = new Label(header, SWT.TRANSPARENT);
 		logo.setAlignment(SWT.LEFT);
-		logo.setImage(SWTResourceManager.getImage(AppWindowController.class, "/img/esm-horiz.png"));
+		logo.setImage(Constants.getImage("/img/esm-horiz.png"));
 		FormData fd = new FormData();
 		fd.width = 250;
 		fd.left = new FormAttachment(0);

@@ -212,7 +212,7 @@ public class WindowController {
 		Button foo = new Button(titleBar, SWT.NONE); // dummy button to take default
 		
 		btnAdmin = new Button(titleBar, SWT.PUSH);
-		btnAdmin.setImage(SWTResourceManager.getImage(WindowController.class, "/img/Secrecy.png"));
+		btnAdmin.setImage(Constants.getImage("/img/Secrecy.png"));
 		btnAdmin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -228,7 +228,7 @@ public class WindowController {
 		btnAdmin.setEnabled(false);
 
 		btnAddSpace = new Button(titleBar, SWT.PUSH);
-		btnAddSpace.setImage(SWTResourceManager.getImage(WindowController.class, "/img/Add.png"));
+		btnAddSpace.setImage(Constants.getImage("/img/Add.png"));
 		btnAddSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -248,7 +248,7 @@ public class WindowController {
 		btnAddSpace.setLayoutData(fd_btnAddSpace);
 
 		btnEditSpace = new Button(titleBar, SWT.PUSH);
-		btnEditSpace.setImage(SWTResourceManager.getImage(WindowController.class, "/img/Page_white_edit.png"));
+		btnEditSpace.setImage(Constants.getImage("/img/Page_white_edit.png"));
 		btnEditSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -268,7 +268,7 @@ public class WindowController {
 		btnEditSpace.setEnabled(false);
 
 		btnDeleteSpace = new Button(titleBar, SWT.PUSH);
-		btnDeleteSpace.setImage(SWTResourceManager.getImage(WindowController.class, "/img/delete-file16.png"));
+		btnDeleteSpace.setImage(Constants.getImage("/img/delete-file16.png"));
 		btnDeleteSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -288,7 +288,7 @@ public class WindowController {
 
 		
 		btnSpacesList = new Button(titleBar, SWT.PUSH);
-		btnSpacesList.setImage(SWTResourceManager.getImage(WindowController.class, "/img/List.png"));
+		btnSpacesList.setImage(Constants.getImage("/img/List.png"));
 		btnSpacesList.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -319,7 +319,7 @@ public class WindowController {
 		// graphic elements etc
 		Label logo = new Label(header, SWT.TRANSPARENT);
 		logo.setAlignment(SWT.LEFT);
-		logo.setImage(SWTResourceManager.getImage(WindowController.class, "/img/esm-horiz.png"));
+		logo.setImage(Constants.getImage("/img/esm-horiz.png"));
 		FormData fd = new FormData();
 		fd.width = 250;
 		fd.left = new FormAttachment(0);

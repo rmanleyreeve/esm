@@ -76,7 +76,7 @@ public class NewVesselForm {
 		header.setLayoutData(fd_header);
 		
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(SWTResourceManager.getImage(NewVesselForm.class, "/img/user.png"));
+		lblImg.setImage(Constants.getImage("/img/user.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);

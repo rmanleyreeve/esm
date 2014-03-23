@@ -1,9 +1,11 @@
 package com.rmrdigitalmedia.esm;
 
 import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public final class Constants {
@@ -61,7 +63,9 @@ public final class Constants {
 	public static String ADMIN_PAGE_TITLE = "ESM System Administration";
 
 	
-	
+	public static Image getImage(String imgpath) {
+		return SWTResourceManager.getImage(Constants.class, imgpath);	
+	}
 	
 	
 	private Constants() {
