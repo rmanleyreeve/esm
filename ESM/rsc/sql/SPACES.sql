@@ -1,0 +1,1 @@
+select * from PUBLIC.SPACES
