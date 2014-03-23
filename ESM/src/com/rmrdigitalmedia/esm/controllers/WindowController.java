@@ -258,7 +258,16 @@ public class WindowController {
 		          String s = selection[0].getText();
 		          LogController.log("Delete Selection={" + s + "}");
 		          int _id = Integer.parseInt(s);
-			}
+		          
+		          	DeleteSpaceController dsc = new DeleteSpaceController();					
+					if(dsc.deleteOK(_id)) {
+						LogController.log("Space "+_id+"marked as deleted in database");
+						showSpacesList();						
+					} else {
+						LogController.log("Error occurred deleting space " + _id);
+					}
+				}
+			
 		});
 		btnDeleteSpace.setText("Delete");
 		btnDeleteSpace.setFont(Constants.BUTTON_FONT);
@@ -351,7 +360,7 @@ public class WindowController {
 	// methods to display pages
 	void showSpacesList(){
 		try {
-			rows = SpacesTable.getAllRows();
+			rows = SpacesTable.getRows("DELETED=FALSE");
 		} catch (SQLException e) {
 			LogController.logEvent(me, 2, e);
 		}
