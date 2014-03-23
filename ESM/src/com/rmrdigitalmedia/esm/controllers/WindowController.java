@@ -217,8 +217,7 @@ public class WindowController {
 				NewSpaceForm nsf = new NewSpaceForm(user.getID());					
 				if(nsf.complete()) {
 					LogController.log("New Space & Entry Point saved in database");
-					showSpacesList();
-					
+					showSpacesList();					
 				}
 			}
 		});
@@ -257,8 +256,7 @@ public class WindowController {
 		          TableItem[] selection = SpacesListView.getTable().getSelection();
 		          String s = selection[0].getText();
 		          LogController.log("Delete Selection={" + s + "}");
-		          int _id = Integer.parseInt(s);
-		          
+		          int _id = Integer.parseInt(s);		          
 		          	DeleteSpaceController dsc = new DeleteSpaceController();					
 					if(dsc.deleteOK(_id)) {
 						LogController.log("Space "+_id+" marked as deleted in database");

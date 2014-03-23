@@ -176,6 +176,7 @@ public class NewSpaceForm {
 						sRow.setAuthorID(authorID);
 						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
+						sRow.setDeleted("FALSE");
 		        sRow.insert();
 		        LogController.log("Space added to database.");
 		        SpacesTable.Row[] rArr = SpacesTable.getAllRows();
@@ -188,6 +189,7 @@ public class NewSpaceForm {
 						epRow.setCreatedDate(new Timestamp(new Date().getTime()));
 						epRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						epRow.setAuthorID(authorID);
+						epRow.setDeleted("FALSE");
 						epRow.insert();
 						LogController.log("Entry Point added to database.");				        
 						formOK = true;

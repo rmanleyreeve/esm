@@ -248,6 +248,7 @@ public class NewUserForm {
 						row.setDob(yyyy.getText() + "-" + mm.getText() + "-" + dd.getText());
 						row.setCreatedDate(new Timestamp(new Date().getTime()));
 						row.setUpdateDate(new Timestamp(new Date().getTime()));
+						row.setDeleted("FALSE");
 						row.insert();
 						formOK = true;
 						LogController.log("User added to database.");
