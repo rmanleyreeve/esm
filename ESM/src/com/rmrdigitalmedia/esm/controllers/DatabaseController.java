@@ -79,7 +79,7 @@ public class DatabaseController {
 		try {
 			conn = DriverManager.getConnection(Constants.DB_CONN_STR_SETUP, "sa", "");
 			LogController.log("OK");
-			loadRunSqlFile("SETUP.sql");
+			loadRunSqlFile("DEMO.sql");
 		} catch (SQLException e) {
 			LogController.logEvent(me,2,"DB SETUP FAILED",e);
 			//e.printStackTrace();
