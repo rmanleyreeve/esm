@@ -128,7 +128,8 @@ public class NewAdminForm {
 		GridData gd_username = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_username.widthHint = 100;
 		username.setLayoutData(gd_username);
-		username.setFocus();
+		username.setText("admin");
+		//username.setFocus();
 			
 		Label lblPassword = new Label(form, SWT.NONE);
 		lblPassword.setBackground(Constants.APP_BGCOLOR);
@@ -138,6 +139,7 @@ public class NewAdminForm {
 		gd_password.widthHint = 100;
 		password.setLayoutData(gd_password);
 		password.setEchoChar('*');
+		password.setFocus();
 		
 		Label lblForename = new Label(form, SWT.NONE);
 		lblForename.setBackground(Constants.APP_BGCOLOR);

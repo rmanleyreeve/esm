@@ -13,6 +13,7 @@ import com.rmrdigitalmedia.esm.Constants;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class SpaceDetailView {
 
@@ -37,8 +38,6 @@ public class SpaceDetailView {
 	
 	public static void buildPage(Composite parent, int spaceID) {
 		
-		System.out.println("BUILDING "+spaceID);
-		
 		SpacesTable.Row row = null;
 		try {
 			row = SpacesTable.getRow(spaceID);
@@ -55,6 +54,7 @@ public class SpaceDetailView {
 		mainpanel.setLayout(new FillLayout());
 		
 		Label lblNewLabel = new Label(mainpanel, SWT.NONE);
+		lblNewLabel.setFont(SWTResourceManager.getFont("Tahoma", 14, SWT.NORMAL));
 		lblNewLabel.setText(row.getDescription());
 		Composite rightpanel = new Composite(panels,SWT.NONE);
 		rightpanel.setBackground(Constants.APP_BGCOLOR);
