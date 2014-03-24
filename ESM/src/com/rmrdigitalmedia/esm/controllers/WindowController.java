@@ -10,6 +10,8 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -37,13 +39,14 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.forms.NewSpaceForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
 import com.rmrdigitalmedia.esm.views.AdministrationView;
+import com.rmrdigitalmedia.esm.views.SpaceAlert;
 import com.rmrdigitalmedia.esm.views.SpaceDetailView;
 import com.rmrdigitalmedia.esm.views.SpacesListView;
 
@@ -53,8 +56,8 @@ import com.rmrdigitalmedia.esm.views.SpacesListView;
 public class WindowController {
 
 	private static Object me;
-	protected Shell shell;
-	Display display;
+	protected static Shell shell;
+	static Display display;
 	int appHeight, appWidth,headerH = 85,titleH = 40,footerH = 20;
 	Composite container, header, titleBar;
 	static Composite formHolder;
@@ -92,7 +95,7 @@ public class WindowController {
 		display = Display.getDefault();
 		shell = new Shell();
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		shell.setText(Constants.APP_NAME);
+		shell.setText(C.APP_NAME);
 		shell.setLayout(new FillLayout(SWT.VERTICAL));		
 		// size & position
 		Monitor primary = display.getPrimaryMonitor ();
@@ -115,29 +118,29 @@ public class WindowController {
 			}
 		}
 		display.dispose();
-		LogController.log(Constants.EXIT_MSG);
+		LogController.log(C.EXIT_MSG);
 	}
 
 	protected void createContents() {
 		
 		// set up container layout
 		container = new Composite(shell,SWT.NONE);
-		container.setBackground(Constants.APP_BGCOLOR);		
+		container.setBackground(C.APP_BGCOLOR);		
 		FormLayout layout = new FormLayout();
 		container.setLayout (layout);
 		
 		// set up row elements ================================================
 		header = new Composite(container,SWT.NONE);
-		header.setBackground(Constants.APP_BGCOLOR);
+		header.setBackground(C.APP_BGCOLOR);
 		header.setLayout(new FormLayout());
 		
 		titleBar = new Composite(container,SWT.NONE);
-		titleBar.setBackground(Constants.TITLEBAR_BGCOLOR);
+		titleBar.setBackground(C.TITLEBAR_BGCOLOR);
 		titleBar.setLayout(new FormLayout());	
 		
 		pageTitle = new Label(titleBar, SWT.NONE);
-		pageTitle.setFont(Constants.HEADER_FONT);
-		pageTitle.setBackground(Constants.TITLEBAR_BGCOLOR);
+		pageTitle.setFont(C.HEADER_FONT);
+		pageTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		pageTitle.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 		formHolder = new Composite(container,SWT.NONE);
@@ -170,7 +173,7 @@ public class WindowController {
 		
 				
 		Composite footer = new Composite(container,SWT.BORDER);
-		footer.setBackground(Constants.APP_BGCOLOR);
+		footer.setBackground(C.APP_BGCOLOR);
 		footer.setLayout(new FillLayout());				
 		
 		// set up row element positions =======================
@@ -194,7 +197,8 @@ public class WindowController {
 		Button foo = new Button(titleBar, SWT.NONE); // dummy button to take default
 		
 		btnAdmin = new Button(titleBar, SWT.PUSH);
-		btnAdmin.setImage(Constants.getImage("/img/Secrecy.png"));
+		btnAdmin.setImage(C.getImage("/img/Secrecy.png"));
+		C.makeHoverButton(btnAdmin);
 		btnAdmin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -202,7 +206,7 @@ public class WindowController {
 			}
 		});
 		btnAdmin.setText("Administration");
-		btnAdmin.setFont(Constants.BUTTON_FONT);
+		btnAdmin.setFont(C.BUTTON_FONT);
 		FormData fd_btnAdmin = new FormData();
 		fd_btnAdmin.top = new FormAttachment(titleBar,titleH/5);
 		fd_btnAdmin.right = new FormAttachment(100,-20);
@@ -210,7 +214,8 @@ public class WindowController {
 		btnAdmin.setEnabled(false);
 
 		btnAddSpace = new Button(titleBar, SWT.PUSH);
-		btnAddSpace.setImage(Constants.getImage("/img/Add.png"));
+		btnAddSpace.setImage(C.getImage("/img/Add.png"));
+		C.makeHoverButton(btnAddSpace);
 		btnAddSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -222,14 +227,15 @@ public class WindowController {
 			}
 		});
 		btnAddSpace.setText("Add");
-		btnAddSpace.setFont(Constants.BUTTON_FONT);
+		btnAddSpace.setFont(C.BUTTON_FONT);
 		FormData fd_btnAddSpace = new FormData();
 		fd_btnAddSpace.right = new FormAttachment(btnAdmin,-25);
 		fd_btnAddSpace.top = new FormAttachment(titleBar,titleH/5);
 		btnAddSpace.setLayoutData(fd_btnAddSpace);
 
 		btnEditSpace = new Button(titleBar, SWT.PUSH);
-		btnEditSpace.setImage(Constants.getImage("/img/Page_white_edit.png"));
+		btnEditSpace.setImage(C.getImage("/img/Page_white_edit.png"));
+		C.makeHoverButton(btnEditSpace);
 		btnEditSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -237,11 +243,11 @@ public class WindowController {
 		          String s = selection[0].getText();
 		          LogController.log("Edit Selection={" + s + "}");
 		          int _id = Integer.parseInt(s);
-		          showSpaceDetail(_id);
+		          checkSpaceAlert(_id);
 			}
 		});
 		btnEditSpace.setText("Edit");
-		btnEditSpace.setFont(Constants.BUTTON_FONT);
+		btnEditSpace.setFont(C.BUTTON_FONT);
 		FormData fd_btnEditSpace = new FormData();
 		fd_btnEditSpace.right = new FormAttachment(btnAddSpace,-5);
 		fd_btnEditSpace.top = new FormAttachment(titleBar,titleH/5);
@@ -249,7 +255,8 @@ public class WindowController {
 		btnEditSpace.setEnabled(false);
 
 		btnDeleteSpace = new Button(titleBar, SWT.PUSH);
-		btnDeleteSpace.setImage(Constants.getImage("/img/delete-file16.png"));
+		btnDeleteSpace.setImage(C.getImage("/img/delete-file16.png"));
+		C.makeHoverButton(btnDeleteSpace);
 		btnDeleteSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -268,7 +275,7 @@ public class WindowController {
 			
 		});
 		btnDeleteSpace.setText("Delete");
-		btnDeleteSpace.setFont(Constants.BUTTON_FONT);
+		btnDeleteSpace.setFont(C.BUTTON_FONT);
 		FormData fd_btnDeleteSpace = new FormData();
 		fd_btnDeleteSpace.right = new FormAttachment(btnEditSpace,-5);
 		fd_btnDeleteSpace.top = new FormAttachment(titleBar,titleH/5);
@@ -277,7 +284,8 @@ public class WindowController {
 
 		
 		btnSpacesList = new Button(titleBar, SWT.PUSH);
-		btnSpacesList.setImage(Constants.getImage("/img/List.png"));
+		btnSpacesList.setImage(C.getImage("/img/List.png"));
+		C.makeHoverButton(btnSpacesList);
 		btnSpacesList.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -285,7 +293,7 @@ public class WindowController {
 			}
 		});
 		btnSpacesList.setText("Spaces List");
-		btnSpacesList.setFont(Constants.BUTTON_FONT);
+		btnSpacesList.setFont(C.BUTTON_FONT);
 		FormData fd_btnSpacesList = new FormData();
 		fd_btnSpacesList.right = new FormAttachment(btnAdmin,-25);
 		fd_btnSpacesList.top = new FormAttachment(titleBar,titleH/5);
@@ -308,7 +316,7 @@ public class WindowController {
 		// graphic elements etc
 		Label logo = new Label(header, SWT.TRANSPARENT);
 		logo.setAlignment(SWT.LEFT);
-		logo.setImage(Constants.getImage("/img/esm-horiz.png"));
+		logo.setImage(C.getImage("/img/esm-horiz.png"));
 		FormData fd = new FormData();
 		fd.width = 250;
 		fd.left = new FormAttachment(0);
@@ -321,14 +329,14 @@ public class WindowController {
 		} catch (Exception e1) { }
 		txt += "Current User: " + displayName;
 		Label lblH = new Label(header,SWT.WRAP);
-		lblH.setForeground(Constants.TITLEBAR_BGCOLOR);
+		lblH.setForeground(C.TITLEBAR_BGCOLOR);
 		FormData fd_lblH = new FormData();
 		fd_lblH.left = new FormAttachment(logo);
 		fd_lblH.top = new FormAttachment((headerH/2)-5);
 		lblH.setLayoutData(fd_lblH);
-		lblH.setFont(Constants.HEADER_FONT);
+		lblH.setFont(C.HEADER_FONT);
 		lblH.setAlignment(SWT.LEFT);
-		lblH.setBackground(Constants.APP_BGCOLOR);
+		lblH.setBackground(C.APP_BGCOLOR);
 		lblH.setText(txt);
 		
 		// read text from disk		
@@ -339,7 +347,7 @@ public class WindowController {
 		}		
 		Label lblF = new Label(footer,SWT.WRAP);
 		lblF.setAlignment(SWT.CENTER);
-		lblF.setBackground(Constants.APP_BGCOLOR);
+		lblF.setBackground(C.APP_BGCOLOR);
 		lblF.setText(txt + " (c)rmrdigitalmedia");				
 
 		if(user.getAccessLevel()==9) {
@@ -355,7 +363,7 @@ public class WindowController {
 
 	}
 
-	// methods to display pages
+	// methods to display pages, alerts etc
 	void showSpacesList(){
 		try {
 			rows = SpacesTable.getRows("DELETED=FALSE");
@@ -370,8 +378,17 @@ public class WindowController {
 		btnDeleteSpace.setEnabled(false);
 		btnSpacesList.setVisible(false);
 		stackLayout.topControl = pageSpacesList;
-		pageTitle.setText(Constants.SPACES_LIST_TITLE);
+		pageTitle.setText(C.SPACES_LIST_TITLE);
 		formHolder.layout();
+	}
+	public static void checkSpaceAlert(int id) {
+		boolean showAlert = false;
+		// get internal classification status from ID	
+		showAlert = true;
+		if(showAlert){			
+			new SpaceAlert(shell);			
+		}
+		showSpaceDetail(id);
 	}
 	public static void showSpaceDetail(int id) {
 		btnAddSpace.setVisible(false);
@@ -398,7 +415,7 @@ public class WindowController {
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
 		stackLayout.topControl = pageAdministration;
-		pageTitle.setText(Constants.ADMIN_PAGE_TITLE);
+		pageTitle.setText(C.ADMIN_PAGE_TITLE);
 		formHolder.layout();
 	}
 

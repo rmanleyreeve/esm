@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.graphics.DynamicImageArrayCell;
@@ -94,7 +94,7 @@ public class SpacesListView {
 	  	col.format(new ICellFormatter() {
 		    @Override
 			public void formatCell(ViewerCell c, Object value) {
-		    	c.setImage(Constants.getImage("/img/1x36.png"));
+		    	c.setImage(C.getImage("/img/1x36.png"));
 		    }
 	  	});    	
 	  	col.bindToProperty("ID");
@@ -127,7 +127,7 @@ public class SpacesListView {
 	  	col = tvb.createColumn("Internal Classification");
 	  	col.setPercentWidth(10);
 	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/amber.png"))); 	  	
+	  	col.setCustomLabelProvider(new ImageCell(C.getImage("/img/amber.png"))); 	  	
 	  	col.build();
 	  	
 	  	// entry points classification --------------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ public class SpacesListView {
 	 	  	
 	    tv = tvb.getTableViewer();
 	    table = tvb.getTable();
-	    table.setFont(Constants.FONT_12);
+	    table.setFont(C.FONT_12);
 	    	    	    
 	    table.addListener(SWT.Selection, new Listener() {
 	        @Override
@@ -182,7 +182,7 @@ public class SpacesListView {
 	          String s = selection[0].getText();
 	          LogController.log("Selection={" + s + "}");
 	          int _id = Integer.parseInt(s);
-	          WindowController.showSpaceDetail(_id);
+	          WindowController.checkSpaceAlert(_id);
 	        }
 	      });
   	

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 
 public class LogController {
 	
@@ -17,10 +17,10 @@ public class LogController {
 	private static String logfilename = "ESM_LOG_" + today + ".txt";
 	
 	public static String logfile = 
-			Constants.USER_DOCS_DIR + Constants.SEP + 
-			Constants.DATA_DIR + Constants.SEP + 
-			Constants.DATA_DIR_NAME + Constants.SEP + 
-			Constants.LOG_DIR + Constants.SEP +
+			C.USER_DOCS_DIR + C.SEP + 
+			C.DATA_DIR + C.SEP + 
+			C.DATA_DIR_NAME + C.SEP + 
+			C.LOG_DIR + C.SEP +
 			logfilename;
 	
 	public static void log(Object o) {

@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 
 @SuppressWarnings("unused")
@@ -71,7 +71,7 @@ public class InternetController {
 	}
 	
 	public static boolean verifyLicense(String key) throws Exception {	 
-		URL obj = new URL(Constants.LICENSE_URL);
+		URL obj = new URL(C.LICENSE_URL);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();	 
 		//add request header
 		con.setRequestMethod("POST");
@@ -84,7 +84,7 @@ public class InternetController {
 		wr.flush();
 		wr.close();	 
 		int responseCode = con.getResponseCode();
-		LogController.log("Sending 'POST' request to URL : " + Constants.LICENSE_URL);
+		LogController.log("Sending 'POST' request to URL : " + C.LICENSE_URL);
 		LogController.log("Post parameters : " + urlParameters);
 		LogController.log("Response Code : " + responseCode);	 
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -101,7 +101,7 @@ public class InternetController {
 
 	public static void getUpdates() throws IOException {		
 		String currentVersion = (String)EsmApplication.appData.getField("VERSION");
-		URL u = new URL(Constants.LATEST_VERSION_URL);
+		URL u = new URL(C.LATEST_VERSION_URL);
 		InputStream is = u.openStream();
 		BufferedReader in = new BufferedReader(new InputStreamReader(is));
 		String inputLine;
@@ -121,7 +121,7 @@ public class InternetController {
 			// new version available
 			LogController.log("NEW VERSION AVAILABLE: " + latestVersion);
 			//open license key dialog
-			//EsmApplication.alert(Constants.NEW_VERSION_ALERT);
+			//EsmApplication.alert(C.NEW_VERSION_ALERT);
 			UpdateController ud = new UpdateController(latestVersion);
 		}		
 	}	
@@ -141,7 +141,7 @@ public class InternetController {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		con.setRequestMethod("GET");
-		con.setRequestProperty("User-Agent", Constants.USER_AGENT); 
+		con.setRequestProperty("User-Agent", C.USER_AGENT); 
 		int responseCode = con.getResponseCode();
 		LogController.log("\nSending 'GET' request to URL : " + url);
 		LogController.log("Response Code : " + responseCode);

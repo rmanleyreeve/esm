@@ -28,7 +28,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 
@@ -116,7 +116,7 @@ public class Test {
 		item.addListener (SWT.Selection, new Listener () {
 			@Override
 			public void handleEvent (Event e) {
-				System.out.println (Constants.EXIT_MSG);
+				System.out.println (C.EXIT_MSG);
         shell.getDisplay().dispose();
         System.exit(0);
 			}
