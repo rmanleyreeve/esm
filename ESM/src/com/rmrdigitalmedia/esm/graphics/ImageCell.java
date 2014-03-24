@@ -1,4 +1,4 @@
-package com.rmrdigitalmedia.esm.views;
+package com.rmrdigitalmedia.esm.graphics;
 
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -7,31 +7,16 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.rmrdigitalmedia.esm.Constants;
-
-import de.ralfebert.rcputils.properties.IValue;
-
-/**
- * DynamicImageCell generates a cell image using a defined image name
- * @param imageName an {@link IValue} object that returns a String
- * 
- */
-
-@SuppressWarnings("javadoc")
-public class DynamicImageCell extends StyledCellLabelProvider {
+public class ImageCell extends StyledCellLabelProvider {
 	
 	private Image image;
-	private IValue imageName;
 
-	public DynamicImageCell(IValue imageName) {
-		this.imageName = imageName;
-	}		
-	
+	public ImageCell(Image img) {
+		image = img;
+	}
+		
 	@Override
 	protected void paint(Event event, Object element) {
-		String imgName = imageName.getValue(element).toString();
-		//System.out.println(imgName);
-		image = Constants.getImage(imgName);
 		super.paint(event, element);
 		if (image == null) {
 			return;
@@ -41,6 +26,7 @@ public class DynamicImageCell extends StyledCellLabelProvider {
 			return;
 		}
 		Rectangle bounds = image.getBounds();
+		// center the image in the given space
 		int x = cellBounds.x + Math.max(0, (cellBounds.width - bounds.width) / 2);
 		int y = cellBounds.y + Math.max(0, (cellBounds.height - bounds.height) / 2);
 		event.gc.drawImage(image, x, y);
@@ -54,4 +40,6 @@ public class DynamicImageCell extends StyledCellLabelProvider {
 	}  	
 	
 	
+	
+
 }

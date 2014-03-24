@@ -1,4 +1,4 @@
-package com.rmrdigitalmedia.esm.views;
+package com.rmrdigitalmedia.esm.graphics;
 
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -18,23 +18,22 @@ import de.ralfebert.rcputils.properties.IValue;
  */
 
 @SuppressWarnings("javadoc")
-public class DynamicImageArrayCell extends StyledCellLabelProvider {
+public class DynamicImageCell extends StyledCellLabelProvider {
 	
 	private Image image;
 	private IValue imageName;
 
-	public DynamicImageArrayCell(IValue imageName) {
+	public DynamicImageCell(IValue imageName) {
 		this.imageName = imageName;
 	}		
 	
 	@Override
 	protected void paint(Event event, Object element) {
-		String[] imgName = (String[])imageName.getValue(element);
-		int numImages = imgName.length;
-		
-		image = Constants.getImage(imgName[0]);
+		String imgName = imageName.getValue(element).toString();
+		//System.out.println(imgName);
+		image = Constants.getImage(imgName);
 		super.paint(event, element);
-		if (image == null || numImages > 5) {
+		if (image == null) {
 			return;
 		}
 		Rectangle cellBounds = getViewerCellBounds(event);
@@ -42,31 +41,9 @@ public class DynamicImageArrayCell extends StyledCellLabelProvider {
 			return;
 		}
 		Rectangle bounds = image.getBounds();
-		int centreX = cellBounds.x + Math.max(0, (cellBounds.width - bounds.width) / 2);
-		int x = cellBounds.x;
+		int x = cellBounds.x + Math.max(0, (cellBounds.width - bounds.width) / 2);
 		int y = cellBounds.y + Math.max(0, (cellBounds.height - bounds.height) / 2);
-		switch(numImages){
-		case 1:
-			x = centreX;
-			break;
-		case 2:
-			x = (centreX - 20);
-			break;
-		case 3:
-			x = (centreX - 30);
-			break;
-		case 4:
-			x = (centreX - 40);
-			break;
-		case 5:
-			x = (centreX - 50);
-			break;
-		}				
-		for (int i=0;i<numImages;i++){
-			image = Constants.getImage(imgName[i]);
-			event.gc.drawImage(image, x, y);
-			x += 25;
-		}
+		event.gc.drawImage(image, x, y);
 	}
 
 	private static Rectangle getViewerCellBounds(Event event) {
