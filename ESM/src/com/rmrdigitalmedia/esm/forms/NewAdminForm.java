@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Combo;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -75,7 +75,7 @@ public class NewAdminForm {
 			
 		//set up row elements & positions =======================================================
 		Composite header = new Composite(container,SWT.NONE);
-		header.setBackground(Constants.TITLEBAR_BGCOLOR);
+		header.setBackground(C.TITLEBAR_BGCOLOR);
 		header.setLayout(new FormLayout());		
 		FormData fd_header = new FormData();
 		fd_header.top = new FormAttachment(container,0);
@@ -85,20 +85,20 @@ public class NewAdminForm {
 		header.setLayoutData(fd_header);
 		
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(Constants.getImage("/img/user.png"));
+		lblImg.setImage(C.getImage("/img/user.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
 		
 		Label lblTitle = new Label(header, SWT.NONE);
-		lblTitle.setForeground(Constants.APP_BGCOLOR);
-		lblTitle.setFont(Constants.FORM_HEADER_FONT);
+		lblTitle.setForeground(C.APP_BGCOLOR);
+		lblTitle.setFont(C.FORM_HEADER_FONT);
 		FormData fd_lblTitle = new FormData();
 		fd_lblTitle.top = new FormAttachment(0, 10);
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
-		lblTitle.setBackground(Constants.TITLEBAR_BGCOLOR);
+		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("CREATE ADMINISTRATOR");
 		
 		Composite formHolder = new Composite(container,SWT.BORDER);
@@ -111,7 +111,7 @@ public class NewAdminForm {
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
 	
 		Composite form = new Composite(formHolder,SWT.NONE);
-		form.setBackground(Constants.APP_BGCOLOR);
+		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 10;
 		gridLayout.marginHeight = 20;
@@ -122,7 +122,7 @@ public class NewAdminForm {
 				
 		//FORM LABELS & FIELDS ==================================================================	
 		Label lblUsername = new Label(form, SWT.NONE);
-		lblUsername.setBackground(Constants.APP_BGCOLOR);
+		lblUsername.setBackground(C.APP_BGCOLOR);
 		lblUsername.setText("Username:");		
 		username = new Text(form, SWT.BORDER);
 		GridData gd_username = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
@@ -132,7 +132,7 @@ public class NewAdminForm {
 		//username.setFocus();
 			
 		Label lblPassword = new Label(form, SWT.NONE);
-		lblPassword.setBackground(Constants.APP_BGCOLOR);
+		lblPassword.setBackground(C.APP_BGCOLOR);
 		lblPassword.setText("Password:");		
 		password = new Text(form, SWT.BORDER);
 		GridData gd_password = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
@@ -142,7 +142,7 @@ public class NewAdminForm {
 		password.setFocus();
 		
 		Label lblForename = new Label(form, SWT.NONE);
-		lblForename.setBackground(Constants.APP_BGCOLOR);
+		lblForename.setBackground(C.APP_BGCOLOR);
 		lblForename.setText("Forename:");		
 		forename = new Text(form, SWT.BORDER);
 		GridData gd_forename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
@@ -150,7 +150,7 @@ public class NewAdminForm {
 		forename.setLayoutData(gd_forename);
 		
 		Label lblSurname = new Label(form, SWT.NONE);
-		lblSurname.setBackground(Constants.APP_BGCOLOR);
+		lblSurname.setBackground(C.APP_BGCOLOR);
 		lblSurname.setText("Surname:");		
 		surname = new Text(form, SWT.BORDER);
 		GridData gd_surname = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
@@ -158,7 +158,7 @@ public class NewAdminForm {
 		surname.setLayoutData(gd_surname);
 		
 		Label lblRank = new Label(form, SWT.NONE);
-		lblRank.setBackground(Constants.APP_BGCOLOR);
+		lblRank.setBackground(C.APP_BGCOLOR);
 		lblRank.setText("Rank:");		
 		rank = new Text(form, SWT.BORDER);
 		GridData gd_rank = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
@@ -166,7 +166,7 @@ public class NewAdminForm {
 		rank.setLayoutData(gd_rank);
 
 		Label lblJobTitle = new Label(form, SWT.NONE);
-		lblJobTitle.setBackground(Constants.APP_BGCOLOR);
+		lblJobTitle.setBackground(C.APP_BGCOLOR);
 		lblJobTitle.setText("Job Title:");		
 		jobtitle = new Text(form, SWT.BORDER);
 		GridData gd_jobtitle = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
@@ -174,7 +174,7 @@ public class NewAdminForm {
 		jobtitle.setLayoutData(gd_jobtitle);
 	
 		Label lblWorkID = new Label(form, SWT.NONE);
-		lblWorkID.setBackground(Constants.APP_BGCOLOR);
+		lblWorkID.setBackground(C.APP_BGCOLOR);
 		lblWorkID.setText("Work ID:");		
 		workid = new Text(form, SWT.BORDER);
 		GridData gd_workid = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
@@ -182,7 +182,7 @@ public class NewAdminForm {
 		workid.setLayoutData(gd_workid);
 
 		Label lblDOB = new Label(form, SWT.NONE);
-		lblDOB.setBackground(Constants.APP_BGCOLOR);
+		lblDOB.setBackground(C.APP_BGCOLOR);
 		lblDOB.setText("Date of Birth:");		
 		dd = new Combo(form, SWT.DROP_DOWN);
 		dd.add("DAY");
@@ -212,7 +212,7 @@ public class NewAdminForm {
 		//==================================================================		
 		
 		Button ok = new Button (form, SWT.NONE);
-		ok.setFont(Constants.FONT_10);
+		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override

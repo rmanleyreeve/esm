@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 
 import de.ralfebert.rcputils.properties.IValue;
 
@@ -31,7 +31,7 @@ public class DynamicImageCell extends StyledCellLabelProvider {
 	protected void paint(Event event, Object element) {
 		String imgName = imageName.getValue(element).toString();
 		//System.out.println(imgName);
-		image = Constants.getImage(imgName);
+		image = C.getImage(imgName);
 		super.paint(event, element);
 		if (image == null) {
 			return;

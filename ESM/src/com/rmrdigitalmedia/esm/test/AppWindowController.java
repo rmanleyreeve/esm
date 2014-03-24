@@ -36,7 +36,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
@@ -100,7 +100,7 @@ public class AppWindowController {
 		display = Display.getDefault();
 		shell = new Shell();
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		shell.setText(Constants.APP_NAME);
+		shell.setText(C.APP_NAME);
 		shell.setLayout(new FillLayout(SWT.VERTICAL));		
 		// size & position
 		Monitor primary = display.getPrimaryMonitor ();
@@ -123,29 +123,29 @@ public class AppWindowController {
 			}
 		}
 		display.dispose();
-		LogController.log(Constants.EXIT_MSG);
+		LogController.log(C.EXIT_MSG);
 	}
 
 	protected void createContents() {
 		
 		// set up container layout
 		container = new Composite(shell,SWT.NONE);
-		container.setBackground(Constants.APP_BGCOLOR);		
+		container.setBackground(C.APP_BGCOLOR);		
 		FormLayout layout = new FormLayout();
 		container.setLayout (layout);
 		
 		// set up row elements ================================================
 		header = new Composite(container,SWT.NONE);
-		header.setBackground(Constants.APP_BGCOLOR);
+		header.setBackground(C.APP_BGCOLOR);
 		header.setLayout(new FormLayout());
 		
 		titleBar = new Composite(container,SWT.NONE);
-		titleBar.setBackground(Constants.TITLEBAR_BGCOLOR);
+		titleBar.setBackground(C.TITLEBAR_BGCOLOR);
 		titleBar.setLayout(new FormLayout());	
 		
 		lblPage = new Label(titleBar, SWT.NONE);
 		lblPage.setFont(SWTResourceManager.getFont("Arial", 14, SWT.NORMAL));
-		lblPage.setBackground(Constants.TITLEBAR_BGCOLOR);
+		lblPage.setBackground(C.TITLEBAR_BGCOLOR);
 		lblPage.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 		formHolder = new Composite(container,SWT.NONE);
@@ -295,13 +295,13 @@ public class AppWindowController {
 		page1 = new Composite (formHolder, SWT.NONE);
 		page1.setLayout(new FillLayout(SWT.VERTICAL));
 		SashForm panels = new SashForm(page1,SWT.BORDER);
-		panels.setBackground(Constants.TITLEBAR_BGCOLOR);
+		panels.setBackground(C.TITLEBAR_BGCOLOR);
 		panels.setLayout(new FillLayout());
 		Composite mainpanel = new Composite(panels,SWT.NONE);
-		mainpanel.setBackground(Constants.APP_BGCOLOR);
+		mainpanel.setBackground(C.APP_BGCOLOR);
 		mainpanel.setLayout(new FillLayout());
 		Composite rightpanel = new Composite(panels,SWT.NONE);
-		rightpanel.setBackground(Constants.APP_BGCOLOR);
+		rightpanel.setBackground(C.APP_BGCOLOR);
 		rightpanel.setLayout(new FillLayout());
 		panels.setWeights(new int[] {550, 250});
 		
@@ -309,7 +309,7 @@ public class AppWindowController {
 		page2 = new Composite (formHolder, SWT.NONE);
 		page2.setLayout(new FillLayout(SWT.VERTICAL));
 		panels = new SashForm(page2,SWT.BORDER);
-		panels.setBackground(Constants.TITLEBAR_BGCOLOR);
+		panels.setBackground(C.TITLEBAR_BGCOLOR);
 		panels.setLayout(new FillLayout());
 		mainpanel = new Composite(panels,SWT.NONE);
 		mainpanel.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
@@ -320,7 +320,7 @@ public class AppWindowController {
 		panels.setWeights(new int[] {250, 550});
 				
 		Composite footer = new Composite(container,SWT.BORDER);
-		footer.setBackground(Constants.APP_BGCOLOR);
+		footer.setBackground(C.APP_BGCOLOR);
 		footer.setLayout(new FillLayout());				
 		
 		// set up row element positions =======================================================
@@ -381,7 +381,7 @@ public class AppWindowController {
 		// graphic elements etc
 		Label logo = new Label(header, SWT.TRANSPARENT);
 		logo.setAlignment(SWT.LEFT);
-		logo.setImage(Constants.getImage("/img/esm-horiz.png"));
+		logo.setImage(C.getImage("/img/esm-horiz.png"));
 		FormData fd = new FormData();
 		fd.width = 250;
 		fd.left = new FormAttachment(0);
@@ -394,14 +394,14 @@ public class AppWindowController {
 		} catch (Exception e1) { }
 		txt += "Current User: " + displayName;
 		Label lblH = new Label(header,SWT.WRAP);
-		lblH.setForeground(Constants.TITLEBAR_BGCOLOR);
+		lblH.setForeground(C.TITLEBAR_BGCOLOR);
 		FormData fd_lblH = new FormData();
 		fd_lblH.left = new FormAttachment(logo);
 		fd_lblH.top = new FormAttachment((headerH/2)-5);
 		lblH.setLayoutData(fd_lblH);
 		lblH.setFont(SWTResourceManager.getFont("Arial", 14, SWT.NORMAL));
 		lblH.setAlignment(SWT.LEFT);
-		lblH.setBackground(Constants.APP_BGCOLOR);
+		lblH.setBackground(C.APP_BGCOLOR);
 		lblH.setText(txt);
 		
 		// read text from disk		
@@ -412,7 +412,7 @@ public class AppWindowController {
 		}		
 		Label lblF = new Label(footer,SWT.WRAP);
 		lblF.setAlignment(SWT.CENTER);
-		lblF.setBackground(Constants.APP_BGCOLOR);
+		lblF.setBackground(C.APP_BGCOLOR);
 		lblF.setText(txt + " (c)rmrdigitalmedia");				
 
 		slayout.topControl = page0;
@@ -422,7 +422,7 @@ public class AppWindowController {
 
 	void pageSpacesList(){
 		slayout.topControl = page0;
-		lblPage.setText(Constants.SPACES_LIST_TITLE);
+		lblPage.setText(C.SPACES_LIST_TITLE);
 		formHolder.layout();
 	}
 	public static void pageSpaceDetail(int id) {

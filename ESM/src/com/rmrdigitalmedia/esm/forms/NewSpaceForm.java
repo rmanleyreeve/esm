@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
@@ -71,7 +71,7 @@ public class NewSpaceForm {
 			
 		//set up row elements & positions =======================================================
 		Composite header = new Composite(container,SWT.NONE);
-		header.setBackground(Constants.TITLEBAR_BGCOLOR);
+		header.setBackground(C.TITLEBAR_BGCOLOR);
 		header.setLayout(new FormLayout());		
 		FormData fd_header = new FormData();
 		fd_header.top = new FormAttachment(container,0);
@@ -81,20 +81,20 @@ public class NewSpaceForm {
 		header.setLayoutData(fd_header);
 		
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(Constants.getImage("/img/space_icon.png"));
+		lblImg.setImage(C.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
 		
 		Label lblTitle = new Label(header, SWT.NONE);
-		lblTitle.setForeground(Constants.APP_BGCOLOR);
-		lblTitle.setFont(Constants.FORM_HEADER_FONT);
+		lblTitle.setForeground(C.APP_BGCOLOR);
+		lblTitle.setFont(C.FORM_HEADER_FONT);
 		FormData fd_lblTitle = new FormData();
 		fd_lblTitle.top = new FormAttachment(0, 10);
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
-		lblTitle.setBackground(Constants.TITLEBAR_BGCOLOR);
+		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("ENTER SPACE / ENTRYPOINT DETAILS");
 		
 		Composite formHolder = new Composite(container,SWT.BORDER);
@@ -107,7 +107,7 @@ public class NewSpaceForm {
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
 	
 		Composite form = new Composite(formHolder,SWT.NONE);
-		form.setBackground(Constants.APP_BGCOLOR);
+		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 10;
 		gridLayout.marginHeight = 20;
@@ -118,7 +118,7 @@ public class NewSpaceForm {
 				
 		//FORM LABELS & FIELDS ==================================================================	
 		Label lblSName = new Label(form, SWT.NONE);
-		lblSName.setBackground(Constants.APP_BGCOLOR);
+		lblSName.setBackground(C.APP_BGCOLOR);
 		lblSName.setText("Space Name:");		
 		s_name = new Text(form, SWT.BORDER);
 		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -127,7 +127,7 @@ public class NewSpaceForm {
 		s_name.setFocus();
 		
 		Label lblSDesc = new Label(form, SWT.NONE);
-		lblSDesc.setBackground(Constants.APP_BGCOLOR);
+		lblSDesc.setBackground(C.APP_BGCOLOR);
 		lblSDesc.setText("Space\nDescription:");	
 		s_description = new Text(form, SWT.BORDER | SWT.MULTI);
 		GridData gd_sdesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -139,7 +139,7 @@ public class NewSpaceForm {
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
 		
 		Label lblEName = new Label(form, SWT.NONE);
-		lblEName.setBackground(Constants.APP_BGCOLOR);
+		lblEName.setBackground(C.APP_BGCOLOR);
 		lblEName.setText("Entry Name:");		
 		ep_name = new Text(form, SWT.BORDER);
 		GridData gd_ename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -147,7 +147,7 @@ public class NewSpaceForm {
 		ep_name.setLayoutData(gd_ename);
 		
 		Label lblEDesc = new Label(form, SWT.NONE);
-		lblEDesc.setBackground(Constants.APP_BGCOLOR);
+		lblEDesc.setBackground(C.APP_BGCOLOR);
 		lblEDesc.setText("Entry\nDescription:");	
 		ep_description = new Text(form, SWT.BORDER | SWT.MULTI);
 		GridData gd_edesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -161,7 +161,7 @@ public class NewSpaceForm {
 		//==================================================================		
 		
 		Button ok = new Button (form, SWT.PUSH);
-		ok.setFont(Constants.FONT_10);
+		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override

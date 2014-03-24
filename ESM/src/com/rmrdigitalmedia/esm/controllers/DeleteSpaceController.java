@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.models.EntrypointCommentsTable;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
@@ -57,14 +57,14 @@ public class DeleteSpaceController {
 		dialog.setLayout (formLayout);
 
 		Label lblAProgramUpdate = new Label (dialog, SWT.NONE);
-		lblAProgramUpdate.setFont(Constants.FONT_10);
+		lblAProgramUpdate.setFont(C.FONT_10);
 		lblAProgramUpdate.setText ("Are you sure?");
 		FormData data;
 		fd_lblAProgramUpdate = new FormData ();
 		lblAProgramUpdate.setLayoutData (fd_lblAProgramUpdate);
 
 		Button cancel = new Button (dialog, SWT.PUSH);
-		cancel.setFont(Constants.FONT_10);
+		cancel.setFont(C.FONT_10);
 		cancel.setText ("Cancel");
 		data = new FormData ();
 		data.width = 60;
@@ -84,7 +84,7 @@ public class DeleteSpaceController {
 		});		
 
 		Button ok = new Button (dialog, SWT.PUSH);
-		ok.setFont(Constants.FONT_10);
+		ok.setFont(C.FONT_10);
 		ok.setText ("OK");
 		data = new FormData ();
 		data.width = 60;

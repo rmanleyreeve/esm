@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 
 public class AdministrationView {
 
@@ -34,13 +34,13 @@ public class AdministrationView {
 		
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 		SashForm panels = new SashForm(parent,SWT.NONE);
-		panels.setBackground(Constants.TITLEBAR_BGCOLOR);
+		panels.setBackground(C.TITLEBAR_BGCOLOR);
 		panels.setLayout(new FillLayout());
 		Composite mainpanel = new Composite(panels,SWT.NONE);
-		mainpanel.setBackground(Constants.APP_BGCOLOR);
+		mainpanel.setBackground(C.APP_BGCOLOR);
 		mainpanel.setLayout(new FillLayout());
 		Composite rightpanel = new Composite(panels,SWT.NONE);
-		rightpanel.setBackground(Constants.APP_BGCOLOR);
+		rightpanel.setBackground(C.APP_BGCOLOR);
 		rightpanel.setLayout(new FillLayout());
 		panels.setWeights(new int[] {250, 550});
 		

@@ -91,9 +91,9 @@ public class AppLoader {
     bar.setLayoutData(progressData);
     
     Label msg = new Label(splash, SWT.RIGHT);
-    msg.setForeground(Constants.TITLEBAR_BGCOLOR);
+    msg.setForeground(C.TITLEBAR_BGCOLOR);
     AppLoader.pmsg = msg;
-    msg.setFont(Constants.FONT_8);
+    msg.setFont(C.FONT_8);
     msg.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
     FormData msgData = new FormData();
     msgData.width = 220;
@@ -103,21 +103,21 @@ public class AppLoader {
     msg.setLayoutData(msgData);   
     
     Label label = new Label(splash, SWT.NONE);
-    label.setImage(Constants.getImage("/img/splash2.jpg"));
+    label.setImage(C.getImage("/img/splash2.jpg"));
     FormData labelData = new FormData();
     labelData.right = new FormAttachment(100, 0);
     labelData.bottom = new FormAttachment(100, 0);
     label.setLayoutData(labelData);
     
     splash.pack();
-		Monitor primary = display.getPrimaryMonitor ();
-		Rectangle bounds = primary.getBounds ();
-		Rectangle rect = splash.getBounds ();
-		LogController.log("Splash Screen Size: " + rect.width + ":" + rect.height);
-		int x = bounds.x + (bounds.width - rect.width) / 2;
-		int y = bounds.y + (bounds.height - rect.height) / 2;
-		splash.setLocation (x, y);		  		
-		splash.open();
+	Monitor primary = display.getPrimaryMonitor ();
+	Rectangle bounds = primary.getBounds ();
+	Rectangle rect = splash.getBounds ();
+	LogController.log("Splash Screen Size: " + rect.width + ":" + rect.height);
+	int x = bounds.x + (bounds.width - rect.width) / 2;
+	int y = bounds.y + (bounds.height - rect.height) / 2;
+	splash.setLocation (x, y);		  		
+	splash.open();
      
 	    display.asyncExec(new Runnable() {
 	      @Override
@@ -150,7 +150,7 @@ public class AppLoader {
 						LogController.log("License saved in database");
 					} else {				
 						EsmApplication.alert("License Key required. Exiting program...");
-						LogController.log(Constants.EXIT_MSG);
+						LogController.log(C.EXIT_MSG);
 						System.exit(0);						
 					}
 				}
@@ -166,7 +166,7 @@ public class AppLoader {
 						LogController.log("System Administrator saved in database");
 					} else {
 						EsmApplication.alert("System Administrator required. Exiting program...");
-						LogController.log(Constants.EXIT_MSG);
+						LogController.log(C.EXIT_MSG);
 						System.exit(0);
 					}
 				}
@@ -182,7 +182,7 @@ public class AppLoader {
 						LogController.log("Vessel saved in database");
 					} else {
 						EsmApplication.alert("Vessel Info required. Exiting program...");
-						LogController.log(Constants.EXIT_MSG);
+						LogController.log(C.EXIT_MSG);
 						System.exit(0);
 					}
 				}

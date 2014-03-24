@@ -5,15 +5,20 @@ import java.sql.SQLException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.layout.RowData;
 
 public class SpaceDetailView {
 
@@ -47,17 +52,60 @@ public class SpaceDetailView {
 		
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 		SashForm panels = new SashForm(parent,SWT.NONE);
-		panels.setBackground(Constants.TITLEBAR_BGCOLOR);
+		panels.setBackground(C.TITLEBAR_BGCOLOR);
 		panels.setLayout(new FillLayout());
 		Composite mainpanel = new Composite(panels,SWT.NONE);
-		mainpanel.setBackground(Constants.APP_BGCOLOR);
-		mainpanel.setLayout(new FillLayout());
+		mainpanel.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		mainpanel.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		Label lblNewLabel = new Label(mainpanel, SWT.NONE);
-		lblNewLabel.setFont(SWTResourceManager.getFont("Tahoma", 14, SWT.NORMAL));
-		lblNewLabel.setText(row.getDescription());
+		Composite grid = new Composite(mainpanel, SWT.NONE);
+		grid.setBackground(C.APP_BGCOLOR);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginWidth = 10;
+		gridLayout.marginHeight = 10;
+		gridLayout.numColumns = 10;
+		gridLayout.horizontalSpacing = 10;
+		grid.setLayout(gridLayout);
+		
+		Label lblNname = new Label(grid, SWT.NONE);
+		lblNname.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.BOLD));
+		lblNname.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 7, 1));
+		lblNname.setBackground(C.APP_BGCOLOR);
+		lblNname.setText("Name:");		
+		
+		Label lblID = new Label(grid, SWT.NONE);
+		lblID.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.BOLD));
+		lblID.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+		lblID.setText("ID:");
+		
+		
+		Label name = new Label(grid, SWT.NONE);
+		name.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 7, 1);
+		gd_name.minimumWidth = 300;
+		name.setLayoutData(gd_name);
+		name.setText(row.getName());
+
+		Label id = new Label(grid, SWT.NONE);
+		id.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		id.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		id.setText(""+row.getID());
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		Composite rightpanel = new Composite(panels,SWT.NONE);
-		rightpanel.setBackground(Constants.APP_BGCOLOR);
+		rightpanel.setBackground(C.APP_BGCOLOR);
 		rightpanel.setLayout(new FillLayout());
 		panels.setWeights(new int[] {550, 250});	
 		

@@ -21,7 +21,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.AppLoader;
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
@@ -64,7 +64,7 @@ public class LoginController {
 				// LoginController will be disposed from now
 			} else {
 				LogController.log("FAIL");
-				alertTxt.setText(Constants.LOGIN_FAIL_MSG);
+				alertTxt.setText(C.LOGIN_FAIL_MSG);
 				txt_Username.setText("");
 				txt_Password.setText("");
 			}
@@ -79,7 +79,7 @@ public class LoginController {
 		final FillLayout fillLayout = new FillLayout();
 		fillLayout.marginHeight = 1;
 		shell.setLayout(fillLayout);
-		Rectangle s = Constants.getImage("/img/splash2.jpg").getBounds();
+		Rectangle s = C.getImage("/img/splash2.jpg").getBounds();
 		shell.setSize(s.width, s.height);
 		 
 		//Create a composite with grid layout.
@@ -96,7 +96,7 @@ public class LoginController {
 		//Setting the background of the composite with the image background for login dialog
 		final Label img_Label = new Label(composite, SWT.NONE);
 		img_Label.setLayoutData(new GridData(300, 250));
-		img_Label.setImage(Constants.getImage("/img/splash2.jpg"));
+		img_Label.setImage(C.getImage("/img/splash2.jpg"));
 	 
 		//Creating the composite which will contain the login related widgets
 		final Composite cmp_Login = new Composite(composite, SWT.NONE);
@@ -112,7 +112,7 @@ public class LoginController {
 		 
 		//Label for the heading
 		final CLabel clbl_UserLogin = new CLabel(cmp_Login, SWT.NONE);
-		clbl_UserLogin.setFont(Constants.FONT_10B);
+		clbl_UserLogin.setFont(C.FONT_10B);
 		clbl_UserLogin.setAlignment(SWT.CENTER);
 		clbl_UserLogin.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		final RowData rowData = new RowData();
@@ -174,7 +174,7 @@ public class LoginController {
 		 
 		//Button for login
 		final Button btn_login = new Button(cmp_ButtonBar, SWT.FLAT | SWT.CENTER);
-		btn_login.setFont(Constants.FONT_8B);
+		btn_login.setFont(C.FONT_8B);
 		final FormData formData = new FormData();
 		formData.bottom = new FormAttachment(0, 28);
 		formData.top = new FormAttachment(0, 5);
@@ -192,7 +192,7 @@ public class LoginController {
 		fd_alert.right = new FormAttachment(100);
 		alert.setLayoutData(fd_alert);
 		alertTxt = new Label(alert, SWT.NONE);
-		alertTxt.setFont(Constants.FONT_8);
+		alertTxt.setFont(C.FONT_8);
 		alertTxt.setLocation(0, 0);
 		alertTxt.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		alertTxt.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
@@ -208,7 +208,7 @@ public class LoginController {
 		
 		//Label for copyright info
 		final CLabel clbl_Message = new CLabel(cmp_Login, SWT.NONE);
-		clbl_Message.setFont(Constants.FONT_8);
+		clbl_Message.setFont(C.FONT_8);
 		clbl_Message.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		clbl_Message.setAlignment(SWT.RIGHT);
 		final RowData rowData_7 = new RowData();

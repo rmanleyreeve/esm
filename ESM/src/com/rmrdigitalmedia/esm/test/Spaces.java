@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
@@ -126,7 +126,7 @@ public class Spaces {
     table.setHeaderVisible(true);
     table.setLinesVisible(true);
     LogController.log(table.getColumnCount());
-    table.setFont(Constants.FONT_12);
+    table.setFont(C.FONT_12);
 
   	table.addListener(SWT.MouseDoubleClick, new Listener() {
   		@Override

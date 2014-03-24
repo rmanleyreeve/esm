@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.ProgressBar;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.AppLoader;
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.LicenseTable;
@@ -52,7 +52,7 @@ public class DatabaseController {
 		boolean ok = false;
 		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection(Constants.DB_CONN_STR, "sa", "");
+			conn = DriverManager.getConnection(C.DB_CONN_STR, "sa", "");
 			ok = true;
 			close(conn);
 		} catch (SQLException e) {
@@ -65,7 +65,7 @@ public class DatabaseController {
 	public static Connection createConnection() {
 		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection(Constants.DB_CONN_STR, "sa", "");
+			conn = DriverManager.getConnection(C.DB_CONN_STR, "sa", "");
 		} catch (SQLException e) {
 			LogController.logEvent(me,2,"createConnection",e);
 			//e.printStackTrace();
@@ -77,7 +77,7 @@ public class DatabaseController {
 		LogController.log("Creating new DB... ");
 		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection(Constants.DB_CONN_STR_SETUP, "sa", "");
+			conn = DriverManager.getConnection(C.DB_CONN_STR_SETUP, "sa", "");
 			LogController.log("OK");
 			loadRunSqlFile("DEMO.sql");
 		} catch (SQLException e) {

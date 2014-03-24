@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.rmrdigitalmedia.esm.Constants;
+import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.VesselTable;
@@ -66,7 +66,7 @@ public class NewVesselForm {
 			
 		//set up row elements & positions =======================================================
 		Composite header = new Composite(container,SWT.NONE);
-		header.setBackground(Constants.TITLEBAR_BGCOLOR);
+		header.setBackground(C.TITLEBAR_BGCOLOR);
 		header.setLayout(new FormLayout());		
 		FormData fd_header = new FormData();
 		fd_header.top = new FormAttachment(container,0);
@@ -76,20 +76,20 @@ public class NewVesselForm {
 		header.setLayoutData(fd_header);
 		
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(Constants.getImage("/img/user.png"));
+		lblImg.setImage(C.getImage("/img/user.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
 		
 		Label lblTitle = new Label(header, SWT.NONE);
-		lblTitle.setForeground(Constants.APP_BGCOLOR);
-		lblTitle.setFont(Constants.FORM_HEADER_FONT);
+		lblTitle.setForeground(C.APP_BGCOLOR);
+		lblTitle.setFont(C.FORM_HEADER_FONT);
 		FormData fd_lblTitle = new FormData();
 		fd_lblTitle.top = new FormAttachment(0, 10);
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
-		lblTitle.setBackground(Constants.TITLEBAR_BGCOLOR);
+		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("ENTER VESSEL DETAILS");
 		
 		Composite formHolder = new Composite(container,SWT.BORDER);
@@ -102,7 +102,7 @@ public class NewVesselForm {
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
 	
 		Composite form = new Composite(formHolder,SWT.NONE);
-		form.setBackground(Constants.APP_BGCOLOR);
+		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 10;
 		gridLayout.marginHeight = 20;
@@ -113,7 +113,7 @@ public class NewVesselForm {
 				
 		//FORM LABELS & FIELDS ==================================================================	
 		Label lblName = new Label(form, SWT.NONE);
-		lblName.setBackground(Constants.APP_BGCOLOR);
+		lblName.setBackground(C.APP_BGCOLOR);
 		lblName.setText("Name:");		
 		name = new Text(form, SWT.BORDER);
 		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -122,7 +122,7 @@ public class NewVesselForm {
 		name.setFocus();
 		
 		Label lblIMO = new Label(form, SWT.NONE);
-		lblIMO.setBackground(Constants.APP_BGCOLOR);
+		lblIMO.setBackground(C.APP_BGCOLOR);
 		lblIMO.setText("IMO:");		
 		imo = new Text(form, SWT.BORDER);
 		GridData gd_imo = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -130,7 +130,7 @@ public class NewVesselForm {
 		imo.setLayoutData(gd_imo);
 		
 		Label lblType = new Label(form, SWT.NONE);
-		lblType.setBackground(Constants.APP_BGCOLOR);
+		lblType.setBackground(C.APP_BGCOLOR);
 		lblType.setText("Type:");	;		
 		type = new Text(form, SWT.BORDER);
 		GridData gd_type = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -138,7 +138,7 @@ public class NewVesselForm {
 		type.setLayoutData(gd_type);
 		
 		Label lblOwner = new Label(form, SWT.NONE);
-		lblOwner.setBackground(Constants.APP_BGCOLOR);
+		lblOwner.setBackground(C.APP_BGCOLOR);
 		lblOwner.setText("Owner:");	
 		owner = new Text(form, SWT.BORDER | SWT.MULTI);
 		GridData gd_owner = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -152,7 +152,7 @@ public class NewVesselForm {
 		//==================================================================		
 		
 		Button ok = new Button (form, SWT.PUSH);
-		ok.setFont(Constants.FONT_10);
+		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
