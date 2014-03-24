@@ -87,7 +87,7 @@ public class SpacesListView {
 		
 		// ID --------------------------------------------------------------------------------------
 		col = tvb.createColumn("ID");
-		// set spacer image to force row height
+		// set spacer image using format() to force row height
 	  	col.format(new ICellFormatter() {
 		    @Override
 			public void formatCell(ViewerCell c, Object value) {
@@ -112,38 +112,49 @@ public class SpacesListView {
 	  	col.setCustomLabelProvider(new DynamicImageCell(new BaseValue<Row>() {
 	  	    @Override
 	  	    public Object get(Row r) {
-	  	        int v = (r.getID() * 20);
-	  	    	return "/img/Percent_"+ v +".png";
+	  	        int id = r.getID();
+	  	        // we have the row ID so we can perform the completion status calculations here
+	  	        // get the % value and return the appropriate image
+	  	    	return "/img/Percent_"+ (id*20) +".png";
 	  	    }
 	  	}));
 	  	col.build();
 	  	
 	  	// internal classification --------------------------------------------------------------------------------------
 	  	col = tvb.createColumn("Internal Classification");
-	  	col.setPercentWidth(15);
+	  	col.setPercentWidth(10);
 	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/amber.png"))); 
+	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/amber.png"))); 	  	
 	  	col.build();
 	  	
 	  	// entry points classification --------------------------------------------------------------------------------------
 	  	col = tvb.createColumn("Entry Points Classification");
-	  	col.bindToValue(new BaseValue<Row>() {
+	  	col.setPixelWidth(180);
+	  	col.alignCenter();
+	  	col.setCustomLabelProvider(new DynamicImageArrayCell(new BaseValue<Row>() {
 	  	    @Override
 	  	    public Object get(Row r) {
-	  	        return "TBC";
+	  	        int id = r.getID();
+	  	        // we have the row ID so we can perform the entrypoint audit calculations here
+	  	        // get the statuses and return the appropriate images as an array
+	  		  	return new String[] {"/img/green.png","/img/amber.png","/img/red.png","/img/green.png","/img/amber.png"};
 	  	    }
-	  	});
-	  	col.setPixelWidth(150);
-	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/5lights.png"))); 
+	  	}));
 	  	col.build();
 	  	
 	  	// signed off --------------------------------------------------------------------------------------
-	  	col = tvb.createColumn("S/O");
-	  	
+	  	col = tvb.createColumn("S/O");	  	
 	  	col.setPercentWidth(5);
 	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(Constants.getImage("/img/bluetick.png"))); 
+	  	col.setCustomLabelProvider(new DynamicImageCell(new BaseValue<Row>() {
+	  	    @Override
+	  	    public Object get(Row r) {
+	  	        int id = r.getID();
+	  	        // we have the row ID so we can work out the signoff status calculations here
+	  	        // get the value and return the appropriate image
+	  	    	return "/img/bluetick.png";
+	  	    }
+	  	}));
 	  	col.build();
 
 	  	
