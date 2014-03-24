@@ -137,7 +137,7 @@ public class AppLoader {
 				message("Checking database integrity");
 				DatabaseController db = new DatabaseController();
 				db.checkDB();
-				message("DatabaseController integrity check complete");
+				message("Database integrity check complete");
 				update(); //40%
 				
 				// check license key in DB
