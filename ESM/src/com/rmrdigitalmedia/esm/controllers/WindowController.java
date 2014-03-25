@@ -69,7 +69,7 @@ public class WindowController {
 	static Button btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
 	private static int currentSpaceId = 0;
-	EsmUsersTable.Row user;
+	public static EsmUsersTable.Row user;
 	SpacesTable.Row[] rows;
 
 	public static void main(String[] args) {
@@ -84,7 +84,7 @@ public class WindowController {
 
 	public WindowController(EsmUsersTable.Row user) {
 		me = this;
-		this.user = user;
+		WindowController.user = user;
 		this.displayName = user.getRank() + " " + user.getForename() + " " + user.getSurname();
 	  	LogController.log("Running class " + this.getClass().getName());
 	  	LogController.log("Logged in user: " + displayName);

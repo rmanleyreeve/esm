@@ -1,6 +1,7 @@
 package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
@@ -12,11 +13,18 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.controllers.LogController;
+import com.rmrdigitalmedia.esm.controllers.WindowController;
+import com.rmrdigitalmedia.esm.forms.NewSpaceCommentForm;
+import com.rmrdigitalmedia.esm.models.EsmUsersTable;
+import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class SpaceDetailView {
 
@@ -27,7 +35,7 @@ public class SpaceDetailView {
 			shell.setSize(1380, 750);
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
 			Composite comp = new Composite(shell, SWT.BORDER);
-			SpaceDetailView.buildPage(comp,1);
+			SpaceDetailView.buildPage(comp,3);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!Display.getDefault().readAndDispatch()) {
@@ -40,7 +48,8 @@ public class SpaceDetailView {
 	}
 
 	
-	public static void buildPage(Composite parent, int spaceID) {
+	@SuppressWarnings("unused")
+	public static void buildPage(final Composite parent, final int spaceID) {
 		
 		SpacesTable.Row row = null;
 		try {
@@ -50,6 +59,10 @@ public class SpaceDetailView {
 		}
 		
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
+		
+		
+		
+		
 		SashForm panels = new SashForm(parent,SWT.NONE);
 		panels.setBackground(C.TITLEBAR_BGCOLOR);
 		panels.setLayout(new FillLayout());
@@ -113,12 +126,11 @@ public class SpaceDetailView {
 		lblDesc.setText("Description:");		
 	
 		final Text description = new Text(grid, SWT.BORDER | SWT.WRAP | SWT.MULTI);
-		//description.setEditable(false);
+		description.setEditable(false);
 		description.setFont(C.FONT_12);
 		description.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		GridData gd_description = new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1);
 		gd_description.widthHint = 1000;
-		//gd_description.widthHint = 1000;
 		gd_description.heightHint = 100;
 		description.setLayoutData(gd_description);
 		description.setText(row.getDescription());
@@ -131,15 +143,62 @@ public class SpaceDetailView {
 		lblComments.setBackground(C.APP_BGCOLOR);
 		lblComments.setText("Comments:");		
 		
-		Button btnNewButton_1 = new Button(grid, SWT.NONE);
-		btnNewButton_1.setImage(SWTResourceManager.getImage(SpaceDetailView.class, "/img/Add.png"));
-		GridData gd_btnNewButton_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnNewButton_1.verticalIndent = 8;
-		gd_btnNewButton_1.horizontalIndent = 20;
-		btnNewButton_1.setLayoutData(gd_btnNewButton_1);
-		btnNewButton_1.setText("Add");
-		new Label(grid, SWT.NONE);
-		new Label(grid, SWT.NONE);
+		Button btnAdd = new Button(grid, SWT.NONE);
+		btnAdd.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				NewSpaceCommentForm nscf = new NewSpaceCommentForm(spaceID, WindowController.user.getID());					
+				if(nscf.complete()) {
+					LogController.log("New Space Comment saved in database");
+					WindowController.showSpaceDetail(spaceID);					
+				}
+			}
+		});
+		btnAdd.setImage(SWTResourceManager.getImage(SpaceDetailView.class, "/img/Add.png"));
+		GridData gd_btnAdd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
+		gd_btnAdd.verticalIndent = 8;
+		gd_btnAdd.horizontalIndent = 20;
+		btnAdd.setLayoutData(gd_btnAdd);
+		btnAdd.setText("Add");
+		
+		// loop through and display comments
+		Text comment;
+		Label lblAuthor,lblPosted;
+		GridData gd_comment, gd_lblAuthor,gd_lblPosted;
+		try {
+			for (SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID)) {
+				
+				EsmUsersTable.Row author = EsmUsersTable.getRow(spaceComment.getAuthorID());
+				lblAuthor = new Label(grid, SWT.NONE);
+				gd_lblAuthor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1);
+				gd_lblAuthor.verticalIndent = 10;
+				lblAuthor.setLayoutData(gd_lblAuthor);
+				lblAuthor.setFont(C.FONT_9);
+				lblAuthor.setBackground(C.APP_BGCOLOR);
+				lblAuthor.setText(author.getForename() + " " + author.getSurname());		
+				
+				comment = new Text(grid, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+				comment.setText(spaceComment.getComment());
+				comment.setEditable(false);
+				comment.setFont(C.FONT_11);
+				comment.setBackground(C.FIELD_BGCOLOR);
+				gd_comment = new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1);
+				gd_comment.widthHint = 1000;
+				gd_comment.heightHint = 60;
+				comment.setLayoutData(gd_comment);
+				
+				lblPosted = new Label(grid, SWT.NONE);
+				gd_lblPosted = new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1);
+				lblPosted.setLayoutData(gd_lblPosted);
+				lblPosted.setFont(C.FONT_9);
+				lblPosted.setBackground(C.APP_BGCOLOR);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yy");
+				lblPosted.setText("Posted " + sdf.format(spaceComment.getUpdateDate()));		
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	
 		
 		

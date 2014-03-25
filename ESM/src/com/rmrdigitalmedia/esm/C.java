@@ -31,8 +31,9 @@ public final class C {
 	public static String APP_NAME = "Enclosed Spaces Management System";
 	
 	// styling properties
-	public static Color APP_BGCOLOR = SWTResourceManager.getColor(213, 217, 220);
-	public static Color TITLEBAR_BGCOLOR = SWTResourceManager.getColor(102, 111, 118);
+	public static Color APP_BGCOLOR = SWTResourceManager.getColor(222, 224, 226);
+	public static Color TITLEBAR_BGCOLOR = SWTResourceManager.getColor(122, 130, 137);
+	public static Color FIELD_BGCOLOR = SWTResourceManager.getColor(238, 238, 238);
 	
 	// fonts
 	public static String FONT = (OS.equals("cocoa")) ? "Lucida Grande" : "Arial";
