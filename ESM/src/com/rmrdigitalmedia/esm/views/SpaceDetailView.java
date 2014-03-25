@@ -59,13 +59,10 @@ public class SpaceDetailView {
 		}
 		
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
-		
-		
-		
-		
 		SashForm panels = new SashForm(parent,SWT.NONE);
 		panels.setBackground(C.TITLEBAR_BGCOLOR);
 		panels.setLayout(new FillLayout());
+		
 		Composite mainpanel = new Composite(panels,SWT.NONE);
 		mainpanel.setBackground(C.APP_BGCOLOR);
 		FillLayout fl_mainpanel = new FillLayout(SWT.VERTICAL);
