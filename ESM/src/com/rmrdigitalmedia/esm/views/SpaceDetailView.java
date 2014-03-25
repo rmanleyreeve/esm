@@ -26,6 +26,7 @@ public class SpaceDetailView {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
 			Shell shell = new Shell();
+			shell.setSize(1380, 750);
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
 			Composite comp = new Composite(shell, SWT.BORDER);
 			SpaceDetailView.buildPage(comp,1);
@@ -55,42 +56,50 @@ public class SpaceDetailView {
 		panels.setBackground(C.TITLEBAR_BGCOLOR);
 		panels.setLayout(new FillLayout());
 		Composite mainpanel = new Composite(panels,SWT.NONE);
-		mainpanel.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		mainpanel.setLayout(new FillLayout(SWT.VERTICAL));
+		mainpanel.setBackground(C.APP_BGCOLOR);
+		FillLayout fl_mainpanel = new FillLayout(SWT.VERTICAL);
+		fl_mainpanel.marginWidth = 10;
+		fl_mainpanel.marginHeight = 10;
+		mainpanel.setLayout(fl_mainpanel);
 		
 		Composite grid = new Composite(mainpanel, SWT.NONE);
 		grid.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.marginWidth = 10;
-		gridLayout.marginHeight = 10;
-		gridLayout.numColumns = 10;
-		gridLayout.horizontalSpacing = 10;
+		gridLayout.makeColumnsEqualWidth = true;
+		gridLayout.verticalSpacing = 0;
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		gridLayout.numColumns = 4;
+		gridLayout.horizontalSpacing = 0;
 		grid.setLayout(gridLayout);
 		
 		Label lblNname = new Label(grid, SWT.NONE);
-		lblNname.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.BOLD));
-		lblNname.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 7, 1));
+		lblNname.setFont(C.FONT_12B);
+		lblNname.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 		lblNname.setBackground(C.APP_BGCOLOR);
 		lblNname.setText("Name:");		
 		
 		Label lblID = new Label(grid, SWT.NONE);
-		lblID.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.BOLD));
-		lblID.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+		lblID.setFont(C.FONT_12B);
+		lblID.setBackground(C.APP_BGCOLOR);
 		lblID.setText("ID:");
 		
 		
-		Label name = new Label(grid, SWT.NONE);
+		Label name = new Label(grid, SWT.BORDER);
+		name.setFont(C.FONT_12);
 		name.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 7, 1);
-		gd_name.minimumWidth = 300;
+		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
+		gd_name.widthHint = 500;
 		name.setLayoutData(gd_name);
 		name.setText(row.getName());
 
-		Label id = new Label(grid, SWT.NONE);
+		Label id = new Label(grid, SWT.BORDER);
+		id.setFont(C.FONT_12);
 		id.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		id.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		GridData gd_id = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_id.widthHint = 200;
+		id.setLayoutData(gd_id);
 		id.setText(""+row.getID());
-
 		
 		
 		
