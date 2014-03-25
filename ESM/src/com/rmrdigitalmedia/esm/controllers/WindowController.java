@@ -198,7 +198,6 @@ public class WindowController {
 		
 		btnAdmin = new Button(titleBar, SWT.PUSH);
 		btnAdmin.setImage(C.getImage("/img/Secrecy.png"));
-		C.makeHoverButton(btnAdmin);
 		btnAdmin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -215,7 +214,6 @@ public class WindowController {
 
 		btnAddSpace = new Button(titleBar, SWT.PUSH);
 		btnAddSpace.setImage(C.getImage("/img/Add.png"));
-		C.makeHoverButton(btnAddSpace);
 		btnAddSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -235,7 +233,6 @@ public class WindowController {
 
 		btnEditSpace = new Button(titleBar, SWT.PUSH);
 		btnEditSpace.setImage(C.getImage("/img/Page_white_edit.png"));
-		C.makeHoverButton(btnEditSpace);
 		btnEditSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -256,7 +253,6 @@ public class WindowController {
 
 		btnDeleteSpace = new Button(titleBar, SWT.PUSH);
 		btnDeleteSpace.setImage(C.getImage("/img/delete-file16.png"));
-		C.makeHoverButton(btnDeleteSpace);
 		btnDeleteSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -285,7 +281,6 @@ public class WindowController {
 		
 		btnSpacesList = new Button(titleBar, SWT.PUSH);
 		btnSpacesList.setImage(C.getImage("/img/List.png"));
-		C.makeHoverButton(btnSpacesList);
 		btnSpacesList.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -384,7 +379,7 @@ public class WindowController {
 	public static void checkSpaceAlert(int id) {
 		boolean showAlert = false;
 		// get internal classification status from ID	
-		showAlert = true;
+		//showAlert = true;
 		if(showAlert){			
 			new SpaceAlert(shell);			
 		}

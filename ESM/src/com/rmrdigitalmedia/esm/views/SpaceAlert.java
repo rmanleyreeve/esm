@@ -16,8 +16,6 @@ import org.eclipse.swt.layout.RowData;
 
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import org.eclipse.swt.events.MouseTrackAdapter;
-import org.eclipse.swt.events.MouseEvent;
 
 public class SpaceAlert {
 
@@ -51,7 +49,6 @@ public class SpaceAlert {
 		Composite compTitle = new Composite(shell, SWT.NONE);
 		compTitle.setLayoutData(new RowData(380, SWT.DEFAULT));
 		FillLayout fl_compTitle = new FillLayout(SWT.HORIZONTAL);
-		fl_compTitle.marginHeight = 5;
 		compTitle.setLayout(fl_compTitle);
 		
 		Label lblTitle = new Label(compTitle, SWT.NONE);
@@ -70,7 +67,7 @@ public class SpaceAlert {
 		Composite compMsg = new Composite(shell, SWT.NONE);
 		compMsg.setLayoutData(new RowData(380, SWT.DEFAULT));
 		FillLayout fl_compMsg = new FillLayout(SWT.HORIZONTAL);
-		fl_compMsg.marginHeight = 10;
+		fl_compMsg.marginHeight = 5;
 		compMsg.setLayout(fl_compMsg);
 		
 		Label lblMsg = new Label(compMsg, SWT.NONE);
@@ -83,7 +80,6 @@ public class SpaceAlert {
 		compBtn.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
 		Button btnContinue = new Button(compBtn, SWT.NONE);
-		C.makeHoverButton(btnContinue);
 		btnContinue.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {

@@ -20,7 +20,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-import com.rmrdigitalmedia.esm.AppLoader;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
