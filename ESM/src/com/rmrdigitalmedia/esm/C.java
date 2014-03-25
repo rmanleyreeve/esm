@@ -75,9 +75,11 @@ public final class C {
 	}
 	
 	public static void makeHoverButton(final Button b) {
+		// NOT SUPPORTED ON WINDOWS :(
 		b.addMouseTrackListener(new MouseTrackAdapter() {
 			@Override
 			public void mouseEnter(MouseEvent arg0) {
+				System.out.println(b);
 				b.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 			}
 			@Override
