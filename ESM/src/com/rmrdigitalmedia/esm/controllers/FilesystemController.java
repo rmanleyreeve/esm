@@ -1,9 +1,10 @@
 package com.rmrdigitalmedia.esm.controllers;
 
 import java.io.File;
-
+import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.AppLoader;
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 
 public class FilesystemController {
 
@@ -37,7 +38,8 @@ public class FilesystemController {
 			LogController.log("CREATED");
 		} else {
 			LogController.log("EXISTS");
-		} 
+		}
+		EsmApplication.appData.setField("IMGDIR",imgdir);
 		docdir = new File(datadir + C.SEP + C.DOC_DIR);
 		LogController.log("Docs folder: " + docdir);
 		if(docdir.mkdir() ) {
@@ -45,6 +47,7 @@ public class FilesystemController {
 		} else {
 			LogController.log("EXISTS");
 		}		
+		EsmApplication.appData.setField("DOCDIR",docdir);
 		logdir = new File(datadir + C.SEP + C.LOG_DIR);
 		LogController.log("Logs folder: " + logdir);
 		if(logdir.mkdir() ) {
@@ -52,6 +55,7 @@ public class FilesystemController {
 		} else {
 			LogController.log("EXISTS");
 		}		
+		EsmApplication.appData.setField("LOGDIR",logdir);
 
 		LogController.log("File system integrity check complete");
 		
