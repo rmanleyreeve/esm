@@ -8,12 +8,9 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -46,7 +43,7 @@ public class SpaceDetailView {
 			shell.setSize(1380, 750);
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
 			Composite comp = new Composite(shell, SWT.BORDER);
-			SpaceDetailView.buildPage(comp,1);
+			SpaceDetailView.buildPage(comp,2);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!Display.getDefault().readAndDispatch()) {
@@ -77,7 +74,9 @@ public class SpaceDetailView {
 	    final ScrolledComposite scrollComposite = new ScrolledComposite(panels, SWT.V_SCROLL | SWT.BORDER);
 	    
 	    final Composite comp = new Composite(scrollComposite, SWT.NONE);
-	    comp.setLayout(new GridLayout(1, true));
+	    GridLayout gl_comp = new GridLayout(1, true);
+	    gl_comp.marginRight = 10;
+	    comp.setLayout(gl_comp);
 	    comp.setBackground(C.APP_BGCOLOR);
 	    
 	    // row 1 - name, id, description fields
@@ -177,14 +176,15 @@ public class SpaceDetailView {
 				//lblAuthor.setBackground(C.APP_BGCOLOR);
 				lblAuthor.setText(author.getForename() + " " + author.getSurname());		
 				
-				Text comment = new Text(commentRow, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+				Text comment = new Text(commentRow, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY);
 				comment.setText(spaceComment.getComment());
 				comment.setEditable(false);
 				comment.setFont(C.FONT_11);
 				comment.setBackground(C.FIELD_BGCOLOR);
 				GridData gd_comment = new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1);
 				gd_comment.widthHint = 1000;
-				gd_comment.heightHint = 60;
+				int h = comment.computeSize(1000,SWT.DEFAULT,true).y;
+				gd_comment.heightHint = (h>60) ? h:60;
 				comment.setLayoutData(gd_comment);
 				
 				Label lblPosted = new Label(commentRow, SWT.NONE);
@@ -206,6 +206,7 @@ public class SpaceDetailView {
 	    scrollComposite.setExpandVertical(true);
 	    scrollComposite.setExpandHorizontal(true);
 	    scrollComposite.addControlListener(new ControlAdapter() {
+	      @Override
 	      public void controlResized(ControlEvent e) {
 	        Rectangle r = scrollComposite.getClientArea();
 	        scrollComposite.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
@@ -226,17 +227,7 @@ public class SpaceDetailView {
 		rightpanel.setBackground(C.APP_BGCOLOR);
 		rightpanel.setLayout(new FillLayout());
 		panels.setWeights(new int[] {2, 1});	
-		
-		panels.addListener(SWT.Resize, new Listener() {
-      @Override
-      public void handleEvent(Event arg0) {
-      	//description.setText(description.getText());
-      	//description.update();
-      	//grid.layout();
-      }
-		});
-
-		
+				
 		parent.layout();
 		
 	}
