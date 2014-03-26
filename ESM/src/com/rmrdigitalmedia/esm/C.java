@@ -34,6 +34,7 @@ public final class C {
 	public static Color APP_BGCOLOR = SWTResourceManager.getColor(222, 224, 226);
 	public static Color TITLEBAR_BGCOLOR = SWTResourceManager.getColor(122, 130, 137);
 	public static Color FIELD_BGCOLOR = SWTResourceManager.getColor(238, 238, 238);
+	public static Color BAR_BGCOLOR = SWTResourceManager.getColor(182, 186, 190);
 	
 	// fonts
 	public static String FONT = (OS.equals("cocoa")) ? "Lucida Grande" : "Arial";

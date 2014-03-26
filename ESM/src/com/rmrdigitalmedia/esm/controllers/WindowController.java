@@ -197,7 +197,7 @@ public class WindowController {
 		Button foo = new Button(titleBar, SWT.NONE); // dummy button to take default
 		
 		btnAdmin = new Button(titleBar, SWT.PUSH);
-		btnAdmin.setImage(C.getImage("/img/Secrecy.png"));
+		btnAdmin.setImage(C.getImage("/img/16_padlock.png"));
 		btnAdmin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -213,7 +213,7 @@ public class WindowController {
 		btnAdmin.setEnabled(false);
 
 		btnAddSpace = new Button(titleBar, SWT.PUSH);
-		btnAddSpace.setImage(C.getImage("/img/Add.png"));
+		btnAddSpace.setImage(C.getImage("/img/16_CircledPlus.png"));
 		btnAddSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -232,7 +232,7 @@ public class WindowController {
 		btnAddSpace.setLayoutData(fd_btnAddSpace);
 
 		btnEditSpace = new Button(titleBar, SWT.PUSH);
-		btnEditSpace.setImage(C.getImage("/img/Page_white_edit.png"));
+		btnEditSpace.setImage(C.getImage("/img/16_edit.png"));
 		btnEditSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -252,23 +252,22 @@ public class WindowController {
 		btnEditSpace.setEnabled(false);
 
 		btnDeleteSpace = new Button(titleBar, SWT.PUSH);
-		btnDeleteSpace.setImage(C.getImage("/img/delete-file16.png"));
+		btnDeleteSpace.setImage(C.getImage("/img/16_delete.png"));
 		btnDeleteSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-		          TableItem[] selection = SpacesListView.getTable().getSelection();
-		          String s = selection[0].getText();
-		          LogController.log("Delete Selection={" + s + "}");
-		          int _id = Integer.parseInt(s);		          
-		          	DeleteSpaceController dsc = new DeleteSpaceController();					
-					if(dsc.deleteOK(_id)) {
-						LogController.log("Space "+_id+" marked as deleted in database");
-						showSpacesList();						
-					} else {
-						LogController.log("Error occurred deleting space " + _id);
-					}
+        TableItem[] selection = SpacesListView.getTable().getSelection();
+        String s = selection[0].getText();
+        LogController.log("Delete Selection={" + s + "}");
+        int _id = Integer.parseInt(s);		          
+      	DeleteSpaceController dsc = new DeleteSpaceController();					
+				if(dsc.deleteOK(_id)) {
+					LogController.log("Space "+_id+" marked as deleted in database");
+					showSpacesList();						
+				} else {
+					LogController.log("Error occurred deleting space " + _id);
 				}
-			
+			}			
 		});
 		btnDeleteSpace.setText("Delete");
 		btnDeleteSpace.setFont(C.BUTTON_FONT);
@@ -277,7 +276,6 @@ public class WindowController {
 		fd_btnDeleteSpace.top = new FormAttachment(titleBar,titleH/5);
 		btnDeleteSpace.setLayoutData(fd_btnDeleteSpace);
 		btnDeleteSpace.setEnabled(false);
-
 		
 		btnSpacesList = new Button(titleBar, SWT.PUSH);
 		btnSpacesList.setImage(C.getImage("/img/List.png"));
@@ -379,7 +377,7 @@ public class WindowController {
 	public static void checkSpaceAlert(int id) {
 		boolean showAlert = false;
 		// get internal classification status from ID	
-		//showAlert = true;
+		showAlert = true;
 		if(showAlert){			
 			new SpaceAlert(shell);			
 		}
