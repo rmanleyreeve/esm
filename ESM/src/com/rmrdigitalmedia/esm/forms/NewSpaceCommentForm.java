@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -26,8 +27,10 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 
@@ -41,7 +44,8 @@ public class NewSpaceCommentForm {
 	// form layout  guides
 	int headerH = 40;
 	private Label sep;
-	private static String imgToUploadPath, imgToUploadName;
+	static String imgToUploadPath;
+	static String imgToUploadName;
 	private static Text imgSelected;
 
 	/**
@@ -209,7 +213,7 @@ public class NewSpaceCommentForm {
 		    			try {  				
 		    			    File src = new File(imgToUploadPath);   
 		    			    final File dest = new File(
-		    			    		EsmApplication.appData.getField("IMGDIR") + 
+		    			    		FilesystemController.imgdir.toString() +  
 		    			    		C.SEP + 
 		    			    		imgToUploadName
 		    			    );   	      
@@ -266,14 +270,6 @@ public class NewSpaceCommentForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shell.setLocation (x, y);		  		
 		shell.setDefaultButton (ok);		
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
 		
 		shell.open ();
 		shell.layout();

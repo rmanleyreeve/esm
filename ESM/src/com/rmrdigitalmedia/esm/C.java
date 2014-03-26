@@ -16,17 +16,21 @@ public final class C {
 	// app setup properties
 	public static String OS = (SWT.getPlatform());
 	public static String HOME_DIR = System.getProperty("user.home");	
-	public static String DATA_DIR = (OS.equals("cocoa")) ? "Shared":"All Users";
+	public static String INSTALL_DIR = (OS.equals("cocoa")) ? "Shared":"All Users";
 	public static String SEP = (OS.equals("cocoa")) ? "/":"\\";;
 	public static String DATA_DIR_NAME = "ESM Data";
-	public static String IMG_DIR = "images";
-	public static String DOC_DIR = "docs";
-	public static String LOG_DIR = "logs";
+	public static String IMG_DIR_NAME = "images";
+	public static String DOC_DIR_NAME = "docs";
+	public static String LOG_DIR_NAME = "logs";
 	public static String USER_DOCS_DIR = new File(HOME_DIR).getParentFile().getAbsolutePath();
+	public static String DATA_DIR = USER_DOCS_DIR + SEP + INSTALL_DIR + SEP + DATA_DIR_NAME;
+	public static String IMG_DIR = DATA_DIR + SEP + IMG_DIR_NAME;
+	public static String DOC_DIR = DATA_DIR + SEP + DOC_DIR_NAME;
+	public static String LOG_DIR = DATA_DIR + SEP + LOG_DIR_NAME;
 
 	public static String DB_NAME = "ESM";
-	public static String DB_CONN_STR = "jdbc:h2:~/../"+DATA_DIR+"/" + DATA_DIR_NAME + "/"+DB_NAME+";IFEXISTS=TRUE";
-	public static String DB_CONN_STR_SETUP = "jdbc:h2:~/../"+DATA_DIR+"/" + DATA_DIR_NAME + "/" + DB_NAME;
+	public static String DB_CONN_STR = "jdbc:h2:~/../"+INSTALL_DIR+"/" + DATA_DIR_NAME + "/"+DB_NAME+";IFEXISTS=TRUE";
+	public static String DB_CONN_STR_SETUP = "jdbc:h2:~/../"+INSTALL_DIR+"/" + DATA_DIR_NAME + "/" + DB_NAME;
 	public static String DB_SETUP_FILE = "SETUP.sql";
 	public static String APP_NAME = "Enclosed Spaces Management System";
 	
@@ -74,6 +78,9 @@ public final class C {
 	// method shortcuts
 	public static Image getImage(String imgpath) {
 		return SWTResourceManager.getImage(C.class, imgpath);	
+	}
+	public static Image getExtImage(String imgpath) {
+		return SWTResourceManager.getImage(imgpath);
 	}
 	
 	public static void makeHoverButton(final Button b) {

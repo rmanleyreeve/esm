@@ -18,9 +18,9 @@ public class LogController {
 	
 	public static String logfile = 
 			C.USER_DOCS_DIR + C.SEP + 
-			C.DATA_DIR + C.SEP + 
+			C.INSTALL_DIR + C.SEP + 
 			C.DATA_DIR_NAME + C.SEP + 
-			C.LOG_DIR + C.SEP +
+			C.LOG_DIR_NAME + C.SEP +
 			logfilename;
 	
 	public static void log(Object o) {
