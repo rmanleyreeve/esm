@@ -28,9 +28,12 @@ import com.rmrdigitalmedia.esm.models.SpacesTable;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -327,7 +330,7 @@ public class SpaceDetailView {
     Group rowRight2 = new Group(compR, SWT.NONE);
     rowRight2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
     GridLayout gl_rowRight2 = new GridLayout(3, false);
-    gl_rowRight2.marginBottom = 20;
+    gl_rowRight2.marginBottom = 10;
     gl_rowRight2.marginHeight = 0;
     rowRight2.setLayout(gl_rowRight2);
     rowRight2.setBackground(C.APP_BGCOLOR);
@@ -428,10 +431,11 @@ public class SpaceDetailView {
 	gallHolder.setBackground(C.FIELD_BGCOLOR);		
 	
 		
-	Gallery gallery = new Gallery(gallHolder, SWT.MULTI | SWT.H_SCROLL);
+	final Gallery gallery = new Gallery(gallHolder, SWT.MULTI | SWT.H_SCROLL);
 	GridData gd_gallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 	gd_gallery.minimumHeight = 150;
 	gallery.setLayoutData(gd_gallery);
+	gallery.setBackground(C.FIELD_BGCOLOR);
 
 	NoGroupRenderer gr = new NoGroupRenderer();
 	gr.setMinMargin(2);
@@ -444,26 +448,38 @@ public class SpaceDetailView {
 	gallery.setItemRenderer(ir);
 	
 	GalleryItem group = new GalleryItem(gallery, SWT.NONE);
-	new Label(gallHolder, SWT.NONE);
-	new Label(gallHolder, SWT.NONE);
-	new Label(rowRight3, SWT.NONE);
-	new Label(rowRight3, SWT.NONE);
-	new Label(rowRight3, SWT.NONE);
-	new Label(rowRight3, SWT.NONE);
-	new Label(rowRight3, SWT.NONE);
-	new Label(rowRight3, SWT.NONE);
+
+	final int _id = row.getID();
 	for (int i = 1; i <5 ; i++) {
-		String im = C.IMG_DIR + C.SEP + row.getID() + C.SEP + "thumb" + C.SEP + i +".jpg";
+		String im = C.IMG_DIR + C.SEP + _id + C.SEP + "thumb" + C.SEP + i +".jpg";
 		System.out.println(im);
-		Image itemImage = C.getExtImage(im);
+		Image itemImage = C.getExtImage(im);		
 		GalleryItem item = new GalleryItem(group, SWT.NONE);
 		if (itemImage != null) {
 			item.setImage(itemImage);
+			item.setData("file", i +".jpg");
 		}
-		item.setText("Item " + i); 
+		item.setText("Photo " + i); 
 	}
 		
-		
+	gallery.addMouseListener(new MouseListener() {
+
+		@Override
+		public void mouseDoubleClick(MouseEvent e) {
+			GalleryItem[] selection = gallery.getSelection();
+			if (selection == null)
+				return;
+			GalleryItem item = selection[0];
+			
+			String fullImg = C.IMG_DIR + C.SEP + _id + C.SEP + "full" + C.SEP +(String)item.getData("file");
+			Program.launch(fullImg);
+		}
+		@Override
+		public void mouseDown(MouseEvent e) {}
+		@Override
+		public void mouseUp(MouseEvent e) {}
+	});
+	
 	
 	
 		
