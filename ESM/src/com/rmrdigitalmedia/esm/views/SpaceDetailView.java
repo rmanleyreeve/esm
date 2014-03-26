@@ -357,13 +357,13 @@ public class SpaceDetailView {
    
 		Label lblSpaceAuditLight = new Label(rowRight2, SWT.RIGHT);
 		lblSpaceAuditLight.setImage(C.getImage("/img/Red.png"));
-		lblSpaceAuditLight.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		lblSpaceAuditLight.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false, 1, 1));
 		lblSpaceAuditLight.setBackground(C.APP_BGCOLOR);
 		
 		Label lblEntryPoint = new Label(rowRight2, SWT.NONE);
+		lblEntryPoint.setFont(C.FONT_10B);
+		lblEntryPoint.setBackground(C.APP_BGCOLOR);
 		lblEntryPoint.setText("Entry Point");
-		lblEntryPoint.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		lblEntryPoint.setBackground(SWTResourceManager.getColor(213, 217, 220));
 		
 		Label lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
 		// work out completion status based on id
@@ -376,7 +376,7 @@ public class SpaceDetailView {
    
 		Label lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
 		lblEntryPointAuditLight.setImage(C.getImage("/img/Amber.png"));
-		lblEntryPointAuditLight.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		lblEntryPointAuditLight.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false, 1, 1));
 		lblEntryPointAuditLight.setBackground(C.APP_BGCOLOR);
 		
 
