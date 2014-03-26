@@ -1,7 +1,6 @@
 package com.rmrdigitalmedia.esm.controllers;
 
 import java.io.File;
-import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.AppLoader;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
@@ -21,7 +20,7 @@ public class FilesystemController {
 		LogController.log("Running class " + this.getClass().getName());
 		// set up filesystem
 		LogController.log("Platform: " + C.OS);
-		datadir = new File(C.USER_DOCS_DIR + C.SEP + C.DATA_DIR + C.SEP + C.DATA_DIR_NAME);
+		datadir = new File(C.DATA_DIR);
 		LogController.log("PWD: "+current);
 		// create data dir
 		LogController.log("App Data folder: " + datadir);
@@ -32,7 +31,7 @@ public class FilesystemController {
 		}
 		AppLoader.message("Creating System Directories");
 		// create sub-dirs====================================
-		imgdir = new File(datadir + C.SEP + C.IMG_DIR);
+		imgdir = new File(C.IMG_DIR);
 		LogController.log("Images folder: " + imgdir);
 		if(imgdir.mkdir() ) {
 			LogController.log("CREATED");
@@ -40,7 +39,7 @@ public class FilesystemController {
 			LogController.log("EXISTS");
 		}
 		EsmApplication.appData.setField("IMGDIR",imgdir);
-		docdir = new File(datadir + C.SEP + C.DOC_DIR);
+		docdir = new File(C.DOC_DIR);
 		LogController.log("Docs folder: " + docdir);
 		if(docdir.mkdir() ) {
 			LogController.log("CREATED");
@@ -48,7 +47,7 @@ public class FilesystemController {
 			LogController.log("EXISTS");
 		}		
 		EsmApplication.appData.setField("DOCDIR",docdir);
-		logdir = new File(datadir + C.SEP + C.LOG_DIR);
+		logdir = new File(C.LOG_DIR);
 		LogController.log("Logs folder: " + logdir);
 		if(logdir.mkdir() ) {
 			LogController.log("CREATED");
