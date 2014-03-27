@@ -42,7 +42,7 @@ public class NewLicenseDialog {
 	
 	public boolean complete() {
 		Display display = Display.getDefault();
-		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
+		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setText("ESM Setup");
 		FormLayout formLayout = new FormLayout ();
 		formLayout.marginWidth = 10;

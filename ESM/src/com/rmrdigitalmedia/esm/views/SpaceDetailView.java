@@ -336,12 +336,15 @@ public class SpaceDetailView {
     rowRight2.setBackground(C.APP_BGCOLOR);
 	
 	Label lblAudits = new Label(rowRight2, SWT.NONE);
+	GridData gd_lblAudits = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+	gd_lblAudits.widthHint = 100;
+	lblAudits.setLayoutData(gd_lblAudits);
 	lblAudits.setFont(C.FONT_12B);
 	lblAudits.setBackground(C.APP_BGCOLOR);
 	lblAudits.setText("Audits");	
 	
 	Button btnAddAudit = new Button(rowRight2, SWT.NONE);
-	GridData gd_btnAddAudit = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1);
+	GridData gd_btnAddAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 	gd_btnAddAudit.verticalIndent = 3;
 	btnAddAudit.setLayoutData(gd_btnAddAudit);
 	btnAddAudit.addSelectionListener(new SelectionAdapter() {
@@ -370,7 +373,9 @@ public class SpaceDetailView {
    
 		Label lblSpaceAuditLight = new Label(rowRight2, SWT.RIGHT);
 		lblSpaceAuditLight.setImage(C.getImage("/img/Red.png"));
-	lblSpaceAuditLight.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false, 1, 1));
+	GridData gd_lblSpaceAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+	gd_lblSpaceAuditLight.horizontalIndent = 10;
+	lblSpaceAuditLight.setLayoutData(gd_lblSpaceAuditLight);
 	lblSpaceAuditLight.setBackground(C.APP_BGCOLOR);
 	
 	Label lblEntryPoint = new Label(rowRight2, SWT.NONE);
@@ -389,7 +394,9 @@ public class SpaceDetailView {
    
 		Label lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
 		lblEntryPointAuditLight.setImage(C.getImage("/img/Amber.png"));
-	lblEntryPointAuditLight.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false, 1, 1));
+	GridData gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+	gd_lblEntryPointAuditLight.horizontalIndent = 10;
+	lblEntryPointAuditLight.setLayoutData(gd_lblEntryPointAuditLight);
 	lblEntryPointAuditLight.setBackground(C.APP_BGCOLOR);
 
 	  // row 3 - photos header & button bar		
@@ -402,13 +409,16 @@ public class SpaceDetailView {
     rowRight3.setBackground(C.APP_BGCOLOR);
 		
 	CLabel lblPhotos = new CLabel(rowRight3, SWT.NONE);
+	GridData gd_lblPhotos = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+	gd_lblPhotos.widthHint = 100;
+	lblPhotos.setLayoutData(gd_lblPhotos);
 	lblPhotos.setFont(C.FONT_12B);
 	lblPhotos.setBackground(C.APP_BGCOLOR);
 	lblPhotos.setImage(C.getImage("/img/16_camera.png"));
 	lblPhotos.setText("Photos");	
 	
 	Button btnAddPhoto = new Button(rowRight3, SWT.NONE);
-	GridData gd_btnAddPhoto = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1);
+	GridData gd_btnAddPhoto = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 	gd_btnAddPhoto.verticalIndent = 3;
 	btnAddPhoto.setLayoutData(gd_btnAddPhoto);
 	btnAddPhoto.addSelectionListener(new SelectionAdapter() {
@@ -463,14 +473,12 @@ public class SpaceDetailView {
 	}
 		
 	gallery.addMouseListener(new MouseListener() {
-
 		@Override
 		public void mouseDoubleClick(MouseEvent e) {
 			GalleryItem[] selection = gallery.getSelection();
 			if (selection == null)
 				return;
-			GalleryItem item = selection[0];
-			
+			GalleryItem item = selection[0];			
 			String fullImg = C.IMG_DIR + C.SEP + _id + C.SEP + "full" + C.SEP +(String)item.getData("file");
 			Program.launch(fullImg);
 		}

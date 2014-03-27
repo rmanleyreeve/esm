@@ -63,7 +63,7 @@ public class NewUserForm {
 	public boolean complete() {	
 		
 		Display display = Display.getDefault();
-		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
+		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.myshell = shell;
 		shell.setSize(340, 420);
 		shell.setText("ESM Setup");
