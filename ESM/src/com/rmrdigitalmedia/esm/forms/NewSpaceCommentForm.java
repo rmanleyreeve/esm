@@ -93,7 +93,7 @@ public class NewSpaceCommentForm {
 	public boolean complete() {
 		
 		Display display = Display.getDefault();
-		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
+		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		NewSpaceCommentForm.myshell = shell;
 		shell.setSize(500, 300);
 		shell.setText("ESM Setup");
