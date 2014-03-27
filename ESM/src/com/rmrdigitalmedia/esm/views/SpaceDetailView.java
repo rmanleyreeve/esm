@@ -4,32 +4,14 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
+import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
+import org.eclipse.nebula.widgets.gallery.Gallery;
+import org.eclipse.nebula.widgets.gallery.GalleryItem;
+import org.eclipse.nebula.widgets.gallery.NoGroupRenderer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-
-import com.rmrdigitalmedia.esm.C;
-import com.rmrdigitalmedia.esm.controllers.FilesystemController;
-import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.controllers.WindowController;
-import com.rmrdigitalmedia.esm.forms.NewSpaceCommentForm;
-import com.rmrdigitalmedia.esm.models.EsmUsersTable;
-import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
-import com.rmrdigitalmedia.esm.models.SpacesTable;
-
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.program.Program;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MouseEvent;
@@ -38,11 +20,26 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
-import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
-import org.eclipse.nebula.widgets.gallery.Gallery;
-import org.eclipse.nebula.widgets.gallery.GalleryItem;
-import org.eclipse.nebula.widgets.gallery.NoGroupRenderer;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
+
+import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.controllers.LogController;
+import com.rmrdigitalmedia.esm.controllers.WindowController;
+import com.rmrdigitalmedia.esm.forms.NewSpaceCommentForm;
+import com.rmrdigitalmedia.esm.models.EsmUsersTable;
+import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
+import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class SpaceDetailView {
 	
@@ -87,24 +84,24 @@ public class SpaceDetailView {
 		SashForm panels = new SashForm(parent,SWT.NONE);
 		panels.setBackground(C.TITLEBAR_BGCOLOR);
 		panels.setLayout(new FillLayout());
-
+	
 		// scrolling frame to hold the LH space comments panel
-    final ScrolledComposite scrollPanelLeft = new ScrolledComposite(panels, SWT.V_SCROLL | SWT.BORDER);
-    
-    // the panel that holds the various info rows
-    final Composite compL = new Composite(scrollPanelLeft, SWT.NONE);
-    GridLayout gl_compL = new GridLayout(1, true);
-    gl_compL.marginBottom = 50;
-    gl_compL.marginRight = 10;
-    compL.setLayout(gl_compL);
-    compL.setBackground(C.APP_BGCOLOR);
-    
-    // row 1 - name, id, description fields
-    Group row1 = new Group(compL, SWT.NONE);
-    row1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-    row1.setLayout(new GridLayout(4, true));
-    row1.setBackground(C.APP_BGCOLOR);
-
+	    final ScrolledComposite scrollPanelLeft = new ScrolledComposite(panels, SWT.V_SCROLL | SWT.BORDER);
+	    
+	    // the panel that holds the various info rows
+	    final Composite compL = new Composite(scrollPanelLeft, SWT.NONE);
+	    GridLayout gl_compL = new GridLayout(1, true);
+	    gl_compL.marginBottom = 50;
+	    gl_compL.marginRight = 10;
+	    compL.setLayout(gl_compL);
+	    compL.setBackground(C.APP_BGCOLOR);
+	    
+	    // row 1 - name, id, description fields
+	    Group row1 = new Group(compL, SWT.NONE);
+	    row1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+	    row1.setLayout(new GridLayout(4, true));
+	    row1.setBackground(C.APP_BGCOLOR);
+	
 		Label lblNname = new Label(row1, SWT.NONE);
 		lblNname.setFont(C.FONT_12B);
 		lblNname.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
@@ -124,7 +121,7 @@ public class SpaceDetailView {
 		name.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		name.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		name.setText(row.getName());
-
+	
 		Label id = new Label(row1, SWT.BORDER);
 		id.setFont(C.FONT_12);
 		id.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -132,7 +129,7 @@ public class SpaceDetailView {
 		gd_id.horizontalIndent = 10;
 		id.setLayoutData(gd_id);
 		id.setText(""+row.getID());
-
+	
 		Label lblDesc = new Label(row1, SWT.NONE);
 		lblDesc.setFont(C.FONT_12B);
 		lblDesc.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
@@ -149,14 +146,14 @@ public class SpaceDetailView {
 		gd_description.heightHint = 100;
 		description.setLayoutData(gd_description);
 		description.setText(row.getDescription());
-
+	
 	  // row 2 - comments header & button bar
 		Composite row2 = new Composite(compL, SWT.NONE);
 		//row2.setLayout(new GridLayout(3, false));
 		row2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-    row2.setLayout(new GridLayout(4, true));
+		row2.setLayout(new GridLayout(4, true));
 		row2.setBackground(C.APP_BGCOLOR);		
-		
+			
 		CLabel lblComments = new CLabel(row2, SWT.NONE);
 		lblComments.setImage(C.getImage("/img/16_comment.png"));
 		lblComments.setFont(C.FONT_12B);
@@ -181,7 +178,7 @@ public class SpaceDetailView {
 		btnAdd.setText("Add");
 		new Label(row2, SWT.NONE);
 		new Label(row2, SWT.NONE);
-		
+			
 		// loop through and display comments in descending order	
 		try {
 			for (SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID + " ORDER BY ID DESC")) {
@@ -194,7 +191,7 @@ public class SpaceDetailView {
 		    gl_commentRow.verticalSpacing = 0;
 		    commentRow.setLayout(gl_commentRow);
 		    commentRow.setBackground(C.APP_BGCOLOR);
-
+	
 		    EsmUsersTable.Row author = EsmUsersTable.getRow(spaceComment.getAuthorID());
 			Label lblAuthor = new Label(commentRow, SWT.NONE);
 			GridData gd_lblAuthor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1);
@@ -223,290 +220,270 @@ public class SpaceDetailView {
 			lblPosted.setBackground(C.APP_BGCOLOR);
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 			lblPosted.setText("Posted " + sdf.format(spaceComment.getUpdateDate()));		
-
+	
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	    
-    scrollPanelLeft.setContent(compL);
-    scrollPanelLeft.setExpandVertical(true);
-    scrollPanelLeft.setExpandHorizontal(true);
-    scrollPanelLeft.addControlListener(new ControlAdapter() {
-      @Override
-      public void controlResized(ControlEvent e) {
-        Rectangle r = scrollPanelLeft.getClientArea();
-        scrollPanelLeft.setMinSize(compL.computeSize(r.width, SWT.DEFAULT));
-      }
-    });
-		
-		
-		
-		
-		
-		
-		
-		
+		    
+	    scrollPanelLeft.setContent(compL);
+	    scrollPanelLeft.setExpandVertical(true);
+	    scrollPanelLeft.setExpandHorizontal(true);
+	    scrollPanelLeft.addControlListener(new ControlAdapter() {
+	      @Override
+	      public void controlResized(ControlEvent e) {
+	        Rectangle r = scrollPanelLeft.getClientArea();
+	        scrollPanelLeft.setMinSize(compL.computeSize(r.width, SWT.DEFAULT));
+	      }
+	    });
+			
+			
 		// scrolling frame to hold the RH panel
-    final ScrolledComposite scrollPanelRight = new ScrolledComposite(panels, SWT.V_SCROLL | SWT.BORDER);
-    
-    // the panel that holds the various info rows
-    final Composite compR = new Composite(scrollPanelRight, SWT.NONE);
-    GridLayout gl_compR = new GridLayout(1, true);
-    gl_compR.horizontalSpacing = 0;
-    gl_compR.marginLeft = 10;
-    compR.setLayout(gl_compR);
-    compR.setBackground(C.APP_BGCOLOR);
-
+	    final ScrolledComposite scrollPanelRight = new ScrolledComposite(panels, SWT.V_SCROLL | SWT.BORDER);
+	    
+	    // the panel that holds the various info rows
+	    final Composite compR = new Composite(scrollPanelRight, SWT.NONE);
+	    GridLayout gl_compR = new GridLayout(1, true);
+	    gl_compR.horizontalSpacing = 0;
+	    gl_compR.marginLeft = 10;
+	    compR.setLayout(gl_compR);
+	    compR.setBackground(C.APP_BGCOLOR);
 		
+	    // row 1 - name, id, description fields
+	    Group rowRight1 = new Group(compR, SWT.NONE);
+	    rowRight1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+	    GridLayout gl_rowRight1 = new GridLayout(2, false);
+	    gl_rowRight1.marginBottom = 10;
+	    gl_rowRight1.marginHeight = 0;
+	    rowRight1.setLayout(gl_rowRight1);
+	    rowRight1.setBackground(C.APP_BGCOLOR);
 	
-    // row 1 - name, id, description fields
-    Group rowRight1 = new Group(compR, SWT.NONE);
-    rowRight1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-    GridLayout gl_rowRight1 = new GridLayout(2, false);
-    gl_rowRight1.marginBottom = 10;
-    gl_rowRight1.marginHeight = 0;
-    rowRight1.setLayout(gl_rowRight1);
-    rowRight1.setBackground(C.APP_BGCOLOR);
-
-    EsmUsersTable.Row author = null;
-	try {
-		author = EsmUsersTable.getRow(row.getAuthorID());
-	} catch (SQLException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-	Label lblCreatedBy = new Label(rowRight1, SWT.NONE);
-	lblCreatedBy.setFont(C.FONT_10B);
-	lblCreatedBy.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-	lblCreatedBy.setBackground(C.APP_BGCOLOR);
-	lblCreatedBy.setText("Created By:");		
-
-	Label lblAuthorName = new Label(rowRight1, SWT.WRAP);
-	lblAuthorName.setFont(C.FONT_10);
-	lblAuthorName.setBackground(C.APP_BGCOLOR);
-	lblAuthorName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-	lblAuthorName.setText(author.getForename() + " " + author.getSurname());
+	    EsmUsersTable.Row author = null;
+		try {
+			author = EsmUsersTable.getRow(row.getAuthorID());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Label lblCreatedBy = new Label(rowRight1, SWT.NONE);
+		lblCreatedBy.setFont(C.FONT_10B);
+		lblCreatedBy.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		lblCreatedBy.setBackground(C.APP_BGCOLOR);
+		lblCreatedBy.setText("Created By:");		
 	
-	Label lblCreated = new Label(rowRight1, SWT.NONE);
-	lblCreated.setFont(C.FONT_10B);
-	lblCreated.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-	lblCreated.setBackground(C.APP_BGCOLOR);
-	lblCreated.setText("Created:");		
-
-	Label lblCreatedDate = new Label(rowRight1, SWT.WRAP);
-	lblCreatedDate.setFont(C.FONT_10);
-	lblCreatedDate.setBackground(C.APP_BGCOLOR);
-	lblCreatedDate.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-	lblCreatedDate.setText(df(row.getCreatedDate()));
-
-	Label lblUpdated = new Label(rowRight1, SWT.NONE);
-	lblUpdated.setFont(C.FONT_10B);
-	lblUpdated.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-	lblUpdated.setBackground(C.APP_BGCOLOR);
-	lblUpdated.setText("Created:");		
-
+		Label lblAuthorName = new Label(rowRight1, SWT.WRAP);
+		lblAuthorName.setFont(C.FONT_10);
+		lblAuthorName.setBackground(C.APP_BGCOLOR);
+		lblAuthorName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		lblAuthorName.setText(author.getForename() + " " + author.getSurname());
+		
+		Label lblCreated = new Label(rowRight1, SWT.NONE);
+		lblCreated.setFont(C.FONT_10B);
+		lblCreated.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		lblCreated.setBackground(C.APP_BGCOLOR);
+		lblCreated.setText("Created:");		
+	
+		Label lblCreatedDate = new Label(rowRight1, SWT.WRAP);
+		lblCreatedDate.setFont(C.FONT_10);
+		lblCreatedDate.setBackground(C.APP_BGCOLOR);
+		lblCreatedDate.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		lblCreatedDate.setText(df(row.getCreatedDate()));
+	
+		Label lblUpdated = new Label(rowRight1, SWT.NONE);
+		lblUpdated.setFont(C.FONT_10B);
+		lblUpdated.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		lblUpdated.setBackground(C.APP_BGCOLOR);
+		lblUpdated.setText("Created:");		
+	
 		Label lblUpdatedDate = new Label(rowRight1, SWT.WRAP);
 		lblUpdatedDate.setFont(C.FONT_10);
 		lblUpdatedDate.setBackground(C.APP_BGCOLOR);
 		lblUpdatedDate.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		lblUpdatedDate.setText(df(row.getUpdateDate()));
- 
+	 
 		Label lblCompletion = new Label(rowRight1, SWT.NONE);
 		lblCompletion.setFont(C.FONT_10B);
 		lblCompletion.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		lblCompletion.setBackground(C.APP_BGCOLOR);
 		lblCompletion.setText("Completion Status:");		
-
-	Label lblCompletionImg = new Label(rowRight1, SWT.NONE);
-	// work out completion status based on id
-	int cs = (row.getID()*20);
-	lblCompletionImg.setImage(C.getImage("/img/Percent_"+ cs +".png"));
-	lblCompletionImg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-	lblCompletionImg.setBackground(C.APP_BGCOLOR);
 	
-	
-	  // row 2 - audit header & button bar		
-    Group rowRight2 = new Group(compR, SWT.NONE);
-    rowRight2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-    GridLayout gl_rowRight2 = new GridLayout(3, false);
-    gl_rowRight2.marginBottom = 10;
-    gl_rowRight2.marginHeight = 0;
-    rowRight2.setLayout(gl_rowRight2);
-    rowRight2.setBackground(C.APP_BGCOLOR);
-	
-	Label lblAudits = new Label(rowRight2, SWT.NONE);
-	GridData gd_lblAudits = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-	gd_lblAudits.widthHint = 100;
-	lblAudits.setLayoutData(gd_lblAudits);
-	lblAudits.setFont(C.FONT_12B);
-	lblAudits.setBackground(C.APP_BGCOLOR);
-	lblAudits.setText("Audits");	
-	
-	Button btnAddAudit = new Button(rowRight2, SWT.NONE);
-	GridData gd_btnAddAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
-	gd_btnAddAudit.verticalIndent = 3;
-	btnAddAudit.setLayoutData(gd_btnAddAudit);
-	btnAddAudit.addSelectionListener(new SelectionAdapter() {
-		@Override
-		public void widgetSelected(SelectionEvent arg0) {
-			//
-		}
-	});
-	btnAddAudit.setImage(C.getImage("/img/16_CircledPlus.png"));
-	btnAddAudit.setText("Add");
-   
+		Label lblCompletionImg = new Label(rowRight1, SWT.NONE);
+		// work out completion status based on id
+		int cs = (row.getID()*20);
+		lblCompletionImg.setImage(C.getImage("/img/Percent_"+ cs +".png"));
+		lblCompletionImg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		lblCompletionImg.setBackground(C.APP_BGCOLOR);
+		
+		
+		  // row 2 - audit header & button bar		
+	    Group rowRight2 = new Group(compR, SWT.NONE);
+	    rowRight2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+	    GridLayout gl_rowRight2 = new GridLayout(3, false);
+	    gl_rowRight2.marginBottom = 10;
+	    gl_rowRight2.marginHeight = 0;
+	    rowRight2.setLayout(gl_rowRight2);
+	    rowRight2.setBackground(C.APP_BGCOLOR);
+		
+		Label lblAudits = new Label(rowRight2, SWT.NONE);
+		GridData gd_lblAudits = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblAudits.widthHint = 100;
+		lblAudits.setLayoutData(gd_lblAudits);
+		lblAudits.setFont(C.FONT_12B);
+		lblAudits.setBackground(C.APP_BGCOLOR);
+		lblAudits.setText("Audits");	
+		
+		Button btnAddAudit = new Button(rowRight2, SWT.NONE);
+		GridData gd_btnAddAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		gd_btnAddAudit.verticalIndent = 3;
+		btnAddAudit.setLayoutData(gd_btnAddAudit);
+		btnAddAudit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				//
+			}
+		});
+		btnAddAudit.setImage(C.getImage("/img/16_CircledPlus.png"));
+		btnAddAudit.setText("Add");
+	   
 		Label lblSpaceAudit = new Label(rowRight2, SWT.NONE);
 		lblSpaceAudit.setFont(C.FONT_10B);
 		lblSpaceAudit.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		lblSpaceAudit.setBackground(C.APP_BGCOLOR);
 		lblSpaceAudit.setText("Internal Space");		
-
-	Label lblSpaceAuditImg = new Label(rowRight2, SWT.NONE);
-	// work out completion status based on id
-	int scs = (row.getID()*20);
-	lblSpaceAuditImg.setImage(C.getImage("/img/Percent_"+ scs +".png"));
+	
+		Label lblSpaceAuditImg = new Label(rowRight2, SWT.NONE);
+		// work out completion status based on id
+		int scs = (row.getID()*20);
+		lblSpaceAuditImg.setImage(C.getImage("/img/Percent_"+ scs +".png"));
 		GridData gd_lblSpaceAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditImg.widthHint = 160;
 		lblSpaceAuditImg.setLayoutData(gd_lblSpaceAuditImg);
 		lblSpaceAuditImg.setBackground(C.APP_BGCOLOR);
-   
+	   
 		Label lblSpaceAuditLight = new Label(rowRight2, SWT.RIGHT);
 		lblSpaceAuditLight.setImage(C.getImage("/img/Red.png"));
-	GridData gd_lblSpaceAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
-	gd_lblSpaceAuditLight.horizontalIndent = 10;
-	lblSpaceAuditLight.setLayoutData(gd_lblSpaceAuditLight);
-	lblSpaceAuditLight.setBackground(C.APP_BGCOLOR);
-	
-	Label lblEntryPoint = new Label(rowRight2, SWT.NONE);
-	lblEntryPoint.setFont(C.FONT_10B);
-	lblEntryPoint.setBackground(C.APP_BGCOLOR);
-	lblEntryPoint.setText("Entry Point");
-	
-	Label lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
-	// work out completion status based on id
-	int epcs = (row.getID()*20);
-	lblEntryPointAuditImg.setImage(C.getImage("/img/Percent_"+ epcs +".png"));
+		GridData gd_lblSpaceAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+		gd_lblSpaceAuditLight.horizontalIndent = 10;
+		lblSpaceAuditLight.setLayoutData(gd_lblSpaceAuditLight);
+		lblSpaceAuditLight.setBackground(C.APP_BGCOLOR);
+		
+		Label lblEntryPoint = new Label(rowRight2, SWT.NONE);
+		lblEntryPoint.setFont(C.FONT_10B);
+		lblEntryPoint.setBackground(C.APP_BGCOLOR);
+		lblEntryPoint.setText("Entry Point");
+		
+		Label lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
+		// work out completion status based on id
+		int epcs = (row.getID()*20);
+		lblEntryPointAuditImg.setImage(C.getImage("/img/Percent_"+ epcs +".png"));
 		GridData gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblEntryPointAuditImg.widthHint = 160;
 		lblEntryPointAuditImg.setLayoutData(gd_lblEntryPointAuditImg);
 		lblEntryPointAuditImg.setBackground(C.APP_BGCOLOR);
-   
+	   
 		Label lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
 		lblEntryPointAuditLight.setImage(C.getImage("/img/Amber.png"));
-	GridData gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
-	gd_lblEntryPointAuditLight.horizontalIndent = 10;
-	lblEntryPointAuditLight.setLayoutData(gd_lblEntryPointAuditLight);
-	lblEntryPointAuditLight.setBackground(C.APP_BGCOLOR);
-
-	  // row 3 - photos header & button bar		
-    Group rowRight3 = new Group(compR, SWT.NONE);
-    rowRight3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-    GridLayout gl_rowRight3 = new GridLayout(3, false);
-    gl_rowRight3.marginBottom = 20;
-    gl_rowRight3.marginHeight = 0;
-    rowRight3.setLayout(gl_rowRight3);
-    rowRight3.setBackground(C.APP_BGCOLOR);
-		
-	CLabel lblPhotos = new CLabel(rowRight3, SWT.NONE);
-	GridData gd_lblPhotos = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-	gd_lblPhotos.widthHint = 100;
-	lblPhotos.setLayoutData(gd_lblPhotos);
-	lblPhotos.setFont(C.FONT_12B);
-	lblPhotos.setBackground(C.APP_BGCOLOR);
-	lblPhotos.setImage(C.getImage("/img/16_camera.png"));
-	lblPhotos.setText("Photos");	
+		GridData gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+		gd_lblEntryPointAuditLight.horizontalIndent = 10;
+		lblEntryPointAuditLight.setLayoutData(gd_lblEntryPointAuditLight);
+		lblEntryPointAuditLight.setBackground(C.APP_BGCOLOR);
 	
-	Button btnAddPhoto = new Button(rowRight3, SWT.NONE);
-	GridData gd_btnAddPhoto = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
-	gd_btnAddPhoto.verticalIndent = 3;
-	btnAddPhoto.setLayoutData(gd_btnAddPhoto);
-	btnAddPhoto.addSelectionListener(new SelectionAdapter() {
-		@Override
-		public void widgetSelected(SelectionEvent arg0) {
-			// add image dialog here
+		  // row 3 - photos header & button bar		
+	    Group rowRight3 = new Group(compR, SWT.NONE);
+	    rowRight3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+	    GridLayout gl_rowRight3 = new GridLayout(3, false);
+	    gl_rowRight3.marginBottom = 20;
+	    gl_rowRight3.marginHeight = 0;
+	    rowRight3.setLayout(gl_rowRight3);
+	    rowRight3.setBackground(C.APP_BGCOLOR);
+			
+		CLabel lblPhotos = new CLabel(rowRight3, SWT.NONE);
+		GridData gd_lblPhotos = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblPhotos.widthHint = 100;
+		lblPhotos.setLayoutData(gd_lblPhotos);
+		lblPhotos.setFont(C.FONT_12B);
+		lblPhotos.setBackground(C.APP_BGCOLOR);
+		lblPhotos.setImage(C.getImage("/img/16_camera.png"));
+		lblPhotos.setText("Photos");	
+		
+		Button btnAddPhoto = new Button(rowRight3, SWT.NONE);
+		GridData gd_btnAddPhoto = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		gd_btnAddPhoto.verticalIndent = 3;
+		btnAddPhoto.setLayoutData(gd_btnAddPhoto);
+		btnAddPhoto.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				// add image dialog here
+			}
+		});
+		btnAddPhoto.setImage(C.getImage("/img/16_image_add.png"));
+		btnAddPhoto.setText("Add");
+	
+			
+		
+	  // ===============================
+		Composite gallHolder = new Composite(rowRight3, SWT.NONE);
+		GridData gd_gallHolder = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd_gallHolder.horizontalSpan = 3;
+		gallHolder.setLayoutData(gd_gallHolder);
+		gallHolder.setLayout(new GridLayout(1, true));
+		gallHolder.setBackground(C.FIELD_BGCOLOR);		
+		
+			
+		final Gallery gallery = new Gallery(gallHolder, SWT.MULTI | SWT.H_SCROLL);
+		GridData gd_gallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd_gallery.minimumHeight = 150;
+		gallery.setLayoutData(gd_gallery);
+		gallery.setBackground(C.FIELD_BGCOLOR);
+	
+		NoGroupRenderer gr = new NoGroupRenderer();
+		gr.setMinMargin(2);
+		gr.setItemHeight(150);
+		gr.setItemWidth(150);
+		gr.setAutoMargin(true);
+		gallery.setGroupRenderer(gr);
+	
+		DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
+		gallery.setItemRenderer(ir);
+		
+		GalleryItem group = new GalleryItem(gallery, SWT.NONE);
+	
+		final int _id = row.getID();
+		for (int i = 1; i <5 ; i++) {
+			String im = C.IMG_DIR + C.SEP + _id + C.SEP + "thumb" + C.SEP + i +".jpg";
+			System.out.println(im);
+			Image itemImage = C.getExtImage(im);		
+			GalleryItem item = new GalleryItem(group, SWT.NONE);
+			if (itemImage != null) {
+				item.setImage(itemImage);
+				item.setData("file", i +".jpg");
+			}
+			item.setText("Photo " + i); 
 		}
-	});
-	btnAddPhoto.setImage(C.getImage("/img/16_image_add.png"));
-	btnAddPhoto.setText("Add");
-
-		
-	
-  // ===============================
-	Composite gallHolder = new Composite(rowRight3, SWT.NONE);
-	GridData gd_gallHolder = new GridData(SWT.FILL, SWT.FILL, true, false);
-	gd_gallHolder.horizontalSpan = 3;
-	gallHolder.setLayoutData(gd_gallHolder);
-	gallHolder.setLayout(new GridLayout(1, true));
-	gallHolder.setBackground(C.FIELD_BGCOLOR);		
-	
-		
-	final Gallery gallery = new Gallery(gallHolder, SWT.MULTI | SWT.H_SCROLL);
-	GridData gd_gallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-	gd_gallery.minimumHeight = 150;
-	gallery.setLayoutData(gd_gallery);
-	gallery.setBackground(C.FIELD_BGCOLOR);
-
-	NoGroupRenderer gr = new NoGroupRenderer();
-	gr.setMinMargin(2);
-	gr.setItemHeight(150);
-	gr.setItemWidth(150);
-	gr.setAutoMargin(true);
-	gallery.setGroupRenderer(gr);
-
-	DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
-	gallery.setItemRenderer(ir);
-	
-	GalleryItem group = new GalleryItem(gallery, SWT.NONE);
-
-	final int _id = row.getID();
-	for (int i = 1; i <5 ; i++) {
-		String im = C.IMG_DIR + C.SEP + _id + C.SEP + "thumb" + C.SEP + i +".jpg";
-		System.out.println(im);
-		Image itemImage = C.getExtImage(im);		
-		GalleryItem item = new GalleryItem(group, SWT.NONE);
-		if (itemImage != null) {
-			item.setImage(itemImage);
-			item.setData("file", i +".jpg");
-		}
-		item.setText("Photo " + i); 
-	}
-		
-	gallery.addMouseListener(new MouseListener() {
-		@Override
-		public void mouseDoubleClick(MouseEvent e) {
-			GalleryItem[] selection = gallery.getSelection();
-			if (selection == null)
-				return;
-			GalleryItem item = selection[0];			
-			String fullImg = C.IMG_DIR + C.SEP + _id + C.SEP + "full" + C.SEP +(String)item.getData("file");
-			Program.launch(fullImg);
-		}
-		@Override
-		public void mouseDown(MouseEvent e) {}
-		@Override
-		public void mouseUp(MouseEvent e) {}
-	});
-	
-	
-	
+			
+		gallery.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				GalleryItem[] selection = gallery.getSelection();
+				if (selection == null)
+					return;
+				GalleryItem item = selection[0];			
+				String fullImg = C.IMG_DIR + C.SEP + _id + C.SEP + "full" + C.SEP +(String)item.getData("file");
+				Program.launch(fullImg);
+			}
+			@Override
+			public void mouseDown(MouseEvent e) {}
+			@Override
+			public void mouseUp(MouseEvent e) {}
+		});
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			
+			
+			
+			
+			
 			
 	    scrollPanelRight.setContent(compR);
 	    scrollPanelRight.setExpandVertical(true);
@@ -519,12 +496,10 @@ public class SpaceDetailView {
 	      }
 	    });
 	
-    
-		
-		
-		
-		
-		
+	
+	    
+	    
+		// final layout settings	
 		panels.setWeights(new int[] {2, 1});				
 		parent.layout();
 		
