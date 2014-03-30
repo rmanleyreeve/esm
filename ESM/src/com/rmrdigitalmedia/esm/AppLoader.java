@@ -24,6 +24,7 @@ import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.forms.NewAdminForm;
 import com.rmrdigitalmedia.esm.forms.NewLicenseDialog;
 import com.rmrdigitalmedia.esm.forms.NewVesselForm;
+import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 
 @SuppressWarnings("unused")
 public class AppLoader {
@@ -103,7 +104,7 @@ public class AppLoader {
     msg.setLayoutData(msgData);   
     
     Label label = new Label(splash, SWT.NONE);
-    label.setImage(C.getImage("/img/splash2.jpg"));
+    label.setImage(ImageUtils.getImage("/img/splash2.jpg"));
     FormData labelData = new FormData();
     labelData.right = new FormAttachment(100, 0);
     labelData.bottom = new FormAttachment(100, 0);

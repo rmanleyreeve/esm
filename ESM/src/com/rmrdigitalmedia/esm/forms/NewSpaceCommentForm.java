@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import net.coobird.thumbnailator.Thumbnails;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -28,10 +30,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
+import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 
 public class NewSpaceCommentForm {
@@ -44,9 +48,10 @@ public class NewSpaceCommentForm {
 	// form layout  guides
 	int headerH = 40;
 	private Label sep;
-	static String imgToUploadPath;
-	static String imgToUploadName;
-	private static Text imgSelected;
+	String imgDetails = null;
+	static String imgToUploadPath = null;
+	static String imgToUploadName = null;
+	static Text imgSelected;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -66,29 +71,6 @@ public class NewSpaceCommentForm {
 		spaceID = _spaceID;
 		authorID = _authorID;
 	}
-
-	public static void uploadImage() {	
-		final FileDialog dialog = new FileDialog (myshell, SWT.OPEN);
-		dialog.setText("Choose an image");
-		String platform = SWT.getPlatform();
-		String [] filterNames = new String [] {"Image Files", "All Files (*)"};
-		String [] filterExtensions = new String [] {"*.gif;*.png;*.xpm;*.jpg;*.jpeg;*.tiff", "*"};
-		String filterPath = C.HOME_DIR + C.SEP + "Desktop";
-		if (platform.equals("win32") || platform.equals("wpf")) {
-			filterNames = new String [] {"Image Files", "All Files (*.*)"};
-			filterExtensions = new String [] {"*.gif;*.png;*.bmp;*.jpg;*.jpeg;*.tiff", "*.*"};
-		}
-		dialog.setFilterNames (filterNames);
-		dialog.setFilterExtensions (filterExtensions);
-		dialog.setFilterPath (filterPath);
-		dialog.open();		
-		final String fn = dialog.getFilterPath() + C.SEP + dialog.getFileName();		
-		if(!dialog.getFileName().equals("")) {
-			imgToUploadPath = fn;
-			imgToUploadName = dialog.getFileName();
-			imgSelected.setText(imgToUploadName);
-		}
-	}		
 
 	public boolean complete() {
 		
@@ -115,7 +97,7 @@ public class NewSpaceCommentForm {
 		header.setLayoutData(fd_header);
 		
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(C.getImage("/img/space_icon.png"));
+		lblImg.setImage(ImageUtils.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
@@ -168,14 +150,17 @@ public class NewSpaceCommentForm {
 		lblUploadImg.setBackground(C.APP_BGCOLOR);
 		lblUploadImg.setText("Upload Image:");
 		// file upload button
-    Button browse = new Button(form, SWT.PUSH);
-    browse.setText("Choose...");        
-    browse.addSelectionListener(new SelectionAdapter() {
-      @Override
-      public void widgetSelected(SelectionEvent e) {
-      	uploadImage();
-      }
-    });
+	    Button browse = new Button(form, SWT.PUSH);
+	    browse.setText("Choose...");        
+	    browse.addSelectionListener(new SelectionAdapter() {
+	      @Override
+	      public void widgetSelected(SelectionEvent e) {
+	  		String[] imgDetails = ImageUtils.uploadSpaceImageDialog();
+	  		imgToUploadPath = imgDetails[0];
+	  		imgToUploadName = imgDetails[1];
+	  		imgSelected.setText(imgToUploadName);
+	      }
+	    });
 		
 		imgSelected = new Text(form, SWT.NONE);
 		imgSelected.setEditable(false);
@@ -205,50 +190,12 @@ public class NewSpaceCommentForm {
 						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						sRow.setDeleted("FALSE");
-		        sRow.insert();
-		        LogController.log("Space comment added to database.");
+				        sRow.insert();
+				        LogController.log("Space comment added to database.");
 		        
-		        if(imgToUploadPath != null) {
-		        	
-		    			try {  				
-		    			    File src = new File(imgToUploadPath);   
-		    			    final File dest = new File(
-		    			    		FilesystemController.imgdir.toString() +  
-		    			    		C.SEP + 
-		    			    		imgToUploadName
-		    			    );   	      
-		    			    final FileInputStream is = new FileInputStream(src);   
-		    			    final FileOutputStream os = new FileOutputStream(dest);   	
-		    			    LogController.log(src);
-		    			    LogController.log(src.length());  
-		    			    LogController.log(dest);
-		    			    Runnable job = new Runnable() {
-		    			    	@Override
-		    					public void run() {
-		    				      try {  
-		    					      int currentbyte = is.read();  
-		    					      while (currentbyte != -1) {  
-		    						      os.write (currentbyte);  
-		    						      currentbyte = is.read();  
-		    					      }
-		    						} catch (IOException ex){
-		    							LogController.log(ex.toString());
-		    						}
-		    						LogController.log(dest.length()); 
-		    						try {
-		    							is.close();
-		    							os.close();   
-		    						} catch (IOException e) {
-		    							e.printStackTrace();
-		    						}   
-		    					}
-		    				};
-		    				BusyIndicator.showWhile(myshell.getDisplay(), job);
-		    			    EsmApplication.alert("Image copied, " + dest.length() + " bytes");				
-		    			} catch(IOException ex){
-		    				LogController.log(ex.toString());
-		    			} 		    			
-		    		}
+				        if(imgToUploadPath != null) {
+				        	ImageUtils.uploadSpaceImage(spaceID, new String[]{imgToUploadPath,imgToUploadName});
+			    		}
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();

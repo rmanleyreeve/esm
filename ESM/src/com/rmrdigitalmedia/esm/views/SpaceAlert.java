@@ -92,7 +92,7 @@ public class SpaceAlert {
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("Space alert closed");		
-
+		LogController.log("Space alert closed");	
+		shell.dispose();
 	}
 }
