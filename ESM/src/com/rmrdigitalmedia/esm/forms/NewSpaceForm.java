@@ -1,5 +1,6 @@
 package com.rmrdigitalmedia.esm.forms;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -24,6 +25,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
+import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.VesselTable;
@@ -81,7 +83,7 @@ public class NewSpaceForm {
 		header.setLayoutData(fd_header);
 		
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(C.getImage("/img/space_icon.png"));
+		lblImg.setImage(ImageUtils.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
@@ -177,11 +179,15 @@ public class NewSpaceForm {
 						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						sRow.setDeleted("FALSE");
-		        sRow.insert();
-		        LogController.log("Space added to database.");
-		        SpacesTable.Row[] rArr = SpacesTable.getAllRows();
-		        int spaceID = rArr[rArr.length-1].getID();
-		        LogController.log(spaceID);
+				        sRow.insert();
+				        LogController.log("Space added to database.");
+				        SpacesTable.Row[] rArr = SpacesTable.getAllRows();
+				        int spaceID = rArr[rArr.length-1].getID();
+				        LogController.log(spaceID);
+						new File( C.DOC_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // docs						
+						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // image base dir
+						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP ).mkdir(); // full
+						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "thumb" + C.SEP).mkdir(); // thumbs
 						EntrypointsTable.Row epRow = EntrypointsTable.getRow();
 						epRow.setName(ep_name.getText());
 						epRow.setDescription(ep_description.getText());

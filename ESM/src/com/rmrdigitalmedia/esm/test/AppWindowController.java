@@ -39,6 +39,7 @@ import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
+import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
@@ -381,7 +382,7 @@ public class AppWindowController {
 		// graphic elements etc
 		Label logo = new Label(header, SWT.TRANSPARENT);
 		logo.setAlignment(SWT.LEFT);
-		logo.setImage(C.getImage("/img/esm-horiz.png"));
+		logo.setImage(ImageUtils.getImage("/img/esm-horiz.png"));
 		FormData fd = new FormData();
 		fd.width = 250;
 		fd.left = new FormAttachment(0);

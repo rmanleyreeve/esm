@@ -7,7 +7,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -75,20 +74,12 @@ public final class C {
 	public static String SPACES_LIST_TITLE = "Classified Enclosed Spaces";
 	public static String ADMIN_PAGE_TITLE = "ESM System Administration";
 
-	// method shortcuts
-	public static Image getImage(String imgpath) {
-		return SWTResourceManager.getImage(C.class, imgpath);	
-	}
-	public static Image getExtImage(String imgpath) {
-		return SWTResourceManager.getImage(imgpath);
-	}
-	
 	public static void makeHoverButton(final Button b) {
 		// NOT SUPPORTED ON WINDOWS :(
 		b.addMouseTrackListener(new MouseTrackAdapter() {
 			@Override
 			public void mouseEnter(MouseEvent arg0) {
-				System.out.println(b);
+				//System.out.println(b);
 				b.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 			}
 			@Override

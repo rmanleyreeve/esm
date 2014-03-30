@@ -42,6 +42,7 @@ import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.forms.NewSpaceForm;
+import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
@@ -197,7 +198,7 @@ public class WindowController {
 		Button foo = new Button(titleBar, SWT.NONE); // dummy button to take default
 		
 		btnAdmin = new Button(titleBar, SWT.PUSH);
-		btnAdmin.setImage(C.getImage("/img/16_padlock.png"));
+		btnAdmin.setImage(ImageUtils.getImage("/img/16_padlock.png"));
 		btnAdmin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -213,7 +214,7 @@ public class WindowController {
 		btnAdmin.setEnabled(false);
 
 		btnAddSpace = new Button(titleBar, SWT.PUSH);
-		btnAddSpace.setImage(C.getImage("/img/16_CircledPlus.png"));
+		btnAddSpace.setImage(ImageUtils.getImage("/img/16_CircledPlus.png"));
 		btnAddSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -232,7 +233,7 @@ public class WindowController {
 		btnAddSpace.setLayoutData(fd_btnAddSpace);
 
 		btnEditSpace = new Button(titleBar, SWT.PUSH);
-		btnEditSpace.setImage(C.getImage("/img/16_edit.png"));
+		btnEditSpace.setImage(ImageUtils.getImage("/img/16_edit.png"));
 		btnEditSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -252,7 +253,7 @@ public class WindowController {
 		btnEditSpace.setEnabled(false);
 
 		btnDeleteSpace = new Button(titleBar, SWT.PUSH);
-		btnDeleteSpace.setImage(C.getImage("/img/16_delete.png"));
+		btnDeleteSpace.setImage(ImageUtils.getImage("/img/16_delete.png"));
 		btnDeleteSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -278,7 +279,7 @@ public class WindowController {
 		btnDeleteSpace.setEnabled(false);
 		
 		btnSpacesList = new Button(titleBar, SWT.PUSH);
-		btnSpacesList.setImage(C.getImage("/img/List.png"));
+		btnSpacesList.setImage(ImageUtils.getImage("/img/List.png"));
 		btnSpacesList.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -309,7 +310,7 @@ public class WindowController {
 		// graphic elements etc
 		Label logo = new Label(header, SWT.TRANSPARENT);
 		logo.setAlignment(SWT.LEFT);
-		logo.setImage(C.getImage("/img/esm-horiz.png"));
+		logo.setImage(ImageUtils.getImage("/img/esm-horiz.png"));
 		FormData fd = new FormData();
 		fd.width = 250;
 		fd.left = new FormAttachment(0);

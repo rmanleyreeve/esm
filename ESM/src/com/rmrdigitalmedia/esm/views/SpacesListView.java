@@ -21,6 +21,7 @@ import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.graphics.DynamicImageArrayCell;
 import com.rmrdigitalmedia.esm.graphics.DynamicImageCell;
 import com.rmrdigitalmedia.esm.graphics.ImageCell;
+import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
 
@@ -94,7 +95,7 @@ public class SpacesListView {
 	  	col.format(new ICellFormatter() {
 		    @Override
 			public void formatCell(ViewerCell c, Object value) {
-		    	c.setImage(C.getImage("/img/1x36.png"));
+		    	c.setImage(ImageUtils.getImage("/img/1x36.png"));
 		    }
 	  	});    	
 	  	col.bindToProperty("ID");
@@ -127,7 +128,7 @@ public class SpacesListView {
 	  	col = tvb.createColumn("Internal Classification");
 	  	col.setPercentWidth(10);
 	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(C.getImage("/img/amber.png"))); 	  	
+	  	col.setCustomLabelProvider(new ImageCell(ImageUtils.getImage("/img/amber.png"))); 	  	
 	  	col.build();
 	  	
 	  	// entry points classification --------------------------------------------------------------------------------------

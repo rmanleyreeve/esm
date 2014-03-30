@@ -1,5 +1,6 @@
 package com.rmrdigitalmedia.esm.views;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -37,6 +38,7 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.NewSpaceCommentForm;
+import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
@@ -155,7 +157,7 @@ public class SpaceDetailView {
 		row2.setBackground(C.APP_BGCOLOR);		
 			
 		CLabel lblComments = new CLabel(row2, SWT.NONE);
-		lblComments.setImage(C.getImage("/img/16_comment.png"));
+		lblComments.setImage(ImageUtils.getImage("/img/16_comment.png"));
 		lblComments.setFont(C.FONT_12B);
 		lblComments.setBackground(C.APP_BGCOLOR);
 		lblComments.setText("Comments");		
@@ -174,7 +176,7 @@ public class SpaceDetailView {
 				}
 			}
 		});
-		btnAdd.setImage(C.getImage("/img/16_comment_add.png"));
+		btnAdd.setImage(ImageUtils.getImage("/img/16_comment_add.png"));
 		btnAdd.setText("Add");
 		new Label(row2, SWT.NONE);
 		new Label(row2, SWT.NONE);
@@ -262,8 +264,7 @@ public class SpaceDetailView {
 		try {
 			author = EsmUsersTable.getRow(row.getAuthorID());
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LogController.logEvent(SpaceDetailView.class, 1, e1);
 		}
 		Label lblCreatedBy = new Label(rowRight1, SWT.NONE);
 		lblCreatedBy.setFont(C.FONT_10B);
@@ -310,7 +311,7 @@ public class SpaceDetailView {
 		Label lblCompletionImg = new Label(rowRight1, SWT.NONE);
 		// work out completion status based on id
 		int cs = (row.getID()*20);
-		lblCompletionImg.setImage(C.getImage("/img/Percent_"+ cs +".png"));
+		lblCompletionImg.setImage(ImageUtils.getImage("/img/Percent_"+ cs +".png"));
 		lblCompletionImg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		lblCompletionImg.setBackground(C.APP_BGCOLOR);
 		
@@ -342,7 +343,7 @@ public class SpaceDetailView {
 				//
 			}
 		});
-		btnAddAudit.setImage(C.getImage("/img/16_CircledPlus.png"));
+		btnAddAudit.setImage(ImageUtils.getImage("/img/16_CircledPlus.png"));
 		btnAddAudit.setText("Add");
 	   
 		Label lblSpaceAudit = new Label(rowRight2, SWT.NONE);
@@ -354,14 +355,14 @@ public class SpaceDetailView {
 		Label lblSpaceAuditImg = new Label(rowRight2, SWT.NONE);
 		// work out completion status based on id
 		int scs = (row.getID()*20);
-		lblSpaceAuditImg.setImage(C.getImage("/img/Percent_"+ scs +".png"));
+		lblSpaceAuditImg.setImage(ImageUtils.getImage("/img/Percent_"+ scs +".png"));
 		GridData gd_lblSpaceAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditImg.widthHint = 160;
 		lblSpaceAuditImg.setLayoutData(gd_lblSpaceAuditImg);
 		lblSpaceAuditImg.setBackground(C.APP_BGCOLOR);
 	   
 		Label lblSpaceAuditLight = new Label(rowRight2, SWT.RIGHT);
-		lblSpaceAuditLight.setImage(C.getImage("/img/Red.png"));
+		lblSpaceAuditLight.setImage(ImageUtils.getImage("/img/Red.png"));
 		GridData gd_lblSpaceAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditLight.horizontalIndent = 10;
 		lblSpaceAuditLight.setLayoutData(gd_lblSpaceAuditLight);
@@ -375,14 +376,14 @@ public class SpaceDetailView {
 		Label lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
 		// work out completion status based on id
 		int epcs = (row.getID()*20);
-		lblEntryPointAuditImg.setImage(C.getImage("/img/Percent_"+ epcs +".png"));
+		lblEntryPointAuditImg.setImage(ImageUtils.getImage("/img/Percent_"+ epcs +".png"));
 		GridData gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblEntryPointAuditImg.widthHint = 160;
 		lblEntryPointAuditImg.setLayoutData(gd_lblEntryPointAuditImg);
 		lblEntryPointAuditImg.setBackground(C.APP_BGCOLOR);
 	   
 		Label lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
-		lblEntryPointAuditLight.setImage(C.getImage("/img/Amber.png"));
+		lblEntryPointAuditLight.setImage(ImageUtils.getImage("/img/Amber.png"));
 		GridData gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 		gd_lblEntryPointAuditLight.horizontalIndent = 10;
 		lblEntryPointAuditLight.setLayoutData(gd_lblEntryPointAuditLight);
@@ -403,7 +404,7 @@ public class SpaceDetailView {
 		lblPhotos.setLayoutData(gd_lblPhotos);
 		lblPhotos.setFont(C.FONT_12B);
 		lblPhotos.setBackground(C.APP_BGCOLOR);
-		lblPhotos.setImage(C.getImage("/img/16_camera.png"));
+		lblPhotos.setImage(ImageUtils.getImage("/img/16_camera.png"));
 		lblPhotos.setText("Photos");	
 		
 		Button btnAddPhoto = new Button(rowRight3, SWT.NONE);
@@ -413,71 +414,75 @@ public class SpaceDetailView {
 		btnAddPhoto.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				// add image dialog here
+				ImageUtils.uploadSpaceImage(spaceID,null);
+				WindowController.showSpaceDetail(spaceID);	
 			}
 		});
-		btnAddPhoto.setImage(C.getImage("/img/16_image_add.png"));
+		btnAddPhoto.setImage(ImageUtils.getImage("/img/16_image_add.png"));
 		btnAddPhoto.setText("Add");
-	
 			
 		
-	  // ===============================
-		Composite gallHolder = new Composite(rowRight3, SWT.NONE);
-		GridData gd_gallHolder = new GridData(SWT.FILL, SWT.FILL, true, false);
-		gd_gallHolder.horizontalSpan = 3;
-		gallHolder.setLayoutData(gd_gallHolder);
-		gallHolder.setLayout(new GridLayout(1, true));
-		gallHolder.setBackground(C.FIELD_BGCOLOR);		
+	  // PHOTOS ===============================
+		String imgDir = C.IMG_DIR + C.SEP + spaceID + C.SEP;
+		final String imgDirFull =  imgDir + "full";
+		String imgDirThumb = imgDir + "thumb";
+		new File(imgDir).mkdir();
+		new File(imgDirThumb).mkdir();
+		new File(imgDirFull).mkdir();
+		if (new File(imgDirThumb).listFiles().length > 0) {
+			// photos exist - show gallery
+			Composite gallHolder = new Composite(rowRight3, SWT.NONE);
+			GridData gd_gallHolder = new GridData(SWT.FILL, SWT.FILL, true, false);
+			gd_gallHolder.horizontalSpan = 3;
+			gallHolder.setLayoutData(gd_gallHolder);
+			gallHolder.setLayout(new GridLayout(1, true));
+			gallHolder.setBackground(C.FIELD_BGCOLOR);					
+				
+			final Gallery gallery = new Gallery(gallHolder, SWT.MULTI | SWT.H_SCROLL);
+			GridData gd_gallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+			gd_gallery.minimumHeight = 150;
+			gallery.setLayoutData(gd_gallery);
+			gallery.setBackground(C.FIELD_BGCOLOR);
 		
+			NoGroupRenderer gr = new NoGroupRenderer();
+			gr.setMinMargin(2);
+			gr.setItemHeight(150);
+			gr.setItemWidth(150);
+			gr.setAutoMargin(true);
+			gallery.setGroupRenderer(gr);
+		
+			DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
+			gallery.setItemRenderer(ir);
 			
-		final Gallery gallery = new Gallery(gallHolder, SWT.MULTI | SWT.H_SCROLL);
-		GridData gd_gallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		gd_gallery.minimumHeight = 150;
-		gallery.setLayoutData(gd_gallery);
-		gallery.setBackground(C.FIELD_BGCOLOR);
-	
-		NoGroupRenderer gr = new NoGroupRenderer();
-		gr.setMinMargin(2);
-		gr.setItemHeight(150);
-		gr.setItemWidth(150);
-		gr.setAutoMargin(true);
-		gallery.setGroupRenderer(gr);
-	
-		DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
-		gallery.setItemRenderer(ir);
-		
-		GalleryItem group = new GalleryItem(gallery, SWT.NONE);
-	
-		final int _id = row.getID();
-		for (int i = 1; i <5 ; i++) {
-			String im = C.IMG_DIR + C.SEP + _id + C.SEP + "thumb" + C.SEP + i +".jpg";
-			System.out.println(im);
-			Image itemImage = C.getExtImage(im);		
-			GalleryItem item = new GalleryItem(group, SWT.NONE);
-			if (itemImage != null) {
-				item.setImage(itemImage);
-				item.setData("file", i +".jpg");
-			}
-			item.setText("Photo " + i); 
-		}
+			GalleryItem group = new GalleryItem(gallery, SWT.NONE);
+			for (File f:new File(imgDirThumb).listFiles()) {
+				LogController.log("Image found; " + f);
+				Image itemImage = ImageUtils.getExtImage(f.getPath());		
+				if (itemImage != null) {
+					GalleryItem item = new GalleryItem(group, SWT.NONE);
+					item.setImage(itemImage);
+					item.setData("file", f.getName());
+					item.setText(f.getName()); 
+				}
+			}		
+			gallery.addMouseListener(new MouseListener() {
+				@Override
+				public void mouseDoubleClick(MouseEvent e) {
+					GalleryItem[] selection = gallery.getSelection();
+					if (selection == null)
+						return;
+					GalleryItem item = selection[0];			
+					String fullImg = imgDirFull + C.SEP +(String)item.getData("file");
+					Program.launch(fullImg);
+				}
+				@Override
+				public void mouseDown(MouseEvent e) {}
+				@Override
+				public void mouseUp(MouseEvent e) {}
+			});
 			
-		gallery.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				GalleryItem[] selection = gallery.getSelection();
-				if (selection == null)
-					return;
-				GalleryItem item = selection[0];			
-				String fullImg = C.IMG_DIR + C.SEP + _id + C.SEP + "full" + C.SEP +(String)item.getData("file");
-				Program.launch(fullImg);
-			}
-			@Override
-			public void mouseDown(MouseEvent e) {}
-			@Override
-			public void mouseUp(MouseEvent e) {}
-		});
-		
-		
+		} // endif files > 0
+			
 		
 			
 			
