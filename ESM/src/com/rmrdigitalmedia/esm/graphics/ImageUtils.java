@@ -29,10 +29,9 @@ import com.rmrdigitalmedia.esm.controllers.LogController;
 public class ImageUtils {
 	
 	static Display display = Display.getCurrent();
-	static Shell shell = display.getShells()[0];
 
 	public static String[] uploadSpaceImageDialog() {
-		final FileDialog dialog = new FileDialog (shell, SWT.OPEN);
+		final FileDialog dialog = new FileDialog (new Shell(), SWT.OPEN);
 		dialog.setText("Choose an image");
 		String platform = SWT.getPlatform();
 		String [] filterNames = new String [] {"Image Files", "All Files (*)"};

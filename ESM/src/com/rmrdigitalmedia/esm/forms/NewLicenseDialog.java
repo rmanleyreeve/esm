@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm.forms;
 
 import java.sql.Timestamp;
 import java.util.Date;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -17,14 +16,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.LicenseTable;
-
-import org.eclipse.wb.swt.SWTResourceManager;
 
 public class NewLicenseDialog {
 	
