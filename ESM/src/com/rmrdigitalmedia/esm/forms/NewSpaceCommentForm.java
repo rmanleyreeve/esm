@@ -1,16 +1,9 @@
 package com.rmrdigitalmedia.esm.forms;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import net.coobird.thumbnailator.Thumbnails;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
@@ -23,17 +16,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
-import com.rmrdigitalmedia.esm.EsmApplication;
-import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
@@ -75,7 +64,7 @@ public class NewSpaceCommentForm {
 	public boolean complete() {
 		
 		Display display = Display.getDefault();
-		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		NewSpaceCommentForm.myshell = shell;
 		shell.setSize(500, 300);
 		shell.setText("ESM Setup");
