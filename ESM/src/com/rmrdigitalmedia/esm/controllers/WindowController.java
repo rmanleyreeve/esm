@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Arrays;
-
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
@@ -14,6 +13,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
@@ -385,6 +384,7 @@ public class WindowController {
 		showSpaceDetail(id);
 	}
 	public static void showSpaceDetail(int id) {
+    shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		btnAddSpace.setVisible(false);
 		btnEditSpace.setVisible(false);
 		btnDeleteSpace.setVisible(false);
