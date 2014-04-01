@@ -172,21 +172,22 @@ public class LoginController {
 		cmp_ButtonBar.setLayout(new FormLayout());
 		 
 		//Button for login
-		final Button btn_login = new Button(cmp_ButtonBar, SWT.FLAT | SWT.CENTER);
-		btn_login.setFont(C.FONT_8B);
+		final Button btnLogin = new Button(cmp_ButtonBar, SWT.FLAT | SWT.CENTER);
+		btnLogin.setFont(C.FONT_8B);
 		final FormData formData = new FormData();
 		formData.bottom = new FormAttachment(0, 28);
 		formData.top = new FormAttachment(0, 5);
 		formData.right = new FormAttachment(100, -25);
 		formData.left = new FormAttachment(100, -75);
-		btn_login.setLayoutData(formData);
-		btn_login.setText("Login");
+		btnLogin.setLayoutData(formData);
+		btnLogin.setText("Login");
+		btnLogin.setToolTipText("Click to log in to the system");
 		
 		Composite alert = new Composite(cmp_ButtonBar, SWT.NONE);
 		alert.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		FormData fd_alert = new FormData();
-		fd_alert.bottom = new FormAttachment(btn_login, 60, SWT.BOTTOM);
-		fd_alert.top = new FormAttachment(btn_login, 5);
+		fd_alert.bottom = new FormAttachment(btnLogin, 60, SWT.BOTTOM);
+		fd_alert.top = new FormAttachment(btnLogin, 5);
 		fd_alert.left = new FormAttachment(0);
 		fd_alert.right = new FormAttachment(100);
 		alert.setLayoutData(fd_alert);
@@ -198,7 +199,7 @@ public class LoginController {
 		alertTxt.setAlignment(SWT.CENTER);
 		alertTxt.setSize(195, 55);
 		 
-		btn_login.addListener(SWT.Selection, new Listener() { 
+		btnLogin.addListener(SWT.Selection, new Listener() { 
 			@Override
 			public void handleEvent(Event e) {
 				submit();
@@ -222,7 +223,7 @@ public class LoginController {
 		clbl_Message.setText(vtxt + " (c)rmrdigitalmedia");
 		
 		// render window
-		shell.setDefaultButton(btn_login);
+		shell.setDefaultButton(btnLogin);
 		LogController.log("LoginController Window Size: " + rect.width + ":" + rect.height);
 		shell.setBounds(rect);	 
 		shell.open();

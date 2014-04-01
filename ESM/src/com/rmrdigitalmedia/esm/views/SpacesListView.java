@@ -58,8 +58,6 @@ public class SpacesListView {
 		}
 	}
 	
-	
-	
 
 	static TableViewerBuilder tvb;
 	static TableViewer tv;
@@ -74,19 +72,15 @@ public class SpacesListView {
 	public static Table getTable() {
 		return table;
 	}
-
-
 		
 	@SuppressWarnings("unused")
 	public static void buildTable(Composite parent) {
 		
 		// based on http://www.ralfebert.de/archive/eclipse_rcp/tableviewerbuilder/
 	  	
-		final String[] titles = { "ID", "Name", "Completion Status","Internal Classification","Entry Points Classification", "SignedOff" };
-		tvb = new TableViewerBuilder(parent, SWT.SINGLE | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.HIDE_SELECTION);
-		
-		ColumnBuilder col;
-		
+		final String[] titles = { "ID", "Name", "Completion Status","Internal Classification","Entry Points Classification", "S/O" };
+		tvb = new TableViewerBuilder(parent, SWT.SINGLE | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.HIDE_SELECTION);		
+		ColumnBuilder col;		
 		
 		// ID --------------------------------------------------------------------------------------
 		col = tvb.createColumn("ID");
@@ -159,7 +153,6 @@ public class SpacesListView {
 	  	    }
 	  	}));
 	  	col.build();
-
 	  	
 	  	//==========================================================================
 	 	  	
@@ -180,7 +173,7 @@ public class SpacesListView {
 			public void handleEvent(Event e) {	
 	          TableItem[] selection = table.getSelection();
 	          String s = selection[0].getText();
-	          LogController.log("Selection={" + s + "}");
+	          LogController.log("User clicked item " + s);
 	          int _id = Integer.parseInt(s);
 	          WindowController.checkSpaceAlert(_id);
 	        }

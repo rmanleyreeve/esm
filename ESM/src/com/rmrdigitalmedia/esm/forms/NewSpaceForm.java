@@ -162,6 +162,7 @@ public class NewSpaceForm {
 		//==================================================================		
 		
 		Button ok = new Button (form, SWT.PUSH);
+		ok.setToolTipText("Click to save these details");
 		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
@@ -218,7 +219,6 @@ public class NewSpaceForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shell.setLocation (x, y);		  		
 		shell.setDefaultButton (ok);		
-		new Label(form, SWT.NONE);
 		
 		shell.open ();
 		shell.layout();

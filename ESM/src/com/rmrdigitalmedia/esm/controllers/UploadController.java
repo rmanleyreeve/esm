@@ -28,12 +28,12 @@ public class UploadController {
 	static Display display = Display.getCurrent();
 
 	public static String[] uploadSpaceImageDialog() {
-		final FileDialog dialog = new FileDialog (new Shell(), SWT.OPEN);
+		final FileDialog dialog = new FileDialog (new Shell(), SWT.OPEN | SWT.ON_TOP);
 		dialog.setText("Choose an image");
 		String platform = SWT.getPlatform();
 		String [] filterNames = new String [] {"Image Files", "All Files (*)"};
 		String [] filterExtensions = new String [] {"*.gif;*.png;*.xpm;*.jpg;*.jpeg;*.tiff", "*"};
-		String filterPath = C.HOME_DIR + C.SEP + "Desktop";
+		String filterPath = C.HOME_DIR + C.SEP + "Documents";
 		if (platform.equals("win32") || platform.equals("wpf")) {
 			filterNames = new String [] {"Image Files", "All Files (*.*)"};
 			filterExtensions = new String [] {"*.gif;*.png;*.bmp;*.jpg;*.jpeg;*.tiff", "*.*"};
@@ -70,7 +70,8 @@ public class UploadController {
 		return null;
 	}		
 
-	public static void uploadSpaceImage(int spaceID, String[] imgDetails) {
+	public static boolean uploadSpaceImage(int spaceID, String[] imgDetails) {
+		boolean ok = false;
 		if(imgDetails == null) {
 			imgDetails = uploadSpaceImageDialog();		
 		}
@@ -87,10 +88,10 @@ public class UploadController {
 			    final File destThumb = new File(savePathThumb);  	      
 			    final FileInputStream is = new FileInputStream(src);   
 			    final FileOutputStream os = new FileOutputStream(destFull);   	
-				LogController.log("File to upload: " + src + " -> " + src.length() + " bytes");
+			    LogController.log("File to upload: " + src + " -> " + src.length() + " bytes");
 			    Runnable job = new Runnable() {
 			    	@Override
-					public void run() {
+			    	public void run() {
 				      try {  
 					      int currentbyte = is.read();  
 					      while (currentbyte != -1) {  
@@ -101,7 +102,6 @@ public class UploadController {
 							LogController.logEvent(this, 1, ex);;
 						}
 						LogController.log("File uploaded: " + destFull + " -> " + destFull.length() + " bytes");
-
 						// thumbnail
 						try {
 							Thumbnails.of(destFull).size(150, 150).toFile(destThumb);
@@ -111,21 +111,24 @@ public class UploadController {
 						try {
 							is.close();
 							os.close();   
-						} catch (IOException e) {
-							LogController.logEvent(this, 1, e);
+						} catch (IOException ex) {
+							LogController.logEvent(this, 1, ex);
 						}   
 					}
 			    	
 				};		    	
 				BusyIndicator.showWhile(display, job);
-				EsmApplication.alert("The image was uploaded!");				
+				EsmApplication.alert("The image was uploaded!");
+				ok = true;
 			} catch(IOException ex){
 				LogController.log(ex.toString());
 			} 
 		}
+		return ok;
 	}		
 
-	public static void uploadSpaceDocument(int spaceID, String[] docDetails) {
+	public static boolean uploadSpaceDocument(int spaceID, String[] docDetails) {
+		boolean ok = false;		
 		if(docDetails == null) {
 			docDetails = uploadSpaceDocumentDialog();		
 		}
@@ -160,11 +163,13 @@ public class UploadController {
 			    	
 				};		    	
 				BusyIndicator.showWhile(display, job);
-				EsmApplication.alert("The document was uploaded!");				
+				EsmApplication.alert("The document was uploaded!");	
+				ok = true;
 			} catch(IOException ex){
 				LogController.log(ex.toString());
 			} 
 		}
+		return ok;
 	}		
 	
 	public static boolean IsImageFile(File f){

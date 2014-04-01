@@ -172,11 +172,12 @@ public class SpaceDetailView {
 		lblComments.setBackground(C.APP_BGCOLOR);
 		lblComments.setText("Comments");		
 		
-		Button btnAdd = new Button(row2, SWT.RIGHT);
+		Button btnAddComment = new Button(row2, SWT.RIGHT);
+		btnAddComment.setToolTipText("Add a new Comment for this Enclosed Space");
 		GridData gd_btnAdd = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_btnAdd.verticalIndent = 3;
-		btnAdd.setLayoutData(gd_btnAdd);
-		btnAdd.addSelectionListener(new SelectionAdapter() {
+		btnAddComment.setLayoutData(gd_btnAdd);
+		btnAddComment.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				NewSpaceCommentForm nscf = new NewSpaceCommentForm(spaceID, user.getID());					
@@ -186,8 +187,8 @@ public class SpaceDetailView {
 				}
 			}
 		});
-		btnAdd.setImage(C.getImage("/img/16_comment_add.png"));
-		btnAdd.setText("Add");
+		btnAddComment.setImage(C.getImage("/img/16_comment_add.png"));
+		btnAddComment.setText("Add");
 		new Label(row2, SWT.NONE);
 		new Label(row2, SWT.NONE);
 			
@@ -343,6 +344,7 @@ public class SpaceDetailView {
 		lblAudits.setText("Audits");	
 		
 		Button btnAddAudit = new Button(rowRight2, SWT.NONE);
+		btnAddAudit.setToolTipText("Add a new Entry Point Audit");
 		GridData gd_btnAddAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_btnAddAudit.verticalIndent = 3;
 		btnAddAudit.setLayoutData(gd_btnAddAudit);
@@ -417,14 +419,16 @@ public class SpaceDetailView {
 		lblPhotos.setText("Photos");	
 		
 		Button btnAddPhoto = new Button(rowRight3, SWT.NONE);
+		btnAddPhoto.setToolTipText("Add a new photo for this Enclosed Space");
 		GridData gd_btnAddPhoto = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_btnAddPhoto.verticalIndent = 3;
 		btnAddPhoto.setLayoutData(gd_btnAddPhoto);
 		btnAddPhoto.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				UploadController.uploadSpaceImage(spaceID,null);
-				WindowController.showSpaceDetail(spaceID);	
+				if(UploadController.uploadSpaceImage(spaceID,null)) {
+					WindowController.showSpaceDetail(spaceID);
+				}
 			}
 		});
 		btnAddPhoto.setImage(C.getImage("/img/16_image_add.png"));
@@ -514,14 +518,16 @@ public class SpaceDetailView {
 		lblDocs.setText("Documents");	
 		
 		Button btnAddDoc = new Button(rowRight4, SWT.NONE);
+		btnAddDoc.setToolTipText("Add a new document for this Enclosed Space");
 		GridData gd_btnAddDoc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_btnAddDoc.verticalIndent = 3;
 		btnAddDoc.setLayoutData(gd_btnAddDoc);
 		btnAddDoc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				UploadController.uploadSpaceDocument(spaceID,null);
-				WindowController.showSpaceDetail(spaceID);	
+				if(UploadController.uploadSpaceDocument(spaceID,null)) {
+					WindowController.showSpaceDetail(spaceID);	
+				}
 			}
 		});
 		btnAddDoc.setImage(C.getImage("/img/16_document_text_add.png"));
@@ -581,7 +587,8 @@ public class SpaceDetailView {
 	    rowRight5.setLayout(gl_rowRight5);
 	    rowRight5.setBackground(C.APP_BGCOLOR);
 		
-		Label lblSignoff = new Label(rowRight5, SWT.NONE);
+		CLabel lblSignoff = new CLabel(rowRight5, SWT.NONE);
+		lblSignoff.setImage(C.getImage("/img/16_new_edit.png"));
 		GridData gd_lblSignoff = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblSignoff.widthHint = 120;
 		lblSignoff.setLayoutData(gd_lblSignoff);
@@ -590,12 +597,13 @@ public class SpaceDetailView {
 		lblSignoff.setText("Sign Off");	
 	
 		Button btnSignOff = new Button(rowRight5, SWT.NONE);
+		btnSignOff.setToolTipText("Mark this space as Signed Off (authorized users only)");
 		GridData gd_btnSignOff = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_btnSignOff.verticalIndent = 3;
 		btnSignOff.setLayoutData(gd_btnSignOff);
 		btnSignOff.setImage(C.getImage("/img/bluetick.png"));
 		btnSignOff.setText("Authorize");
-		//btnSignOff.setEnabled(user.getAccessLevel()==9);
+		btnSignOff.setEnabled(user.getAccessLevel()==9);
 		
 		Label lblAuthBy = new Label(rowRight5, SWT.NONE);
 		lblAuthBy.setFont(C.FONT_10B);
@@ -607,7 +615,8 @@ public class SpaceDetailView {
 		lblAuthName.setFont(C.FONT_10);
 		lblAuthName.setBackground(C.APP_BGCOLOR);
 		lblAuthName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		lblAuthName.setText("This space has not been authorized.");
+		lblAuthName.setText(C.SPACE_NOT_AUTH);
+		new Label(rowRight5, SWT.NONE);
 		
 		btnSignOff.addSelectionListener(new SelectionAdapter() {
 			@Override
