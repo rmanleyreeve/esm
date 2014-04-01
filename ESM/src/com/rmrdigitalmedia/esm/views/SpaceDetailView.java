@@ -31,9 +31,13 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -396,7 +400,7 @@ public class SpaceDetailView {
 	    Group rowRight3 = new Group(compR, SWT.NONE);
 	    rowRight3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 	    GridLayout gl_rowRight3 = new GridLayout(3, false);
-	    gl_rowRight3.marginBottom = 20;
+	    gl_rowRight3.marginBottom = 10;
 	    gl_rowRight3.marginHeight = 0;
 	    rowRight3.setLayout(gl_rowRight3);
 	    rowRight3.setBackground(C.APP_BGCOLOR);
@@ -439,7 +443,7 @@ public class SpaceDetailView {
 			gd_gallHolder.horizontalSpan = 3;
 			gallHolder.setLayoutData(gd_gallHolder);
 			gallHolder.setLayout(new GridLayout(1, true));
-			gallHolder.setBackground(C.FIELD_BGCOLOR);					
+			gallHolder.setBackground(C.FIELD_BGCOLOR);
 				
 			final Gallery gallery = new Gallery(gallHolder, SWT.MULTI | SWT.H_SCROLL);
 			GridData gd_gallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
@@ -448,13 +452,14 @@ public class SpaceDetailView {
 			gallery.setBackground(C.FIELD_BGCOLOR);
 		
 			NoGroupRenderer gr = new NoGroupRenderer();
-			gr.setMinMargin(2);
+			gr.setMinMargin(0);
 			gr.setItemHeight(150);
 			gr.setItemWidth(150);
 			gr.setAutoMargin(true);
 			gallery.setGroupRenderer(gr);
 		
 			DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
+			ir.setShowRoundedSelectionCorners(false);
 			gallery.setItemRenderer(ir);
 			
 			GalleryItem group = new GalleryItem(gallery, SWT.NONE);
@@ -476,6 +481,7 @@ public class SpaceDetailView {
 						return;
 					GalleryItem item = selection[0];			
 					String fullImg = imgDirFull + C.SEP +(String)item.getData("file");
+					LogController.log("Opening Image={" + fullImg + "}");
 					Program.launch(fullImg);
 				}
 				@Override
@@ -491,7 +497,7 @@ public class SpaceDetailView {
 	    Group rowRight4 = new Group(compR, SWT.NONE);
 	    rowRight4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 	    GridLayout gl_rowRight4 = new GridLayout(3, false);
-	    gl_rowRight4.marginBottom = 20;
+	    gl_rowRight4.marginBottom = 10;
 	    gl_rowRight4.marginHeight = 0;
 	    rowRight4.setLayout(gl_rowRight4);
 	    rowRight4.setBackground(C.APP_BGCOLOR);
@@ -523,59 +529,46 @@ public class SpaceDetailView {
 		final String docDir = C.DOC_DIR + C.SEP + spaceID + C.SEP;
 		new File(docDir).mkdir();
 		if (new File(docDir).listFiles().length > 0) {
-			// docs exist - show gallery
-			Composite docHolder = new Composite(rowRight4, SWT.NONE);
-			GridData gd_docHolder = new GridData(SWT.FILL, SWT.FILL, false, false);
-			gd_docHolder.horizontalSpan = 3;
-			docHolder.setLayoutData(gd_docHolder);
-			docHolder.setLayout(new GridLayout(1, true));
-			docHolder.setBackground(C.FIELD_BGCOLOR);					
-				
-			final Gallery docGallery = new Gallery(docHolder, SWT.SINGLE | SWT.V_SCROLL);
-			GridData gd_docGallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-			gd_docGallery.minimumHeight = 60;
-			docGallery.setLayoutData(gd_docGallery);
-			docGallery.setBackground(C.FIELD_BGCOLOR);
-		
-			NoGroupRenderer gr = new NoGroupRenderer();
-			gr.setMinMargin(0);
-			gr.setItemHeight(26);
-			gr.setItemWidth(300);
-			gr.setAutoMargin(true);		
-			docGallery.setGroupRenderer(gr);
-		
-			ListItemRenderer ir = new ListItemRenderer();
-			docGallery.setItemRenderer(ir);				
-			ir.setShowLabels(true);
+			// docs exist - show list
+		    final Table table = new Table(rowRight4, SWT.NONE | SWT.FULL_SELECTION);
+		    table.setLayout(new FillLayout());
+		    table.setBackground(C.FIELD_BGCOLOR);
+			GridData gd_table = new GridData(GridData.FILL_BOTH);
+			gd_table.grabExcessVerticalSpace = true;
+			gd_table.grabExcessHorizontalSpace=true;
+			gd_table.heightHint = 40;
+			gd_table.horizontalSpan = 3;
+			table.setLayoutData(gd_table);
+			table.addListener(SWT.MeasureItem, new Listener() {
+			   @Override
+			   public void handleEvent(Event event) {
+			      event.height = 20;
+			   }
+			});
 			
-			GalleryItem group = new GalleryItem(docGallery, SWT.NONE);
 			for (File f:new File(docDir).listFiles()) {
-				LogController.log("Document found: " + f);
-				String ext = Files.getFileExtension(f.getName());			
-				ImageData iconData = Program.findProgram(ext).getImageData();
-				Image itemImage = new Image(Display.getCurrent(), iconData);
-				GalleryItem item = new GalleryItem(group, SWT.NONE);
-				item.setData("file", f.getName());
-				item.setText(f.getName()); 
-				if (itemImage != null) {
-					item.setImage(itemImage);
+				if(!f.isHidden()) {
+					LogController.log("Document found: " + f);
+					String ext = Files.getFileExtension(f.getName());			
+					ImageData iconData = Program.findProgram(ext).getImageData();
+					Image itemImage = new Image(Display.getCurrent(), iconData);
+				    TableItem item = new TableItem(table, SWT.NONE); 
+				    item.setBackground(C.FIELD_BGCOLOR);
+				    item.setText(f.getName());
+				    item.setImage(itemImage);;
 				}
 			}		
-			docGallery.addMouseListener(new MouseListener() {
+
+		   table.addListener(SWT.MouseDoubleClick, new Listener() {
 				@Override
-				public void mouseDoubleClick(MouseEvent e) {
-					GalleryItem[] selection = docGallery.getSelection();
-					if (selection == null)
-						return;
-					GalleryItem item = selection[0];			
-					String doc = docDir + C.SEP +(String)item.getData("file");
-					Program.launch(doc);
-				}
-				@Override
-				public void mouseDown(MouseEvent e) {}
-				@Override
-				public void mouseUp(MouseEvent e) {}
-			});
+				public void handleEvent(Event e) {	
+				TableItem[] selection = table.getSelection();
+				String s = selection[0].getText();
+				LogController.log("Opening Document={" + s + "}");
+				String doc = docDir + C.SEP + s;
+				Program.launch(doc);
+		        }
+		     });
 
 		} // endif files > 0
 	

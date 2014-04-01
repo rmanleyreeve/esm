@@ -36,7 +36,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -529,66 +532,35 @@ public class SpaceDetailView {
 		// DOCS ===============================
 		final String docDir = C.DOC_DIR + C.SEP + spaceID + C.SEP;
 		new File(docDir).mkdir();
-		if (new File(docDir).listFiles().length > 0) {
-			// docs exist - show gallery
-			Composite docHolder = new Composite(rowRight4, SWT.NONE);
-			GridData gd_docHolder = new GridData(SWT.FILL, SWT.FILL, false, false);
-			gd_docHolder.horizontalSpan = 3;
-			docHolder.setLayoutData(gd_docHolder);
-			docHolder.setLayout(new GridLayout(1, true));
-			docHolder.setBackground(C.FIELD_BGCOLOR);					
-				
-			final Gallery docGallery = new Gallery(docHolder, SWT.SINGLE | SWT.V_SCROLL);
-			GridData gd_docGallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-			gd_docGallery.minimumHeight = 60;
-			docGallery.setLayoutData(gd_docGallery);
-			docGallery.setBackground(C.FIELD_BGCOLOR);
+		File f = new File (docDir + "test.pdf");
+		String ext = Files.getFileExtension(f.getName());			
+		ImageData iconData = Program.findProgram(ext).getImageData();
+		Image itemImage = new Image(Display.getCurrent(), iconData);
 		
-			NoGroupRenderer gr = new NoGroupRenderer();
-			gr.setMinMargin(0);
-			gr.setItemHeight(26);
-			gr.setItemWidth(300);
-			gr.setAutoMargin(true);		
-			docGallery.setGroupRenderer(gr);
-		
-			ListItemRenderer ir = new ListItemRenderer();
-			docGallery.setItemRenderer(ir);				
-			ir.setShowLabels(true);
-			
-			GalleryItem group = new GalleryItem(docGallery, SWT.NONE);
-			for (File f:new File(docDir).listFiles()) {
-				LogController.log("Document found: " + f);
-				String ext = Files.getFileExtension(f.getName());			
-				ImageData iconData = Program.findProgram(ext).getImageData();
-				Image itemImage = new Image(Display.getCurrent(), iconData);
-				GalleryItem item = new GalleryItem(group, SWT.NONE);
-				item.setData("file", f.getName());
-				item.setText(f.getName()); 
-				if (itemImage != null) {
-					item.setImage(itemImage);
-				}
-			}		
-			docGallery.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseDoubleClick(MouseEvent e) {
-					GalleryItem[] selection = docGallery.getSelection();
-					if (selection == null)
-						return;
-					GalleryItem item = selection[0];			
-					String doc = docDir + C.SEP +(String)item.getData("file");
-					Program.launch(doc);
-				}
-				@Override
-				public void mouseDown(MouseEvent e) {}
-				@Override
-				public void mouseUp(MouseEvent e) {}
-			});
+	    Table table = new Table(rowRight4, SWT.FULL_SELECTION | SWT.HIDE_SELECTION);
+	    table.setLayout(new FillLayout());
+	    table.setBackground(C.FIELD_BGCOLOR);
 
-		} // endif files > 0
-	
-	
-	
-		
+		GridData gd_table = new GridData(GridData.FILL_BOTH);
+		gd_table.grabExcessVerticalSpace = true;
+		gd_table.grabExcessHorizontalSpace=true;
+		gd_table.heightHint = 40;
+		gd_table.horizontalSpan = 3;
+		table.setLayoutData(gd_table);
+	    
+	    TableItem item;
+	    
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
 		
 		
 		
