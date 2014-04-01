@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm.forms;
 
 import java.sql.Timestamp;
 import java.util.Date;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -21,7 +20,6 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -41,6 +39,10 @@ public class NewSpaceCommentForm {
 	static String imgToUploadPath = null;
 	static String imgToUploadName = null;
 	static Text imgSelected;
+	String docDetails = null;
+	static String docToUploadPath = null;
+	static String docToUploadName = null;
+	static Text docSelected;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -64,9 +66,9 @@ public class NewSpaceCommentForm {
 	public boolean complete() {
 		
 		Display display = Display.getDefault();
-		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
+		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		NewSpaceCommentForm.myshell = shell;
-		shell.setSize(500, 300);
+		shell.setSize(500, 350);
 		shell.setText("ESM Setup");
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		
@@ -139,15 +141,46 @@ public class NewSpaceCommentForm {
 		lblUploadImg.setBackground(C.APP_BGCOLOR);
 		lblUploadImg.setText("Upload Image:");
 		// file upload button
-	    Button browse = new Button(form, SWT.PUSH);
-	    browse.setText("Choose...");        
-	    browse.addSelectionListener(new SelectionAdapter() {
+	    Button browseImg = new Button(form, SWT.PUSH);
+	    browseImg.setToolTipText("Choose an optional image related to this Comment");
+	    browseImg.setText("Choose...");        
+	    browseImg.addSelectionListener(new SelectionAdapter() {
 	      @Override
 	      public void widgetSelected(SelectionEvent e) {
 	  		String[] imgDetails = UploadController.uploadSpaceImageDialog();
-	  		imgToUploadPath = imgDetails[0];
-	  		imgToUploadName = imgDetails[1];
-	  		imgSelected.setText(imgToUploadName);
+	  		try {
+					imgToUploadPath = imgDetails[0];
+					imgToUploadName = imgDetails[1];
+					imgSelected.setText(imgToUploadName);
+				} catch (Exception e1) {}
+	      }
+	    });
+		
+		imgSelected = new Text(form, SWT.NONE);
+		imgSelected.setEditable(false);
+		imgSelected.setBackground(C.APP_BGCOLOR);
+		imgSelected.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		imgSelected.setFont(C.FONT_8);
+
+		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
+		
+		Label lblUploadDoc = new Label(form, SWT.NONE);
+		lblUploadDoc.setBackground(C.APP_BGCOLOR);
+		lblUploadDoc.setText("Upload Document:");
+		// file upload button
+	    Button browseDoc = new Button(form, SWT.PUSH);
+	    browseDoc.setToolTipText("Choose an optional document related to this Comment");
+	    browseDoc.setText("Choose...");        
+	    browseDoc.addSelectionListener(new SelectionAdapter() {
+	      @Override
+	      public void widgetSelected(SelectionEvent e) {
+	  		String[] imgDetails = UploadController.uploadSpaceDocumentDialog();
+	  		try {
+					docToUploadPath = imgDetails[0];
+					docToUploadName = imgDetails[1];
+					docSelected.setText(docToUploadName);
+				} catch (Exception e1) {}
 	      }
 	    });
 		
@@ -164,6 +197,7 @@ public class NewSpaceCommentForm {
 		//==================================================================		
 		
 		Button ok = new Button (form, SWT.PUSH);
+		ok.setToolTipText("Click to save your Comment");
 		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
@@ -179,12 +213,14 @@ public class NewSpaceCommentForm {
 						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						sRow.setDeleted("FALSE");
-				        sRow.insert();
-				        LogController.log("Space comment added to database.");
-		        
-				        if(imgToUploadPath != null) {
-				        	UploadController.uploadSpaceImage(spaceID, new String[]{imgToUploadPath,imgToUploadName});
-			    		}
+		        sRow.insert();
+		        LogController.log("Space comment added to database.");		        
+		        if(imgToUploadPath != null) {
+		        	UploadController.uploadSpaceImage(spaceID, new String[]{imgToUploadPath,imgToUploadName});
+		        }
+		        if(docToUploadPath != null) {
+		        	UploadController.uploadSpaceDocument(spaceID, new String[]{docToUploadPath,docToUploadName});
+		        }
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -213,7 +249,7 @@ public class NewSpaceCommentForm {
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("New Space form closed");	
+		LogController.log("New Space Comment form closed");	
 		
 		return formOK;
 	}

@@ -212,6 +212,7 @@ public class NewAdminForm {
 		//==================================================================		
 		
 		Button ok = new Button (form, SWT.NONE);
+		ok.setToolTipText("Click to save details");
 		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {

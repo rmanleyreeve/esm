@@ -29,11 +29,11 @@ public class SpaceAlert {
 	}
 		
 	public SpaceAlert(Shell appwin) {
-		
+		LogController.log("Running class " + this.getClass().getName());
 		Display display = Display.getDefault();
-	    final Shell shell = new Shell(SWT.APPLICATION_MODAL | SWT.ON_TOP);
+	  final Shell shell = new Shell(SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-	    shell.setSize(400, 250);
+	  shell.setSize(400, 250);
 		Rectangle bounds = appwin.getBounds ();
 		Rectangle rect = shell.getBounds ();
 		int x = bounds.x + (bounds.width - rect.width) / 2;
@@ -62,7 +62,7 @@ public class SpaceAlert {
 		
 		Label lblIcon = new Label(compIcon, SWT.NONE);
 		lblIcon.setAlignment(SWT.CENTER);
-		lblIcon.setImage(SWTResourceManager.getImage(SpaceAlert.class, "/img/alert-icon-red.png"));
+		lblIcon.setImage(C.getImage("/img/alert-icon-red.png"));
 		
 		Composite compMsg = new Composite(shell, SWT.NONE);
 		compMsg.setLayoutData(new RowData(380, SWT.DEFAULT));
@@ -80,6 +80,7 @@ public class SpaceAlert {
 		compBtn.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
 		Button btnContinue = new Button(compBtn, SWT.NONE);
+		btnContinue.setToolTipText("Click to accept warning and continue");
 		btnContinue.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {

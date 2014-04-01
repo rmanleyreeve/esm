@@ -16,14 +16,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
@@ -65,7 +63,9 @@ public class InternetController {
 		} catch (UnknownHostException e) {
 			LogController.logEvent(me, 2, e);
 		}
-		EsmApplication.appData.setField("ONLINE", online);
+		try {
+			EsmApplication.appData.setField("ONLINE", online);
+		} catch (Exception e) {}
 		LogController.log("NET ACCESS = "+online);
 		return online;
 	}

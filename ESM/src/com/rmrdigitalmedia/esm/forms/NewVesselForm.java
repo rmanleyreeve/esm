@@ -152,6 +152,7 @@ public class NewVesselForm {
 		//==================================================================		
 		
 		Button ok = new Button (form, SWT.PUSH);
+		ok.setToolTipText("Click to save these details");
 		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
