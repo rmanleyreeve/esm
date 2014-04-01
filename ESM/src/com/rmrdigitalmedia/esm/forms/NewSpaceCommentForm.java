@@ -149,10 +149,10 @@ public class NewSpaceCommentForm {
 	      public void widgetSelected(SelectionEvent e) {
 	  		String[] imgDetails = UploadController.uploadSpaceImageDialog();
 	  		try {
-					imgToUploadPath = imgDetails[0];
-					imgToUploadName = imgDetails[1];
-					imgSelected.setText(imgToUploadName);
-				} catch (Exception e1) {}
+				imgToUploadPath = imgDetails[0];
+				imgToUploadName = imgDetails[1];
+				imgSelected.setText(imgToUploadName);
+			} catch (Exception e1) {}
 	      }
 	    });
 		
@@ -175,20 +175,20 @@ public class NewSpaceCommentForm {
 	    browseDoc.addSelectionListener(new SelectionAdapter() {
 	      @Override
 	      public void widgetSelected(SelectionEvent e) {
-	  		String[] imgDetails = UploadController.uploadSpaceDocumentDialog();
+	  		String[] docDetails = UploadController.uploadSpaceDocumentDialog();
 	  		try {
-					docToUploadPath = imgDetails[0];
-					docToUploadName = imgDetails[1];
-					docSelected.setText(docToUploadName);
-				} catch (Exception e1) {}
+				docToUploadPath = docDetails[0];
+				docToUploadName = docDetails[1];
+				docSelected.setText(docToUploadName);
+			} catch (Exception e1) {}
 	      }
 	    });
 		
-		imgSelected = new Text(form, SWT.NONE);
-		imgSelected.setEditable(false);
-		imgSelected.setBackground(C.APP_BGCOLOR);
-		imgSelected.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		imgSelected.setFont(C.FONT_8);
+		docSelected = new Text(form, SWT.NONE);
+		docSelected.setEditable(false);
+		docSelected.setBackground(C.APP_BGCOLOR);
+		docSelected.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		docSelected.setFont(C.FONT_8);
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
