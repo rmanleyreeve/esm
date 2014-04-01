@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Combo;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
 @SuppressWarnings("unused")
@@ -86,7 +85,7 @@ public class NewUserForm {
 		header.setLayoutData(fd_header);
 		
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(ImageUtils.getImage("/img/users.png"));
+		lblImg.setImage(C.getImage("/img/users.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);

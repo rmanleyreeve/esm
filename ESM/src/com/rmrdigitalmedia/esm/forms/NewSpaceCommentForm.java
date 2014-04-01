@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 
 public class NewSpaceCommentForm {
@@ -86,7 +86,7 @@ public class NewSpaceCommentForm {
 		header.setLayoutData(fd_header);
 		
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(ImageUtils.getImage("/img/space_icon.png"));
+		lblImg.setImage(C.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
@@ -144,7 +144,7 @@ public class NewSpaceCommentForm {
 	    browse.addSelectionListener(new SelectionAdapter() {
 	      @Override
 	      public void widgetSelected(SelectionEvent e) {
-	  		String[] imgDetails = ImageUtils.uploadSpaceImageDialog();
+	  		String[] imgDetails = UploadController.uploadSpaceImageDialog();
 	  		imgToUploadPath = imgDetails[0];
 	  		imgToUploadName = imgDetails[1];
 	  		imgSelected.setText(imgToUploadName);
@@ -183,7 +183,7 @@ public class NewSpaceCommentForm {
 				        LogController.log("Space comment added to database.");
 		        
 				        if(imgToUploadPath != null) {
-				        	ImageUtils.uploadSpaceImage(spaceID, new String[]{imgToUploadPath,imgToUploadName});
+				        	UploadController.uploadSpaceImage(spaceID, new String[]{imgToUploadPath,imgToUploadName});
 			    		}
 						formOK = true;
 					} catch (Exception e1) {

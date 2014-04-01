@@ -22,7 +22,6 @@ import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
-import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 
@@ -79,7 +78,7 @@ public class LoginController {
 		final FillLayout fillLayout = new FillLayout();
 		fillLayout.marginHeight = 1;
 		shell.setLayout(fillLayout);
-		Rectangle s = ImageUtils.getImage("/img/splash2.jpg").getBounds();
+		Rectangle s = C.getImage("/img/splash2.jpg").getBounds();
 		shell.setSize(s.width, s.height);
 		 
 		//Create a composite with grid layout.
@@ -96,7 +95,7 @@ public class LoginController {
 		//Setting the background of the composite with the image background for login dialog
 		final Label img_Label = new Label(composite, SWT.NONE);
 		img_Label.setLayoutData(new GridData(300, 250));
-		img_Label.setImage(ImageUtils.getImage("/img/splash2.jpg"));
+		img_Label.setImage(C.getImage("/img/splash2.jpg"));
 	 
 		//Creating the composite which will contain the login related widgets
 		final Composite cmp_Login = new Composite(composite, SWT.NONE);
