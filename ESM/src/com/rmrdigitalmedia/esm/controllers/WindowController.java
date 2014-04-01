@@ -61,7 +61,7 @@ public class WindowController {
 	Composite container, header, titleBar;
 	static Composite formHolder;
 	static Composite pageSpacesList, pageSpaceDetail, pageAdministration;
-	static Label pageTitle;
+	static Label pageTitle, onlineStatus;
 	String displayName;
 	public static Button btnAddSpace, btnEditSpace, btnDeleteSpace, btnAdmin;
 	static Button btnSpacesList;	
@@ -196,7 +196,7 @@ public class WindowController {
 	
 		Button foo = new Button(titleBar, SWT.NONE); // dummy button to take default
 		
-		Label onlineStatus = new Label(titleBar, SWT.NONE);
+		onlineStatus = new Label(titleBar, SWT.NONE);
 		onlineStatus.setImage(C.getImage("/img/16_globe.png"));
 		onlineStatus.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_onlineStatus = new FormData();
@@ -383,6 +383,7 @@ public class WindowController {
 			LogController.logEvent(me, 2, e);
 		}
 		SpacesListView.getTVB().setInput(Arrays.asList(rows));
+		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(true);
 		btnEditSpace.setVisible(true);
 		btnDeleteSpace.setVisible(true);
@@ -403,11 +404,12 @@ public class WindowController {
 		showSpaceDetail(id);
 	}
 	public static void showSpaceDetail(int id) {
-	  shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		btnAddSpace.setVisible(false);
 		btnEditSpace.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
+		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		for (Control c:pageSpaceDetail.getChildren()) {
 			c.dispose();
 		}
@@ -424,6 +426,7 @@ public class WindowController {
 	}
 	void showAdministration() {
 		LogController.log("Displaying Administration page");
+		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnEditSpace.setVisible(false);
 		btnDeleteSpace.setVisible(false);
