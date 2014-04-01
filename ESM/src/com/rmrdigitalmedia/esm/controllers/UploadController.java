@@ -106,8 +106,7 @@ public class UploadController {
 						try {
 							Thumbnails.of(destFull).size(150, 150).toFile(destThumb);
 						} catch (IOException ex) {
-							// TODO Auto-generated catch block
-							ex.printStackTrace();
+							LogController.logEvent(this, 1, ex);
 						}
 						try {
 							is.close();
@@ -131,11 +130,9 @@ public class UploadController {
 			docDetails = uploadSpaceDocumentDialog();		
 		}
 		if(docDetails != null) {
-			String docToUploadName = docDetails[1];
-			String ext = Files.getFileExtension(docToUploadName);
 			try {  				
 			    File src = new File(docDetails[0]);  
-			    String savePath = C.DOC_DIR + C.SEP + spaceID + C.SEP + docToUploadName;
+			    String savePath = C.DOC_DIR + C.SEP + spaceID + C.SEP + docDetails[1];
 			    final File dest = new File(savePath);  	      
 			    final FileInputStream is = new FileInputStream(src);   
 			    final FileOutputStream os = new FileOutputStream(dest);   	
