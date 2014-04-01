@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
-import org.eclipse.nebula.widgets.gallery.ListItemRenderer;
 import org.eclipse.nebula.widgets.gallery.NoGroupRenderer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -48,10 +47,13 @@ import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.NewSpaceCommentForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
+import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class SpaceDetailView {
+	
+	static Row user = WindowController.user;
 	
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 
@@ -177,7 +179,7 @@ public class SpaceDetailView {
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				NewSpaceCommentForm nscf = new NewSpaceCommentForm(spaceID, WindowController.user.getID());					
+				NewSpaceCommentForm nscf = new NewSpaceCommentForm(spaceID, user.getID());					
 				if(nscf.complete()) {
 					LogController.log("New Space Comment saved in database");
 					WindowController.showSpaceDetail(spaceID);					
@@ -263,7 +265,7 @@ public class SpaceDetailView {
 	    Group rowRight1 = new Group(compR, SWT.NONE);
 	    rowRight1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 	    GridLayout gl_rowRight1 = new GridLayout(2, false);
-	    gl_rowRight1.marginBottom = 10;
+	    gl_rowRight1.marginBottom = 5;
 	    gl_rowRight1.marginHeight = 0;
 	    rowRight1.setLayout(gl_rowRight1);
 	    rowRight1.setBackground(C.APP_BGCOLOR);
@@ -327,7 +329,7 @@ public class SpaceDetailView {
 	    Group rowRight2 = new Group(compR, SWT.NONE);
 	    rowRight2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 	    GridLayout gl_rowRight2 = new GridLayout(3, false);
-	    gl_rowRight2.marginBottom = 10;
+	    gl_rowRight2.marginBottom = 5;
 	    gl_rowRight2.marginHeight = 0;
 	    rowRight2.setLayout(gl_rowRight2);
 	    rowRight2.setBackground(C.APP_BGCOLOR);
@@ -400,7 +402,7 @@ public class SpaceDetailView {
 	    Group rowRight3 = new Group(compR, SWT.NONE);
 	    rowRight3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 	    GridLayout gl_rowRight3 = new GridLayout(3, false);
-	    gl_rowRight3.marginBottom = 10;
+	    gl_rowRight3.marginBottom = 5;
 	    gl_rowRight3.marginHeight = 0;
 	    rowRight3.setLayout(gl_rowRight3);
 	    rowRight3.setBackground(C.APP_BGCOLOR);
@@ -497,7 +499,7 @@ public class SpaceDetailView {
 	    Group rowRight4 = new Group(compR, SWT.NONE);
 	    rowRight4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 	    GridLayout gl_rowRight4 = new GridLayout(3, false);
-	    gl_rowRight4.marginBottom = 10;
+	    gl_rowRight4.marginBottom = 5;
 	    gl_rowRight4.marginHeight = 0;
 	    rowRight4.setLayout(gl_rowRight4);
 	    rowRight4.setBackground(C.APP_BGCOLOR);
@@ -529,14 +531,14 @@ public class SpaceDetailView {
 		final String docDir = C.DOC_DIR + C.SEP + spaceID + C.SEP;
 		new File(docDir).mkdir();
 		if (new File(docDir).listFiles().length > 0) {
-			// docs exist - show list
+			// docs exist - show table
 		    final Table table = new Table(rowRight4, SWT.NONE | SWT.FULL_SELECTION);
 		    table.setLayout(new FillLayout());
 		    table.setBackground(C.FIELD_BGCOLOR);
 			GridData gd_table = new GridData(GridData.FILL_BOTH);
 			gd_table.grabExcessVerticalSpace = true;
 			gd_table.grabExcessHorizontalSpace=true;
-			gd_table.heightHint = 40;
+			gd_table.heightHint = 50;
 			gd_table.horizontalSpan = 3;
 			table.setLayoutData(gd_table);
 			table.addListener(SWT.MeasureItem, new Listener() {
@@ -545,7 +547,7 @@ public class SpaceDetailView {
 			      event.height = 20;
 			   }
 			});
-			
+			// show files
 			for (File f:new File(docDir).listFiles()) {
 				if(!f.isHidden()) {
 					LogController.log("Document found: " + f);
@@ -558,7 +560,6 @@ public class SpaceDetailView {
 				    item.setImage(itemImage);;
 				}
 			}		
-
 		   table.addListener(SWT.MouseDoubleClick, new Listener() {
 				@Override
 				public void handleEvent(Event e) {	
@@ -569,16 +570,53 @@ public class SpaceDetailView {
 				Program.launch(doc);
 		        }
 		     });
-
-		} // endif files > 0
+		} // endif files > 0	
 	
+		// row 5 - signoff header 		
+	    Group rowRight5 = new Group(compR, SWT.NONE);
+	    rowRight5.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+	    GridLayout gl_rowRight5 = new GridLayout(3, false);
+	    gl_rowRight5.marginBottom = 5;
+	    gl_rowRight5.marginHeight = 0;
+	    rowRight5.setLayout(gl_rowRight5);
+	    rowRight5.setBackground(C.APP_BGCOLOR);
+		
+		Label lblSignoff = new Label(rowRight5, SWT.NONE);
+		GridData gd_lblSignoff = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblSignoff.widthHint = 120;
+		lblSignoff.setLayoutData(gd_lblSignoff);
+		lblSignoff.setFont(C.FONT_12B);
+		lblSignoff.setBackground(C.APP_BGCOLOR);
+		lblSignoff.setText("Sign Off");	
 	
+		Button btnSignOff = new Button(rowRight5, SWT.NONE);
+		GridData gd_btnSignOff = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		gd_btnSignOff.verticalIndent = 3;
+		btnSignOff.setLayoutData(gd_btnSignOff);
+		btnSignOff.setImage(C.getImage("/img/bluetick.png"));
+		btnSignOff.setText("Authorize");
+		//btnSignOff.setEnabled(user.getAccessLevel()==9);
+		
+		Label lblAuthBy = new Label(rowRight5, SWT.NONE);
+		lblAuthBy.setFont(C.FONT_10B);
+		lblAuthBy.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		lblAuthBy.setBackground(C.APP_BGCOLOR);
+		lblAuthBy.setText("Authorized By:");		
 	
+		final Label lblAuthName = new Label(rowRight5, SWT.WRAP);
+		lblAuthName.setFont(C.FONT_10);
+		lblAuthName.setBackground(C.APP_BGCOLOR);
+		lblAuthName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		lblAuthName.setText("This space has not been authorized.");
 		
-		
-		
-		
-		
+		btnSignOff.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				// do database stuff
+				lblAuthName.setText(user.getForename() + " " + user.getSurname());
+			}
+		});
+	
 		
 		
 		
