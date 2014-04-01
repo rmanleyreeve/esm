@@ -2,6 +2,7 @@ package com.rmrdigitalmedia.esm.forms;
 
 import java.sql.Timestamp;
 import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -16,10 +17,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.LicenseTable;
 
 public class NewLicenseDialog {
@@ -51,7 +52,7 @@ public class NewLicenseDialog {
 		dialog.setLayout (formLayout);
 
 		CLabel label = new CLabel (dialog, SWT.NONE);
-		label.setImage(ImageUtils.getImage("/img/Registration32.png"));
+		label.setImage(C.getImage("/img/Registration32.png"));
 		label.setText ("Enter License Key:");
 		FormData data = new FormData ();
 		label.setLayoutData (data);

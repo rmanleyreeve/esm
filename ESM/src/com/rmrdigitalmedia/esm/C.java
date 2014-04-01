@@ -1,14 +1,21 @@
 package com.rmrdigitalmedia.esm;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import com.rmrdigitalmedia.esm.controllers.UploadController;
 
 public final class C {
 	
@@ -93,5 +100,26 @@ public final class C {
 	
 	private C() {
 		throw new AssertionError();
+	}
+
+
+
+	public static Image getExtImage(String imgpath) {
+		// test for non-image or system files
+		try {
+		    BufferedImage image = ImageIO.read(new File(imgpath));
+		    if (image == null) {
+		        return null;
+		    }
+		} catch(IOException ex) {
+		    return null;
+		}	
+		return SWTResourceManager.getImage(imgpath);
+	}
+
+
+
+	public static Image getImage(String imgpath) {
+		return SWTResourceManager.getImage(UploadController.class, imgpath);	
 	}
 }

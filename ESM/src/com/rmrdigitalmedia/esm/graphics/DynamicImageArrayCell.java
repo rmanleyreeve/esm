@@ -7,6 +7,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.rmrdigitalmedia.esm.C;
+
 import de.ralfebert.rcputils.properties.IValue;
 
 /**
@@ -29,7 +31,7 @@ public class DynamicImageArrayCell extends StyledCellLabelProvider {
 	protected void paint(Event event, Object element) {
 		String[] imgName = (String[])imageName.getValue(element);
 		int numImages = imgName.length;		
-		image = ImageUtils.getImage(imgName[0]);
+		image = C.getImage(imgName[0]);
 		super.paint(event, element);
 		if (image == null || numImages > 5) {
 			return;
@@ -61,7 +63,7 @@ public class DynamicImageArrayCell extends StyledCellLabelProvider {
 				break;
 		}				
 		for (int i=0;i<numImages;i++){
-			image = ImageUtils.getImage(imgName[i]);
+			image = C.getImage(imgName[i]);
 			event.gc.drawImage(image, x, y);
 			x += 25;
 		}

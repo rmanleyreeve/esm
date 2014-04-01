@@ -25,7 +25,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.graphics.ImageUtils;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.VesselTable;
@@ -83,7 +82,7 @@ public class NewSpaceForm {
 		header.setLayoutData(fd_header);
 		
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(ImageUtils.getImage("/img/space_icon.png"));
+		lblImg.setImage(C.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
