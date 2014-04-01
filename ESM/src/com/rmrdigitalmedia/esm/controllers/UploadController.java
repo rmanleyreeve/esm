@@ -55,7 +55,7 @@ public class UploadController {
 		String platform = SWT.getPlatform();
 		String [] filterNames = new String [] {"Document Files", "All Files (*)"};
 		String [] filterExtensions = new String [] {"*.doc;*.docx;*.pdf;*.xls;*.xlsx;*.txt", "*"};
-		String filterPath = C.HOME_DIR + C.SEP + "Desktop";
+		String filterPath = C.HOME_DIR + C.SEP + "Documents";
 		if (platform.equals("win32") || platform.equals("wpf")) {
 			filterNames = new String [] {"Document Files", "All Files (*.*)"};
 		}
@@ -133,14 +133,12 @@ public class UploadController {
 		if(docDetails != null) {
 			String docToUploadName = docDetails[1];
 			String ext = Files.getFileExtension(docToUploadName);
-			String ts = "" + new Date().getTime();
 			try {  				
 			    File src = new File(docDetails[0]);  
-			    docToUploadName = ts + "." + ext;
-			    String savePath = C.DOC_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP + docToUploadName;
-			    final File destFull = new File(savePath);  	      
+			    String savePath = C.DOC_DIR + C.SEP + spaceID + C.SEP + docToUploadName;
+			    final File dest = new File(savePath);  	      
 			    final FileInputStream is = new FileInputStream(src);   
-			    final FileOutputStream os = new FileOutputStream(destFull);   	
+			    final FileOutputStream os = new FileOutputStream(dest);   	
 				LogController.log("File to upload: " + src + " -> " + src.length() + " bytes");
 			    Runnable job = new Runnable() {
 			    	@Override
@@ -154,7 +152,7 @@ public class UploadController {
 						} catch (IOException ex){
 							LogController.logEvent(this, 1, ex);;
 						}
-						LogController.log("File uploaded: " + destFull + " -> " + destFull.length() + " bytes");
+						LogController.log("File uploaded: " + dest + " -> " + dest.length() + " bytes");
 						try {
 							is.close();
 							os.close();   

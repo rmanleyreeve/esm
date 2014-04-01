@@ -550,7 +550,8 @@ public class SpaceDetailView {
 	    
 	    TableItem item;
 	    
-		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
+		item = new TableItem(table, SWT.NONE); 
+		item.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.ITALIC));item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
 		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
 		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
 		item = new TableItem(table, SWT.NONE); item.setBackground(C.APP_BGCOLOR);item.setText(f.getName()); item.setImage(itemImage);
