@@ -463,6 +463,7 @@ public class SpaceDetailView {
 			gr.setItemWidth(150);
 			gr.setAutoMargin(true);
 			gallery.setGroupRenderer(gr);
+			gallery.setToolTipText("Double-click a thumbnail image to open full size");
 		
 			DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
 			ir.setShowRoundedSelectionCorners(false);
@@ -547,6 +548,7 @@ public class SpaceDetailView {
 			gd_table.heightHint = 50;
 			gd_table.horizontalSpan = 3;
 			table.setLayoutData(gd_table);
+			table.setToolTipText("Double-click a document link to open");
 			table.addListener(SWT.MeasureItem, new Listener() {
 			   @Override
 			   public void handleEvent(Event event) {
@@ -560,10 +562,10 @@ public class SpaceDetailView {
 					String ext = Files.getFileExtension(f.getName());			
 					ImageData iconData = Program.findProgram(ext).getImageData();
 					Image itemImage = new Image(Display.getCurrent(), iconData);
-				    TableItem item = new TableItem(table, SWT.NONE); 
-				    item.setBackground(C.FIELD_BGCOLOR);
-				    item.setText(f.getName());
-				    item.setImage(itemImage);;
+			    TableItem item = new TableItem(table, SWT.NONE); 
+			    item.setBackground(C.FIELD_BGCOLOR);
+			    item.setText(f.getName());
+			    item.setImage(itemImage);
 				}
 			}		
 		   table.addListener(SWT.MouseDoubleClick, new Listener() {
