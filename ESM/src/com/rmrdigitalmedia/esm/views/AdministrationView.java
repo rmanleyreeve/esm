@@ -42,7 +42,7 @@ public class AdministrationView {
 		Composite rightpanel = new Composite(panels,SWT.NONE);
 		rightpanel.setBackground(C.APP_BGCOLOR);
 		rightpanel.setLayout(new FillLayout());
-		panels.setWeights(new int[] {250, 550});
+		panels.setWeights(new int[] {1, 3});
 		
 	}
 }

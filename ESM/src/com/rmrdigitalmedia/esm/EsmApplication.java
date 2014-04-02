@@ -18,9 +18,9 @@ import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 public class EsmApplication {    
 	
 	private static Object me;
-  public static AppData appData;
-  public AppLoader loader;
-  public static WindowController awc;
+	public static AppData appData;
+	public AppLoader loader;
+	public static WindowController awc;
   
   public EsmApplication() {
   	me = this;
