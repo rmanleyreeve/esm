@@ -31,8 +31,7 @@ import org.eclipse.swt.events.KeyEvent;
 public class LoginController {
 
 	Shell shell;
-	private static Text txt_Password;
-	private static Text txt_Username;
+	private static Text txt_Password, txt_Username;
 	private Display display;
 	private Rectangle rect;
 	private Label alertTxt;
@@ -40,7 +39,7 @@ public class LoginController {
 	public LoginController(Display display,org.eclipse.swt.graphics.Rectangle rect) {
 		this.display = display;
 		this.rect = rect;
-  	LogController.log("Running class " + this.getClass().getName());
+		LogController.log("Running class " + this.getClass().getName());
 	}
  
   void submit() {
