@@ -58,13 +58,11 @@ public class WindowController {
 	static Display display;
 	int appHeight, appWidth,headerH = 85,titleH = 40,footerH = 15;
 	Composite container, header, titleBar;
-	static Composite formHolder;
-	static Composite pageSpacesList, pageSpaceDetail, pageAdministration;
+	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration;
 	static Label pageTitle, onlineStatus;
 	String displayName;
 	public static Button btnAddSpace, btnEditSpace, btnDeleteSpace, btnAdmin;
-	static Button btnSpacesList;	
-	static Button btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
+	static Button btnSpacesList, btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
 	private static int currentSpaceId = 0;
 	public static EsmUsersTable.Row user;
