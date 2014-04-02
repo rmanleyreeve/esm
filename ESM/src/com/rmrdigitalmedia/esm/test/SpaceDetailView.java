@@ -4,9 +4,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-
 import javax.swing.filechooser.FileSystemView;
-
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
@@ -26,6 +24,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -42,7 +41,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
@@ -52,7 +50,6 @@ import com.rmrdigitalmedia.esm.forms.NewSpaceCommentForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
-
 import org.eclipse.swt.layout.RowLayout;
 
 public class SpaceDetailView {
@@ -73,6 +70,10 @@ public class SpaceDetailView {
 			shell.setSize(1380, 750);
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
 			Composite comp = new Composite(shell, SWT.BORDER);
+			for (Point p:Display.getDefault().getIconSizes()) {
+				System.out.println(p);
+			}
+			
 			SpaceDetailView.buildPage(comp,1);
 			shell.open();
 			while (!shell.isDisposed()) {

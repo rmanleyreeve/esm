@@ -220,7 +220,7 @@ public class LoginController {
 		} catch (IOException e) {
 			LogController.logEvent(this,2,e);
 		}		
-		clbl_Message.setText(vtxt + " (c)rmrdigitalmedia");
+		clbl_Message.setText(vtxt + C.COPYRIGHT);
 		
 		// render window
 		shell.setDefaultButton(btnLogin);
