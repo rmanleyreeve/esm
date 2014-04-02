@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Arrays;
-
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
@@ -15,6 +14,7 @@ import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -37,7 +37,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
@@ -70,6 +69,7 @@ public class WindowController {
 	private static int currentSpaceId = 0;
 	public static EsmUsersTable.Row user;
 	SpacesTable.Row[] rows;
+	private Label lblVtLogo;
 
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
@@ -95,7 +95,8 @@ public class WindowController {
 		shell = new Shell();
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		shell.setText(C.APP_NAME);
-		shell.setLayout(new FillLayout(SWT.VERTICAL));		
+		shell.setLayout(new FillLayout(SWT.VERTICAL));
+		shell.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		// size & position
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
@@ -347,6 +348,14 @@ public class WindowController {
 		lblH.setBackground(C.APP_BGCOLOR);
 		lblH.setText(txt);
 		
+		lblVtLogo = new Label(header, SWT.NONE);
+		lblVtLogo.setImage(C.getImage("/img/vt_web_logo.png"));
+		lblVtLogo.setBackground(C.APP_BGCOLOR);
+		FormData fd_lblVtLogo = new FormData();
+		fd_lblVtLogo.top = new FormAttachment(25);
+		fd_lblVtLogo.right = new FormAttachment(100, -10);
+		lblVtLogo.setLayoutData(fd_lblVtLogo);
+		
 		// read text from disk
 		txt = C.APP_NAME;
 		try {
@@ -359,7 +368,7 @@ public class WindowController {
 		lblF.setBackground(C.TITLEBAR_BGCOLOR);
 		lblF.setFont(C.FONT_8);
 		lblF.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		lblF.setText(txt + "\t\u00a9 Videotel 2014");				
+		lblF.setText(txt + C.COPYRIGHT);				
 
 		if(user.getAccessLevel()==9) {
 			btnAdmin.setEnabled(true);

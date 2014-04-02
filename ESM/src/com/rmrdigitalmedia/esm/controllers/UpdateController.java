@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import com.rmrdigitalmedia.esm.C;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 @SuppressWarnings("unused")
 public class UpdateController {
@@ -36,6 +37,7 @@ public class UpdateController {
 	  	latestVersion = _latestVersion;
 		Display display = Display.getDefault();
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
+		dialog.setImage(C.getImage("/img/appicon16.png"));
 		dialog.setSize(234, 131);
 		dialog.setText("ESM Alert");
 		FormLayout formLayout = new FormLayout ();

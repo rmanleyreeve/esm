@@ -77,6 +77,7 @@ public final class C {
 	public static String LOGIN_FAIL_MSG = "Username or Password not recognised.\nPlease try again.";
 	public static String SPACE_ALERT_RED = "The space you have selected has been classified as RED.\nBe extra cautious as you proceed.";
 	public static String SPACE_NOT_AUTH = "This space has NOT been authorized.";
+	public static String COPYRIGHT = "\t\u00a9 Videotel 2014";
 	
 	// app screen titles
 	public static String SPACES_LIST_TITLE = "Classified Enclosed Spaces";
