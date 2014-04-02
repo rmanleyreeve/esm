@@ -121,8 +121,8 @@ public class DeleteSpaceController {
 					LogController.log("Marked space " + spaceID + " as deleted");
 					formOK = true;
 				} catch (SQLException ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
+					LogController.logEvent(this, 1, ex);
+					//ex.printStackTrace();
 				}				
 				dialog.close();
 			}
