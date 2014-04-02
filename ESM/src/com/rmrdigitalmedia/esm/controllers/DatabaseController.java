@@ -79,7 +79,11 @@ public class DatabaseController {
 		try {
 			conn = DriverManager.getConnection(C.DB_CONN_STR_SETUP, "sa", "");
 			LogController.log("OK");
-			loadRunSqlFile("DEMO.sql");
+			
+			// TODO DEVELOPMENT ONLY <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+			loadRunSqlFile("DEMO.sql"); 
+			
+			//loadRunSqlFile("SETUP.sql");
 		} catch (SQLException e) {
 			LogController.logEvent(me,2,"DB SETUP FAILED",e);
 			//e.printStackTrace();
@@ -240,24 +244,7 @@ public class DatabaseController {
 		LogController.log("License verified");
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	// DB utility methods ==========================================================================
 	public static ResultSet getResultSet(Connection conn,String sql) throws SQLException {
@@ -274,13 +261,13 @@ public class DatabaseController {
    close(conn);
   }
   public static void close(Connection conn){
-		 if (conn != null) {
+	if (conn != null) {
 	     try {
 	        conn.close();
 	     } catch (SQLException e){
 	    	 LogController.logEvent(me, 2, e);
 	     }
-		 }
+	}
   }
   public static void close(ResultSet rs){
   if (rs != null) {
