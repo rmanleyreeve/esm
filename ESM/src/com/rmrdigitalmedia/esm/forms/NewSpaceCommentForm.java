@@ -30,19 +30,10 @@ public class NewSpaceCommentForm {
 	static Shell myshell;
 	boolean formOK = false;
 	Text s_comment;
-	int spaceID;
-	int authorID;
-	// form layout  guides
-	int headerH = 40;
+	int spaceID, authorID, headerH = 40;
 	private Label sep;
-	String imgDetails = null;
-	static String imgToUploadPath = null;
-	static String imgToUploadName = null;
-	static Text imgSelected;
-	String docDetails = null;
-	static String docToUploadPath = null;
-	static String docToUploadName = null;
-	static Text docSelected;
+	static String imgToUploadPath = null, imgToUploadName = null, docToUploadPath = null, docToUploadName = null;
+	static Text imgSelected, docSelected;
 
 	/**
 	 * @wbp.parser.entryPoint

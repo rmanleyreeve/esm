@@ -31,9 +31,8 @@ public class NewVesselForm {
 	
 	Shell myshell;
 	boolean formOK = false;
-	Text name,imo, type,owner;
-	Label sep;
-	
+	Text name, imo, type, owner;
+	Label sep;	
 	// form layout  guides
 	int headerH = 40;
 	

@@ -30,10 +30,10 @@ public class AppLoader {
 	
 	private static Object me;
 	public static ProgressBar pbar;
-  public static Label pmsg;
-  private final int SPLASH_MAX = 100;
-  static Shell myshell;
-  private static int pc = 20;
+	public static Label pmsg;
+	private final int SPLASH_MAX = 100;
+	static Shell myshell;
+	private static int pc = 20;
 
 	public static void update() {
 		try {
@@ -124,69 +124,69 @@ public class AppLoader {
 	      public void run() {      	
 	      // perform actual loading/setup/init config here...	      	
 	      	
-		      // check/set up filesystem
-				LogController.log("AppLoader: filesystem check");
-				message("Checking file system integrity");
-				FilesystemController fs = new FilesystemController();
-				fs.checkFS();
-				message("File system integrity check complete");
-				update(); //20%
-		    	
-				// check/set up database
-				LogController.log("AppLoader: database check");
-				message("Checking database integrity");
-				DatabaseController db = new DatabaseController();
-				db.checkDB();
-				message("Database integrity check complete");
-				update(); //40%
+	      // check/set up filesystem
+			LogController.log("AppLoader: filesystem check");
+			message("Checking file system integrity");
+			FilesystemController fs = new FilesystemController();
+			fs.checkFS();
+			message("File system integrity check complete");
+			update(); //20%
+	    	
+			// check/set up database
+			LogController.log("AppLoader: database check");
+			message("Checking database integrity");
+			DatabaseController db = new DatabaseController();
+			db.checkDB();
+			message("Database integrity check complete");
+			update(); //40%
+			
+			// check license key in DB
+			message("Checking License Key");
+			if(!DatabaseController.checkLicenseKey()) {
+				//open license key dialog
+				EsmApplication.alert(myshell,"License key not found!");
+				NewLicenseDialog nld = new NewLicenseDialog();
+				if (nld.complete()) {
+					LogController.log("License saved in database");
+				} else {				
+					EsmApplication.alert("License Key required. Exiting program...");
+					LogController.log(C.EXIT_MSG);
+					System.exit(0);						
+				}
+			}
+			update(); //60%
+			
+			//check/set up new admin user
+			message("Checking System Administration Access");
+			if(!DatabaseController.checkAdmin()) {
+				//open admin user dialog
+				EsmApplication.alert(myshell,"System Administrator not found!");
+				NewAdminForm naf = new NewAdminForm();					
+				if(naf.complete()) {
+					LogController.log("System Administrator saved in database");
+				} else {
+					EsmApplication.alert("System Administrator required. Exiting program...");
+					LogController.log(C.EXIT_MSG);
+					System.exit(0);
+				}
+			}
+			update(); //80%
 				
-				// check license key in DB
-				message("Checking License Key");
-				if(!DatabaseController.checkLicenseKey()) {
-					//open license key dialog
-					EsmApplication.alert(myshell,"License key not found!");
-					NewLicenseDialog nld = new NewLicenseDialog();
-					if (nld.complete()) {
-						LogController.log("License saved in database");
-					} else {				
-						EsmApplication.alert("License Key required. Exiting program...");
-						LogController.log(C.EXIT_MSG);
-						System.exit(0);						
-					}
+			//check/set up new admin user
+			message("Checking Vessel Details");
+			if(!DatabaseController.checkVessel()) {
+				//open admin user dialog
+				EsmApplication.alert(myshell,"Vessel info not found!");
+				NewVesselForm nvf = new NewVesselForm();					
+				if(nvf.complete()) {
+					LogController.log("Vessel saved in database");
+				} else {
+					EsmApplication.alert("Vessel Info required. Exiting program...");
+					LogController.log(C.EXIT_MSG);
+					System.exit(0);
 				}
-				update(); //60%
-				
-				//check/set up new admin user
-				message("Checking System Administration Access");
-				if(!DatabaseController.checkAdmin()) {
-					//open admin user dialog
-					EsmApplication.alert(myshell,"System Administrator not found!");
-					NewAdminForm naf = new NewAdminForm();					
-					if(naf.complete()) {
-						LogController.log("System Administrator saved in database");
-					} else {
-						EsmApplication.alert("System Administrator required. Exiting program...");
-						LogController.log(C.EXIT_MSG);
-						System.exit(0);
-					}
-				}
-				update(); //80%
-					
-				//check/set up new admin user
-				message("Checking Vessel Details");
-				if(!DatabaseController.checkVessel()) {
-					//open admin user dialog
-					EsmApplication.alert(myshell,"Vessel info not found!");
-					NewVesselForm nvf = new NewVesselForm();					
-					if(nvf.complete()) {
-						LogController.log("Vessel saved in database");
-					} else {
-						EsmApplication.alert("Vessel Info required. Exiting program...");
-						LogController.log(C.EXIT_MSG);
-						System.exit(0);
-					}
-				}
-				update(); //100%											
+			}
+			update(); //100%											
         
       	// init setup OK, now go to login screen
 				// LOADER IS DISPOSED NOW

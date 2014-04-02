@@ -34,9 +34,7 @@ public class NewSpaceForm {
 	Shell myshell;
 	boolean formOK = false;
 	Text s_name, s_description, ep_name, ep_description;
-	int authorID;
-	// form layout  guides
-	int headerH = 40;
+	int authorID, headerH = 40;
 	private Label sep;
 	
 	/**

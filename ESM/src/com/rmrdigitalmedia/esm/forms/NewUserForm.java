@@ -41,8 +41,7 @@ public class NewUserForm {
 	Text username,password,forename,surname,rank,jobtitle,workid;
 	int accesslevel,month;
 	Combo dd,mm,yyyy,accessLevels;
-	Label sep;
-	
+	Label sep;	
 	// form layout  guides
 	int headerH = 40;
 	
