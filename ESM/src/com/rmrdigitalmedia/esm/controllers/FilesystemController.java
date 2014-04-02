@@ -8,10 +8,7 @@ import com.rmrdigitalmedia.esm.EsmApplication;
 public class FilesystemController {
 
 	public static String current = System.getProperty("user.dir");
-	public static File datadir;
-	public static File imgdir;
-	public static File docdir;
-	public static File logdir;
+	public static File datadir, imgdir, docdir, logdir;
 
 	public FilesystemController() {
 	}
