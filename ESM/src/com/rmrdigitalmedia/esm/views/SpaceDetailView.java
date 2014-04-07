@@ -373,7 +373,7 @@ public class SpaceDetailView {
 		lblSpaceAuditImg.setBackground(C.APP_BGCOLOR);
 	   
 		Label lblSpaceAuditLight = new Label(rowRight2, SWT.RIGHT);
-		lblSpaceAuditLight.setImage(C.getImage("/img/Red.png"));
+		lblSpaceAuditLight.setImage(C.getImage("/img/red.png"));
 		GridData gd_lblSpaceAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditLight.horizontalIndent = 10;
 		lblSpaceAuditLight.setLayoutData(gd_lblSpaceAuditLight);
@@ -394,7 +394,7 @@ public class SpaceDetailView {
 		lblEntryPointAuditImg.setBackground(C.APP_BGCOLOR);
 	   
 		Label lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
-		lblEntryPointAuditLight.setImage(C.getImage("/img/Amber.png"));
+		lblEntryPointAuditLight.setImage(C.getImage("/img/amber.png"));
 		GridData gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 		gd_lblEntryPointAuditLight.horizontalIndent = 10;
 		lblEntryPointAuditLight.setLayoutData(gd_lblEntryPointAuditLight);
