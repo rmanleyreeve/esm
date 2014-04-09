@@ -42,6 +42,7 @@ public class AppData {
 	public void serialize() throws SQLException {
 		// loop through hashtable & save to db		
 		Enumeration<String> enumKey = this.data.keys();
+		AppdataTable.delete("ID", "IS NOT NULL");
 		while(enumKey.hasMoreElements()) {
 		    String key = enumKey.nextElement();
 		    String val = (String)this.data.get(key);
