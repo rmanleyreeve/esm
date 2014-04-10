@@ -42,7 +42,7 @@ public class NewLicenseDialog {
 	
 	public boolean complete() {
 		Display display = Display.getDefault();
-		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		dialog.setText("ESM Setup");
 		dialog.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		FormLayout formLayout = new FormLayout ();
