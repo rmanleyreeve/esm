@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import com.rmrdigitalmedia.esm.controllers.WindowController;
-import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.LoginController;
@@ -88,16 +87,6 @@ public class EsmApplication {
 				InternetController.getUpdates();
 			} catch (IOException e) {
 				LogController.logEvent(me, 2, e);
-			}
-			if(!DatabaseController.licenseVerified()) {
-				LogController.log("Verifying license key...");
-				try {
-					if( InternetController.verifyLicense((String)appData.getField("LICENSE")) ){
-						DatabaseController.updateLicense();
-					}
-				} catch (Exception e) {
-					LogController.logEvent(me, 2, e);
-				}
 			}
 		}	 
 		runApp(user, loginWindow);

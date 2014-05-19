@@ -8,8 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.Date;
 
 import org.eclipse.swt.widgets.ProgressBar;
 
@@ -91,24 +89,7 @@ public class DatabaseController {
 		}
 		close(conn);
 	}
-	
-	public void setFallbackKey() {
-		LogController.log("Loading fallback license text file...");
-		try {
-			String key = CharStreams.toString(new InputStreamReader(DatabaseController.class.getResourceAsStream("/txt/fallback.txt"), Charsets.UTF_8));
-			String sql = "INSERT INTO PUBLIC.LICENSE (FALLBACK_KEY) VALUES(ENCRYPT('AES','00',STRINGTOUTF8('" + key + "')));";
-			try {
-		    runQuery(sql);
-		    LogController.log("SET OK");
-			} catch (SQLException e) {
-				LogController.logEvent(this,2,"LICENSE KEY FAILED",e);
-				AppLoader.die("Failed to set fallback key!");
-			}
-		} catch (IOException e) {
-			LogController.logEvent(me,2,e);
-		}		
-	}
-	
+		
 	public void loadRunSqlFile(String fName) {
 		LogController.log("Loading SQL file '"+fName+"'... ");
 		String sql = "";
@@ -212,40 +193,7 @@ public class DatabaseController {
 		}
 		return ok;	
 	}
-	
-	public static boolean licenseVerified() {
-		boolean ok = false;
-		LogController.log("Checking if License Verified...");
-		String vd = "";
-		try {
-			LicenseTable.Row[] rows = LicenseTable.getRows("VERIFIED_DATE IS NOT NULL");
-			LogController.log("licenseVerified Row Count: "+rows.length);
-			if(rows.length==1) {
-				LicenseTable.Row row = rows[0];
-				vd = row.getVerifiedDate().toString();
-				ok = true;
-				LogController.log("License Verified: " + vd);
-	    	} else {
-	    		LogController.log("License NOT verified");
-	    		
-	    	}
-		} catch (SQLException e ) {
-			LogController.logEvent(DatabaseController.class,2,"License verify",e);
-			e.printStackTrace();
-		}
-		EsmApplication.appData.setField("VERIFIED",ok);
-		return ok;	
-	}
-
-	public static void updateLicense() throws SQLException {
-		LicenseTable.Row row = LicenseTable.getAllRows()[0];
-		row.setVerifiedDate(new Timestamp(new Date().getTime()));
-		row.update("FALLBACK_KEY", row.getFallbackKey());
-		LogController.log("License verified");
-	}
-
-
-	
+		
 	// DB utility methods ==========================================================================
 	public static ResultSet getResultSet(Connection conn,String sql) throws SQLException {
     ResultSet rs;

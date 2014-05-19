@@ -2,6 +2,7 @@ package com.rmrdigitalmedia.esm.forms;
 
 import java.sql.Timestamp;
 import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -17,6 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -25,6 +27,7 @@ import com.rmrdigitalmedia.esm.models.LicenseTable;
 public class NewLicenseDialog {
 	
 	boolean formOK = false;
+	int privateKey = 8864;
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
@@ -39,6 +42,27 @@ public class NewLicenseDialog {
 	public NewLicenseDialog() {
 	  	LogController.log("Running class " + this.getClass().getName());		
 	}
+	
+	protected boolean validateKey(String key) {
+		// should be format xxxxx-xxxxx-xxxxx
+		// algo - remove dashes, last 7 digits + privateKey number should = first 7 digits
+		if(
+			key.length() != 17 || 
+			key.charAt(6) != '-' ||
+			key.charAt(12) != '-'
+		) { 
+			return false; 
+		}
+		String kStr = key.replaceAll("-", "");
+		int numA = Integer.parseInt(kStr.substring(0,7));
+		int numB = Integer.parseInt(kStr.substring(8,7));		
+		if(numB + privateKey == numA) {
+			LogController.log("License is valid");
+			return true;
+		}		
+		return false;
+	}
+
 	
 	public boolean complete() {
 		Display display = Display.getDefault();
@@ -106,18 +130,14 @@ public class NewLicenseDialog {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
 				String key = text.getText();
-				if(!key.equals("")) {
-					LogController.log("User entered key: " + text.getText ());					
+				if(validateKey(key)) {
+					LogController.log("User entered VALID key: " + key);
 					// insert key into database;
 					try {
-						LicenseTable.Row row = LicenseTable.getAllRows()[0];
-						String fbk = row.getFallbackKey();
-						if(key.equals(fbk)) {
-							LogController.log("Fallback Key MATCH - License Verified");
-							row.setVerifiedDate(new Timestamp(new Date().getTime()));
-						}
+						LicenseTable.Row row = LicenseTable.getRow();
 						row.setLicensekey(key);
-						row.update("FALLBACK_KEY", row.getFallbackKey());
+						row.setVerifiedDate(new Timestamp(new Date().getTime()));
+						row.insert();						
 						formOK = true;
 						EsmApplication.appData.setField("LICENSE", key);
 						msgLabel.setText("Registering license key...");
@@ -129,6 +149,8 @@ public class NewLicenseDialog {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {}
 					dialog.close ();
+				} else {
+					LogController.log("User entered INVALID key: " + key);
 				}
 			}
 		});
@@ -149,5 +171,6 @@ public class NewLicenseDialog {
 		LogController.log("License dialog closed");		
 		return formOK;
 	}
+
 	
 }

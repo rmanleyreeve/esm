@@ -70,35 +70,6 @@ public class InternetController {
 		return online;
 	}
 	
-	public static boolean verifyLicense(String key) throws Exception {	 
-		URL obj = new URL(C.LICENSE_URL);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();	 
-		//add request header
-		con.setRequestMethod("POST");
-		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");	 
-		String urlParameters = "key=" + key;	 
-		// Send post request
-		con.setDoOutput(true);
-		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		wr.writeBytes(urlParameters);
-		wr.flush();
-		wr.close();	 
-		int responseCode = con.getResponseCode();
-		LogController.log("Sending 'POST' request to URL : " + C.LICENSE_URL);
-		LogController.log("Post parameters : " + urlParameters);
-		LogController.log("Response Code : " + responseCode);	 
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();	 
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();	 
-		//print result
-		LogController.log("Response: " + response.toString());	
-		return (response.toString().equals("OK"));
-	}
-
 	public static void getUpdates() throws IOException {		
 		String currentVersion = (String)EsmApplication.appData.getField("VERSION");
 		URL u = new URL(C.LATEST_VERSION_URL);
@@ -120,7 +91,6 @@ public class InternetController {
 		) {
 			// new version available
 			LogController.log("NEW VERSION AVAILABLE: " + latestVersion);
-			//open license key dialog
 			//EsmApplication.alert(C.NEW_VERSION_ALERT);
 			UpdateController ud = new UpdateController(latestVersion);
 		}		
