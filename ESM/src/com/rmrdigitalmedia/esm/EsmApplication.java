@@ -19,7 +19,7 @@ public class EsmApplication {
 	private static Object me;
 	public static AppData appData;
 	public AppLoader loader;
-	public static WindowController awc;
+	public static WindowController wc;
   
   public EsmApplication() {
   	me = this;
@@ -96,8 +96,8 @@ public class EsmApplication {
 	  	// close login window now - all program setup is complete - open main app window
 	  	loginWindow.close();
 	  	loginWindow.dispose();
-	  	awc = new WindowController(user);
-	  	awc.open();
+	  	wc = new WindowController(user);
+	  	wc.open();
 	  }
 
 

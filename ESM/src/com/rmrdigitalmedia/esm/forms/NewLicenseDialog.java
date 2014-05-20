@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm.forms;
 
 import java.sql.Timestamp;
 import java.util.Date;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -18,7 +17,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
+import org.eclipse.wb.swt.SWTResourceManager;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -48,14 +47,14 @@ public class NewLicenseDialog {
 		// algo - remove dashes, last 7 digits + privateKey number should = first 7 digits
 		if(
 			key.length() != 17 || 
-			key.charAt(6) != '-' ||
-			key.charAt(12) != '-'
+			key.charAt(5) != '-' ||
+			key.charAt(11) != '-'
 		) { 
 			return false; 
 		}
-		String kStr = key.replaceAll("-", "");
+		String kStr = key.replaceAll("-", "");		
 		int numA = Integer.parseInt(kStr.substring(0,7));
-		int numB = Integer.parseInt(kStr.substring(8,7));		
+		int numB = Integer.parseInt(kStr.substring(8, 15));		
 		if(numB + privateKey == numA) {
 			LogController.log("License is valid");
 			return true;
@@ -99,12 +98,13 @@ public class NewLicenseDialog {
 		
 		final Label msgLabel = new Label(dialog, SWT.NONE);
 		msgLabel.setFont(C.FONT_8);
+		msgLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		FormData fd_msgLabel = new FormData();
+		fd_msgLabel.left = new FormAttachment(label, 41, SWT.LEFT);
+		fd_msgLabel.right = new FormAttachment(label, 260);
 		fd_msgLabel.top = new FormAttachment(cancel, 0, SWT.TOP);
-		fd_msgLabel.left = new FormAttachment(label, 0, SWT.LEFT);
 		fd_msgLabel.height = 30;
 		fd_msgLabel.bottom = new FormAttachment(100, 10);
-		fd_msgLabel.width = 260;
 		msgLabel.setLayoutData(fd_msgLabel);
 
 		final Text text = new Text (dialog, SWT.BORDER);
@@ -150,6 +150,11 @@ public class NewLicenseDialog {
 					} catch (InterruptedException e1) {}
 					dialog.close ();
 				} else {
+					msgLabel.setFont(C.FONT_10);
+					msgLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+					msgLabel.setText("License Key is not valid!");
+					text.setText("");
+					text.setFocus();
 					LogController.log("User entered INVALID key: " + key);
 				}
 			}
