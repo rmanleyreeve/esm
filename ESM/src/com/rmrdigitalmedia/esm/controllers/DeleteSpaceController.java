@@ -50,6 +50,7 @@ public class DeleteSpaceController {
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		dialog.setSize(250, 130);
 		dialog.setText("ESM Alert");
+		dialog.setImage(C.getImage("/img/appicon16.png"));
 		FormLayout formLayout = new FormLayout ();
 		formLayout.marginWidth = 10;
 		formLayout.marginHeight = 10;
@@ -123,6 +124,7 @@ public class DeleteSpaceController {
 				} catch (SQLException ex) {
 					LogController.logEvent(this, 1, ex);
 					//ex.printStackTrace();
+					LogController.log("Error occurred deleting space " + spaceID);
 				}				
 				dialog.close();
 			}

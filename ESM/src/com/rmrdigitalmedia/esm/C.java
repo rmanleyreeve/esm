@@ -83,8 +83,11 @@ public final class C {
 	public static String SPACES_LIST_TITLE = "Classified Enclosed Spaces";
 	public static String ADMIN_PAGE_TITLE = "ESM System Administration";
 
+
+	
+	
 	public static void makeHoverButton(final Button b) {
-		// NOT SUPPORTED ON WINDOWS :(
+		// NOT SUPPORTED ON WINDOWS :-(
 		b.addMouseTrackListener(new MouseTrackAdapter() {
 			@Override
 			public void mouseEnter(MouseEvent arg0) {

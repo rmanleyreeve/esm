@@ -49,11 +49,10 @@ public class LicenseTable
 
     public static final String licensekeyColumnName = "LICENSEKEY";
     public static final String verifiedDateColumnName = "VERIFIED_DATE";
-    public static final String fallbackKeyColumnName = "FALLBACK_KEY";
 
     private static String[] allColumns =
     {
-        licensekeyColumnName , verifiedDateColumnName , fallbackKeyColumnName , 
+        licensekeyColumnName , verifiedDateColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -198,7 +197,6 @@ public class LicenseTable
             {
                 this.licensekey = data[0];
                 this.verifiedDate = Str.toTimestamp( data[1] );
-                this.fallbackKey = data[2];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -253,7 +251,6 @@ public class LicenseTable
             Map data = new HashMap();
             data.put( licensekeyColumnName , this.licensekey );
             data.put( verifiedDateColumnName , this.verifiedDate == null ? null : this.verifiedDate.toString() );
-            data.put( fallbackKeyColumnName , this.fallbackKey );
             return data ;
         }
 
