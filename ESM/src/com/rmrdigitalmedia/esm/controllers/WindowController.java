@@ -41,6 +41,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.forms.DeleteSpaceDialog;
 import com.rmrdigitalmedia.esm.forms.NewSpaceForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
@@ -273,8 +274,8 @@ public class WindowController {
         String s = selection[0].getText();
         LogController.log("Delete Selection={" + s + "}");
         int _id = Integer.parseInt(s);		          
-      	DeleteSpaceController dsc = new DeleteSpaceController();					
-				if(dsc.deleteOK(_id)) {
+      	DeleteSpaceDialog dsd = new DeleteSpaceDialog();					
+				if(dsd.deleteOK(_id)) {
 					LogController.log("Space "+_id+" marked as deleted in database");
 					showSpacesList();						
 				} else {

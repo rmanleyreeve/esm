@@ -26,6 +26,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.forms.UpdateDialog;
 
 @SuppressWarnings("unused")
 public class InternetController {
@@ -92,7 +93,7 @@ public class InternetController {
 			// new version available
 			LogController.log("NEW VERSION AVAILABLE: " + latestVersion);
 			//EsmApplication.alert(C.NEW_VERSION_ALERT);
-			UpdateController ud = new UpdateController(latestVersion);
+			UpdateDialog ud = new UpdateDialog(latestVersion);
 		}		
 	}	
 	
