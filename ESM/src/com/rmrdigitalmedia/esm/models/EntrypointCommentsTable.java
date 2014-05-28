@@ -53,11 +53,12 @@ public class EntrypointCommentsTable
     public static final String commentColumnName = "COMMENT";
     public static final String createdDateColumnName = "CREATED_DATE";
     public static final String updateDateColumnName = "UPDATE_DATE";
+    public static final String approvedColumnName = "APPROVED";
     public static final String deletedColumnName = "DELETED";
 
     private static String[] allColumns =
     {
-        idColumnName , entrypointIDColumnName , authorIDColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , 
+        idColumnName , entrypointIDColumnName , authorIDColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , approvedColumnName , deletedColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -243,6 +244,7 @@ public class EntrypointCommentsTable
         private String comment ;
         private Timestamp createdDate ;
         private Timestamp updateDate ;
+        private String approved ;
         private String deleted ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
@@ -260,7 +262,8 @@ public class EntrypointCommentsTable
                 this.comment = data[3];
                 this.createdDate = Str.toTimestamp( data[4] );
                 this.updateDate = Str.toTimestamp( data[5] );
-                this.deleted = data[6];
+                this.approved = data[6];
+                this.deleted = data[7];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -336,6 +339,17 @@ public class EntrypointCommentsTable
         }
 
 
+        public String getApproved()
+        {
+            return approved ;
+        }
+
+        public void setApproved( String approved )
+        {
+            this.approved = approved ;
+        }
+
+
         public String getDeleted()
         {
             return deleted ;
@@ -363,6 +377,7 @@ public class EntrypointCommentsTable
             data.put( commentColumnName , this.comment );
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
             data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );
+            data.put( approvedColumnName , this.approved );
             data.put( deletedColumnName , this.deleted );
             return data ;
         }

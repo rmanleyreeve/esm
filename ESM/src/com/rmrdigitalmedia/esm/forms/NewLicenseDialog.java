@@ -100,16 +100,17 @@ public class NewLicenseDialog {
 		msgLabel.setFont(C.FONT_8);
 		msgLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		FormData fd_msgLabel = new FormData();
+		fd_msgLabel.right = new FormAttachment(label, 220);
 		fd_msgLabel.left = new FormAttachment(label, 41, SWT.LEFT);
-		fd_msgLabel.right = new FormAttachment(label, 260);
 		fd_msgLabel.top = new FormAttachment(cancel, 0, SWT.TOP);
 		fd_msgLabel.height = 30;
 		fd_msgLabel.bottom = new FormAttachment(100, 10);
 		msgLabel.setLayoutData(fd_msgLabel);
 
 		final Text text = new Text (dialog, SWT.BORDER);
+		text.setFont(C.FONT_12);
 		data = new FormData ();
-		data.width = 300;
+		data.width = 180;
 		data.left = new FormAttachment (label, 0, SWT.DEFAULT);
 		data.right = new FormAttachment (100, 0);
 		data.top = new FormAttachment (label, 0, SWT.CENTER);
@@ -150,7 +151,7 @@ public class NewLicenseDialog {
 					} catch (InterruptedException e1) {}
 					dialog.close ();
 				} else {
-					msgLabel.setFont(C.FONT_10);
+					msgLabel.setFont(C.FONT_10B);
 					msgLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 					msgLabel.setText("License Key is not valid!");
 					text.setText("");

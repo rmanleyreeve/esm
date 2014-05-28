@@ -208,7 +208,7 @@ public class NewUserForm {
 		lblAccess.setBackground(C.APP_BGCOLOR);
 		lblAccess.setText("Access Level:");	
 		accessLevels = new Combo(form, SWT.DROP_DOWN);
-		String[] levels = {"Disabled","Standard User","User with Sign-Off"};
+		String[] levels = {"Disabled","Moderated User","Approved User","User with Sign-Off"};
 		for (int i=0;i<levels.length;i++) {
 			accessLevels.add(levels[i]);
 			accessLevels.setData(levels[i],i);

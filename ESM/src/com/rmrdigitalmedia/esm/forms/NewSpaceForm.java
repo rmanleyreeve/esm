@@ -57,14 +57,14 @@ public class NewSpaceForm {
 	public boolean complete() {	
 		
 		Display display = Display.getDefault();
-		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		this.myshell = shell;
-		shell.setSize(320, 400);
-		shell.setText("ESM Setup");
-		shell.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
-		shell.setLayout(new FillLayout(SWT.VERTICAL));
+		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM);
+		this.myshell = shlVideotelEsm;
+		shlVideotelEsm.setSize(400, 420);
+		shlVideotelEsm.setText("Videotel ESM");
+		shlVideotelEsm.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
+		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		Composite container = new Composite(shell,SWT.NONE);
+		Composite container = new Composite(shlVideotelEsm,SWT.NONE);
 		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
 		container.setLayout(new FormLayout());		
 			
@@ -121,7 +121,7 @@ public class NewSpaceForm {
 		lblSName.setText("Space Name:");		
 		s_name = new Text(form, SWT.BORDER);
 		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_name.widthHint = 200;
+		gd_name.widthHint = 230;
 		s_name.setLayoutData(gd_name);
 		s_name.setFocus();
 		
@@ -130,8 +130,8 @@ public class NewSpaceForm {
 		lblSDesc.setText("Space\nDescription:");	
 		s_description = new Text(form, SWT.BORDER | SWT.MULTI);
 		GridData gd_sdesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_sdesc.heightHint = 60;
-		gd_sdesc.widthHint = 200;
+		gd_sdesc.heightHint = 80;
+		gd_sdesc.widthHint = 230;
 		s_description.setLayoutData(gd_sdesc);		
 		
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -139,19 +139,19 @@ public class NewSpaceForm {
 		
 		Label lblEName = new Label(form, SWT.NONE);
 		lblEName.setBackground(C.APP_BGCOLOR);
-		lblEName.setText("Entry Name:");		
+		lblEName.setText("Entry Point Name:");		
 		ep_name = new Text(form, SWT.BORDER);
 		GridData gd_ename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_ename.widthHint = 200;
+		gd_ename.widthHint = 230;
 		ep_name.setLayoutData(gd_ename);
 		
 		Label lblEDesc = new Label(form, SWT.NONE);
 		lblEDesc.setBackground(C.APP_BGCOLOR);
-		lblEDesc.setText("Entry\nDescription:");	
+		lblEDesc.setText("Entry Point\nDescription:");	
 		ep_description = new Text(form, SWT.BORDER | SWT.MULTI);
 		GridData gd_edesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_edesc.heightHint = 60;
-		gd_edesc.widthHint = 200;
+		gd_edesc.heightHint = 80;
+		gd_edesc.widthHint = 230;
 		ep_description.setLayoutData(gd_edesc);		
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -203,7 +203,7 @@ public class NewSpaceForm {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {}
-					shell.close ();
+					shlVideotelEsm.close ();
 				} else {
 					Validation.validateError(myshell);
 				}
@@ -212,16 +212,17 @@ public class NewSpaceForm {
 	
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
-		Rectangle rect = shell.getBounds ();
+		Rectangle rect = shlVideotelEsm.getBounds ();
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
-		shell.setLocation (x, y);		  		
-		shell.setDefaultButton (ok);		
+		shlVideotelEsm.setLocation (x, y);		  		
+		shlVideotelEsm.setDefaultButton (ok);		
+		new Label(form, SWT.NONE);
 		
-		shell.open ();
-		shell.layout();
+		shlVideotelEsm.open ();
+		shlVideotelEsm.layout();
 		
-		while (!shell.isDisposed()) {
+		while (!shlVideotelEsm.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
 		LogController.log("New Space form closed");	
