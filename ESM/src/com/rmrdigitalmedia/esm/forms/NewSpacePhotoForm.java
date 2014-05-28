@@ -25,15 +25,17 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
-import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
+import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 
-public class NewSpaceCommentForm {
+public class NewSpacePhotoForm {
 
 	static Shell myshell;
 	boolean formOK = false;
-	Text s_comment;
+	Text p_title, p_comment;
 	int spaceID, authorID, headerH = 40;
 	private Label sep;
+	static String imgToUploadPath = null, imgToUploadName = null;
+	static Text imgSelected;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -41,14 +43,14 @@ public class NewSpaceCommentForm {
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			NewSpaceCommentForm nscf = new NewSpaceCommentForm(1,1);
-			nscf.complete();
+			NewSpacePhotoForm nspf = new NewSpacePhotoForm(1,1);
+			nspf.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public NewSpaceCommentForm(int _spaceID, int _authorID) {
+	public NewSpacePhotoForm(int _spaceID, int _authorID) {
 		LogController.log("Running class " + this.getClass().getName());
 		spaceID = _spaceID;
 		authorID = _authorID;
@@ -58,8 +60,8 @@ public class NewSpaceCommentForm {
 		
 		Display display = Display.getDefault();
 		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		NewSpaceCommentForm.myshell = shlVideotelEsm;
-		shlVideotelEsm.setSize(500, 250);
+		NewSpacePhotoForm.myshell = shlVideotelEsm;
+		shlVideotelEsm.setSize(500, 340);
 		shlVideotelEsm.setText("Videotel ESM");
 		shlVideotelEsm.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
@@ -94,7 +96,7 @@ public class NewSpaceCommentForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("ENTER SPACE COMMENT");
+		lblTitle.setText("ADD SPACE PHOTO / COMMENT");
 		
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -116,48 +118,90 @@ public class NewSpaceCommentForm {
 		form.setLayout(gridLayout);
 
 		//FORM LABELS & FIELDS ==================================================================	
-		Label lblSComment = new Label(form, SWT.NONE);
-		lblSComment.setBackground(C.APP_BGCOLOR);
-		lblSComment.setText("Space\nComment:");		
-		s_comment = new Text(form, SWT.BORDER | SWT.MULTI);
-		GridData gd_comment = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
-		gd_comment.heightHint = 100;
-		gd_comment.widthHint = 400;
-		s_comment.setLayoutData(gd_comment);
-		s_comment.setFocus();
+		Label lblUploadImg = new Label(form, SWT.NONE);
+		lblUploadImg.setBackground(C.APP_BGCOLOR);
+		lblUploadImg.setText("Select Photo:");
+		// file upload button
+	    Button browseImg = new Button(form, SWT.PUSH);
+	    browseImg.setToolTipText("Choose an image related to this Space");
+	    browseImg.setText("Choose...");        
+	    browseImg.addSelectionListener(new SelectionAdapter() {
+	      @Override
+	      public void widgetSelected(SelectionEvent e) {
+	  		String[] imgDetails = UploadController.uploadSpaceImageDialog();
+	  		try {
+				imgToUploadPath = imgDetails[0];
+				imgToUploadName = imgDetails[1];
+				imgSelected.setText(imgToUploadName);
+			} catch (Exception e1) {}
+	      }
+	    });
+		
+		imgSelected = new Text(form, SWT.NONE);
+		imgSelected.setEditable(false);
+		imgSelected.setBackground(C.APP_BGCOLOR);
+		imgSelected.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		imgSelected.setFont(C.FONT_8);
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		
+		Label lblPTitle = new Label(form, SWT.NONE);
+		lblPTitle.setBackground(C.APP_BGCOLOR);
+		lblPTitle.setText("Photo Title:");		
+		p_title = new Text(form, SWT.BORDER | SWT.MULTI);
+		GridData gd_title = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		gd_title.heightHint = 20;
+		gd_title.widthHint = 400;
+		p_title.setLayoutData(gd_title);
+		p_title.setFocus();
+		
+		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
+				
+		Label lblPComment = new Label(form, SWT.NONE);
+		lblPComment.setBackground(C.APP_BGCOLOR);
+		lblPComment.setText("Photo Comment:");		
+		p_comment = new Text(form, SWT.BORDER | SWT.MULTI);
+		GridData gd_comment = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		gd_comment.heightHint = 80;
+		gd_comment.widthHint = 400;
+		p_comment.setLayoutData(gd_comment);
+		p_comment.setFocus();
 		
-		
+		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
+
 		//==================================================================		
 		
 		Button ok = new Button (form, SWT.PUSH);
-		ok.setToolTipText("Click to save your Comment");
+		ok.setToolTipText("Click to save your Photo");
 		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				Text[] fields = {s_comment}; Validation.validateFields(fields);				
-				if( Validation.validateFields(fields) ) {
+				Text[] fields = {p_title, p_comment,imgSelected}; Validation.validateFields(fields);				
+        if( Validation.validateFields(fields) ) {
+        	UploadController.uploadSpaceImage(spaceID, new String[]{imgToUploadPath,imgToUploadName});
 					try {
-						SpaceCommentsTable.Row sRow = SpaceCommentsTable.getRow();
-						sRow.setSpaceID(spaceID);
-						sRow.setComment(s_comment.getText());
-						sRow.setAuthorID(authorID);
-						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
-						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
+						PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow();
+						pRow.setSpaceID(spaceID);
+						pRow.setTitle(p_title.getText());
+						pRow.setComment(p_comment.getText());
+						pRow.setAuthorID(authorID);
+						pRow.setCreatedDate(new Timestamp(new Date().getTime()));
+						pRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						if( EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2 ) {
-							sRow.setApproved("TRUE");
+							pRow.setApproved("TRUE");
 						}
-						sRow.setDeleted("FALSE");
-		        sRow.insert();
+						pRow.setDeleted("FALSE");
+		        pRow.insert();
 		        LogController.log("Space comment added to database.");		        
-						formOK = true;
 					} catch (Exception e1) {
-						e1.printStackTrace();
-					}					
+						LogController.logEvent("Comment upload", 1, e1);
+					}		
+					formOK = true;
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {}
@@ -165,7 +209,8 @@ public class NewSpaceCommentForm {
 				} else {
 					Validation.validateError(myshell);
 				}
-			}
+     }
+
 		});	
 	
 		Monitor primary = display.getPrimaryMonitor ();
