@@ -62,7 +62,7 @@ public class WindowController {
 	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration;
 	static Label pageTitle, onlineStatus;
 	String displayName;
-	public static Button btnAddSpace, btnEditSpace, btnDeleteSpace, btnAdmin;
+	public static Button btnAddSpace, btnViewSpaceDetails, btnDeleteSpace, btnAdmin;
 	static Button btnSpacesList, btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
 	private static int currentSpaceId = 0;
@@ -243,26 +243,26 @@ public class WindowController {
 		fd_btnAddSpace.right = new FormAttachment(btnAdmin,-25);
 		btnAddSpace.setLayoutData(fd_btnAddSpace);
 
-		btnEditSpace = new Button(titleBar, SWT.PUSH);
-		btnEditSpace.setToolTipText("Edit details for the selected Enclosed Space");
-		btnEditSpace.setImage(C.getImage("/img/16_edit.png"));
-		btnEditSpace.addSelectionListener(new SelectionAdapter() {
+		btnViewSpaceDetails = new Button(titleBar, SWT.PUSH);
+		btnViewSpaceDetails.setToolTipText("View details for the selected Enclosed Space");
+		btnViewSpaceDetails.setImage(C.getImage("/img/16_edit.png"));
+		btnViewSpaceDetails.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 		          TableItem[] selection = SpacesListView.getTable().getSelection();
 		          String s = selection[0].getText();
-		          LogController.log("Edit Selection={" + s + "}");
+		          LogController.log("Details Selection={" + s + "}");
 		          int _id = Integer.parseInt(s);
 		          checkSpaceAlert(_id);
 			}
 		});
-		btnEditSpace.setText("Edit");
-		btnEditSpace.setFont(C.BUTTON_FONT);
+		btnViewSpaceDetails.setText("Details");
+		btnViewSpaceDetails.setFont(C.BUTTON_FONT);
 		FormData fd_btnEditSpace = new FormData();
 		fd_btnEditSpace.top = new FormAttachment(titleBar,titleH/5);
 		fd_btnEditSpace.right = new FormAttachment(btnAddSpace,-5);
-		btnEditSpace.setLayoutData(fd_btnEditSpace);
-		btnEditSpace.setEnabled(false);
+		btnViewSpaceDetails.setLayoutData(fd_btnEditSpace);
+		btnViewSpaceDetails.setEnabled(false);
 
 		btnDeleteSpace = new Button(titleBar, SWT.PUSH);
 		btnDeleteSpace.setToolTipText("Delete the selected Enclosed Space");
@@ -287,7 +287,7 @@ public class WindowController {
 		btnDeleteSpace.setFont(C.BUTTON_FONT);
 		FormData fd_btnDeleteSpace = new FormData();
 		fd_btnDeleteSpace.top = new FormAttachment(titleBar,titleH/5);
-		fd_btnDeleteSpace.right = new FormAttachment(btnEditSpace,-5);
+		fd_btnDeleteSpace.right = new FormAttachment(btnViewSpaceDetails,-5);
 		btnDeleteSpace.setLayoutData(fd_btnDeleteSpace);
 		btnDeleteSpace.setEnabled(false);
 		
@@ -393,9 +393,9 @@ public class WindowController {
 		SpacesListView.getTVB().setInput(Arrays.asList(rows));
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(true);
-		btnEditSpace.setVisible(true);
+		btnViewSpaceDetails.setVisible(true);
 		btnDeleteSpace.setVisible(true);
-		btnEditSpace.setEnabled(false);
+		btnViewSpaceDetails.setEnabled(false);
 		btnDeleteSpace.setEnabled(false);
 		btnSpacesList.setVisible(false);
 		stackLayout.topControl = pageSpacesList;
@@ -414,7 +414,7 @@ public class WindowController {
 	public static void showSpaceDetail(int id) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		btnAddSpace.setVisible(false);
-		btnEditSpace.setVisible(false);
+		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
@@ -436,7 +436,7 @@ public class WindowController {
 		LogController.log("Displaying Administration page");
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
-		btnEditSpace.setVisible(false);
+		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
 		stackLayout.topControl = pageAdministration;
