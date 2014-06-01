@@ -163,7 +163,7 @@ public class SpacesListView {
 	    table.addListener(SWT.Selection, new Listener() {
 	        @Override
 			public void handleEvent(Event e) {	
-	        	WindowController.btnEditSpace.setEnabled(true);
+	        	WindowController.btnViewSpaceDetails.setEnabled(true);
 	        	WindowController.btnDeleteSpace.setEnabled(true);        	
 	        }
 	    });
