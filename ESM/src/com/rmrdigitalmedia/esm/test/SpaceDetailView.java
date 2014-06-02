@@ -4,9 +4,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-
 import javax.swing.filechooser.FileSystemView;
-
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
@@ -45,19 +43,18 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
+import com.rmrdigitalmedia.esm.forms.EditSpaceForm;
 import com.rmrdigitalmedia.esm.forms.NewSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.NewSpacePhotoForm;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
-
 import org.eclipse.swt.layout.RowLayout;
 
 public class SpaceDetailView {
@@ -110,21 +107,21 @@ public class SpaceDetailView {
 		panels.setLayout(new FillLayout());
 	
 		// scrolling frame to hold the LH space comments panel
-	    final ScrolledComposite scrollPanelLeft = new ScrolledComposite(panels, SWT.V_SCROLL | SWT.BORDER);
-	    
-	    // the panel that holds the various info rows
-	    final Composite compL = new Composite(scrollPanelLeft, SWT.NONE);
-	    GridLayout gl_compL = new GridLayout(1, true);
-	    gl_compL.marginBottom = 50;
-	    gl_compL.marginRight = 10;
-	    compL.setLayout(gl_compL);
-	    compL.setBackground(C.APP_BGCOLOR);
-	    
-	    // row 1 - name, id, description fields
-	    Group row1 = new Group(compL, SWT.NONE);
-	    row1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-	    row1.setLayout(new GridLayout(4, true));
-	    row1.setBackground(C.APP_BGCOLOR);
+    final ScrolledComposite scrollPanelLeft = new ScrolledComposite(panels, SWT.V_SCROLL | SWT.BORDER);
+    
+    // the panel that holds the various info rows
+    final Composite compL = new Composite(scrollPanelLeft, SWT.NONE);
+    GridLayout gl_compL = new GridLayout(1, true);
+    gl_compL.marginBottom = 50;
+    gl_compL.marginRight = 10;
+    compL.setLayout(gl_compL);
+    compL.setBackground(C.APP_BGCOLOR);
+    
+    // row 1 - name, id, description fields
+    Group row1 = new Group(compL, SWT.NONE);
+    row1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+    row1.setLayout(new GridLayout(4, true));
+    row1.setBackground(C.APP_BGCOLOR);
 	
 		Label lblNname = new Label(row1, SWT.NONE);
 		lblNname.setFont(C.FONT_12B);
@@ -180,7 +177,10 @@ public class SpaceDetailView {
 			btnEditSpace.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent arg0) {
-					//
+					EditSpaceForm nsf = new EditSpaceForm(spaceID);					
+					if(nsf.complete()) {
+						WindowController.showSpaceDetail(spaceID);									
+					}
 				}
 			});		
 		}
@@ -261,6 +261,9 @@ public class SpaceDetailView {
 				lblPosted.setText("Posted " + sdf.format(spaceComment.getUpdateDate()));
 									
 				Button btnEditComment = new Button(commentRow, SWT.NONE);
+				GridData gd_btnEditComment = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+				gd_btnEditComment.horizontalIndent = 5;
+				btnEditComment.setLayoutData(gd_btnEditComment);
 				btnEditComment.setText("Edit");
 				btnEditComment.setToolTipText("Edit this comment");
 				btnEditComment.setFont(C.FONT_9);
@@ -273,9 +276,12 @@ public class SpaceDetailView {
 				
 				Button btnDeleteComment = new Button(commentRow, SWT.NONE);
 				btnDeleteComment.setText("Delete");
-				btnDeleteComment.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+				GridData gd_btnDeleteComment = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+				gd_btnDeleteComment.horizontalIndent = 5;
+				btnDeleteComment.setLayoutData(gd_btnDeleteComment);
 				btnDeleteComment.setToolTipText("Delete this comment");
 				btnDeleteComment.setFont(C.FONT_9);
+				new Label(commentRow, SWT.NONE);
 				btnDeleteComment.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {

@@ -1,6 +1,6 @@
 package com.rmrdigitalmedia.esm.forms;
 
-import java.io.File;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import org.eclipse.swt.SWT;
@@ -23,43 +23,44 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.models.EntrypointsTable;
-import com.rmrdigitalmedia.esm.models.SpacesTable;
-import com.rmrdigitalmedia.esm.models.VesselTable;
+import com.rmrdigitalmedia.esm.models.EsmUsersTable;
+import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 
-public class NewSpaceForm {
-	
-	Shell myshell;
+public class EditSpaceCommentForm {
+
+	static Shell myshell;
 	boolean formOK = false;
-	Text s_name, s_description, ep_name, ep_description;
-	int authorID, headerH = 40;
+	Text s_comment;
+	int commentID, headerH = 40;
 	private Label sep;
-	
+	SpaceCommentsTable.Row cRow;
+
 	/**
 	 * @wbp.parser.entryPoint
 	 */
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			NewSpaceForm nsf = new NewSpaceForm(1);
-			nsf.complete();
+			EditSpaceCommentForm escf = new EditSpaceCommentForm(1);
+			escf.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-	public NewSpaceForm(int _authorID) {
-		LogController.log("Running class " + this.getClass().getName());
-		authorID = _authorID;
-	}	
 	
-	public boolean complete() {	
+	public EditSpaceCommentForm(int _commentID) {
+		LogController.log("Running class " + this.getClass().getName());
+		commentID = _commentID;
+	}
+
+	public boolean complete() {
 		
 		Display display = Display.getDefault();
-		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM);
-		this.myshell = shlVideotelEsm;
-		shlVideotelEsm.setSize(400, 420);
+		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		EditSpaceCommentForm.myshell = shlVideotelEsm;
+		shlVideotelEsm.setSize(500, 250);
 		shlVideotelEsm.setText("Videotel ESM");
 		shlVideotelEsm.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
@@ -94,7 +95,7 @@ public class NewSpaceForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("ENTER SPACE / ENTRYPOINT DETAILS");
+		lblTitle.setText("EDIT SPACE COMMENT");
 		
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -110,91 +111,50 @@ public class NewSpaceForm {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 10;
 		gridLayout.marginHeight = 20;
-		gridLayout.numColumns = 2;
+		gridLayout.numColumns = 3;
 		gridLayout.horizontalSpacing = 20;
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
-				
+		
+		try {
+			cRow = SpaceCommentsTable.getRow(commentID);
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
 		//FORM LABELS & FIELDS ==================================================================	
-		Label lblSName = new Label(form, SWT.NONE);
-		lblSName.setBackground(C.APP_BGCOLOR);
-		lblSName.setText("Space Name:");		
-		s_name = new Text(form, SWT.BORDER);
-		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_name.widthHint = 230;
-		s_name.setLayoutData(gd_name);
-		s_name.setFocus();
-		
-		Label lblSDesc = new Label(form, SWT.NONE);
-		lblSDesc.setBackground(C.APP_BGCOLOR);
-		lblSDesc.setText("Space\nDescription:");	
-		s_description = new Text(form, SWT.BORDER | SWT.MULTI);
-		GridData gd_sdesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_sdesc.heightHint = 80;
-		gd_sdesc.widthHint = 230;
-		s_description.setLayoutData(gd_sdesc);		
-		
-		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
-		
-		Label lblEName = new Label(form, SWT.NONE);
-		lblEName.setBackground(C.APP_BGCOLOR);
-		lblEName.setText("Entry Point Name:");		
-		ep_name = new Text(form, SWT.BORDER);
-		GridData gd_ename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_ename.widthHint = 230;
-		ep_name.setLayoutData(gd_ename);
-		
-		Label lblEDesc = new Label(form, SWT.NONE);
-		lblEDesc.setBackground(C.APP_BGCOLOR);
-		lblEDesc.setText("Entry Point\nDescription:");	
-		ep_description = new Text(form, SWT.BORDER | SWT.MULTI);
-		GridData gd_edesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_edesc.heightHint = 80;
-		gd_edesc.widthHint = 230;
-		ep_description.setLayoutData(gd_edesc);		
+		Label lblSComment = new Label(form, SWT.NONE);
+		lblSComment.setBackground(C.APP_BGCOLOR);
+		lblSComment.setText("Space\nComment:");		
+		s_comment = new Text(form, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		s_comment.setText(cRow.getComment());
+		GridData gd_comment = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		gd_comment.heightHint = 100;
+		gd_comment.widthHint = 400;
+		s_comment.setLayoutData(gd_comment);
+		s_comment.setFocus();
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
+		
 		
 		//==================================================================		
 		
 		Button ok = new Button (form, SWT.PUSH);
-		ok.setToolTipText("Click to save these details");
+		ok.setToolTipText("Click to update your Comment");
 		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				Text[] fields = {s_name,s_description,ep_name,ep_description}; Validation.validateFields(fields);				
+				Text[] fields = {s_comment}; Validation.validateFields(fields);				
 				if( Validation.validateFields(fields) ) {
 					try {
-						SpacesTable.Row sRow = SpacesTable.getRow();
-						sRow.setName(s_name.getText());
-						sRow.setDescription(s_description.getText());
-						sRow.setVesselName(VesselTable.getAllRows()[0].getName());
-						sRow.setAuthorID(authorID);
-						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
-						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
-						sRow.setDeleted("FALSE");
-						int spaceID = (int) sRow.insert();
-		        LogController.log("Space "+spaceID+" added to database.");
-		        //SpacesTable.Row[] rArr = SpacesTable.getAllRows();
-		        //int commentID = rArr[rArr.length-1].getID();
-						new File( C.DOC_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // docs						
-						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // image base dir
-						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP ).mkdir(); // full
-						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "thumb" + C.SEP).mkdir(); // thumbs
-						EntrypointsTable.Row epRow = EntrypointsTable.getRow();
-						epRow.setName(ep_name.getText());
-						epRow.setDescription(ep_description.getText());
-						epRow.setSpaceID(spaceID);
-						epRow.setCreatedDate(new Timestamp(new Date().getTime()));
-						epRow.setUpdateDate(new Timestamp(new Date().getTime()));
-						epRow.setAuthorID(authorID);
-						epRow.setDeleted("FALSE");
-						int epID = (int) epRow.insert();
-						LogController.log("Entry Point "+epID+" added to database.");				        
+						cRow.setComment(s_comment.getText());
+						cRow.setUpdateDate(new Timestamp(new Date().getTime()));
+		        cRow.update();
+		        LogController.log("Space comment updated");		        
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -217,6 +177,7 @@ public class NewSpaceForm {
 		shlVideotelEsm.setLocation (x, y);		  		
 		shlVideotelEsm.setDefaultButton (ok);		
 		new Label(form, SWT.NONE);
+		new Label(form, SWT.NONE);
 		
 		shlVideotelEsm.open ();
 		shlVideotelEsm.layout();
@@ -224,7 +185,9 @@ public class NewSpaceForm {
 		while (!shlVideotelEsm.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("New Space form closed");	
+		LogController.log("Edit Space Comment form closed");	
+		
 		return formOK;
 	}
+
 }

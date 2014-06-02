@@ -26,6 +26,7 @@ import com.rmrdigitalmedia.esm.EsmApplication;
 public class UploadController {
 	
 	static Display display = Display.getCurrent();
+	private static String uploadPath = "";
 
 	public static String[] uploadSpaceImageDialog() {
 		final FileDialog dialog = new FileDialog (new Shell(), SWT.OPEN | SWT.ON_TOP);
@@ -83,6 +84,7 @@ public class UploadController {
 			    File src = new File(imgDetails[0]);  
 			    imgToUploadName = ts + "." + ext;
 			    String savePathFull = C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP + imgToUploadName;
+			    uploadPath = savePathFull;
 			    String savePathThumb = C.IMG_DIR + C.SEP + spaceID + C.SEP + "thumb" + C.SEP + imgToUploadName;
 			    final File destFull = new File(savePathFull);  	      
 			    final File destThumb = new File(savePathThumb);  	      
@@ -125,6 +127,14 @@ public class UploadController {
 			} 
 		}
 		return ok;
+	}		
+
+	public static String uploadSpaceImagePath(int spaceID, String[] imgDetails) {
+		String s = "";
+		if(uploadSpaceImage(spaceID, imgDetails)) {
+			s = uploadPath;
+		}
+		return s;
 	}		
 
 	public static boolean uploadSpaceDocument(int spaceID, String[] docDetails) {

@@ -110,14 +110,14 @@ public class AppLoader {
     label.setLayoutData(labelData);
     
     splash.pack();
-	Monitor primary = display.getPrimaryMonitor ();
-	Rectangle bounds = primary.getBounds ();
-	Rectangle rect = splash.getBounds ();
-	LogController.log("Splash Screen Size: " + rect.width + ":" + rect.height);
-	int x = bounds.x + (bounds.width - rect.width) / 2;
-	int y = bounds.y + (bounds.height - rect.height) / 2;
-	splash.setLocation (x, y);		  		
-	splash.open();
+		Monitor primary = display.getPrimaryMonitor ();
+		Rectangle bounds = primary.getBounds ();
+		Rectangle rect = splash.getBounds ();
+		LogController.log("Splash Screen Size: " + rect.width + ":" + rect.height);
+		int x = bounds.x + (bounds.width - rect.width) / 2;
+		int y = bounds.y + (bounds.height - rect.height) / 2;
+		splash.setLocation (x, y);		  		
+		splash.open();
      
 	    display.asyncExec(new Runnable() {
 	      @Override
