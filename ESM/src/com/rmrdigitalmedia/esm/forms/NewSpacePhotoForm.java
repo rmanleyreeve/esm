@@ -182,26 +182,31 @@ public class NewSpacePhotoForm {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
 				Text[] fields = {p_title, p_comment,imgSelected}; Validation.validateFields(fields);				
+      	String path = "";
         if( Validation.validateFields(fields) ) {
-        	UploadController.uploadSpaceImage(spaceID, new String[]{imgToUploadPath,imgToUploadName});
-					try {
-						PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow();
-						pRow.setSpaceID(spaceID);
-						pRow.setTitle(p_title.getText());
-						pRow.setComment(p_comment.getText());
-						pRow.setAuthorID(authorID);
-						pRow.setCreatedDate(new Timestamp(new Date().getTime()));
-						pRow.setUpdateDate(new Timestamp(new Date().getTime()));
-						if( EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2 ) {
-							pRow.setApproved("TRUE");
-						}
-						pRow.setDeleted("FALSE");
-		        pRow.insert();
-		        LogController.log("Space comment added to database.");		        
-					} catch (Exception e1) {
-						LogController.logEvent("Comment upload", 1, e1);
-					}		
-					formOK = true;
+        	try {
+        		path = UploadController.uploadSpaceImagePath(spaceID, new String[]{imgToUploadPath,imgToUploadName});
+        	} catch (Exception ex) {}
+        	if(!path.equals("")) {
+						try {
+							PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow();
+							pRow.setSpaceID(spaceID);
+							pRow.setTitle(p_title.getText());
+							pRow.setComment(p_comment.getText());
+							pRow.setAuthorID(authorID);
+							pRow.setCreatedDate(new Timestamp(new Date().getTime()));
+							pRow.setUpdateDate(new Timestamp(new Date().getTime()));
+							if( EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2 ) {
+								pRow.setApproved("TRUE");
+							}
+							pRow.setDeleted("FALSE");
+			        pRow.insert();
+			        LogController.log("Space comment added to database.");		        
+						} catch (Exception e1) {
+							LogController.logEvent("Comment upload", 1, e1);
+						}		
+						formOK = true;
+	        	}
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {}

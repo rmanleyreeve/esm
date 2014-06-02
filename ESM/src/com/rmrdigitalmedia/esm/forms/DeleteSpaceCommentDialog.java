@@ -21,30 +21,30 @@ import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 @SuppressWarnings("unused")
-public class DeleteSpaceDialog {
+public class DeleteSpaceCommentDialog {
 	
 	private FormData fd_lblAProgramUpdate;
-	int spaceID;
+	int commentID;
 	boolean formOK = false;
 	
 	
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			DeleteSpaceDialog dsd = new DeleteSpaceDialog();
-			dsd.deleteOK(0);
+			DeleteSpaceCommentDialog dscd = new DeleteSpaceCommentDialog();
+			dscd.deleteOK(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public DeleteSpaceDialog() {
+	public DeleteSpaceCommentDialog() {
 	  	LogController.log("Running class " + this.getClass().getName());		
 	}
 	
 	
 	public boolean deleteOK(int _id) {
-		this.spaceID = _id;
+		this.commentID = _id;
 		Display display = Display.getDefault();
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		dialog.setSize(250, 130);
@@ -97,33 +97,21 @@ public class DeleteSpaceDialog {
 				try {
 					/*
 					// THE DESTRUCTIVE WAY
-					for(EntrypointsTable.Row entryPoint:EntrypointsTable.getRows("SPACE_ID="+commentID+" AND DELETED=FALSE")) {
-						for(EntrypointCommentsTable.Row entryComment:EntrypointCommentsTable.getRows("ENTRYPOINT_ID="+entryPoint.getID()+" AND DELETED=FALSE")) {
-							LogController.log("Deleted entrypoint comment " + entryComment.getID());
-							//entryComment.delete();
-						}
-						entryPoint.delete();
-						LogController.log("Deleted entrypoint " + entryPoint.getID());
-					}
-					for (SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("SPACE_ID="+commentID+" AND DELETED=FALSE")) {
-						spaceComment.delete();						
-						LogController.log("Deleted space comment " + spaceComment.getID());
-					}
-					SpacesTable.Row space = SpacesTable.getRow(commentID);
-					space.delete();					
-					LogController.log("Deleted space " + commentID);
+					SpaceCommentsTable.Row spaceComment = SpaceCommentsTable.getRow(commentID);
+					spaceComment.delete();											
+					LogController.log("Deleted space comment " + spaceComment.getID());
 					formOK = true;
 					*/
 					//NON-DESTRUCTIVE
-					SpacesTable.Row space = SpacesTable.getRow(spaceID);
-					space.setDeleted("TRUE");
-					space.update();
-					LogController.log("Marked space " + spaceID + " as deleted");
+					SpaceCommentsTable.Row comment = SpaceCommentsTable.getRow(commentID);
+					comment.setDeleted("TRUE");
+					comment.update();
+					LogController.log("Marked space comment " + commentID + " as deleted");
 					formOK = true;
 				} catch (SQLException ex) {
 					LogController.logEvent(this, 1, ex);
 					//ex.printStackTrace();
-					LogController.log("Error occurred deleting space " + spaceID);
+					LogController.log("Error occurred deleting space comment " + commentID);
 				}				
 				dialog.close();
 			}
