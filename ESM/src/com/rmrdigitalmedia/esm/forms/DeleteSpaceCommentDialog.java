@@ -97,9 +97,9 @@ public class DeleteSpaceCommentDialog {
 				try {
 					/*
 					// THE DESTRUCTIVE WAY
-					SpaceCommentsTable.Row spaceComment = SpaceCommentsTable.getRow(commentID);
-					spaceComment.delete();											
+					SpaceCommentsTable.Row spaceComment = SpaceCommentsTable.getRow(metadataID);
 					LogController.log("Deleted space comment " + spaceComment.getID());
+					spaceComment.delete();											
 					formOK = true;
 					*/
 					//NON-DESTRUCTIVE

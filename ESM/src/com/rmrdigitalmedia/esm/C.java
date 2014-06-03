@@ -40,6 +40,11 @@ public final class C {
 	public static String DB_SETUP_FILE = "SETUP.sql";
 	public static String APP_NAME = "Enclosed Spaces Management System";
 	
+	public static int IMG_WIDTH = 800;
+	public static int IMG_HEIGHT = 600;
+	public static int THUMB_WIDTH = 150;
+	public static int THUMB_HEIGHT = 150;
+
 	// styling properties
 	public static Color APP_BGCOLOR = SWTResourceManager.getColor(222, 224, 226);
 	public static Color TITLEBAR_BGCOLOR = SWTResourceManager.getColor(122, 130, 137);

@@ -4,7 +4,6 @@ import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
@@ -39,7 +38,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -54,6 +52,7 @@ import com.rmrdigitalmedia.esm.forms.NewSpacePhotoForm;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
+import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
@@ -283,7 +282,6 @@ public class SpaceDetailView {
 					btnDeleteComment.setLayoutData(gd_btnDeleteComment);
 					btnDeleteComment.setToolTipText("Delete this comment");
 					btnDeleteComment.setFont(C.FONT_9);
-					new Label(commentRow, SWT.NONE);
 					btnDeleteComment.addSelectionListener(new SelectionAdapter() {
 						@Override
 						public void widgetSelected(SelectionEvent arg0) {
@@ -584,7 +582,7 @@ public class SpaceDetailView {
 		// PHOTOS ===============================
 		String imgDir = C.IMG_DIR + C.SEP + spaceID + C.SEP;
 		final String imgDirFull =  imgDir + "full";
-		String imgDirThumb = imgDir + "thumb";
+		final String imgDirThumb = imgDir + "thumb";
 		new File(imgDir).mkdir();
 		new File(imgDirThumb).mkdir();
 		new File(imgDirFull).mkdir();
@@ -609,7 +607,7 @@ public class SpaceDetailView {
 			gr.setItemWidth(150);
 			gr.setAutoMargin(true);
 			gallery.setGroupRenderer(gr);
-			gallery.setToolTipText("Double-click a thumbnail image to open full size");
+			gallery.setToolTipText("Double-click a thumbnail image to open larger size");
 
 			DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
 			ir.setShowRoundedSelectionCorners(false);
@@ -617,13 +615,22 @@ public class SpaceDetailView {
 
 			GalleryItem group = new GalleryItem(gallery, SWT.NONE);
 			for (File f:new File(imgDirThumb).listFiles()) {
-				LogController.log("Image found: " + f);
-				Image itemImage = C.getExtImage(f.getPath());		
+				String fn = f.getName();
+				String fp = f.toString();
+				LogController.log("Image found: " + fp);
+				try {
+					PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow("path", fp);
+					fn = pRow.getTitle();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Image itemImage = C.getExtImage(fp);		
 				if (itemImage != null) {
 					GalleryItem item = new GalleryItem(group, SWT.NONE);
 					item.setImage(itemImage);
 					item.setData("file", f.getName());
-					item.setText(f.getName()); 
+					item.setText(fn); 
 				}
 			}		
 			gallery.addMouseListener(new MouseListener() {
@@ -634,8 +641,10 @@ public class SpaceDetailView {
 						return;
 					GalleryItem item = selection[0];			
 					String fullImg = imgDirFull + C.SEP +(String)item.getData("file");
+					String thumbImg = imgDirThumb + C.SEP +(String)item.getData("file");
 					LogController.log("Opening Image={" + fullImg + "}");
-					Program.launch(fullImg);
+					WindowController.showPhotoViewer(spaceID,fullImg, thumbImg);
+					//Program.launch(fullImg);					
 				}
 				@Override
 				public void mouseDown(MouseEvent e) {}

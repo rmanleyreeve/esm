@@ -1,5 +1,6 @@
 package com.rmrdigitalmedia.esm.forms;
 
+import java.io.File;
 import java.sql.SQLException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -17,34 +18,35 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EntrypointCommentsTable;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
+import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 @SuppressWarnings("unused")
-public class DeleteSpaceDialog {
+public class DeletePhotoDialog {
 	
 	private FormData fd_lblAProgramUpdate;
-	int spaceID;
+	int commentID;
 	boolean formOK = false;
 	
 	
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			DeleteSpaceDialog dsd = new DeleteSpaceDialog();
-			dsd.deleteOK(0);
+			DeletePhotoDialog dpd = new DeletePhotoDialog();
+			dpd.deleteOK("x","x");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public DeleteSpaceDialog() {
+	public DeletePhotoDialog() {
 	  	LogController.log("Running class " + this.getClass().getName());		
 	}
 	
 	
-	public boolean deleteOK(int _id) {
-		this.spaceID = _id;
+	public boolean deleteOK(final String thumbPath, final String fullPath) {		
+		
 		Display display = Display.getDefault();
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		dialog.setSize(250, 130);
@@ -95,35 +97,16 @@ public class DeleteSpaceDialog {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
 				try {
-					/*
-					// THE DESTRUCTIVE WAY
-					for(EntrypointsTable.Row entryPoint:EntrypointsTable.getRows("SPACE_ID="+metadataID+" AND DELETED=FALSE")) {
-						for(EntrypointCommentsTable.Row entryComment:EntrypointCommentsTable.getRows("ENTRYPOINT_ID="+entryPoint.getID()+" AND DELETED=FALSE")) {
-							LogController.log("Deleted entrypoint comment " + entryComment.getID());
-							//entryComment.delete();
-						}
-						LogController.log("Deleted entrypoint " + entryPoint.getID());
-						entryPoint.delete();
-					}
-					for (SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("SPACE_ID="+metadataID+" AND DELETED=FALSE")) {
-						LogController.log("Deleted space comment " + spaceComment.getID());
-						spaceComment.delete();						
-					}
-					SpacesTable.Row space = SpacesTable.getRow(metadataID);
-					LogController.log("Deleted space " + metadataID);
-					space.delete();					
-					formOK = true;
-					*/
-					//NON-DESTRUCTIVE
-					SpacesTable.Row space = SpacesTable.getRow(spaceID);
-					space.setDeleted("TRUE");
-					space.update();
-					LogController.log("Marked space " + spaceID + " as deleted");
+					new File(thumbPath).delete();
+					new File(fullPath).delete();
+					PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow("path", thumbPath);
+					LogController.log("Deleted photo metadata " + pRow.getID());
+					pRow.delete();
 					formOK = true;
 				} catch (SQLException ex) {
 					LogController.logEvent(this, 1, ex);
 					//ex.printStackTrace();
-					LogController.log("Error occurred deleting space " + spaceID);
+					LogController.log("Error occurred deleting photo");
 				}				
 				dialog.close();
 			}

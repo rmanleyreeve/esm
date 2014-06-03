@@ -31,7 +31,7 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 
 public class SpacesListView {
-	
+
 	private static Row[] rows;
 
 	public static void main(String[] args) {
@@ -57,12 +57,12 @@ public class SpacesListView {
 			e.printStackTrace();
 		}
 	}
-	
+
 
 	static TableViewerBuilder tvb;
 	static TableViewer tv;
 	static Table table;
-	
+
 	public static TableViewerBuilder getTVB() {
 		return tvb;
 	}
@@ -72,114 +72,114 @@ public class SpacesListView {
 	public static Table getTable() {
 		return table;
 	}
-		
+
 	@SuppressWarnings("unused")
 	public static void buildTable(Composite parent) {
-		
+
 		// based on http://www.ralfebert.de/archive/eclipse_rcp/tableviewerbuilder/
-	  	
+
 		final String[] titles = { "ID", "Name", "Completion Status","Internal Classification","Entry Points Classification", "S/O" };
 		tvb = new TableViewerBuilder(parent, SWT.SINGLE | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.HIDE_SELECTION);		
 		ColumnBuilder col;		
-		
+
 		// ID --------------------------------------------------------------------------------------
 		col = tvb.createColumn("ID");
 		// set spacer image using format() to force row height
-	  	col.format(new ICellFormatter() {
-		    @Override
+		col.format(new ICellFormatter() {
+			@Override
 			public void formatCell(ViewerCell c, Object value) {
-		    	c.setImage(C.getImage("/img/1x36.png"));
-		    }
-	  	});    	
-	  	col.bindToProperty("ID");
-	  	col.setPixelWidth(75);
-	  	col.useAsDefaultSortColumn();
-	  	col.build();	
-  	
-	  	// name --------------------------------------------------------------------------------------
-	  	col = tvb.createColumn("Name");
-	  	col.bindToProperty("name");
-	  	col.setPercentWidth(30);
-	  	col.build();	  	
-	  	
-	  	//completion status --------------------------------------------------------------------------------------
-	  	col = tvb.createColumn("Completion Status");
-	  	col.setPixelWidth(160);
-	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new DynamicImageCell(new BaseValue<Row>() {
-	  	    @Override
-	  	    public Object get(Row r) {
-	  	        int id = r.getID();
-	  	        // we have the row ID so we can perform the completion status calculations here
-	  	        // get the % value and return the appropriate image
-	  	    	return "/img/Percent_"+ (id*20) +".png";
-	  	    }
-	  	}));
-	  	col.build();
-	  	
-	  	// internal classification --------------------------------------------------------------------------------------
-	  	col = tvb.createColumn("Internal Classification");
-	  	col.setPercentWidth(10);
-	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new ImageCell(C.getImage("/img/amber.png"))); 	  	
-	  	col.build();
-	  	
-	  	// entry points classification --------------------------------------------------------------------------------------
-	  	col = tvb.createColumn("Entry Points Classification");
-	  	col.setPixelWidth(180);
-	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new DynamicImageArrayCell(new BaseValue<Row>() {
-	  	    @Override
-	  	    public Object get(Row r) {
-	  	        int id = r.getID();
-	  	        // we have the row ID so we can perform the entrypoint audit calculations here
-	  	        // get the statuses and return the appropriate images as an array
-	  		  	return new String[] {"/img/green.png","/img/amber.png","/img/red.png","/img/green.png","/img/amber.png"};
-	  	    }
-	  	}));
-	  	col.build();
-	  	
-	  	// signed off --------------------------------------------------------------------------------------
-	  	col = tvb.createColumn("S/O");	  	
-	  	col.setPercentWidth(5);
-	  	col.alignCenter();
-	  	col.setCustomLabelProvider(new DynamicImageCell(new BaseValue<Row>() {
-	  	    @Override
-	  	    public Object get(Row r) {
-	  	        int id = r.getID();
-	  	        // we have the row ID so we can work out the signoff status calculations here
-	  	        // get the value and return the appropriate image
-	  	    	return "/img/bluetick.png";
-	  	    }
-	  	}));
-	  	col.build();
-	  	
-	  	//==========================================================================
-	 	  	
-	    tv = tvb.getTableViewer();
-	    table = tvb.getTable();
-	    table.setFont(C.FONT_12);
-	    	    	    
-	    table.addListener(SWT.Selection, new Listener() {
-	        @Override
+				c.setImage(C.getImage("/img/1x36.png"));
+			}
+		});    	
+		col.bindToProperty("ID");
+		col.setPixelWidth(75);
+		col.useAsDefaultSortColumn();
+		col.build();	
+
+		// name --------------------------------------------------------------------------------------
+		col = tvb.createColumn("Name");
+		col.bindToProperty("name");
+		col.setPercentWidth(30);
+		col.build();	  	
+
+		//completion status --------------------------------------------------------------------------------------
+		col = tvb.createColumn("Completion Status");
+		col.setPixelWidth(160);
+		col.alignCenter();
+		col.setCustomLabelProvider(new DynamicImageCell(new BaseValue<Row>() {
+			@Override
+			public Object get(Row r) {
+				int id = r.getID();
+				// we have the row ID so we can perform the completion status calculations here
+				// get the % value and return the appropriate image
+				return "/img/Percent_"+ (id*20) +".png";
+			}
+		}));
+		col.build();
+
+		// internal classification --------------------------------------------------------------------------------------
+		col = tvb.createColumn("Internal Classification");
+		col.setPercentWidth(10);
+		col.alignCenter();
+		col.setCustomLabelProvider(new ImageCell(C.getImage("/img/amber.png"))); 	  	
+		col.build();
+
+		// entry points classification --------------------------------------------------------------------------------------
+		col = tvb.createColumn("Entry Points Classification");
+		col.setPixelWidth(180);
+		col.alignCenter();
+		col.setCustomLabelProvider(new DynamicImageArrayCell(new BaseValue<Row>() {
+			@Override
+			public Object get(Row r) {
+				int id = r.getID();
+				// we have the row ID so we can perform the entrypoint audit calculations here
+				// get the statuses and return the appropriate images as an array
+				return new String[] {"/img/green.png","/img/amber.png","/img/red.png","/img/green.png","/img/amber.png"};
+			}
+		}));
+		col.build();
+
+		// signed off --------------------------------------------------------------------------------------
+		col = tvb.createColumn("S/O");	  	
+		col.setPercentWidth(5);
+		col.alignCenter();
+		col.setCustomLabelProvider(new DynamicImageCell(new BaseValue<Row>() {
+			@Override
+			public Object get(Row r) {
+				int id = r.getID();
+				// we have the row ID so we can work out the signoff status calculations here
+				// get the value and return the appropriate image
+				return "/img/bluetick.png";
+			}
+		}));
+		col.build();
+
+		//==========================================================================
+
+		tv = tvb.getTableViewer();
+		table = tvb.getTable();
+		table.setFont(C.FONT_12);
+
+		table.addListener(SWT.Selection, new Listener() {
+			@Override
 			public void handleEvent(Event e) {	
-	        	WindowController.btnViewSpaceDetails.setEnabled(true);
-	        	WindowController.btnDeleteSpace.setEnabled(true);        	
-	        }
-	    });
-	    
-	   table.addListener(SWT.MouseDoubleClick, new Listener() {
-	        @Override
+				WindowController.btnViewSpaceDetails.setEnabled(true);
+				WindowController.btnDeleteSpace.setEnabled(true);        	
+			}
+		});
+
+		table.addListener(SWT.MouseDoubleClick, new Listener() {
+			@Override
 			public void handleEvent(Event e) {	
-	          TableItem[] selection = table.getSelection();
-	          String s = selection[0].getText();
-	          LogController.log("User clicked item " + s);
-	          int _id = Integer.parseInt(s);
-	          WindowController.checkSpaceAlert(_id);
-	        }
-	      });
-  	
-  	
+				TableItem[] selection = table.getSelection();
+				String s = selection[0].getText();
+				LogController.log("User clicked item " + s);
+				int _id = Integer.parseInt(s);
+				WindowController.checkSpaceAlert(_id);
+			}
+		});
+
+
 	}
 
 }

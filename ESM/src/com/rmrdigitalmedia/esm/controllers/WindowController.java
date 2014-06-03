@@ -47,6 +47,7 @@ import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
 import com.rmrdigitalmedia.esm.views.AdministrationView;
+import com.rmrdigitalmedia.esm.views.PhotoViewer;
 import com.rmrdigitalmedia.esm.views.SpaceAlert;
 import com.rmrdigitalmedia.esm.views.SpaceDetailView;
 import com.rmrdigitalmedia.esm.views.SpacesListView;
@@ -84,8 +85,8 @@ public class WindowController {
 		me = this;
 		WindowController.user = user;
 		this.displayName = user.getRank() + " " + user.getForename() + " " + user.getSurname();
-	  	LogController.log("Running class " + this.getClass().getName());
-	  	LogController.log("Logged in user: " + displayName);
+		LogController.log("Running class " + this.getClass().getName());
+		LogController.log("Logged in user: " + displayName);
 	}
 
 	public void open() {
@@ -121,22 +122,22 @@ public class WindowController {
 	}
 
 	protected void createContents() {
-		
+
 		// set up container layout
 		container = new Composite(shell,SWT.NONE);
 		container.setBackground(C.APP_BGCOLOR);		
 		FormLayout layout = new FormLayout();
 		container.setLayout (layout);
-		
+
 		// set up row elements ================================================
 		header = new Composite(container,SWT.NONE);
 		header.setBackground(C.APP_BGCOLOR);
 		header.setLayout(new FormLayout());
-		
+
 		titleBar = new Composite(container,SWT.NONE);
 		titleBar.setBackground(C.TITLEBAR_BGCOLOR);
 		titleBar.setLayout(new FormLayout());	
-		
+
 		pageTitle = new Label(titleBar, SWT.NONE);
 		pageTitle.setFont(C.HEADER_FONT);
 		pageTitle.setBackground(C.TITLEBAR_BGCOLOR);
@@ -152,30 +153,30 @@ public class WindowController {
 		formHolder.setLayoutData(fd_formHolder);
 		stackLayout = new StackLayout ();
 		formHolder.setLayout(stackLayout);
-				
+
 		// SPACES LISTING PAGE ======================================================
 		pageSpacesList = new Composite (formHolder, SWT.NONE);
 		SpacesListView.buildTable(pageSpacesList);
-    
+
 		// SPACE DETAIL PAGE ======================================================
 		pageSpaceDetail = new Composite (formHolder, SWT.NONE);
 		//SpaceDetailView.buildPage(pageSpaceDetail, 0);
-		
+
 		// ADMIN PAGE ===============================================================
 		pageAdministration = new Composite (formHolder, SWT.NONE);
 		AdministrationView.buildPage(pageAdministration);
-		
-		
-		
-		
-		
-		
-				
+
+
+
+
+
+
+
 		Composite footer = new Composite(container,SWT.NONE);
 		footer.setBackground(C.APP_BGCOLOR);
 		FillLayout fl_footer = new FillLayout();
 		footer.setLayout(fl_footer);				
-		
+
 		// set up row element positions =======================
 		FormData fd_header = new FormData();
 		fd_header.top = new FormAttachment(container,0);
@@ -183,19 +184,19 @@ public class WindowController {
 		fd_header.bottom = new FormAttachment(container,headerH);
 		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);		
-		
+
 		FormData fd_title = new FormData();
 		fd_title.height = titleH;
 		fd_title.top = new FormAttachment(header);
 		fd_title.right = new FormAttachment(100,0);
 		fd_title.left = new FormAttachment(0,0);
 		titleBar.setLayoutData(fd_title);
-		
-	
+
+
 		// buttons ====================================================================================================
-	
+
 		Button foo = new Button(titleBar, SWT.NONE); // dummy button to take default
-		
+
 		onlineStatus = new Label(titleBar, SWT.NONE);
 		onlineStatus.setImage(C.getImage("/img/16_globe.png"));
 		onlineStatus.setBackground(C.TITLEBAR_BGCOLOR);
@@ -205,7 +206,7 @@ public class WindowController {
 		onlineStatus.setLayoutData(fd_onlineStatus);
 		onlineStatus.setToolTipText("Application is online");
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
-		
+
 		btnAdmin = new Button(titleBar, SWT.PUSH);
 		btnAdmin.setToolTipText("Administration Menu (authorized users only)");
 		btnAdmin.setImage(C.getImage("/img/16_padlock.png"));
@@ -249,11 +250,11 @@ public class WindowController {
 		btnViewSpaceDetails.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-		          TableItem[] selection = SpacesListView.getTable().getSelection();
-		          String s = selection[0].getText();
-		          LogController.log("Details Selection={" + s + "}");
-		          int _id = Integer.parseInt(s);
-		          checkSpaceAlert(_id);
+				TableItem[] selection = SpacesListView.getTable().getSelection();
+				String s = selection[0].getText();
+				LogController.log("Details Selection={" + s + "}");
+				int _id = Integer.parseInt(s);
+				checkSpaceAlert(_id);
 			}
 		});
 		btnViewSpaceDetails.setText("Details");
@@ -270,11 +271,11 @@ public class WindowController {
 		btnDeleteSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-        TableItem[] selection = SpacesListView.getTable().getSelection();
-        String s = selection[0].getText();
-        LogController.log("Delete Selection={" + s + "}");
-        int _id = Integer.parseInt(s);		          
-      	DeleteSpaceDialog dsd = new DeleteSpaceDialog();					
+				TableItem[] selection = SpacesListView.getTable().getSelection();
+				String s = selection[0].getText();
+				LogController.log("Delete Selection={" + s + "}");
+				int _id = Integer.parseInt(s);		          
+				DeleteSpaceDialog dsd = new DeleteSpaceDialog();					
 				if(dsd.deleteOK(_id)) {
 					LogController.log("Space "+_id+" marked as deleted in database");
 					showSpacesList();						
@@ -290,7 +291,7 @@ public class WindowController {
 		fd_btnDeleteSpace.right = new FormAttachment(btnViewSpaceDetails,-5);
 		btnDeleteSpace.setLayoutData(fd_btnDeleteSpace);
 		btnDeleteSpace.setEnabled(false);
-		
+
 		btnSpacesList = new Button(titleBar, SWT.PUSH);
 		btnSpacesList.setToolTipText("View the list of Enclosed Spaces");
 		btnSpacesList.setImage(C.getImage("/img/List.png"));
@@ -320,7 +321,7 @@ public class WindowController {
 		fd_footer.bottom = new FormAttachment(100,0);
 		fd_footer.left = new FormAttachment(0,0);
 		footer.setLayoutData(fd_footer);				
-		
+
 		// graphic elements etc
 		Label logo = new Label(header, SWT.TRANSPARENT);
 		logo.setAlignment(SWT.LEFT);
@@ -346,7 +347,7 @@ public class WindowController {
 		lblH.setAlignment(SWT.LEFT);
 		lblH.setBackground(C.APP_BGCOLOR);
 		lblH.setText(txt);
-		
+
 		lblVtLogo = new Label(header, SWT.NONE);
 		lblVtLogo.setImage(C.getImage("/img/vt_web_logo.png"));
 		lblVtLogo.setBackground(C.APP_BGCOLOR);
@@ -354,7 +355,7 @@ public class WindowController {
 		fd_lblVtLogo.top = new FormAttachment(25);
 		fd_lblVtLogo.right = new FormAttachment(100, -10);
 		lblVtLogo.setLayoutData(fd_lblVtLogo);
-		
+
 		// read text from disk
 		txt = C.APP_NAME;
 		try {
@@ -372,12 +373,12 @@ public class WindowController {
 		if(user.getAccessLevel()==9) {
 			btnAdmin.setEnabled(true);
 		}
-		
+
 		FormData fd_foo = new FormData();
 		fd_foo.right = new FormAttachment(120);
 		foo.setLayoutData(fd_foo);
 		shell.setDefaultButton(foo);
-		
+
 		showSpacesList();
 
 	}
@@ -410,6 +411,9 @@ public class WindowController {
 			new SpaceAlert(shell);			
 		}
 		showSpaceDetail(id);
+	}
+	public static void showPhotoViewer(int spaceID, String fullPath, String thumbPath) {
+		new PhotoViewer(shell, fullPath, thumbPath, spaceID);			
 	}
 	public static void showSpaceDetail(int id) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
@@ -444,5 +448,5 @@ public class WindowController {
 		formHolder.layout();
 	}
 
-	
+
 }
