@@ -70,7 +70,7 @@ public class WindowController {
 	public static Button btnAddSpace, btnBackToSpaceDetails, btnDeleteSpace, btnAdmin, btnViewSpaceDetails;
 	static Button btnSpacesList, btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
-	private static int currentSpaceId = 0;
+	static int currentSpaceId = 0;
 	public static EsmUsersTable.Row user;
 	SpacesTable.Row[] rows;
 	private Label lblVtLogo;
@@ -276,7 +276,7 @@ public class WindowController {
 		btnViewSpaceDetails.setLayoutData(fd_btnEditSpace);
 		btnViewSpaceDetails.setEnabled(false);
 
-		
+
 		btnBackToSpaceDetails = new Button(titleBar, SWT.PUSH);
 		btnBackToSpaceDetails.setToolTipText("View details for the selected Enclosed Space");
 		btnBackToSpaceDetails.setImage(C.getImage("/img/16_edit.png"));
