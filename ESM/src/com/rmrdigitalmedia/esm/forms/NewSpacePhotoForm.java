@@ -194,6 +194,7 @@ public class NewSpacePhotoForm {
 							pRow.setTitle(p_title.getText());
 							pRow.setComment(p_comment.getText());
 							pRow.setAuthorID(authorID);
+							pRow.setPath(path);
 							pRow.setCreatedDate(new Timestamp(new Date().getTime()));
 							pRow.setUpdateDate(new Timestamp(new Date().getTime()));
 							if( EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2 ) {
@@ -201,9 +202,9 @@ public class NewSpacePhotoForm {
 							}
 							pRow.setDeleted("FALSE");
 			        pRow.insert();
-			        LogController.log("Space comment added to database.");		        
+			        LogController.log("Photo comment added to database.");		        
 						} catch (Exception e1) {
-							LogController.logEvent("Comment upload", 1, e1);
+							LogController.logEvent("Photo Comment upload", 1, e1);
 						}		
 						formOK = true;
 	        	}
@@ -234,7 +235,7 @@ public class NewSpacePhotoForm {
 		while (!shlVideotelEsm.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("New Space Comment form closed");	
+		LogController.log("New Space Photo form closed");	
 		
 		return formOK;
 	}

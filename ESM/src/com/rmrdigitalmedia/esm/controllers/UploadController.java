@@ -81,48 +81,61 @@ public class UploadController {
 			String ext = Files.getFileExtension(imgToUploadName);
 			String ts = "" + new Date().getTime();
 			try {  				
-			    File src = new File(imgDetails[0]);  
+			    final File src = new File(imgDetails[0]);  
+    			BufferedImage bimg = ImageIO.read(src);
+    			final int srcW = bimg.getWidth();
+    			final int srcH = bimg.getHeight();
 			    imgToUploadName = ts + "." + ext;
 			    String savePathFull = C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP + imgToUploadName;
-			    uploadPath = savePathFull;
 			    String savePathThumb = C.IMG_DIR + C.SEP + spaceID + C.SEP + "thumb" + C.SEP + imgToUploadName;
+			    uploadPath = savePathThumb;
 			    final File destFull = new File(savePathFull);  	      
 			    final File destThumb = new File(savePathThumb);  	      
-			    final FileInputStream is = new FileInputStream(src);   
-			    final FileOutputStream os = new FileOutputStream(destFull);   	
 			    LogController.log("File to upload: " + src + " -> " + src.length() + " bytes");
 			    Runnable job = new Runnable() {
 			    	@Override
 			    	public void run() {
-				      try {  
-					      int currentbyte = is.read();  
-					      while (currentbyte != -1) {  
-						      os.write (currentbyte);  
-						      currentbyte = is.read();  
-					      }
-						} catch (IOException ex){
-							LogController.logEvent(this, 1, ex);;
-						}
+			    		if (srcW > C.IMG_WIDTH || srcH > C.IMG_HEIGHT) {
+				    		// larger image, resize
+								try {
+									Thumbnails.of(src)
+										.size(C.IMG_WIDTH, C.IMG_HEIGHT)
+										.toFile(destFull);
+								} catch (IOException ex) {
+									LogController.logEvent(this, 1, ex);
+								}
+			    		} else {
+			    			// image smaller, just copy
+					      try {  
+							    final FileInputStream is = new FileInputStream(src);   
+							    final FileOutputStream os = new FileOutputStream(destFull);   	
+						      int currentbyte = is.read();  
+						      while (currentbyte != -1) {  
+							      os.write (currentbyte);  
+							      currentbyte = is.read();  
+						      }
+									is.close();
+									os.close();   
+							} catch (IOException ex){
+								LogController.logEvent(this, 1, ex);;
+							}
+				    	}
 						LogController.log("File uploaded: " + destFull + " -> " + destFull.length() + " bytes");
 						// thumbnail
 						try {
-							Thumbnails.of(destFull).size(150, 150).toFile(destThumb);
+							Thumbnails.of(destFull)
+								.size(C.THUMB_WIDTH, C.THUMB_HEIGHT)
+								.toFile(destThumb);
 						} catch (IOException ex) {
 							LogController.logEvent(this, 1, ex);
 						}
-						try {
-							is.close();
-							os.close();   
-						} catch (IOException ex) {
-							LogController.logEvent(this, 1, ex);
-						}   
 					}
 			    	
 				};		    	
 				BusyIndicator.showWhile(display, job);
 				EsmApplication.alert("The image was uploaded!");
 				ok = true;
-			} catch(IOException ex){
+			} catch(Exception ex){
 				LogController.log(ex.toString());
 			} 
 		}
