@@ -24,7 +24,7 @@ public class DatabaseController {
 
 	public ProgressBar bar;
 	private static Object me;
-		
+
 	public DatabaseController() {
 		me = this;
 		LogController.log("Running class " + this.getClass().getName());
@@ -45,7 +45,7 @@ public class DatabaseController {
 		}
 		LogController.log("DB check completed");
 	}
-	
+
 	public boolean testConnection() {
 		boolean ok = false;
 		Connection conn = null;
@@ -59,7 +59,7 @@ public class DatabaseController {
 		}
 		return ok;
 	}
-	
+
 	public static Connection createConnection() {
 		Connection conn = null;
 		try {
@@ -70,17 +70,17 @@ public class DatabaseController {
 		}
 		return conn;
 	}
-	
+
 	public void createDB() {
 		LogController.log("Creating new DB... ");
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(C.DB_CONN_STR_SETUP, "sa", "");
 			LogController.log("OK");
-			
+
 			// TODO DEVELOPMENT ONLY <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 			loadRunSqlFile("DEMO.sql"); 
-			
+
 			//loadRunSqlFile("SETUP.sql");
 		} catch (SQLException e) {
 			LogController.logEvent(me,2,"DB SETUP FAILED",e);
@@ -89,7 +89,7 @@ public class DatabaseController {
 		}
 		close(conn);
 	}
-		
+
 	public void loadRunSqlFile(String fName) {
 		LogController.log("Loading SQL file '"+fName+"'... ");
 		String sql = "";
@@ -99,17 +99,17 @@ public class DatabaseController {
 			LogController.logEvent(me,2,e);
 		}
 		try {
-	    runQuery(sql);
-	    LogController.log("OK");
+			runQuery(sql);
+			LogController.log("OK");
 		} catch (SQLException e) {
 			LogController.logEvent(me,2,"SQL LOAD FAILED",e);
 			AppLoader.die("Failed to load SQL file '"+fName+"'");
 		}
 	}
-	
-	
+
+
 	// DB check methods using entity classes where possible==============================================
-	
+
 	public static boolean verifyLogin(String username, String password) {
 		boolean ok = false;
 		Connection conn = createConnection();
@@ -128,7 +128,7 @@ public class DatabaseController {
 		}
 		return ok;
 	}	
-	
+
 	public static boolean checkAdmin() {
 		boolean ok = false;
 		LogController.log("Checking Admin User...");
@@ -137,12 +137,12 @@ public class DatabaseController {
 			LogController.log("checkAdmin Row Count: "+rows.length);
 			if(rows.length==1){
 				EsmUsersTable.Row row = rows[0];
-			    ok = true;	
-			    LogController.log("Admin Found");
-			    EsmApplication.appData.setField("ADMIN",row.getUsername());
-	    	} else {
-	    		LogController.log("Admin NOT Found");
-	    	}			
+				ok = true;	
+				LogController.log("Admin Found");
+				EsmApplication.appData.setField("ADMIN",row.getUsername());
+			} else {
+				LogController.log("Admin NOT Found");
+			}			
 		} catch (SQLException e ) {			
 			LogController.logEvent(me,2,"Admin check",e);
 			e.printStackTrace();
@@ -158,20 +158,20 @@ public class DatabaseController {
 			LogController.log("checkVessel Row Count: "+rows.length);
 			if(rows.length==1){
 				VesselTable.Row row = rows[0];
-			    ok = true;	
-			    String vName = row.getName();
-			    LogController.log("Vessel "+vName+" Found");
-			    EsmApplication.appData.setField("VESSEL",vName);
-	    	} else {
-	    		LogController.log("Vessel NOT Found");
-	    	}						
+				ok = true;	
+				String vName = row.getName();
+				LogController.log("Vessel "+vName+" Found");
+				EsmApplication.appData.setField("VESSEL",vName);
+			} else {
+				LogController.log("Vessel NOT Found");
+			}						
 		} catch (SQLException e ) {
 			LogController.logEvent(me,2,"Vessel check",e);
 			e.printStackTrace();
 		}
 		return ok;	
 	}	
-	
+
 	public static boolean checkLicenseKey() {
 		boolean ok = false;
 		LogController.log("Checking License Key...");
@@ -183,52 +183,52 @@ public class DatabaseController {
 				LicenseTable.Row row = rows[0];
 				key = row.getLicensekey();
 				ok = true;
-			    LogController.log("License OK: " + key);
-			    EsmApplication.appData.setField("LICENSE",key);
-	    	} else {
-	    		LogController.log("License NOT found");
-	    	}
+				LogController.log("License OK: " + key);
+				EsmApplication.appData.setField("LICENSE",key);
+			} else {
+				LogController.log("License NOT found");
+			}
 		} catch (SQLException e ) {
 			LogController.logEvent(me,2,"License check",e);
 		}
 		return ok;	
 	}
-		
+
 	// DB utility methods ==========================================================================
 	public static ResultSet getResultSet(Connection conn,String sql) throws SQLException {
-    ResultSet rs;
-    PreparedStatement st = conn.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-    rs = st.executeQuery();
-    return rs;
-   }
-  public static void runQuery(String sql) throws SQLException {
-   Connection conn = createConnection();
-   PreparedStatement st = conn.prepareStatement(sql);
-   st.executeUpdate();
-   st.close();
-   close(conn);
-  }
-  public static void close(Connection conn){
-	if (conn != null) {
-	     try {
-	        conn.close();
-	     } catch (SQLException e){
-	    	 LogController.logEvent(me, 2, e);
-	     }
+		ResultSet rs;
+		PreparedStatement st = conn.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+		rs = st.executeQuery();
+		return rs;
 	}
-  }
-  public static void close(ResultSet rs){
-  if (rs != null) {
-    try {
-    	Statement st = rs.getStatement();
-    	rs.close(); 
-    	st.close();    	
-    } catch (SQLException e){
-     	LogController.logEvent(me, 2, e);
-    }
-  }
-}
+	public static void runQuery(String sql) throws SQLException {
+		Connection conn = createConnection();
+		PreparedStatement st = conn.prepareStatement(sql);
+		st.executeUpdate();
+		st.close();
+		close(conn);
+	}
+	public static void close(Connection conn){
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e){
+				LogController.logEvent(me, 2, e);
+			}
+		}
+	}
+	public static void close(ResultSet rs){
+		if (rs != null) {
+			try {
+				Statement st = rs.getStatement();
+				rs.close(); 
+				st.close();    	
+			} catch (SQLException e){
+				LogController.logEvent(me, 2, e);
+			}
+		}
+	}
 
 
-	
+
 }

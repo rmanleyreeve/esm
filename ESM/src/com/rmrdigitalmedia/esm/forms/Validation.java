@@ -26,12 +26,12 @@ public class Validation {
 		for(Combo c:req) {
 			c.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 			if(
-					c.getText().equals("") ||
-					c.getText().equals("0") ||
-					c.getText().equals("DAY") || 
-					c.getText().equals("MONTH") ||
-					c.getText().equals("YEAR")
-				) {
+			c.getText().equals("") ||
+			c.getText().equals("0") ||
+			c.getText().equals("DAY") || 
+			c.getText().equals("MONTH") ||
+			c.getText().equals("YEAR")
+			) {
 				ok = false;				
 				c.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
 			}
@@ -40,14 +40,14 @@ public class Validation {
 	}
 
 	public static void validateError(Shell sh) {
-	    MessageBox mb = new MessageBox(sh, SWT.OK);
-	    mb.setText("Alert");
-	    mb.setMessage("Please complete the form");
-	    mb.open();
+		MessageBox mb = new MessageBox(sh, SWT.OK);
+		mb.setText("Alert");
+		mb.setMessage("Please complete the form");
+		mb.open();
 	}
 
-	
-	
-	
-	
+
+
+
+
 }

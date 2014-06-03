@@ -52,7 +52,7 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 //http://www.eclipse.org/swt/snippets/
 
 @SuppressWarnings("unused")
-public class AppWindowController {
+public class AppWindowControllerTest {
 
 	// layout items
 	protected Shell shell;
@@ -81,14 +81,14 @@ public class AppWindowController {
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			AppWindowController window = new AppWindowController(EsmUsersTable.getRow("USERNAME", "admin"));
+			AppWindowControllerTest window = new AppWindowControllerTest(EsmUsersTable.getRow("USERNAME", "admin"));
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public AppWindowController(EsmUsersTable.Row user) {
+	public AppWindowControllerTest(EsmUsersTable.Row user) {
 		this.user = user;
 		this.displayName = user.getRank() + " " + user.getForename() + " " + user.getSurname();
 	  	LogController.log("Running class " + this.getClass().getName());

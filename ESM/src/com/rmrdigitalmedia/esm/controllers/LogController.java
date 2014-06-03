@@ -9,20 +9,20 @@ import java.util.Calendar;
 import com.rmrdigitalmedia.esm.C;
 
 public class LogController {
-	
+
 	static Calendar cal = Calendar.getInstance();
 	static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	static String today = sdf.format(cal.getTime()); 
-	
+
 	private static String logfilename = "ESM_LOG_" + today + ".txt";
-	
+
 	public static String logfile = 
 			C.USER_DOCS_DIR + C.SEP + 
 			C.INSTALL_DIR + C.SEP + 
 			C.DATA_DIR_NAME + C.SEP + 
 			C.LOG_DIR_NAME + C.SEP +
 			logfilename;
-	
+
 	public static void log(Object o) {
 		@SuppressWarnings("deprecation")
 		String t = new java.util.Date().toGMTString();
@@ -33,10 +33,10 @@ public class LogController {
 			e.printStackTrace();
 		}	  
 	}
-	
-  public static void logEvent(Object c, int severity, Object o) {
-	  // need to handle severity
-	  String classname =c.getClass().getName();	  
+
+	public static void logEvent(Object c, int severity, Object o) {
+		// need to handle severity
+		String classname =c.getClass().getName();	  
 		if (severity > 0) {
 			@SuppressWarnings("deprecation")
 			String t = new java.util.Date().toGMTString();
@@ -48,11 +48,11 @@ public class LogController {
 				e.printStackTrace();
 			}
 		}
-  }
+	}
 
-  public static void logEvent(Object c, int severity, Exception e) {
-	  // need to handle severity
-	  String classname =c.getClass().getName();	  
+	public static void logEvent(Object c, int severity, Exception e) {
+		// need to handle severity
+		String classname =c.getClass().getName();	  
 		if (severity > 0) {
 			@SuppressWarnings("deprecation")
 			String t = new java.util.Date().toGMTString();
@@ -65,11 +65,11 @@ public class LogController {
 			}
 			//e.printStackTrace();
 		}
-  }
+	}
 
-  public static void logEvent(Object c, int severity, String _msg, Exception e) {
-	  // need to handle severity
-	  String classname =c.getClass().getName();	  
+	public static void logEvent(Object c, int severity, String _msg, Exception e) {
+		// need to handle severity
+		String classname =c.getClass().getName();	  
 		if (severity > 0) {
 			@SuppressWarnings("deprecation")
 			String t = new java.util.Date().toGMTString();
@@ -82,15 +82,15 @@ public class LogController {
 			}
 			//e.printStackTrace();
 		}
-  }  
-  
-  public static void write(String msg) throws IOException {  	
+	}  
+
+	public static void write(String msg) throws IOException {  	
 		FileWriter fstream = new FileWriter(logfile, true);
 		BufferedWriter out = new BufferedWriter(fstream); 
 		out.write(msg);
 		out.newLine();
 		out.close();  
 		System.out.println(msg); //DEBUG
-  }
-  
+	}
+
 }

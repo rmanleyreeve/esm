@@ -22,12 +22,12 @@ import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 @SuppressWarnings("unused")
 public class DeleteSpaceDialog {
-	
+
 	private FormData fd_lblAProgramUpdate;
 	int spaceID;
 	boolean formOK = false;
-	
-	
+
+
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
@@ -39,10 +39,10 @@ public class DeleteSpaceDialog {
 	}
 
 	public DeleteSpaceDialog() {
-	  	LogController.log("Running class " + this.getClass().getName());		
+		LogController.log("Running class " + this.getClass().getName());		
 	}
-	
-	
+
+
 	public boolean deleteOK(int _id) {
 		this.spaceID = _id;
 		Display display = Display.getDefault();
@@ -113,7 +113,7 @@ public class DeleteSpaceDialog {
 					LogController.log("Deleted space " + metadataID);
 					space.delete();					
 					formOK = true;
-					*/
+					 */
 					//NON-DESTRUCTIVE
 					SpacesTable.Row space = SpacesTable.getRow(spaceID);
 					space.setDeleted("TRUE");
@@ -137,14 +137,14 @@ public class DeleteSpaceDialog {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		dialog.setLocation (x, y);		  		
 		dialog.open ();
-		
+
 		while (!dialog.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
 		LogController.log("Delete dialog closed");
 		return formOK;
 	}
-	
-	
+
+
 
 }

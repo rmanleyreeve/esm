@@ -27,14 +27,14 @@ import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.VesselTable;
 
 public class NewVesselForm {
-	
+
 	Shell myshell;
 	boolean formOK = false;
 	Text name, imo, type, owner;
 	Label sep;	
 	// form layout  guides
 	int headerH = 40;
-	
+
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
@@ -48,9 +48,9 @@ public class NewVesselForm {
 	public NewVesselForm() {
 		LogController.log("Running class " + this.getClass().getName());
 	}	
-	
+
 	public boolean complete() {	
-		
+
 		Display display = Display.getDefault();
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.myshell = shell;
@@ -58,11 +58,11 @@ public class NewVesselForm {
 		shell.setText("ESM Setup");
 		shell.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
-		
+
 		Composite container = new Composite(shell,SWT.NONE);
 		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
 		container.setLayout(new FormLayout());		
-			
+
 		//set up row elements & positions =======================================================
 		Composite header = new Composite(container,SWT.NONE);
 		header.setBackground(C.TITLEBAR_BGCOLOR);
@@ -73,14 +73,14 @@ public class NewVesselForm {
 		fd_header.bottom = new FormAttachment(container,headerH);
 		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);
-		
+
 		Label lblImg = new Label(header, SWT.NONE);
 		lblImg.setImage(C.getImage("/img/vessel.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
-		
+
 		Label lblTitle = new Label(header, SWT.NONE);
 		lblTitle.setForeground(C.APP_BGCOLOR);
 		lblTitle.setFont(C.FORM_HEADER_FONT);
@@ -90,7 +90,7 @@ public class NewVesselForm {
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("ENTER VESSEL DETAILS");
-		
+
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
 		fd_formHolder.left = new FormAttachment(0);
@@ -99,7 +99,7 @@ public class NewVesselForm {
 		fd_formHolder.bottom = new FormAttachment(100);
 		formHolder.setLayoutData(fd_formHolder);
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
-	
+
 		Composite form = new Composite(formHolder,SWT.NONE);
 		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
@@ -109,7 +109,7 @@ public class NewVesselForm {
 		gridLayout.horizontalSpacing = 20;
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
-				
+
 		//FORM LABELS & FIELDS ==================================================================	
 		Label lblName = new Label(form, SWT.NONE);
 		lblName.setBackground(C.APP_BGCOLOR);
@@ -119,7 +119,7 @@ public class NewVesselForm {
 		gd_name.widthHint = 200;
 		name.setLayoutData(gd_name);
 		name.setFocus();
-		
+
 		Label lblIMO = new Label(form, SWT.NONE);
 		lblIMO.setBackground(C.APP_BGCOLOR);
 		lblIMO.setText("IMO:");		
@@ -127,7 +127,7 @@ public class NewVesselForm {
 		GridData gd_imo = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_imo.widthHint = 200;
 		imo.setLayoutData(gd_imo);
-		
+
 		Label lblType = new Label(form, SWT.NONE);
 		lblType.setBackground(C.APP_BGCOLOR);
 		lblType.setText("Type:");	;		
@@ -135,7 +135,7 @@ public class NewVesselForm {
 		GridData gd_type = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_type.widthHint = 200;
 		type.setLayoutData(gd_type);
-		
+
 		Label lblOwner = new Label(form, SWT.NONE);
 		lblOwner.setBackground(C.APP_BGCOLOR);
 		lblOwner.setText("Owner:");	
@@ -144,12 +144,12 @@ public class NewVesselForm {
 		gd_owner.heightHint = 60;
 		gd_owner.widthHint = 200;
 		owner.setLayoutData(gd_owner);		
-		
+
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
 
 		//==================================================================		
-		
+
 		Button ok = new Button (form, SWT.PUSH);
 		ok.setToolTipText("Click to save these details");
 		ok.setFont(C.FONT_10);
@@ -166,7 +166,7 @@ public class NewVesselForm {
 						row.setType(type.getText());
 						row.setOwner(owner.getText());
 						row.setCreatedDate(new Timestamp(new Date().getTime()));
-				        row.insert();						
+						row.insert();						
 						formOK = true;
 						LogController.log("Vessel added to database");
 						EsmApplication.appData.setField("VESSEL",name.getText());
@@ -183,7 +183,7 @@ public class NewVesselForm {
 				}
 			}
 		});	
-	
+
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
 		Rectangle rect = shell.getBounds ();
@@ -191,10 +191,10 @@ public class NewVesselForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shell.setLocation (x, y);		  		
 		shell.setDefaultButton (ok);
-		
+
 		shell.open ();
 		shell.layout();
-		
+
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}

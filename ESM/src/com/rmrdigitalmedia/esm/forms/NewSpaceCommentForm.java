@@ -46,7 +46,7 @@ public class NewSpaceCommentForm {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public NewSpaceCommentForm(int _spaceID, int _authorID) {
 		LogController.log("Running class " + this.getClass().getName());
 		spaceID = _spaceID;
@@ -54,7 +54,7 @@ public class NewSpaceCommentForm {
 	}
 
 	public boolean complete() {
-		
+
 		Display display = Display.getDefault();
 		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		NewSpaceCommentForm.myshell = shlVideotelEsm;
@@ -62,11 +62,11 @@ public class NewSpaceCommentForm {
 		shlVideotelEsm.setText("Videotel ESM");
 		shlVideotelEsm.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
-		
+
 		Composite container = new Composite(shlVideotelEsm,SWT.NONE);
 		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
 		container.setLayout(new FormLayout());		
-			
+
 		//set up row elements & positions =======================================================
 		Composite header = new Composite(container,SWT.NONE);
 		header.setBackground(C.TITLEBAR_BGCOLOR);
@@ -77,14 +77,14 @@ public class NewSpaceCommentForm {
 		fd_header.bottom = new FormAttachment(container,headerH);
 		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);
-		
+
 		Label lblImg = new Label(header, SWT.NONE);
 		lblImg.setImage(C.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
-		
+
 		Label lblTitle = new Label(header, SWT.NONE);
 		lblTitle.setForeground(C.APP_BGCOLOR);
 		lblTitle.setFont(C.FORM_HEADER_FONT);
@@ -94,7 +94,7 @@ public class NewSpaceCommentForm {
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("ENTER SPACE COMMENT");
-		
+
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
 		fd_formHolder.left = new FormAttachment(0);
@@ -103,7 +103,7 @@ public class NewSpaceCommentForm {
 		fd_formHolder.bottom = new FormAttachment(100);
 		formHolder.setLayoutData(fd_formHolder);
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
-	
+
 		Composite form = new Composite(formHolder,SWT.NONE);
 		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
@@ -127,10 +127,10 @@ public class NewSpaceCommentForm {
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
-		
-		
+
+
 		//==================================================================		
-		
+
 		Button ok = new Button (form, SWT.PUSH);
 		ok.setToolTipText("Click to save your Comment");
 		ok.setFont(C.FONT_10);
@@ -151,8 +151,8 @@ public class NewSpaceCommentForm {
 							sRow.setApproved("TRUE");
 						}
 						sRow.setDeleted("FALSE");
-		        sRow.insert();
-		        LogController.log("Space comment added to database.");		        
+						sRow.insert();
+						LogController.log("Space comment added to database.");		        
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -166,7 +166,7 @@ public class NewSpaceCommentForm {
 				}
 			}
 		});	
-	
+
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
 		Rectangle rect = shlVideotelEsm.getBounds ();
@@ -176,15 +176,15 @@ public class NewSpaceCommentForm {
 		shlVideotelEsm.setDefaultButton (ok);		
 		new Label(form, SWT.NONE);
 		new Label(form, SWT.NONE);
-		
+
 		shlVideotelEsm.open ();
 		shlVideotelEsm.layout();
-		
+
 		while (!shlVideotelEsm.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
 		LogController.log("New Space Comment form closed");	
-		
+
 		return formOK;
 	}
 

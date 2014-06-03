@@ -27,7 +27,7 @@ import com.rmrdigitalmedia.esm.forms.NewVesselForm;
 
 @SuppressWarnings("unused")
 public class AppLoader {
-	
+
 	private static Object me;
 	public static ProgressBar pbar;
 	public static Label pmsg;
@@ -52,17 +52,17 @@ public class AppLoader {
 		pmsg.setText(txt);
 	}
 	public static void die(String msg) {		
-	    MessageBox mb = new MessageBox(myshell, SWT.OK);
-	    mb.setText("Fatal Error");
-	    mb.setMessage(msg);
-	    mb.open();
-	    System.exit(0);
+		MessageBox mb = new MessageBox(myshell, SWT.OK);
+		mb.setText("Fatal Error");
+		mb.setMessage(msg);
+		mb.open();
+		System.exit(0);
 	}
-  
-  public AppLoader(Display display)  {
-  	me = this;
-  	LogController.log("Running class " + this.getClass().getName());
-  	
+
+	public AppLoader(Display display)  {
+		me = this;
+		LogController.log("Running class " + this.getClass().getName());
+
 		String vtxt = "0.0.0";		
 		try {
 			vtxt = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));
@@ -74,42 +74,42 @@ public class AppLoader {
 		EsmApplication.appData.setField("MAJOR", Integer.parseInt(varr[0]));
 		EsmApplication.appData.setField("MINOR", Integer.parseInt(varr[1]));
 		EsmApplication.appData.setField("POINT", Integer.parseInt(varr[2]));
-  	
-    final Shell splash = new Shell(SWT.ON_TOP);
-    AppLoader.myshell = splash;
-    splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
-    FormLayout layout = new FormLayout();
-    splash.setLayout(layout);
-    
-    ProgressBar bar = new ProgressBar(splash, SWT.NONE);
-    AppLoader.pbar = bar;
-    bar.setMaximum(SPLASH_MAX);
-    FormData progressData = new FormData();
-    progressData.left = new FormAttachment(0, -5);
-    progressData.right = new FormAttachment(100, 0);
-    progressData.bottom = new FormAttachment(100, 0);
-    bar.setLayoutData(progressData);
-    
-    Label msg = new Label(splash, SWT.RIGHT);
-    msg.setForeground(C.TITLEBAR_BGCOLOR);
-    AppLoader.pmsg = msg;
-    msg.setFont(C.FONT_8);
-    msg.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-    FormData msgData = new FormData();
-    msgData.width = 220;
-    msgData.right = new FormAttachment(100, -10);
-    msgData.top = new FormAttachment(100, -50);
-    msgData.bottom = new FormAttachment(100, -25);
-    msg.setLayoutData(msgData);   
-    
-    Label label = new Label(splash, SWT.NONE);
-    label.setImage(C.getImage("/img/splash2.jpg"));
-    FormData labelData = new FormData();
-    labelData.right = new FormAttachment(100, 0);
-    labelData.bottom = new FormAttachment(100, 0);
-    label.setLayoutData(labelData);
-    
-    splash.pack();
+
+		final Shell splash = new Shell(SWT.ON_TOP);
+		AppLoader.myshell = splash;
+		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		FormLayout layout = new FormLayout();
+		splash.setLayout(layout);
+
+		ProgressBar bar = new ProgressBar(splash, SWT.NONE);
+		AppLoader.pbar = bar;
+		bar.setMaximum(SPLASH_MAX);
+		FormData progressData = new FormData();
+		progressData.left = new FormAttachment(0, -5);
+		progressData.right = new FormAttachment(100, 0);
+		progressData.bottom = new FormAttachment(100, 0);
+		bar.setLayoutData(progressData);
+
+		Label msg = new Label(splash, SWT.RIGHT);
+		msg.setForeground(C.TITLEBAR_BGCOLOR);
+		AppLoader.pmsg = msg;
+		msg.setFont(C.FONT_8);
+		msg.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		FormData msgData = new FormData();
+		msgData.width = 220;
+		msgData.right = new FormAttachment(100, -10);
+		msgData.top = new FormAttachment(100, -50);
+		msgData.bottom = new FormAttachment(100, -25);
+		msg.setLayoutData(msgData);   
+
+		Label label = new Label(splash, SWT.NONE);
+		label.setImage(C.getImage("/img/splash2.jpg"));
+		FormData labelData = new FormData();
+		labelData.right = new FormAttachment(100, 0);
+		labelData.bottom = new FormAttachment(100, 0);
+		label.setLayoutData(labelData);
+
+		splash.pack();
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
 		Rectangle rect = splash.getBounds ();
@@ -118,87 +118,87 @@ public class AppLoader {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		splash.setLocation (x, y);		  		
 		splash.open();
-     
-	    display.asyncExec(new Runnable() {
-	      @Override
-	      public void run() {      	
-	      // perform actual loading/setup/init config here...	      	
-	      	
-	      // check/set up filesystem
-			LogController.log("AppLoader: filesystem check");
-			message("Checking file system integrity");
-			FilesystemController fs = new FilesystemController();
-			fs.checkFS();
-			message("File system integrity check complete");
-			update(); //20%
-	    	
-			// check/set up database
-			LogController.log("AppLoader: database check");
-			message("Checking database integrity");
-			DatabaseController db = new DatabaseController();
-			db.checkDB();
-			message("Database integrity check complete");
-			update(); //40%
-			
-			// check license key in DB
-			message("Checking License Key");
-			if(!DatabaseController.checkLicenseKey()) {
-				//open license key dialog
-				EsmApplication.alert(myshell,"License key not found!");
-				NewLicenseDialog nld = new NewLicenseDialog();
-				if (nld.complete()) {
-					LogController.log("License saved in database");
-				} else {				
-					EsmApplication.alert("License Key required. Exiting program...");
-					LogController.log(C.EXIT_MSG);
-					System.exit(0);						
-				}
-			}
-			update(); //60%
-			
-			//check/set up new admin user
-			message("Checking System Administration Access");
-			if(!DatabaseController.checkAdmin()) {
-				//open admin user dialog
-				EsmApplication.alert(myshell,"System Administrator not found!");
-				NewAdminForm naf = new NewAdminForm();					
-				if(naf.complete()) {
-					LogController.log("System Administrator saved in database");
-				} else {
-					EsmApplication.alert("System Administrator required. Exiting program...");
-					LogController.log(C.EXIT_MSG);
-					System.exit(0);
-				}
-			}
-			update(); //80%
-				
-			//check/set up new admin user
-			message("Checking Vessel Details");
-			if(!DatabaseController.checkVessel()) {
-				//open admin user dialog
-				EsmApplication.alert(myshell,"Vessel info not found!");
-				NewVesselForm nvf = new NewVesselForm();					
-				if(nvf.complete()) {
-					LogController.log("Vessel saved in database");
-				} else {
-					EsmApplication.alert("Vessel Info required. Exiting program...");
-					LogController.log(C.EXIT_MSG);
-					System.exit(0);
-				}
-			}
-			update(); //100%											
-        
-      	// init setup OK, now go to login screen
-				// LOADER IS DISPOSED NOW
-        EsmApplication.appLogin(splash);          
-      }
-   });
 
-    while(!bar.isDisposed() && bar.getSelection() != SPLASH_MAX) {
-        if(!display.readAndDispatch()) {
-            display.sleep();
-        }
-    }
-    display.dispose();
-  }
+		display.asyncExec(new Runnable() {
+			@Override
+			public void run() {      	
+				// perform actual loading/setup/init config here...	      	
+
+				// check/set up filesystem
+				LogController.log("AppLoader: filesystem check");
+				message("Checking file system integrity");
+				FilesystemController fs = new FilesystemController();
+				fs.checkFS();
+				message("File system integrity check complete");
+				update(); //20%
+
+				// check/set up database
+				LogController.log("AppLoader: database check");
+				message("Checking database integrity");
+				DatabaseController db = new DatabaseController();
+				db.checkDB();
+				message("Database integrity check complete");
+				update(); //40%
+
+				// check license key in DB
+				message("Checking License Key");
+				if(!DatabaseController.checkLicenseKey()) {
+					//open license key dialog
+					EsmApplication.alert(myshell,"License key not found!");
+					NewLicenseDialog nld = new NewLicenseDialog();
+					if (nld.complete()) {
+						LogController.log("License saved in database");
+					} else {				
+						EsmApplication.alert("License Key required. Exiting program...");
+						LogController.log(C.EXIT_MSG);
+						System.exit(0);						
+					}
+				}
+				update(); //60%
+
+				//check/set up new admin user
+				message("Checking System Administration Access");
+				if(!DatabaseController.checkAdmin()) {
+					//open admin user dialog
+					EsmApplication.alert(myshell,"System Administrator not found!");
+					NewAdminForm naf = new NewAdminForm();					
+					if(naf.complete()) {
+						LogController.log("System Administrator saved in database");
+					} else {
+						EsmApplication.alert("System Administrator required. Exiting program...");
+						LogController.log(C.EXIT_MSG);
+						System.exit(0);
+					}
+				}
+				update(); //80%
+
+				//check/set up new admin user
+				message("Checking Vessel Details");
+				if(!DatabaseController.checkVessel()) {
+					//open admin user dialog
+					EsmApplication.alert(myshell,"Vessel info not found!");
+					NewVesselForm nvf = new NewVesselForm();					
+					if(nvf.complete()) {
+						LogController.log("Vessel saved in database");
+					} else {
+						EsmApplication.alert("Vessel Info required. Exiting program...");
+						LogController.log(C.EXIT_MSG);
+						System.exit(0);
+					}
+				}
+				update(); //100%											
+
+				// init setup OK, now go to login screen
+				// LOADER IS DISPOSED NOW
+				EsmApplication.appLogin(splash);          
+			}
+		});
+
+		while(!bar.isDisposed() && bar.getSelection() != SPLASH_MAX) {
+			if(!display.readAndDispatch()) {
+				display.sleep();
+			}
+		}
+		display.dispose();
+	}
 }

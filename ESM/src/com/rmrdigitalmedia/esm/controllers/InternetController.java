@@ -30,7 +30,7 @@ import com.rmrdigitalmedia.esm.forms.UpdateDialog;
 
 @SuppressWarnings("unused")
 public class InternetController {
-	
+
 	private static Object me = new InternetController();
 
 	public InternetController() {
@@ -38,7 +38,7 @@ public class InternetController {
 
 	public static boolean checkNetAccess() {
 		boolean online = false;
-				
+
 		/*
 		Enumeration<NetworkInterface> interfaces = null;		
 		try {
@@ -55,8 +55,8 @@ public class InternetController {
 				e.printStackTrace();
 			}
 		}
-		*/
-		
+		 */
+
 		try {
 			if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress().toString()) == false) {
 				online = true;
@@ -70,7 +70,7 @@ public class InternetController {
 		LogController.log("NET ACCESS = "+online);
 		return online;
 	}
-	
+
 	public static void getUpdates() throws IOException {		
 		String currentVersion = (String)EsmApplication.appData.getField("VERSION");
 		URL u = new URL(C.LATEST_VERSION_URL);
@@ -86,24 +86,24 @@ public class InternetController {
 		String[] lvarr = latestVersion.split("\\.");
 		String[] cvarr = currentVersion.split("\\.");
 		if(
-			Integer.parseInt(lvarr[0]) > Integer.parseInt(cvarr[0]) ||
-			Integer.parseInt(lvarr[1]) > Integer.parseInt(cvarr[1]) ||
-			Integer.parseInt(lvarr[2]) > Integer.parseInt(cvarr[2])
-		) {
+				Integer.parseInt(lvarr[0]) > Integer.parseInt(cvarr[0]) ||
+				Integer.parseInt(lvarr[1]) > Integer.parseInt(cvarr[1]) ||
+				Integer.parseInt(lvarr[2]) > Integer.parseInt(cvarr[2])
+				) {
 			// new version available
 			LogController.log("NEW VERSION AVAILABLE: " + latestVersion);
 			//EsmApplication.alert(C.NEW_VERSION_ALERT);
 			UpdateDialog ud = new UpdateDialog(latestVersion);
 		}		
 	}	
-	
+
 	public static void open(String url) {
 		if(Desktop.isDesktopSupported()){
-		  try {
+			try {
 				Desktop.getDesktop().browse(new URI(url));
 			} catch (Exception e1) {
 				LogController.logEvent(me,2,"Error loading URL: "+ url,e1);
-				
+
 			}
 		}	
 	}
@@ -126,7 +126,7 @@ public class InternetController {
 		//print result
 		renderHTML(response.toString());	 
 	}		
-	
+
 	public static void renderHTML(String html) {
 		Shell shell = new Shell(Display.getDefault());
 		shell.setLayout(new FillLayout());
@@ -147,5 +147,5 @@ public class InternetController {
 		//display.dispose();
 	}
 
-	
+
 }
