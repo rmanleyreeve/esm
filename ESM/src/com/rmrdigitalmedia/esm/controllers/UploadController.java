@@ -24,7 +24,7 @@ import com.rmrdigitalmedia.esm.EsmApplication;
 
 
 public class UploadController {
-	
+
 	static Display display = Display.getCurrent();
 	private static String uploadPath = "";
 
@@ -81,56 +81,56 @@ public class UploadController {
 			String ext = Files.getFileExtension(imgToUploadName);
 			String ts = "" + new Date().getTime();
 			try {  				
-			    final File src = new File(imgDetails[0]);  
-    			BufferedImage bimg = ImageIO.read(src);
-    			final int srcW = bimg.getWidth();
-    			final int srcH = bimg.getHeight();
-			    imgToUploadName = ts + "." + ext;
-			    String savePathFull = C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP + imgToUploadName;
-			    String savePathThumb = C.IMG_DIR + C.SEP + spaceID + C.SEP + "thumb" + C.SEP + imgToUploadName;
-			    uploadPath = savePathThumb;
-			    final File destFull = new File(savePathFull);  	      
-			    final File destThumb = new File(savePathThumb);  	      
-			    LogController.log("File to upload: " + src + " -> " + src.length() + " bytes");
-			    Runnable job = new Runnable() {
-			    	@Override
-			    	public void run() {
-			    		if (srcW > C.IMG_WIDTH || srcH > C.IMG_HEIGHT) {
-				    		// larger image, resize
-								try {
-									Thumbnails.of(src)
-										.size(C.IMG_WIDTH, C.IMG_HEIGHT)
-										.toFile(destFull);
-								} catch (IOException ex) {
-									LogController.logEvent(this, 1, ex);
+				final File src = new File(imgDetails[0]);  
+				BufferedImage bimg = ImageIO.read(src);
+				final int srcW = bimg.getWidth();
+				final int srcH = bimg.getHeight();
+				imgToUploadName = ts + "." + ext;
+				String savePathFull = C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP + imgToUploadName;
+				String savePathThumb = C.IMG_DIR + C.SEP + spaceID + C.SEP + "thumb" + C.SEP + imgToUploadName;
+				uploadPath = savePathThumb;
+				final File destFull = new File(savePathFull);  	      
+				final File destThumb = new File(savePathThumb);  	      
+				LogController.log("File to upload: " + src + " -> " + src.length() + " bytes");
+				Runnable job = new Runnable() {
+					@Override
+					public void run() {
+						if (srcW > C.IMG_WIDTH || srcH > C.IMG_HEIGHT) {
+							// larger image, resize
+							try {
+								Thumbnails.of(src)
+								.size(C.IMG_WIDTH, C.IMG_HEIGHT)
+								.toFile(destFull);
+							} catch (IOException ex) {
+								LogController.logEvent(this, 1, ex);
+							}
+						} else {
+							// image smaller, just copy
+							try {  
+								final FileInputStream is = new FileInputStream(src);   
+								final FileOutputStream os = new FileOutputStream(destFull);   	
+								int currentbyte = is.read();  
+								while (currentbyte != -1) {  
+									os.write (currentbyte);  
+									currentbyte = is.read();  
 								}
-			    		} else {
-			    			// image smaller, just copy
-					      try {  
-							    final FileInputStream is = new FileInputStream(src);   
-							    final FileOutputStream os = new FileOutputStream(destFull);   	
-						      int currentbyte = is.read();  
-						      while (currentbyte != -1) {  
-							      os.write (currentbyte);  
-							      currentbyte = is.read();  
-						      }
-									is.close();
-									os.close();   
+								is.close();
+								os.close();   
 							} catch (IOException ex){
 								LogController.logEvent(this, 1, ex);;
 							}
-				    	}
+						}
 						LogController.log("File uploaded: " + destFull + " -> " + destFull.length() + " bytes");
 						// thumbnail
 						try {
 							Thumbnails.of(destFull)
-								.size(C.THUMB_WIDTH, C.THUMB_HEIGHT)
-								.toFile(destThumb);
+							.size(C.THUMB_WIDTH, C.THUMB_HEIGHT)
+							.toFile(destThumb);
 						} catch (IOException ex) {
 							LogController.logEvent(this, 1, ex);
 						}
 					}
-			    	
+
 				};		    	
 				BusyIndicator.showWhile(display, job);
 				EsmApplication.alert("The image was uploaded!");
@@ -157,21 +157,21 @@ public class UploadController {
 		}
 		if(docDetails != null) {
 			try {  				
-			    File src = new File(docDetails[0]);  
-			    String savePath = C.DOC_DIR + C.SEP + spaceID + C.SEP + docDetails[1];
-			    final File dest = new File(savePath);  	      
-			    final FileInputStream is = new FileInputStream(src);   
-			    final FileOutputStream os = new FileOutputStream(dest);   	
+				File src = new File(docDetails[0]);  
+				String savePath = C.DOC_DIR + C.SEP + spaceID + C.SEP + docDetails[1];
+				final File dest = new File(savePath);  	      
+				final FileInputStream is = new FileInputStream(src);   
+				final FileOutputStream os = new FileOutputStream(dest);   	
 				LogController.log("File to upload: " + src + " -> " + src.length() + " bytes");
-			    Runnable job = new Runnable() {
-			    	@Override
+				Runnable job = new Runnable() {
+					@Override
 					public void run() {
-				      try {  
-					      int currentbyte = is.read();  
-					      while (currentbyte != -1) {  
-						      os.write (currentbyte);  
-						      currentbyte = is.read();  
-					      }
+						try {  
+							int currentbyte = is.read();  
+							while (currentbyte != -1) {  
+								os.write (currentbyte);  
+								currentbyte = is.read();  
+							}
 						} catch (IOException ex){
 							LogController.logEvent(this, 1, ex);;
 						}
@@ -183,7 +183,7 @@ public class UploadController {
 							LogController.logEvent(this, 1, e);
 						}   
 					}
-			    	
+
 				};		    	
 				BusyIndicator.showWhile(display, job);
 				EsmApplication.alert("The document was uploaded!");	
@@ -194,20 +194,20 @@ public class UploadController {
 		}
 		return ok;
 	}		
-	
+
 	public static boolean IsImageFile(File f){
 		boolean valid = true;
 		try {
-		    BufferedImage image = ImageIO.read(f);
-		    if (image == null) {
-		        valid = false;
-		    }
+			BufferedImage image = ImageIO.read(f);
+			if (image == null) {
+				valid = false;
+			}
 		} catch(IOException ex) {
-		    valid=false;
+			valid=false;
 		}		
 		return valid;
 	}
-	
-	
-	
+
+
+
 }

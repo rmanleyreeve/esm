@@ -29,13 +29,13 @@ import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.VesselTable;
 
 public class NewSpaceForm {
-	
+
 	Shell myshell;
 	boolean formOK = false;
 	Text s_name, s_description, ep_name, ep_description;
 	int authorID, headerH = 40;
 	private Label sep;
-	
+
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -53,9 +53,9 @@ public class NewSpaceForm {
 		LogController.log("Running class " + this.getClass().getName());
 		authorID = _authorID;
 	}	
-	
+
 	public boolean complete() {	
-		
+
 		Display display = Display.getDefault();
 		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM);
 		this.myshell = shlVideotelEsm;
@@ -63,11 +63,11 @@ public class NewSpaceForm {
 		shlVideotelEsm.setText("Videotel ESM");
 		shlVideotelEsm.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
-		
+
 		Composite container = new Composite(shlVideotelEsm,SWT.NONE);
 		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
 		container.setLayout(new FormLayout());		
-			
+
 		//set up row elements & positions =======================================================
 		Composite header = new Composite(container,SWT.NONE);
 		header.setBackground(C.TITLEBAR_BGCOLOR);
@@ -78,14 +78,14 @@ public class NewSpaceForm {
 		fd_header.bottom = new FormAttachment(container,headerH);
 		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);
-		
+
 		Label lblImg = new Label(header, SWT.NONE);
 		lblImg.setImage(C.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
-		
+
 		Label lblTitle = new Label(header, SWT.NONE);
 		lblTitle.setForeground(C.APP_BGCOLOR);
 		lblTitle.setFont(C.FORM_HEADER_FONT);
@@ -95,7 +95,7 @@ public class NewSpaceForm {
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("ENTER SPACE / ENTRYPOINT DETAILS");
-		
+
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
 		fd_formHolder.left = new FormAttachment(0);
@@ -104,7 +104,7 @@ public class NewSpaceForm {
 		fd_formHolder.bottom = new FormAttachment(100);
 		formHolder.setLayoutData(fd_formHolder);
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
-	
+
 		Composite form = new Composite(formHolder,SWT.NONE);
 		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
@@ -114,7 +114,7 @@ public class NewSpaceForm {
 		gridLayout.horizontalSpacing = 20;
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
-				
+
 		//FORM LABELS & FIELDS ==================================================================	
 		Label lblSName = new Label(form, SWT.NONE);
 		lblSName.setBackground(C.APP_BGCOLOR);
@@ -124,7 +124,7 @@ public class NewSpaceForm {
 		gd_name.widthHint = 230;
 		s_name.setLayoutData(gd_name);
 		s_name.setFocus();
-		
+
 		Label lblSDesc = new Label(form, SWT.NONE);
 		lblSDesc.setBackground(C.APP_BGCOLOR);
 		lblSDesc.setText("Space\nDescription:");	
@@ -133,10 +133,10 @@ public class NewSpaceForm {
 		gd_sdesc.heightHint = 80;
 		gd_sdesc.widthHint = 230;
 		s_description.setLayoutData(gd_sdesc);		
-		
+
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
-		
+
 		Label lblEName = new Label(form, SWT.NONE);
 		lblEName.setBackground(C.APP_BGCOLOR);
 		lblEName.setText("Entry Point Name:");		
@@ -144,7 +144,7 @@ public class NewSpaceForm {
 		GridData gd_ename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_ename.widthHint = 230;
 		ep_name.setLayoutData(gd_ename);
-		
+
 		Label lblEDesc = new Label(form, SWT.NONE);
 		lblEDesc.setBackground(C.APP_BGCOLOR);
 		lblEDesc.setText("Entry Point\nDescription:");	
@@ -156,9 +156,9 @@ public class NewSpaceForm {
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
-		
+
 		//==================================================================		
-		
+
 		Button ok = new Button (form, SWT.PUSH);
 		ok.setToolTipText("Click to save these details");
 		ok.setFont(C.FONT_10);
@@ -178,9 +178,9 @@ public class NewSpaceForm {
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						sRow.setDeleted("FALSE");
 						int spaceID = (int) sRow.insert();
-		        LogController.log("Space "+spaceID+" added to database.");
-		        //SpacesTable.Row[] rArr = SpacesTable.getAllRows();
-		        //int metadataID = rArr[rArr.length-1].getID();
+						LogController.log("Space "+spaceID+" added to database.");
+						//SpacesTable.Row[] rArr = SpacesTable.getAllRows();
+						//int metadataID = rArr[rArr.length-1].getID();
 						new File( C.DOC_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // docs						
 						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // image base dir
 						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP ).mkdir(); // full
@@ -208,7 +208,7 @@ public class NewSpaceForm {
 				}
 			}
 		});	
-	
+
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
 		Rectangle rect = shlVideotelEsm.getBounds ();
@@ -217,10 +217,10 @@ public class NewSpaceForm {
 		shlVideotelEsm.setLocation (x, y);		  		
 		shlVideotelEsm.setDefaultButton (ok);		
 		new Label(form, SWT.NONE);
-		
+
 		shlVideotelEsm.open ();
 		shlVideotelEsm.layout();
-		
+
 		while (!shlVideotelEsm.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}

@@ -18,7 +18,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 
 public final class C {
-	
+
 	// app setup properties
 	public static String OS = (SWT.getPlatform());
 	public static String HOME_DIR = System.getProperty("user.home");	
@@ -39,7 +39,7 @@ public final class C {
 	public static String DB_CONN_STR_SETUP = "jdbc:h2:~/../"+INSTALL_DIR+"/" + DATA_DIR_NAME + "/" + DB_NAME;
 	public static String DB_SETUP_FILE = "SETUP.sql";
 	public static String APP_NAME = "Enclosed Spaces Management System";
-	
+
 	public static int IMG_WIDTH = 800;
 	public static int IMG_HEIGHT = 600;
 	public static int THUMB_WIDTH = 150;
@@ -50,7 +50,7 @@ public final class C {
 	public static Color TITLEBAR_BGCOLOR = SWTResourceManager.getColor(122, 130, 137);
 	public static Color FIELD_BGCOLOR = SWTResourceManager.getColor(238, 238, 238);
 	public static Color BAR_BGCOLOR = SWTResourceManager.getColor(182, 186, 190);
-	
+
 	// fonts
 	public static String FONT = (OS.equals("cocoa")) ? "Lucida Grande" : "Arial";
 	private static int FONT_ADD = (OS.equals("cocoa")) ? 2 : 0;
@@ -68,14 +68,14 @@ public final class C {
 	public static Font FONT_12 = SWTResourceManager.getFont(FONT, 12+FONT_ADD,SWT.NORMAL);
 	public static Font FONT_12B = SWTResourceManager.getFont(FONT, 12+FONT_ADD,SWT.BOLD);
 	public static Font ALERT_TITLE = SWTResourceManager.getFont(FONT, 18+FONT_ADD,SWT.BOLD);
-	
+
 	// web properties
 	public static String USER_AGENT = "Mozilla/5.0";
 	public static String REMOTE_URL = "http://www.rmrdigitalmedia.co.uk/esm/";
 	public static String LICENSE_URL = REMOTE_URL + "check_license.php";
 	public static String LATEST_VERSION_URL = REMOTE_URL + "version.txt";
 	public static String UPDATE_URL = REMOTE_URL + "updates.php";
-	
+
 	// message text
 	public static String NEW_VERSION_ALERT = "New version available!";
 	public static String EXIT_MSG = "***** PROGRAM EXIT ****\n\n\n";
@@ -83,14 +83,16 @@ public final class C {
 	public static String SPACE_ALERT_RED = "The space you have selected has been classified as RED.\nBe extra cautious as you proceed.";
 	public static String SPACE_NOT_AUTH = "This space has NOT been authorized.";
 	public static String COPYRIGHT = "\t\u00a9 Videotel 2014";
-	
+
 	// app screen titles
 	public static String SPACES_LIST_TITLE = "Classified Enclosed Spaces";
 	public static String ADMIN_PAGE_TITLE = "ESM System Administration";
+	public static String SPACE_AUDIT_PAGE_TITLE = "Internal Space Audit";
+	public static String ENTRY_AUDIT_PAGE_TITLE = "Entry Point Audit";
 
 
-	
-	
+
+
 	public static void makeHoverButton(final Button b) {
 		// NOT SUPPORTED ON WINDOWS :-(
 		b.addMouseTrackListener(new MouseTrackAdapter() {
@@ -105,9 +107,9 @@ public final class C {
 			}
 		});
 	}
-	
-	
-	
+
+
+
 	private C() {
 		throw new AssertionError();
 	}
@@ -117,12 +119,12 @@ public final class C {
 	public static Image getExtImage(String imgpath) {
 		// test for non-image or system files
 		try {
-		    BufferedImage image = ImageIO.read(new File(imgpath));
-		    if (image == null) {
-		        return null;
-		    }
+			BufferedImage image = ImageIO.read(new File(imgpath));
+			if (image == null) {
+				return null;
+			}
 		} catch(IOException ex) {
-		    return null;
+			return null;
 		}	
 		return SWTResourceManager.getImage(imgpath);
 	}

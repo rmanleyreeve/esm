@@ -87,7 +87,9 @@ public class PhotoViewerTest {
 			imgTitle.setText(pRow.getTitle());
 
 			final Label imgPic = new Label(imgHolder, SWT.BORDER | SWT.CENTER);
-			imgPic.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, true, true, 3, 1));
+			GridData gd_imgPic = new GridData(SWT.CENTER, SWT.TOP, true, true, 3, 1);
+			gd_imgPic.verticalIndent = 5;
+			imgPic.setLayoutData(gd_imgPic);
 			imgPic.setBackground(SWTResourceManager.getColor(SWT.COLOR_CYAN));
 			imgPic.setImage(C.getExtImage(fullPath));
 

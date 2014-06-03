@@ -19,11 +19,11 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 @SuppressWarnings("unused")
 public class UpdateDialog {
-	
+
 	private FormData fd_lblAProgramUpdate;
 	private String latestVersion;
-	
-	
+
+
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
@@ -34,8 +34,8 @@ public class UpdateDialog {
 	}
 
 	public UpdateDialog(String _latestVersion) {
-	  	LogController.log("Running class " + this.getClass().getName());		
-	  	latestVersion = _latestVersion;
+		LogController.log("Running class " + this.getClass().getName());		
+		latestVersion = _latestVersion;
 		Display display = Display.getDefault();
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		dialog.setImage(C.getImage("/img/appicon16.png"));
@@ -103,7 +103,7 @@ public class UpdateDialog {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		dialog.setLocation (x, y);		  		
 		dialog.open ();
-		
+
 		while (!dialog.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}

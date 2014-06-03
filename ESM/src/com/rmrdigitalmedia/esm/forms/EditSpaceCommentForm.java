@@ -47,14 +47,14 @@ public class EditSpaceCommentForm {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public EditSpaceCommentForm(int _commentID) {
 		LogController.log("Running class " + this.getClass().getName());
 		commentID = _commentID;
 	}
 
 	public boolean complete() {
-		
+
 		Display display = Display.getDefault();
 		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		EditSpaceCommentForm.myshell = shlVideotelEsm;
@@ -62,11 +62,11 @@ public class EditSpaceCommentForm {
 		shlVideotelEsm.setText("Videotel ESM");
 		shlVideotelEsm.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
-		
+
 		Composite container = new Composite(shlVideotelEsm,SWT.NONE);
 		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
 		container.setLayout(new FormLayout());		
-			
+
 		//set up row elements & positions =======================================================
 		Composite header = new Composite(container,SWT.NONE);
 		header.setBackground(C.TITLEBAR_BGCOLOR);
@@ -77,14 +77,14 @@ public class EditSpaceCommentForm {
 		fd_header.bottom = new FormAttachment(container,headerH);
 		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);
-		
+
 		Label lblImg = new Label(header, SWT.NONE);
 		lblImg.setImage(C.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
-		
+
 		Label lblTitle = new Label(header, SWT.NONE);
 		lblTitle.setForeground(C.APP_BGCOLOR);
 		lblTitle.setFont(C.FORM_HEADER_FONT);
@@ -94,7 +94,7 @@ public class EditSpaceCommentForm {
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("EDIT SPACE COMMENT");
-		
+
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
 		fd_formHolder.left = new FormAttachment(0);
@@ -103,7 +103,7 @@ public class EditSpaceCommentForm {
 		fd_formHolder.bottom = new FormAttachment(100);
 		formHolder.setLayoutData(fd_formHolder);
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
-	
+
 		Composite form = new Composite(formHolder,SWT.NONE);
 		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
@@ -113,7 +113,7 @@ public class EditSpaceCommentForm {
 		gridLayout.horizontalSpacing = 20;
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
-		
+
 		try {
 			cRow = SpaceCommentsTable.getRow(commentID);
 		} catch (SQLException e2) {
@@ -135,10 +135,10 @@ public class EditSpaceCommentForm {
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
-		
-		
+
+
 		//==================================================================		
-		
+
 		Button ok = new Button (form, SWT.PUSH);
 		ok.setToolTipText("Click to update your Comment");
 		ok.setFont(C.FONT_10);
@@ -151,8 +151,8 @@ public class EditSpaceCommentForm {
 					try {
 						cRow.setComment(s_comment.getText());
 						cRow.setUpdateDate(new Timestamp(new Date().getTime()));
-		        cRow.update();
-		        LogController.log("Space comment updated");		        
+						cRow.update();
+						LogController.log("Space comment updated");		        
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -166,7 +166,7 @@ public class EditSpaceCommentForm {
 				}
 			}
 		});	
-	
+
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
 		Rectangle rect = shlVideotelEsm.getBounds ();
@@ -176,15 +176,15 @@ public class EditSpaceCommentForm {
 		shlVideotelEsm.setDefaultButton (ok);		
 		new Label(form, SWT.NONE);
 		new Label(form, SWT.NONE);
-		
+
 		shlVideotelEsm.open ();
 		shlVideotelEsm.layout();
-		
+
 		while (!shlVideotelEsm.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
 		LogController.log("Edit Space Comment form closed");	
-		
+
 		return formOK;
 	}
 

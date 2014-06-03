@@ -24,31 +24,31 @@ import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.LicenseTable;
 
 public class NewLicenseDialog {
-	
+
 	boolean formOK = false;
 	int privateKey = 8864;
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			NewLicenseDialog ld = new NewLicenseDialog();
-			ld.complete();
+			NewLicenseDialog nld = new NewLicenseDialog();
+			nld.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public NewLicenseDialog() {
-	  	LogController.log("Running class " + this.getClass().getName());		
+		LogController.log("Running class " + this.getClass().getName());		
 	}
-	
+
 	protected boolean validateKey(String key) {
 		// should be format xxxxx-xxxxx-xxxxx
 		// algo - remove dashes, last 7 digits + privateKey number should = first 7 digits
 		if(
-			key.length() != 17 || 
-			key.charAt(5) != '-' ||
-			key.charAt(11) != '-'
+		key.length() != 17 || 
+		key.charAt(5) != '-' ||
+		key.charAt(11) != '-'
 		) { 
 			return false; 
 		}
@@ -62,7 +62,7 @@ public class NewLicenseDialog {
 		return false;
 	}
 
-	
+
 	public boolean complete() {
 		Display display = Display.getDefault();
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
@@ -95,7 +95,7 @@ public class NewLicenseDialog {
 				dialog.close ();
 			}
 		});
-		
+
 		final Label msgLabel = new Label(dialog, SWT.NONE);
 		msgLabel.setFont(C.FONT_8);
 		msgLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
@@ -170,7 +170,7 @@ public class NewLicenseDialog {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		dialog.setLocation (x, y);		  		
 		dialog.open ();
-		
+
 		while (!dialog.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
@@ -178,5 +178,5 @@ public class NewLicenseDialog {
 		return formOK;
 	}
 
-	
+
 }

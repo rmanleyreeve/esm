@@ -12,7 +12,7 @@ public class FilesystemController {
 
 	public FilesystemController() {
 	}
-		
+
 	public void checkFS() {		
 		LogController.log("Running class " + this.getClass().getName());
 		// set up filesystem
@@ -54,6 +54,6 @@ public class FilesystemController {
 		EsmApplication.appData.setField("LOGDIR",logdir);
 
 		LogController.log("File system integrity check complete");
-		
+
 	}
 }

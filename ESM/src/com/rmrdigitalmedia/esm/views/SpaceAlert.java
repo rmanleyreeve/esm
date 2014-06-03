@@ -27,7 +27,7 @@ public class SpaceAlert {
 			e.printStackTrace();
 		}
 	}
-		
+
 	public SpaceAlert(Shell appwin) {
 		LogController.log("Running class " + this.getClass().getName());
 		Display display = Display.getDefault();
@@ -45,40 +45,40 @@ public class SpaceAlert {
 		rl_shell.marginLeft = 10;
 		rl_shell.marginBottom = 10;
 		shell.setLayout(rl_shell);
-		
+
 		Composite compTitle = new Composite(shell, SWT.NONE);
 		compTitle.setLayoutData(new RowData(380, SWT.DEFAULT));
 		FillLayout fl_compTitle = new FillLayout(SWT.HORIZONTAL);
 		compTitle.setLayout(fl_compTitle);
-		
+
 		Label lblTitle = new Label(compTitle, SWT.NONE);
 		lblTitle.setAlignment(SWT.CENTER);
 		lblTitle.setFont(C.ALERT_TITLE);
 		lblTitle.setText("CAUTION!");
-		
+
 		Composite compIcon = new Composite(shell, SWT.NONE);
 		compIcon.setLayoutData(new RowData(380, SWT.DEFAULT));
 		compIcon.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
+
 		Label lblIcon = new Label(compIcon, SWT.NONE);
 		lblIcon.setAlignment(SWT.CENTER);
 		lblIcon.setImage(C.getImage("/img/alert-icon-red.png"));
-		
+
 		Composite compMsg = new Composite(shell, SWT.NONE);
 		compMsg.setLayoutData(new RowData(380, SWT.DEFAULT));
 		FillLayout fl_compMsg = new FillLayout(SWT.HORIZONTAL);
 		fl_compMsg.marginHeight = 5;
 		compMsg.setLayout(fl_compMsg);
-		
+
 		Label lblMsg = new Label(compMsg, SWT.NONE);
 		lblMsg.setAlignment(SWT.CENTER);
 		lblMsg.setFont(C.FONT_11);
 		lblMsg.setText(C.SPACE_ALERT_RED);
-		
+
 		Composite compBtn = new Composite(shell, SWT.NONE);
 		compBtn.setLayoutData(new RowData(380, 40));
 		compBtn.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
+
 		Button btnContinue = new Button(compBtn, SWT.NONE);
 		btnContinue.setToolTipText("Click to accept warning and continue");
 		btnContinue.addSelectionListener(new SelectionAdapter() {
@@ -88,7 +88,7 @@ public class SpaceAlert {
 			}
 		});
 		btnContinue.setText("Continue");
-		
+
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();

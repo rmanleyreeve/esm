@@ -435,14 +435,14 @@ public class SpaceDetailView {
 		GridData gd_btnEditSpaceAudit = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
 		gd_btnEditSpaceAudit.verticalIndent = 3;
 		btnEditSpaceAudit.setLayoutData(gd_btnEditSpaceAudit);
+		btnEditSpaceAudit.setImage(C.getImage("/img/16_edit.png"));
+		btnEditSpaceAudit.setText("Audit");
 		btnEditSpaceAudit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				//
+				WindowController.showSpaceAudit(spaceID);
 			}
 		});
-		btnEditSpaceAudit.setImage(C.getImage("/img/16_edit.png"));
-		btnEditSpaceAudit.setText("Audit");
 
 
 		sep = new Label(rowRight2, SWT.SEPARATOR | SWT.HORIZONTAL);

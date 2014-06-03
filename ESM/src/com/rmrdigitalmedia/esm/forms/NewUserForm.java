@@ -34,7 +34,7 @@ import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
 @SuppressWarnings("unused")
 public class NewUserForm {
-	
+
 	Shell myshell;
 	boolean formOK = false;
 	Text username,password,forename,surname,rank,jobtitle,workid;
@@ -43,7 +43,7 @@ public class NewUserForm {
 	Label sep;	
 	// form layout  guides
 	int headerH = 40;
-	
+
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
@@ -59,7 +59,7 @@ public class NewUserForm {
 	}
 
 	public boolean complete() {	
-		
+
 		Display display = Display.getDefault();
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.myshell = shell;
@@ -67,11 +67,11 @@ public class NewUserForm {
 		shell.setText("ESM Setup");
 		shell.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
-		
+
 		Composite container = new Composite(shell,SWT.NONE);
 		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
 		container.setLayout(new FormLayout());		
-			
+
 		//set up row elements & positions =======================================================
 		Composite header = new Composite(container,SWT.NONE);
 		header.setBackground(C.TITLEBAR_BGCOLOR);
@@ -82,14 +82,14 @@ public class NewUserForm {
 		fd_header.bottom = new FormAttachment(container,headerH);
 		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);
-		
+
 		Label lblImg = new Label(header, SWT.NONE);
 		lblImg.setImage(C.getImage("/img/users.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
-		
+
 		Label lblTitle = new Label(header, SWT.NONE);
 		lblTitle.setForeground(C.APP_BGCOLOR);
 		lblTitle.setFont(C.FORM_HEADER_FONT);
@@ -99,7 +99,7 @@ public class NewUserForm {
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("CREATE PROGRAM USER");
-		
+
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
 		fd_formHolder.left = new FormAttachment(0);
@@ -108,7 +108,7 @@ public class NewUserForm {
 		fd_formHolder.bottom = new FormAttachment(100);
 		formHolder.setLayoutData(fd_formHolder);
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
-	
+
 		Composite form = new Composite(formHolder,SWT.NONE);
 		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
@@ -118,7 +118,7 @@ public class NewUserForm {
 		gridLayout.horizontalSpacing = 10;
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
-				
+
 		//FORM LABELS & FIELDS ==================================================================	
 		Label lblUsername = new Label(form, SWT.NONE);
 		lblUsername.setBackground(C.APP_BGCOLOR);
@@ -128,7 +128,7 @@ public class NewUserForm {
 		gd_username.widthHint = 100;
 		username.setLayoutData(gd_username);
 		username.setFocus();
-			
+
 		Label lblPassword = new Label(form, SWT.NONE);
 		lblPassword.setBackground(C.APP_BGCOLOR);
 		lblPassword.setText("Password:");		
@@ -137,7 +137,7 @@ public class NewUserForm {
 		gd_password.widthHint = 100;
 		password.setLayoutData(gd_password);
 		password.setEchoChar('*');
-		
+
 		Label lblForename = new Label(form, SWT.NONE);
 		lblForename.setBackground(C.APP_BGCOLOR);
 		lblForename.setText("Forename:");		
@@ -145,7 +145,7 @@ public class NewUserForm {
 		GridData gd_forename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
 		gd_forename.widthHint = 200;
 		forename.setLayoutData(gd_forename);
-		
+
 		Label lblSurname = new Label(form, SWT.NONE);
 		lblSurname.setBackground(C.APP_BGCOLOR);
 		lblSurname.setText("Surname:");		
@@ -153,7 +153,7 @@ public class NewUserForm {
 		GridData gd_surname = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_surname.widthHint = 200;
 		surname.setLayoutData(gd_surname);
-		
+
 		Label lblRank = new Label(form, SWT.NONE);
 		lblRank.setBackground(C.APP_BGCOLOR);
 		lblRank.setText("Rank:");		
@@ -169,7 +169,7 @@ public class NewUserForm {
 		GridData gd_jobtitle = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_jobtitle.widthHint = 200;
 		jobtitle.setLayoutData(gd_jobtitle);
-	
+
 		Label lblWorkID = new Label(form, SWT.NONE);
 		lblWorkID.setBackground(C.APP_BGCOLOR);
 		lblWorkID.setText("Work ID:");		
@@ -202,7 +202,7 @@ public class NewUserForm {
 			yyyy.add(""+i);
 		}
 		yyyy.select(0);
-		
+
 
 		Label lblAccess = new Label(form, SWT.NONE);
 		lblAccess.setBackground(C.APP_BGCOLOR);
@@ -217,12 +217,12 @@ public class NewUserForm {
 		GridData gd_access = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_access.widthHint = 160;
 		accessLevels.setLayoutData(gd_access);
-		
+
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1));		
-		
+
 		//==================================================================		
-		
+
 		Button ok = new Button (form, SWT.PUSH);
 		ok.setToolTipText("Click to save these details");
 		ok.setFont(C.FONT_10);
@@ -264,7 +264,7 @@ public class NewUserForm {
 				}
 			}
 		});	
-	
+
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
 		Rectangle rect = shell.getBounds ();
@@ -272,10 +272,10 @@ public class NewUserForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shell.setLocation (x, y);		  		
 		shell.setDefaultButton (ok);
-		
+
 		shell.open ();
 		shell.layout();
-		
+
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}

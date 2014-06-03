@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.rmrdigitalmedia.esm.C;
 
-public class AdministrationView {
+public class SpaceAuditView {
 
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
@@ -17,7 +17,7 @@ public class AdministrationView {
 			Shell shell = new Shell();
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
 			Composite comp = new Composite(shell, SWT.BORDER);
-			AdministrationView.buildPage(comp);
+			SpaceAuditView.buildPage(comp);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!Display.getDefault().readAndDispatch()) {
@@ -28,7 +28,6 @@ public class AdministrationView {
 			e.printStackTrace();
 		}
 	}
-
 
 	public static void buildPage(Composite parent) {
 
@@ -42,7 +41,7 @@ public class AdministrationView {
 		Composite rightpanel = new Composite(panels,SWT.NONE);
 		rightpanel.setBackground(C.APP_BGCOLOR);
 		rightpanel.setLayout(new FillLayout());
-		panels.setWeights(new int[] {1, 3});
+		panels.setWeights(new int[] {1, 1});
 
 	}
 }

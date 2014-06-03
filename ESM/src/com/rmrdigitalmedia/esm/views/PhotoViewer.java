@@ -35,7 +35,7 @@ public class PhotoViewer {
 			e.printStackTrace();
 		}
 	}
-	
+
 
 	public PhotoViewer(final Shell appwin, final String fullPath, final String thumbPath, final int spaceID) {
 
@@ -55,9 +55,9 @@ public class PhotoViewer {
 
 			shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 			FillLayout rl_shell = new FillLayout();
-			rl_shell.marginHeight = 5;
+			rl_shell.marginHeight = 10;
 			rl_shell.spacing = 5;
-			rl_shell.marginWidth = 5;
+			rl_shell.marginWidth = 10;
 			shell.setLayout(rl_shell);
 			shell.setSize(820,750);
 
@@ -68,16 +68,19 @@ public class PhotoViewer {
 			gl_imgHolder.verticalSpacing = 0;
 			gl_imgHolder.marginHeight = 0;
 			imgHolder.setLayout(gl_imgHolder);
-			
-			Label imgTitle = new Label(imgHolder, SWT.CENTER);
+
+			final Label imgTitle = new Label(imgHolder, SWT.CENTER);
 			GridData gd_imgTitle = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
-			gd_imgTitle.verticalIndent = 5;
+			//gd_imgTitle.verticalIndent = 5;
 			imgTitle.setLayoutData(gd_imgTitle);
 			imgTitle.setFont(C.FONT_12B);
 			imgTitle.setText(pRow.getTitle());
 
 			final Label imgPic = new Label(imgHolder, SWT.BORDER | SWT.CENTER);
 			imgPic.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, true, true, 3, 1));
+			GridData gd_imgPic = new GridData(SWT.CENTER, SWT.TOP, true, true, 3, 1);
+			gd_imgPic.verticalIndent = 5;
+			imgPic.setLayoutData(gd_imgPic);
 			imgPic.setBackground(SWTResourceManager.getColor(SWT.COLOR_CYAN));
 			imgPic.setImage(C.getExtImage(fullPath));
 
@@ -107,6 +110,7 @@ public class PhotoViewer {
 						if(epcf.complete()) {
 							try {
 								pRow = PhotoMetadataTable.getRow(_id);
+								imgTitle.setText(pRow.getTitle());
 								imgComment.setText(pRow.getComment());									
 								imgHolder.update();
 								imgPic.update();
@@ -124,11 +128,9 @@ public class PhotoViewer {
 					}
 				});
 
-
 				Label foo = new Label(imgHolder, SWT.NONE);
 				foo.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1));
 
-				
 				Button btnDeleteComment = new Button(imgHolder, SWT.NONE);
 				btnDeleteComment.setText("Delete Photo");
 				GridData gd_btnDeleteComment = new GridData(SWT.LEFT, SWT.TOP, true, false, 1, 1);
@@ -165,7 +167,7 @@ public class PhotoViewer {
 			System.out.println(x + "," + y);
 			shell.setLocation (x, y);
 			shell.open();
-			
+
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch ()) display.sleep ();
 			}

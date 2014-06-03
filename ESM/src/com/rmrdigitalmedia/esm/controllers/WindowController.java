@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Arrays;
+
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
@@ -37,6 +38,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
@@ -47,8 +49,10 @@ import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
 import com.rmrdigitalmedia.esm.views.AdministrationView;
+import com.rmrdigitalmedia.esm.views.EntryAuditView;
 import com.rmrdigitalmedia.esm.views.PhotoViewer;
 import com.rmrdigitalmedia.esm.views.SpaceAlert;
+import com.rmrdigitalmedia.esm.views.SpaceAuditView;
 import com.rmrdigitalmedia.esm.views.SpaceDetailView;
 import com.rmrdigitalmedia.esm.views.SpacesListView;
 
@@ -60,10 +64,10 @@ public class WindowController {
 	static Display display;
 	int appHeight, appWidth,headerH = 85,titleH = 40,footerH = 15;
 	Composite container, header, titleBar;
-	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration;
+	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration, pageSpaceAudit, pageEntryAudit;
 	static Label pageTitle, onlineStatus;
 	String displayName;
-	public static Button btnAddSpace, btnViewSpaceDetails, btnDeleteSpace, btnAdmin;
+	public static Button btnAddSpace, btnBackToSpaceDetails, btnDeleteSpace, btnAdmin, btnViewSpaceDetails;
 	static Button btnSpacesList, btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
 	private static int currentSpaceId = 0;
@@ -160,12 +164,19 @@ public class WindowController {
 
 		// SPACE DETAIL PAGE ======================================================
 		pageSpaceDetail = new Composite (formHolder, SWT.NONE);
-		//SpaceDetailView.buildPage(pageSpaceDetail, 0);
+		//SpaceDetailViewTest.buildPage(pageSpaceDetail, 0);
 
 		// ADMIN PAGE ===============================================================
 		pageAdministration = new Composite (formHolder, SWT.NONE);
 		AdministrationView.buildPage(pageAdministration);
 
+		// SPACE AUDIT PAGE ===============================================================
+		pageSpaceAudit = new Composite (formHolder, SWT.NONE);
+		SpaceAuditView.buildPage(pageSpaceAudit);
+
+		// ENTRY AUDIT PAGE ===============================================================
+		pageEntryAudit = new Composite (formHolder, SWT.NONE);
+		EntryAuditView.buildPage(pageEntryAudit);
 
 
 
@@ -265,6 +276,24 @@ public class WindowController {
 		btnViewSpaceDetails.setLayoutData(fd_btnEditSpace);
 		btnViewSpaceDetails.setEnabled(false);
 
+		
+		btnBackToSpaceDetails = new Button(titleBar, SWT.PUSH);
+		btnBackToSpaceDetails.setToolTipText("View details for the selected Enclosed Space");
+		btnBackToSpaceDetails.setImage(C.getImage("/img/16_edit.png"));
+		btnBackToSpaceDetails.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {				
+				showSpaceDetail(currentSpaceId);
+			}
+		});
+		btnBackToSpaceDetails.setText("Back to Details");
+		btnBackToSpaceDetails.setFont(C.BUTTON_FONT);
+		FormData fd_btnBackToSpaceDetails = new FormData();
+		fd_btnBackToSpaceDetails.top = new FormAttachment(titleBar,titleH/5);
+		fd_btnBackToSpaceDetails.right = new FormAttachment(btnAddSpace,-5);
+		btnBackToSpaceDetails.setLayoutData(fd_btnBackToSpaceDetails);
+		//btnBackToSpaceDetails.setEnabled(false);
+
 		btnDeleteSpace = new Button(titleBar, SWT.PUSH);
 		btnDeleteSpace.setToolTipText("Delete the selected Enclosed Space");
 		btnDeleteSpace.setImage(C.getImage("/img/16_delete.png"));
@@ -288,7 +317,7 @@ public class WindowController {
 		btnDeleteSpace.setFont(C.BUTTON_FONT);
 		FormData fd_btnDeleteSpace = new FormData();
 		fd_btnDeleteSpace.top = new FormAttachment(titleBar,titleH/5);
-		fd_btnDeleteSpace.right = new FormAttachment(btnViewSpaceDetails,-5);
+		fd_btnDeleteSpace.right = new FormAttachment(btnBackToSpaceDetails,-5);
 		btnDeleteSpace.setLayoutData(fd_btnDeleteSpace);
 		btnDeleteSpace.setEnabled(false);
 
@@ -394,11 +423,12 @@ public class WindowController {
 		SpacesListView.getTVB().setInput(Arrays.asList(rows));
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(true);
-		btnViewSpaceDetails.setVisible(true);
 		btnDeleteSpace.setVisible(true);
-		btnViewSpaceDetails.setEnabled(false);
 		btnDeleteSpace.setEnabled(false);
+		btnViewSpaceDetails.setVisible(true);
+		btnViewSpaceDetails.setEnabled(false);
 		btnSpacesList.setVisible(false);
+		btnBackToSpaceDetails.setVisible(false);
 		stackLayout.topControl = pageSpacesList;
 		pageTitle.setText(C.SPACES_LIST_TITLE);
 		formHolder.layout();
@@ -419,6 +449,7 @@ public class WindowController {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		btnAddSpace.setVisible(false);
 		btnViewSpaceDetails.setVisible(false);
+		btnBackToSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
@@ -441,10 +472,37 @@ public class WindowController {
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
+		btnBackToSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
 		stackLayout.topControl = pageAdministration;
 		pageTitle.setText(C.ADMIN_PAGE_TITLE);
+		formHolder.layout();
+	}
+	public static void showSpaceAudit(int spaceID) {
+		currentSpaceId = spaceID;
+		LogController.log("Displaying Internal Space Audit page for ID:" + spaceID);
+		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		btnAddSpace.setVisible(false);	
+		btnViewSpaceDetails.setVisible(false);
+		btnDeleteSpace.setVisible(false);
+		btnSpacesList.setVisible(false);
+		btnBackToSpaceDetails.setVisible(true);
+		stackLayout.topControl = pageSpaceAudit;
+		pageTitle.setText(C.SPACE_AUDIT_PAGE_TITLE);
+		formHolder.layout();
+	}
+	public static void showEntryAudit(int spaceID, int entryID) {
+		currentSpaceId = spaceID;
+		LogController.log("Displaying Entry Point Audit page for ID:" + entryID);
+		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		btnAddSpace.setVisible(false);	
+		btnViewSpaceDetails.setVisible(false);
+		btnDeleteSpace.setVisible(false);
+		btnSpacesList.setVisible(false);
+		btnBackToSpaceDetails.setVisible(true);
+		stackLayout.topControl = pageEntryAudit;
+		pageTitle.setText(C.ENTRY_AUDIT_PAGE_TITLE);
 		formHolder.layout();
 	}
 

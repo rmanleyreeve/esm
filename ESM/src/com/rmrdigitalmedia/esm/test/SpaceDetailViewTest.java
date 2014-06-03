@@ -52,7 +52,7 @@ import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
-public class SpaceDetailView {
+public class SpaceDetailViewTest {
 	
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 	private static Label sep;
@@ -75,7 +75,7 @@ public class SpaceDetailView {
 				System.out.println(p);
 			}
 			
-			SpaceDetailView.buildPage(comp,1);
+			SpaceDetailViewTest.buildPage(comp,1);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!Display.getDefault().readAndDispatch()) {
@@ -326,7 +326,7 @@ public class SpaceDetailView {
 		try {
 			author = EsmUsersTable.getRow(row.getAuthorID());
 		} catch (SQLException e1) {
-			LogController.logEvent(SpaceDetailView.class, 1, e1);
+			LogController.logEvent(SpaceDetailViewTest.class, 1, e1);
 		}
 		Label lblCreatedBy = new Label(rowRight1, SWT.NONE);
 		lblCreatedBy.setFont(C.FONT_10B);

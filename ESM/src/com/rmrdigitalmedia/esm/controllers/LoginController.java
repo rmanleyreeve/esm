@@ -27,7 +27,7 @@ import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
- 
+
 public class LoginController {
 
 	Shell shell;
@@ -35,14 +35,14 @@ public class LoginController {
 	private Display display;
 	private Rectangle rect;
 	private Label alertTxt;
-	
+
 	public LoginController(Display display,org.eclipse.swt.graphics.Rectangle rect) {
 		this.display = display;
 		this.rect = rect;
 		LogController.log("Running class " + this.getClass().getName());
 	}
- 
-  void submit() {
+
+	void submit() {
 		//submit login info for verification, if OK then run main App
 		String un = txt_Username.getText();
 		String pw = txt_Password.getText();
@@ -67,8 +67,8 @@ public class LoginController {
 				txt_Password.setText("");
 			}
 		}
- }
-	
+	}
+
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -79,7 +79,7 @@ public class LoginController {
 		shell.setLayout(fillLayout);
 		Rectangle s = C.getImage("/img/splash2.jpg").getBounds();
 		shell.setSize(s.width, s.height);
-		 
+
 		//Create a composite with grid layout.
 		final Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -90,12 +90,12 @@ public class LoginController {
 		gridLayout.marginWidth = 0;
 		gridLayout.horizontalSpacing = 0;
 		composite.setLayout(gridLayout);
-		 
+
 		//Setting the background of the composite with the image background for login dialog
 		final Label img_Label = new Label(composite, SWT.NONE);
 		img_Label.setLayoutData(new GridData(300, 250));
 		img_Label.setImage(C.getImage("/img/splash2.jpg"));
-	 
+
 		//Creating the composite which will contain the login related widgets
 		final Composite cmp_Login = new Composite(composite, SWT.NONE);
 		cmp_Login.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -107,7 +107,7 @@ public class LoginController {
 		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, false);
 		gridData.widthHint = 196;
 		cmp_Login.setLayoutData(gridData);
-		 
+
 		//Label for the heading
 		final CLabel clbl_UserLogin = new CLabel(cmp_Login, SWT.NONE);
 		clbl_UserLogin.setFont(C.FONT_10B);
@@ -122,7 +122,7 @@ public class LoginController {
 			txt += (String)EsmApplication.appData.getField("VESSEL") + ": ";
 		} catch (Exception e1) { }
 		clbl_UserLogin.setText(txt + "User Login");
-		 
+
 		//Label for the username
 		final CLabel clbl_Username = new CLabel(cmp_Login, SWT.NONE);
 		clbl_Username.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -130,13 +130,13 @@ public class LoginController {
 		rowData_1.width = 180;
 		clbl_Username.setLayoutData(rowData_1);
 		clbl_Username.setText("Username:");
-		 
+
 		//Textfield for the username
 		txt_Username = new Text(cmp_Login, SWT.BORDER);
 		final RowData rowData_2 = new RowData();
 		rowData_2.width = 170;
 		txt_Username.setLayoutData(rowData_2);
-		 
+
 		//Label for the password
 		final CLabel clbl_Password = new CLabel(cmp_Login, SWT.NONE);
 		clbl_Password.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -144,7 +144,7 @@ public class LoginController {
 		rowData_3.width = 180;
 		clbl_Password.setLayoutData(rowData_3);
 		clbl_Password.setText("Password:");
-		 
+
 		//Textfield for the password
 		txt_Password = new Text(cmp_Login, SWT.BORDER);
 		txt_Password.addKeyListener(new KeyAdapter() {
@@ -159,7 +159,7 @@ public class LoginController {
 		rowData_4.width = 170;
 		txt_Password.setLayoutData(rowData_4);
 		txt_Password.setEchoChar('*');
-		 
+
 		//Composite to hold button as I want the
 		//button to be positioned to my choice.
 		final Composite cmp_ButtonBar = new Composite(cmp_Login, SWT.NONE);
@@ -169,7 +169,7 @@ public class LoginController {
 		rowData_5.width = 200;
 		cmp_ButtonBar.setLayoutData(rowData_5);
 		cmp_ButtonBar.setLayout(new FormLayout());
-		 
+
 		//Button for login
 		final Button btnLogin = new Button(cmp_ButtonBar, SWT.FLAT | SWT.CENTER);
 		btnLogin.setFont(C.FONT_8B);
@@ -181,7 +181,7 @@ public class LoginController {
 		btnLogin.setLayoutData(formData);
 		btnLogin.setText("Login");
 		btnLogin.setToolTipText("Click to log in to the system");
-		
+
 		Composite alert = new Composite(cmp_ButtonBar, SWT.NONE);
 		alert.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		FormData fd_alert = new FormData();
@@ -197,14 +197,14 @@ public class LoginController {
 		alertTxt.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		alertTxt.setAlignment(SWT.CENTER);
 		alertTxt.setSize(195, 55);
-		 
+
 		btnLogin.addListener(SWT.Selection, new Listener() { 
 			@Override
 			public void handleEvent(Event e) {
 				submit();
 			}
 		});
-		
+
 		//Label for copyright info
 		final CLabel clbl_Message = new CLabel(cmp_Login, SWT.NONE);
 		clbl_Message.setFont(C.FONT_8);
@@ -220,17 +220,17 @@ public class LoginController {
 			LogController.logEvent(this,2,e);
 		}		
 		clbl_Message.setText(vtxt + C.COPYRIGHT);
-		
+
 		// render window
 		shell.setDefaultButton(btnLogin);
 		LogController.log("LoginController Window Size: " + rect.width + ":" + rect.height);
 		shell.setBounds(rect);	 
 		shell.open();
 		LogController.log("Awaiting user input...");
-		 
+
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
-			}
+		}
 	}
 }

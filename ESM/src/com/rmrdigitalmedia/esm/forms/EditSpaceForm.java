@@ -27,14 +27,14 @@ import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class EditSpaceForm {
-	
+
 	Shell myshell;
 	boolean formOK = false;
 	Text s_name, s_description;
 	int spaceID, headerH = 40;
 	private Label sep;
 	SpacesTable.Row sRow;
-	
+
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -52,9 +52,9 @@ public class EditSpaceForm {
 		LogController.log("Running class " + this.getClass().getName());
 		spaceID = _spaceID;
 	}	
-	
+
 	public boolean complete() {	
-		
+
 		Display display = Display.getDefault();
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM);
 		this.myshell = shell;
@@ -62,11 +62,11 @@ public class EditSpaceForm {
 		shell.setText("Videotel ESM");
 		shell.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
-		
+
 		Composite container = new Composite(shell,SWT.NONE);
 		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
 		container.setLayout(new FormLayout());		
-			
+
 		//set up row elements & positions =======================================================
 		Composite header = new Composite(container,SWT.NONE);
 		header.setBackground(C.TITLEBAR_BGCOLOR);
@@ -77,14 +77,14 @@ public class EditSpaceForm {
 		fd_header.bottom = new FormAttachment(container,headerH);
 		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);
-		
+
 		Label lblImg = new Label(header, SWT.NONE);
 		lblImg.setImage(C.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
-		
+
 		Label lblTitle = new Label(header, SWT.NONE);
 		lblTitle.setForeground(C.APP_BGCOLOR);
 		lblTitle.setFont(C.FORM_HEADER_FONT);
@@ -94,7 +94,7 @@ public class EditSpaceForm {
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("EDIT SPACE DETAILS");
-		
+
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
 		fd_formHolder.left = new FormAttachment(0);
@@ -103,7 +103,7 @@ public class EditSpaceForm {
 		fd_formHolder.bottom = new FormAttachment(100);
 		formHolder.setLayoutData(fd_formHolder);
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
-	
+
 		Composite form = new Composite(formHolder,SWT.NONE);
 		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
@@ -113,14 +113,14 @@ public class EditSpaceForm {
 		gridLayout.horizontalSpacing = 20;
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
-		
+
 		try {
 			sRow = SpacesTable.getRow(spaceID);
 		} catch (SQLException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-				
+
 		//FORM LABELS & FIELDS ==================================================================	
 		Label lblSName = new Label(form, SWT.NONE);
 		lblSName.setBackground(C.APP_BGCOLOR);
@@ -131,7 +131,7 @@ public class EditSpaceForm {
 		gd_name.widthHint = 230;
 		s_name.setLayoutData(gd_name);
 		s_name.setFocus();
-		
+
 		Label lblSDesc = new Label(form, SWT.NONE);
 		lblSDesc.setBackground(C.APP_BGCOLOR);
 		lblSDesc.setText("Space\nDescription:");	
@@ -144,9 +144,9 @@ public class EditSpaceForm {
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
-		
+
 		//==================================================================		
-		
+
 		Button ok = new Button (form, SWT.PUSH);
 		ok.setToolTipText("Click to save these details");
 		ok.setFont(C.FONT_10);
@@ -160,8 +160,8 @@ public class EditSpaceForm {
 						sRow.setName(s_name.getText());
 						sRow.setDescription(s_description.getText());
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
-		        sRow.update();
-		        LogController.log("Space details updated");
+						sRow.update();
+						LogController.log("Space details updated");
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -175,7 +175,7 @@ public class EditSpaceForm {
 				}
 			}
 		});	
-	
+
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
 		Rectangle rect = shell.getBounds ();
@@ -184,10 +184,10 @@ public class EditSpaceForm {
 		shell.setLocation (x, y);		  		
 		shell.setDefaultButton (ok);		
 		new Label(form, SWT.NONE);
-		
+
 		shell.open ();
 		shell.layout();
-		
+
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
