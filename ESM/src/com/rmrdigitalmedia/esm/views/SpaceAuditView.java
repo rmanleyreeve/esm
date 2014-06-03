@@ -42,6 +42,6 @@ public class SpaceAuditView {
 		rightpanel.setBackground(C.APP_BGCOLOR);
 		rightpanel.setLayout(new FillLayout());
 		panels.setWeights(new int[] {1, 1});
-
+		
 	}
 }
