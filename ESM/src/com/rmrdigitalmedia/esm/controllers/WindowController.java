@@ -45,6 +45,7 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.forms.DeleteSpaceDialog;
 import com.rmrdigitalmedia.esm.forms.NewSpaceForm;
+import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
@@ -490,9 +491,16 @@ void showSpacesList(){
 		btnSpacesList.setVisible(false);
 		btnBackToSpaceDetails.setVisible(true);
 		LogController.log("Displaying Internal Space Audit page for ID:" + spaceID);
+		for (Control c:pageSpaceAudit.getChildren()) {
+			c.dispose();
+		}
 		SpaceAuditView.buildPage(pageSpaceAudit, spaceID);
 		stackLayout.topControl = pageSpaceAudit;
-		pageTitle.setText(C.SPACE_AUDIT_PAGE_TITLE);
+		String title = C.SPACE_AUDIT_PAGE_TITLE;
+		try {
+			 title += " for " + SpacesTable.getRow(spaceID).getName();
+		} catch (SQLException ex) {}
+		pageTitle.setText(title);
 		formHolder.layout();
 	}
 	public static void showEntryAudit(int spaceID, int entryID) {
@@ -504,9 +512,16 @@ void showSpacesList(){
 		btnSpacesList.setVisible(false);
 		btnBackToSpaceDetails.setVisible(true);
 		LogController.log("Displaying Entry Point Audit page for ID:" + entryID);
+		for (Control c:pageEntryAudit.getChildren()) {
+			c.dispose();
+		}
 		EntryAuditView.buildPage(pageEntryAudit, entryID);
 		stackLayout.topControl = pageEntryAudit;
-		pageTitle.setText(C.ENTRY_AUDIT_PAGE_TITLE);
+		String title = C.ENTRY_AUDIT_PAGE_TITLE;
+		try {
+			 title += " for " + EntrypointsTable.getRow(entryID).getName();
+		} catch (SQLException ex) {}
+		pageTitle.setText(title);
 		formHolder.layout();
 	}
 

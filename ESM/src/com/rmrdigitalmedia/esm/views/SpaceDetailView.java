@@ -91,9 +91,9 @@ public class SpaceDetailView {
 
 	public static void buildPage(final Composite parent, final int spaceID) {
 
-		SpacesTable.Row row = null;
+		SpacesTable.Row sRow = null;
 		try {
-			row = SpacesTable.getRow(spaceID);
+			sRow = SpacesTable.getRow(spaceID);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -138,7 +138,7 @@ public class SpaceDetailView {
 		name.setFont(C.FONT_12);
 		name.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		name.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
-		name.setText(row.getName());
+		name.setText(sRow.getName());
 
 		Label id = new Label(row1, SWT.BORDER);
 		id.setFont(C.FONT_12);
@@ -146,7 +146,7 @@ public class SpaceDetailView {
 		GridData gd_id = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		gd_id.horizontalIndent = 10;
 		id.setLayoutData(gd_id);
-		id.setText(""+row.getID());
+		id.setText(""+sRow.getID());
 
 		Label lblDesc = new Label(row1, SWT.NONE);
 		lblDesc.setFont(C.FONT_12B);
@@ -163,7 +163,7 @@ public class SpaceDetailView {
 		gd_description.widthHint = 1000;
 		gd_description.heightHint = 100;
 		description.setLayoutData(gd_description);
-		description.setText(row.getDescription());		
+		description.setText(sRow.getDescription());		
 
 		if( user.getAccessLevel()==9 )	{	
 			Button btnEditSpace = new Button(row1, SWT.RIGHT);
@@ -338,7 +338,7 @@ public class SpaceDetailView {
 
 		EsmUsersTable.Row author = null;
 		try {
-			author = EsmUsersTable.getRow(row.getAuthorID());
+			author = EsmUsersTable.getRow(sRow.getAuthorID());
 		} catch (SQLException e1) {
 			LogController.logEvent(SpaceDetailView.class, 1, e1);
 		}
@@ -364,7 +364,7 @@ public class SpaceDetailView {
 		lblCreatedDate.setFont(C.FONT_10);
 		lblCreatedDate.setBackground(C.APP_BGCOLOR);
 		lblCreatedDate.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		lblCreatedDate.setText(df(row.getCreatedDate()));
+		lblCreatedDate.setText(df(sRow.getCreatedDate()));
 
 		Label lblUpdated = new Label(rowRight1, SWT.NONE);
 		lblUpdated.setFont(C.FONT_10B);
@@ -376,7 +376,7 @@ public class SpaceDetailView {
 		lblUpdatedDate.setFont(C.FONT_10);
 		lblUpdatedDate.setBackground(C.APP_BGCOLOR);
 		lblUpdatedDate.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		lblUpdatedDate.setText(df(row.getUpdateDate()));
+		lblUpdatedDate.setText(df(sRow.getUpdateDate()));
 
 		Label lblCompletion = new Label(rowRight1, SWT.NONE);
 		lblCompletion.setFont(C.FONT_10B);
@@ -386,7 +386,7 @@ public class SpaceDetailView {
 
 		Label lblCompletionImg = new Label(rowRight1, SWT.NONE);
 		// work out completion status based on id
-		int cs = (row.getID()*20);
+		int cs = (sRow.getID()*20);
 		lblCompletionImg.setImage(C.getImage("/img/Percent_"+ cs +".png"));
 		lblCompletionImg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		lblCompletionImg.setBackground(C.APP_BGCOLOR);		
@@ -412,11 +412,11 @@ public class SpaceDetailView {
 		lblSpaceAudit.setFont(C.FONT_10B);
 		lblSpaceAudit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		lblSpaceAudit.setBackground(C.APP_BGCOLOR);
-		lblSpaceAudit.setText(row.getName());		
+		lblSpaceAudit.setText(sRow.getName());		
 
 		Label lblSpaceAuditImg = new Label(rowRight2, SWT.NONE);
 		// work out completion status based on id
-		int scs = (row.getID()*20);
+		int scs = (sRow.getID()*20);
 		lblSpaceAuditImg.setImage(C.getImage("/img/Percent_"+ scs +".png"));
 		GridData gd_lblSpaceAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditImg.widthHint = 160;
@@ -430,14 +430,14 @@ public class SpaceDetailView {
 		lblSpaceAuditLight.setLayoutData(gd_lblSpaceAuditLight);
 		lblSpaceAuditLight.setBackground(C.APP_BGCOLOR);
 
-		Button btnEditSpaceAudit = new Button(rowRight2, SWT.NONE);
-		btnEditSpaceAudit.setToolTipText("Launch the Internal Space Audit for " + row.getName());
-		GridData gd_btnEditSpaceAudit = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
-		gd_btnEditSpaceAudit.verticalIndent = 3;
-		btnEditSpaceAudit.setLayoutData(gd_btnEditSpaceAudit);
-		btnEditSpaceAudit.setImage(C.getImage("/img/16_edit.png"));
-		btnEditSpaceAudit.setText("Audit");
-		btnEditSpaceAudit.addSelectionListener(new SelectionAdapter() {
+		Button btnShowSpaceAudit = new Button(rowRight2, SWT.NONE);
+		btnShowSpaceAudit.setToolTipText("Launch the Internal Space Audit for " + sRow.getName());
+		GridData gd_btnShowSpaceAudit = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
+		gd_btnShowSpaceAudit.verticalIndent = 3;
+		btnShowSpaceAudit.setLayoutData(gd_btnShowSpaceAudit);
+		btnShowSpaceAudit.setImage(C.getImage("/img/16_edit.png"));
+		btnShowSpaceAudit.setText("Audit");
+		btnShowSpaceAudit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				WindowController.showSpaceAudit(spaceID);
@@ -450,8 +450,8 @@ public class SpaceDetailView {
 
 		CLabel lblEntryPoint;
 		Label lblEntryPointAuditImg, lblEntryPointAuditLight;
-		GridData gd_lblEntryPointAuditImg, gd_lblEntryPointAuditLight, gd_btnEditAudit, gd_lblEntryPoint;
-		Button btnEditAudit;
+		GridData gd_lblEntryPointAuditImg, gd_lblEntryPointAuditLight, gd_btnShowEntryAudit, gd_lblEntryPoint;
+		Button btnShowEntryAudit;
 		EntrypointsTable.Row[] epRows = null;
 		int rh = 20;
 
@@ -463,7 +463,7 @@ public class SpaceDetailView {
 		}
 
 		// for loop
-		for (EntrypointsTable.Row epRow:epRows) {
+		for (final EntrypointsTable.Row epRow:epRows) {
 
 			lblEntryPoint = new CLabel(rowRight2, SWT.NONE);
 			lblEntryPoint.setFont(C.FONT_10);
@@ -476,7 +476,7 @@ public class SpaceDetailView {
 			lblEntryPoint.setText(epRow.getName());
 
 			// work out completion status based on id
-			int epcs = (row.getID()*20);
+			int epcs = (epRow.getID()*20);
 			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
 			lblEntryPointAuditImg.setImage(C.getImage("/img/Percent_"+ epcs +".png"));
 			gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
@@ -493,21 +493,20 @@ public class SpaceDetailView {
 			lblEntryPointAuditLight.setLayoutData(gd_lblEntryPointAuditLight);
 			lblEntryPointAuditLight.setBackground(C.APP_BGCOLOR);
 
-			btnEditAudit = new Button(rowRight2, SWT.NONE);
-			btnEditAudit.setToolTipText("Launch the Entry Point Audit for " + epRow.getName());
-			gd_btnEditAudit = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
+			btnShowEntryAudit = new Button(rowRight2, SWT.NONE);
+			btnShowEntryAudit.setToolTipText("Launch the Entry Point Audit for " + epRow.getName());
+			gd_btnShowEntryAudit = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
 			//gd_btnEditAudit.verticalIndent = 3;
-			gd_btnEditAudit.heightHint = rh;
-			btnEditAudit.setLayoutData(gd_btnEditAudit);
-			btnEditAudit.addSelectionListener(new SelectionAdapter() {
+			gd_btnShowEntryAudit.heightHint = rh;
+			btnShowEntryAudit.setLayoutData(gd_btnShowEntryAudit);
+			btnShowEntryAudit.setFont(C.FONT_9);
+			btnShowEntryAudit.setText("Audit");
+			btnShowEntryAudit.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent arg0) {
-					//
+					WindowController.showEntryAudit(spaceID, epRow.getID());
 				}
 			});
-			//btnEditAudit.setImage(C.getImage("/img/16_edit.png"));
-			btnEditAudit.setFont(C.FONT_9);
-			btnEditAudit.setText("Audit");
 
 		} // end for
 
