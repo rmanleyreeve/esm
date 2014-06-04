@@ -149,6 +149,8 @@ public class NewSpaceCommentForm {
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						if( EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2 ) {
 							sRow.setApproved("TRUE");
+						} else {
+							sRow.setApproved("FALSE");
 						}
 						sRow.setDeleted("FALSE");
 						sRow.insert();

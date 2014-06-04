@@ -164,7 +164,9 @@ public class SpacesListView {
 			@Override
 			public void handleEvent(Event e) {	
 				WindowController.btnViewSpaceDetails.setEnabled(true);
-				WindowController.btnDeleteSpace.setEnabled(true);        	
+				if(WindowController.user.getAccessLevel()==9) {
+					WindowController.btnDeleteSpace.setEnabled(true);   
+				}
 			}
 		});
 

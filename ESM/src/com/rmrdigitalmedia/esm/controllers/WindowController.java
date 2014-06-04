@@ -67,7 +67,7 @@ public class WindowController {
 	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration, pageSpaceAudit, pageEntryAudit;
 	static Label pageTitle, onlineStatus;
 	String displayName;
-	public static Button btnAddSpace, btnBackToSpaceDetails, btnDeleteSpace, btnAdmin, btnViewSpaceDetails;
+	public static Button btnAddSpace, btnDeleteSpace, btnAdmin, btnViewSpaceDetails, btnBackToSpaceDetails;
 	static Button btnSpacesList, btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
 	static int currentSpaceId = 0;
@@ -172,11 +172,11 @@ public class WindowController {
 
 		// SPACE AUDIT PAGE ===============================================================
 		pageSpaceAudit = new Composite (formHolder, SWT.NONE);
-		SpaceAuditView.buildPage(pageSpaceAudit);
+		//SpaceAuditView.buildPage(pageSpaceAudit, 0);
 
 		// ENTRY AUDIT PAGE ===============================================================
 		pageEntryAudit = new Composite (formHolder, SWT.NONE);
-		EntryAuditView.buildPage(pageEntryAudit);
+		//EntryAuditView.buildPage(pageEntryAudit, 0);
 
 
 
@@ -412,8 +412,20 @@ public class WindowController {
 
 	}
 
-	// methods to display pages, alerts etc
-	void showSpacesList(){
+		// methods to display alerts etc
+		public static void checkSpaceAlert(int id) {
+		boolean showAlert = false;
+		// get internal classification status from ID	
+		showAlert = true;
+		if(showAlert){			
+			new SpaceAlert(shell);			
+		}
+		showSpaceDetail(id);
+	}
+	public static void showPhotoViewer(int spaceID, String fullPath, String thumbPath) {
+		new PhotoViewer(shell, fullPath, thumbPath, spaceID);			
+	}
+void showSpacesList(){
 		LogController.log("Displaying Space List page");
 		try {
 			rows = SpacesTable.getRows("DELETED=FALSE");
@@ -433,19 +445,9 @@ public class WindowController {
 		pageTitle.setText(C.SPACES_LIST_TITLE);
 		formHolder.layout();
 	}
-	public static void checkSpaceAlert(int id) {
-		boolean showAlert = false;
-		// get internal classification status from ID	
-		showAlert = true;
-		if(showAlert){			
-			new SpaceAlert(shell);			
-		}
-		showSpaceDetail(id);
-	}
-	public static void showPhotoViewer(int spaceID, String fullPath, String thumbPath) {
-		new PhotoViewer(shell, fullPath, thumbPath, spaceID);			
-	}
-	public static void showSpaceDetail(int id) {
+
+	// methods to display pages etc
+	public static void showSpaceDetail(int spaceID) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		btnAddSpace.setVisible(false);
 		btnViewSpaceDetails.setVisible(false);
@@ -453,54 +455,56 @@ public class WindowController {
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		LogController.log("Loading Space Detail page for user selection: Space ID "+spaceID);
 		for (Control c:pageSpaceDetail.getChildren()) {
 			c.dispose();
 		}
-		LogController.log("Loading Space Detail page for user selection: Space ID "+id);
-		SpaceDetailView.buildPage(pageSpaceDetail, id);
+		SpaceDetailView.buildPage(pageSpaceDetail, spaceID);
 		stackLayout.topControl = pageSpaceDetail;
-		currentSpaceId = id;
+		currentSpaceId = spaceID;
 		try {
-			pageTitle.setText("Space " + id + ": " + SpacesTable.getRow("ID", ""+id).getName());
+			pageTitle.setText("Space " + spaceID + ": " + SpacesTable.getRow("ID", ""+spaceID).getName());
 		} catch (SQLException e) {
 			LogController.logEvent(me, 2, e);
 		}
 		formHolder.layout();
 	}
 	void showAdministration() {
-		LogController.log("Displaying Administration page");
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnBackToSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
+		LogController.log("Displaying Administration page");
 		stackLayout.topControl = pageAdministration;
 		pageTitle.setText(C.ADMIN_PAGE_TITLE);
 		formHolder.layout();
 	}
 	public static void showSpaceAudit(int spaceID) {
 		currentSpaceId = spaceID;
-		LogController.log("Displaying Internal Space Audit page for ID:" + spaceID);
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
 		btnBackToSpaceDetails.setVisible(true);
+		LogController.log("Displaying Internal Space Audit page for ID:" + spaceID);
+		SpaceAuditView.buildPage(pageSpaceAudit, spaceID);
 		stackLayout.topControl = pageSpaceAudit;
 		pageTitle.setText(C.SPACE_AUDIT_PAGE_TITLE);
 		formHolder.layout();
 	}
 	public static void showEntryAudit(int spaceID, int entryID) {
 		currentSpaceId = spaceID;
-		LogController.log("Displaying Entry Point Audit page for ID:" + entryID);
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
 		btnBackToSpaceDetails.setVisible(true);
+		LogController.log("Displaying Entry Point Audit page for ID:" + entryID);
+		EntryAuditView.buildPage(pageEntryAudit, entryID);
 		stackLayout.topControl = pageEntryAudit;
 		pageTitle.setText(C.ENTRY_AUDIT_PAGE_TITLE);
 		formHolder.layout();
