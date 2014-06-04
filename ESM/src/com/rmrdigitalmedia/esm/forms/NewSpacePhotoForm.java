@@ -199,6 +199,8 @@ public class NewSpacePhotoForm {
 							pRow.setUpdateDate(new Timestamp(new Date().getTime()));
 							if( EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2 ) {
 								pRow.setApproved("TRUE");
+							} else {
+								pRow.setApproved("FALSE");
 							}
 							pRow.setDeleted("FALSE");
 							pRow.insert();
