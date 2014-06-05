@@ -63,7 +63,7 @@ public class WindowController {
 	private static Object me;
 	protected static Shell shell;
 	static Display display;
-	int appHeight, appWidth,headerH = 85,titleH = 40,footerH = 15;
+	int appHeight, appWidth,headerH = 100,titleH = 40,footerH = 15;
 	Composite container, header, titleBar;
 	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration, pageSpaceAudit, pageEntryAudit;
 	static Label pageTitle, onlineStatus;
@@ -355,10 +355,11 @@ public class WindowController {
 		// graphic elements etc
 		Label logo = new Label(header, SWT.TRANSPARENT);
 		logo.setAlignment(SWT.LEFT);
-		logo.setImage(C.getImage("/img/esm-horiz.png"));
+		logo.setImage(C.getImage("/img/esm-horiz-90.png"));
+		logo.setBackground(C.APP_BGCOLOR);
 		FormData fd = new FormData();
 		fd.width = 250;
-		fd.left = new FormAttachment(0);
+		fd.left = new FormAttachment(0, 5);
 		fd.bottom = new FormAttachment(95);
 		logo.setLayoutData (fd);
 
@@ -370,8 +371,8 @@ public class WindowController {
 		Label lblH = new Label(header,SWT.WRAP);
 		lblH.setForeground(C.TITLEBAR_BGCOLOR);
 		FormData fd_lblH = new FormData();
-		fd_lblH.left = new FormAttachment(logo);
-		fd_lblH.top = new FormAttachment((headerH/2)-5);
+		fd_lblH.left = new FormAttachment(logo, 10);
+		fd_lblH.top = new FormAttachment((headerH/2)-10);
 		lblH.setLayoutData(fd_lblH);
 		lblH.setFont(C.HEADER_FONT);
 		lblH.setAlignment(SWT.LEFT);
