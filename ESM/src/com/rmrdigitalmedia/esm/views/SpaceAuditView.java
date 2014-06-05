@@ -151,6 +151,8 @@ public class SpaceAuditView {
 		sep = new Label(auditTable, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.CENTER);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));		
 
+		System.out.println(spaceID);
+		
 		// start loop through audit checklist questions
 		for(int i=0; i<10; i++) {
 			
@@ -212,6 +214,8 @@ public class SpaceAuditView {
 			}
 		});
 
+		// final layout settings	
+		parent.layout();
 
 	}
 }
