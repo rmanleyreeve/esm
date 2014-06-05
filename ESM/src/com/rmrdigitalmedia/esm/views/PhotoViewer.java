@@ -1,6 +1,7 @@
 package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -59,6 +60,8 @@ public class PhotoViewer {
 			rl_shell.spacing = 5;
 			rl_shell.marginWidth = 10;
 			shell.setLayout(rl_shell);
+			shell.setImage(C.getImage("/img/appicon16.png"));
+			shell.setText("Videotel ESM");
 			shell.setSize(820,750);
 
 			final Composite imgHolder = new Composite(shell, SWT.NONE);
@@ -75,6 +78,22 @@ public class PhotoViewer {
 			imgTitle.setLayoutData(gd_imgTitle);
 			imgTitle.setFont(C.FONT_12B);
 			imgTitle.setText(pRow.getTitle());
+			
+			final Label imgMeta = new Label(imgHolder, SWT.CENTER);
+			GridData gd_imgMeta = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
+			//gd_imgTitle.verticalIndent = 5;
+			imgMeta.setLayoutData(gd_imgMeta);
+			imgMeta.setFont(C.FONT_9);
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
+			String strMeta = "";
+			strMeta = "Posted " + sdf.format(pRow.getUpdateDate());
+			try {
+				strMeta += " by " + EsmUsersTable.getRow(pRow.getAuthorID()).getForename() + " " + EsmUsersTable.getRow(pRow.getAuthorID()).getSurname();
+			} catch (SQLException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}			
+			imgMeta.setText(strMeta);
 
 			final Label imgPic = new Label(imgHolder, SWT.BORDER | SWT.CENTER);
 			imgPic.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, true, true, 3, 1));
@@ -102,6 +121,7 @@ public class PhotoViewer {
 				btnEditComment.setText("Edit Details");
 				btnEditComment.setToolTipText("Edit this comment");
 				btnEditComment.setFont(C.FONT_9);
+				btnEditComment.setImage(C.getImage("/img/16_edit.png"));
 				btnEditComment.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {
@@ -131,15 +151,16 @@ public class PhotoViewer {
 				Label foo = new Label(imgHolder, SWT.NONE);
 				foo.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1));
 
-				Button btnDeleteComment = new Button(imgHolder, SWT.NONE);
-				btnDeleteComment.setText("Delete Photo");
+				Button btnDeletePhoto = new Button(imgHolder, SWT.NONE);
+				btnDeletePhoto.setText("Delete Photo");
 				GridData gd_btnDeleteComment = new GridData(SWT.LEFT, SWT.TOP, true, false, 1, 1);
 				gd_btnDeleteComment.verticalIndent = 5;
 				gd_btnDeleteComment.horizontalIndent = 5;
-				btnDeleteComment.setLayoutData(gd_btnDeleteComment);
-				btnDeleteComment.setToolTipText("Delete this photo and attached comments");
-				btnDeleteComment.setFont(C.FONT_9);
-				btnDeleteComment.addSelectionListener(new SelectionAdapter() {
+				btnDeletePhoto.setLayoutData(gd_btnDeleteComment);
+				btnDeletePhoto.setToolTipText("Delete this photo and attached comments");
+				btnDeletePhoto.setFont(C.FONT_9);
+				btnDeletePhoto.setImage(C.getImage("/img/16_delete.png"));
+				btnDeletePhoto.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {
 						DeletePhotoDialog dpd = new DeletePhotoDialog();					
