@@ -38,7 +38,6 @@ public class SpaceAuditView {
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 	private static Label sep;
 	private static int qNum;
-	private static Group tbl;
 
 	private static String df(Timestamp ts) {
 		SimpleDateFormat d = new SimpleDateFormat("dd - MM - yyyy");
@@ -173,7 +172,7 @@ public class SpaceAuditView {
 		lblStatusImg.setImage(C.getImage("/img/Percent_40.png"));
 
 		//table layout
-		tbl = new Group(comp, SWT.BORDER);
+		final Group tbl = new Group(comp, SWT.BORDER);
 		tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout gl_tbl = new GridLayout(4, false);
 		gl_tbl.verticalSpacing = 1;
@@ -318,13 +317,13 @@ public class SpaceAuditView {
 					q4_lblW.setVisible(true);
 					q4_txtH.setVisible(true);
 					q4_txtW.setVisible(true);				
-					q4_col1.setText("Are there any restrictive crawl through holes - i.e. lightening holes etc?\nPlease state the dimensions of the holes (H,W)");
+					q4_col1.setText("Are there any restrictive crawl through holes - i.e. lightening holes etc?\nPlease state the dimensions of the holes (H,W)\n");
 				} else {
 					q4_lblH.setVisible(false);
 					q4_lblW.setVisible(false);
 					q4_txtH.setVisible(false);
 					q4_txtW.setVisible(false);
-					q4_col1.setText("Are there any restrictive crawl through holes - i.e. lightening holes etc?");
+					q4_col1.setText("Are there any restrictive crawl through holes - i.e. lightening holes etc?\n\n");
 				}
 			}
 		});
@@ -355,11 +354,54 @@ public class SpaceAuditView {
 		Label q7_col1 = MakeColumn1(tbl,"Are there internal vertical ladders present?");
 		Label q7_col2 = makeColumn2(tbl, "Hint text here");
 		Composite q7_col3 = makeColumn3(tbl,1);
-		Button q7_check = new Button(q7_col3, SWT.CHECK);
+		final Button q7_check = new Button(q7_col3, SWT.CHECK);
 		q7_check.setBackground(C.APP_BGCOLOR);
 		q7_check.setText("Yes");
 		Text q7_col4 = MakeColumn4(tbl);
 		sep = Separator(tbl);
+		//-------------------------------------------------------------------------------------------------------
+		qNum = 8;
+		final Label q8_col1 = MakeColumn1(tbl,"Are there internal rungs?");
+		final Label q8_col2 = makeColumn2(tbl, "Hint text here");
+		final Composite q8_col3 = makeColumn3(tbl,1);
+		Button q8_check = new Button(q8_col3, SWT.CHECK);
+		q8_check.setBackground(C.APP_BGCOLOR);
+		q8_check.setText("Yes");
+		final Text q8_col4 = MakeColumn4(tbl);
+		final GridData gd_q8_col4 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		q8_col1.setVisible(false);
+		q8_col2.setVisible(false);
+		q8_col3.setVisible(false);
+		q8_col4.setVisible(false);
+		gd_q8_col4.heightHint = 1;
+		gd_q8_col4.grabExcessVerticalSpace = true;
+		q8_col4.setLayoutData(gd_q8_col4);
+		tbl.layout();
+		sep = Separator(tbl);
+		q7_check.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(q7_check.getSelection()){
+					q8_col1.setVisible(true);
+					q8_col2.setVisible(true);
+					q8_col3.setVisible(true);
+					q8_col4.setVisible(true);
+					gd_q8_col4.heightHint = 45;
+					gd_q8_col4.grabExcessVerticalSpace = false;
+					q8_col4.setLayoutData(gd_q8_col4);
+					tbl.layout();
+				} else {
+					q8_col1.setVisible(false);
+					q8_col2.setVisible(false);
+					q8_col3.setVisible(false);
+					q8_col4.setVisible(false);
+					gd_q8_col4.heightHint = 1;
+					gd_q8_col4.grabExcessVerticalSpace = true;
+					q8_col4.setLayoutData(gd_q8_col4);
+					tbl.layout();
+				}
+			}
+		});
 		//-------------------------------------------------------------------------------------------------------
 
 		
