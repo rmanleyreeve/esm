@@ -34,10 +34,10 @@ import org.eclipse.swt.events.SelectionEvent;
 public class SpaceAuditView {
 
 	static Row user = WindowController.user;
-
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 	private static Label sep;
 	private static int qNum;
+	static int rowHeight = 45;
 
 	private static String df(Timestamp ts) {
 		SimpleDateFormat d = new SimpleDateFormat("dd - MM - yyyy");
@@ -108,7 +108,7 @@ public class SpaceAuditView {
 		comments.setFont(C.FONT_10);
 		comments.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
-		gd.heightHint = 45;
+		gd.heightHint = rowHeight;
 		gd.widthHint = 200;
 		comments.setLayoutData(gd);
 		return comments;
@@ -386,7 +386,7 @@ public class SpaceAuditView {
 					q8_col2.setVisible(true);
 					q8_col3.setVisible(true);
 					q8_col4.setVisible(true);
-					gd_q8_col4.heightHint = 45;
+					gd_q8_col4.heightHint = rowHeight;
 					gd_q8_col4.grabExcessVerticalSpace = false;
 					q8_col4.setLayoutData(gd_q8_col4);
 					tbl.layout();
