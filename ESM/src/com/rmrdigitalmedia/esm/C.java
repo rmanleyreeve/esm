@@ -37,7 +37,7 @@ public final class C {
 	public static String DB_NAME = "ESM";
 	public static String DB_CONN_STR = "jdbc:h2:~/../"+INSTALL_DIR+"/" + DATA_DIR_NAME + "/"+DB_NAME+";IFEXISTS=TRUE";
 	public static String DB_CONN_STR_SETUP = "jdbc:h2:~/../"+INSTALL_DIR+"/" + DATA_DIR_NAME + "/" + DB_NAME;
-	public static String DB_SETUP_FILE = "DEMO.sql";
+	public static String DB_SETUP_FILE = "SETUP.sql";
 	public static String APP_NAME = "Enclosed Spaces Management System";
 
 	public static int IMG_WIDTH = 800;
