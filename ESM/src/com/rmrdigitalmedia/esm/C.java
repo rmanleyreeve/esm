@@ -50,6 +50,7 @@ public final class C {
 	public static Color TITLEBAR_BGCOLOR = SWTResourceManager.getColor(122, 130, 137);
 	public static Color FIELD_BGCOLOR = SWTResourceManager.getColor(238, 238, 238);
 	public static Color BAR_BGCOLOR = SWTResourceManager.getColor(182, 186, 190);
+	public static Color AUDIT_COLHEADER_BGCOLOR = SWTResourceManager.getColor(38, 147, 255);
 
 	// fonts
 	public static String FONT = (OS.equals("cocoa")) ? "Lucida Grande" : "Arial";
