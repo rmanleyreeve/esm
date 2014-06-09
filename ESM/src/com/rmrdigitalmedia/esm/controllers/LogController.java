@@ -13,7 +13,7 @@ public class LogController {
 	static Calendar cal = Calendar.getInstance();
 	static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	static String today = sdf.format(cal.getTime()); 
-	static String[] errNames = {"NOTICE","WARNING","ERROR","FATAL"};
+	static String[] errNames = {"","NOTICE","WARNING","ERROR","FATAL"};
 
 	private static String logfilename = "ESM_LOG_" + today + ".txt";
 
@@ -80,17 +80,21 @@ public class LogController {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			//e.printStackTrace();
 		}
 	}  
 
-	public static void write(String msg) throws IOException {  	
-		FileWriter fstream = new FileWriter(logfile, true);
-		BufferedWriter out = new BufferedWriter(fstream); 
-		out.write(msg);
-		out.newLine();
-		out.close();  
-		System.out.println(msg); // TODO FOR DEV DEBUGGING
+	public static void write(String msg) throws IOException {  
+		try {
+			FileWriter fstream = new FileWriter(logfile, true);
+			BufferedWriter out = new BufferedWriter(fstream); 
+			out.write(msg);
+			out.newLine();
+			out.close();
+		} catch (Exception ex){
+			System.out.println(ex.toString());
+		}
+		System.out.println(msg); // TODO for development debugging ONLY
+
 	}
 
 }
