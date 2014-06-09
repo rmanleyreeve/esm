@@ -15,6 +15,7 @@ import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 
+@SuppressWarnings("unused")
 public class EntryAuditView {
 
 	static Row user = WindowController.user;
@@ -55,20 +56,20 @@ public class EntryAuditView {
 			ex.printStackTrace();
 		}
 
-		
+
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 		SashForm panels = new SashForm(parent,SWT.NONE);
 		panels.setBackground(C.TITLEBAR_BGCOLOR);
 		panels.setLayout(new FillLayout());
-		
+
 		Composite leftpanel = new Composite(panels,SWT.NONE);
 		leftpanel.setBackground(C.APP_BGCOLOR);
 		leftpanel.setLayout(new FillLayout());
-		
+
 		Composite rightpanel = new Composite(panels,SWT.NONE);
 		rightpanel.setBackground(C.APP_BGCOLOR);
 		rightpanel.setLayout(new FillLayout());
-		
+
 		// final layout settings	
 		panels.setWeights(new int[] {1, 9});				
 		parent.layout();
