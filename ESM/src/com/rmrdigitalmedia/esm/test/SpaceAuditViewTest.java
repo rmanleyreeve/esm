@@ -82,7 +82,7 @@ public class SpaceAuditViewTest {
 		// the grid panel that holds the various info rows
 		final Composite comp = new Composite(scrollPanel, SWT.NONE);
 		GridLayout gl_comp = new GridLayout(1, true);
-		gl_comp.marginBottom = 50;
+		gl_comp.marginBottom = 5;
 		comp.setLayout(gl_comp);
 		comp.setBackground(C.APP_BGCOLOR);
 
@@ -375,6 +375,36 @@ public class SpaceAuditViewTest {
 			}
 		});
 
+
+		// footer row
+		Group footerRow = new Group(comp, SWT.NONE);
+		footerRow.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, false));
+		GridLayout gl_footerRow = new GridLayout(3, false);
+		gl_footerRow.verticalSpacing = 0;
+		gl_footerRow.horizontalSpacing = 10;
+		gl_footerRow.marginWidth = 0;
+		footerRow.setLayout(gl_footerRow);
+		footerRow.setBackground(C.APP_BGCOLOR);
+		
+		Button btnB = new Button(footerRow, SWT.NONE);
+		btnB.setToolTipText("Previous page");
+		btnB.setEnabled(false);
+		btnB.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
+		btnB.setBackground(C.APP_BGCOLOR);
+		btnB.setFont(C.FONT_11B);
+		btnB.setText("<<");
+
+		Label pageL = new Label(footerRow, SWT.NONE);
+		pageL.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
+		pageL.setBackground(C.APP_BGCOLOR);
+		pageL.setFont(C.FONT_11B);
+		pageL.setText("Page 1 of 3");
+		
+		Button btnF = new Button(footerRow, SWT.NONE);
+		btnF.setToolTipText("Next page");
+		btnF.setBackground(C.APP_BGCOLOR);
+		btnF.setFont(C.FONT_11B);
+		btnF.setText(">>");
 		
 		scrollPanel.setContent(comp);
 		scrollPanel.setExpandVertical(true);
