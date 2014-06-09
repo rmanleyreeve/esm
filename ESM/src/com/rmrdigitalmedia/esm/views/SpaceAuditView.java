@@ -38,7 +38,6 @@ public class SpaceAuditView {
 	private static Label sep;
 	private static int qNum;
 	static int rowHeight = 35;
-	private static Group tbl;
 
 	private static String df(Timestamp ts) {
 		SimpleDateFormat d = new SimpleDateFormat("dd - MM - yyyy");
@@ -120,7 +119,7 @@ public class SpaceAuditView {
 		comments.setLayoutData(gd);
 		return comments;
 	}
-	private static Label Separator(Composite comp, boolean hide) {
+		private static Label Separator(Composite comp, boolean hide) {
 		Label separator = new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.CENTER);
 		final GridData gd = new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1);
 		gd.exclude = hide;
@@ -204,7 +203,7 @@ public class SpaceAuditView {
 		lblStatusImg.setImage(C.getImage("/img/Percent_40.png"));
 
 		//table layout
-		tbl = new Group(comp, SWT.BORDER);
+		final Group tbl = new Group(comp, SWT.BORDER);
 		tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout gl_tbl = new GridLayout(4, false);
 		gl_tbl.verticalSpacing = 1;
@@ -286,7 +285,7 @@ public class SpaceAuditView {
 		gd_q1_txtL.widthHint = 20;
 		q1_txtL.setLayoutData(gd_q1_txtL);
 		q1_txtL.setFont(C.FONT_9);		
-		Text q1_col4 = MakeColumn4(tbl, false);
+		Text q1_col4 = MakeColumn4(tbl,false);
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 2;
