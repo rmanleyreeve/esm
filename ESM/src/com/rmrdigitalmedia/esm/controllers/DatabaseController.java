@@ -76,7 +76,7 @@ public class DatabaseController {
 			conn = DriverManager.getConnection(C.DB_CONN_STR_SETUP, "sa", "");
 			LogController.log("OK");
 
-			// TODO FOR DEVELOPMENT ONLY <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+			// TODO for development ONLY
 			loadRunSqlFile("DEMO.sql"); 
 
 			//loadRunSqlFile("SETUP.sql");

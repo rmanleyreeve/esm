@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
+import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -24,6 +25,12 @@ public class EsmApplication {
 	public EsmApplication() {
 		me = this;
 		Display display = new Display();
+		FilesystemController fs = new FilesystemController();
+		
+		// TODO for development ONLY
+		fs.deleteDataDir();
+		
+		fs.createLogDir();		
 		System.out.println("LOGFILE: " + LogController.logfile);
 		LogController.log("Running class " + me.getClass().getName());
 		LogController.log("Starting ESM Application...");    

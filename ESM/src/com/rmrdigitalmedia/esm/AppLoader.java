@@ -122,7 +122,6 @@ public class AppLoader {
 		display.asyncExec(new Runnable() {
 			@Override
 			public void run() {      	
-				// perform actual loading/setup/init config here...	      	
 
 				// check/set up filesystem
 				LogController.log("AppLoader: filesystem check");
