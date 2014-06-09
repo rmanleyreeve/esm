@@ -392,7 +392,7 @@ public class WindowController {
 		try {
 			txt += "\tVersion " + CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));
 		} catch (IOException e) {
-			LogController.logEvent(me,2,e);
+			LogController.logEvent(me,C.WARNING,e);
 		}		
 		Label lblF = new Label(footer,SWT.HORIZONTAL);
 		lblF.setAlignment(SWT.CENTER);
@@ -432,7 +432,7 @@ void showSpacesList(){
 		try {
 			rows = SpacesTable.getRows("DELETED=FALSE");
 		} catch (SQLException e) {
-			LogController.logEvent(me, 2, e);
+			LogController.logEvent(me, C.ERROR, e);
 		}
 		SpacesListView.getTVB().setInput(Arrays.asList(rows));
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
@@ -467,7 +467,7 @@ void showSpacesList(){
 		try {
 			pageTitle.setText("Space " + spaceID + ": " + SpacesTable.getRow("ID", ""+spaceID).getName());
 		} catch (SQLException e) {
-			LogController.logEvent(me, 2, e);
+			LogController.logEvent(me, C.WARNING, e);
 		}
 		formHolder.layout();
 	}

@@ -347,6 +347,17 @@ public class SpaceAuditViewTest {
 		
 		Label q9_separator = new Label(tbl, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.CENTER);
 		q9_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+		new Label(tbl, SWT.NONE);
+		new Label(tbl, SWT.NONE);
+		new Label(tbl, SWT.NONE);
+		new Label(tbl, SWT.NONE);
+		
+		Button btnRadioButton = new Button(tbl, SWT.RADIO);
+		btnRadioButton.setText("Radio Button");
+		btnRadioButton.setData(new Integer(1));
+		new Label(tbl, SWT.NONE);
+		new Label(tbl, SWT.NONE);
+		new Label(tbl, SWT.NONE);
 		
 		
 		//q7 dependent fields

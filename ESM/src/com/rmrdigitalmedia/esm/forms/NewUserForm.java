@@ -253,7 +253,7 @@ public class NewUserForm {
 						formOK = true;
 						LogController.log("User added to database.");
 					} catch (Exception e1) {
-						LogController.logEvent(this, 2, e1);
+						LogController.logEvent(this, C.ERROR, e1);
 					}					
 					try {
 						Thread.sleep(1000);

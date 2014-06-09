@@ -241,7 +241,7 @@ public class NewAdminForm {
 						LogController.log("Admin User added to database");
 						EsmApplication.appData.setField("ADMIN",username.getText());
 					} catch (Exception e1) {
-						LogController.logEvent(this, 2, e1);
+						LogController.logEvent(this, C.WARNING, e1);
 					}					
 					try {
 						Thread.sleep(1000);

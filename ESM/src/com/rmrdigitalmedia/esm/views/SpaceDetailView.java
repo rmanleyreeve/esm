@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
@@ -38,8 +39,10 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
@@ -57,7 +60,7 @@ import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class SpaceDetailView {
-
+	private static Object me = new SpaceDetailView();
 	static Row user = WindowController.user;
 
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
@@ -340,7 +343,7 @@ public class SpaceDetailView {
 		try {
 			author = EsmUsersTable.getRow(sRow.getAuthorID());
 		} catch (SQLException e1) {
-			LogController.logEvent(SpaceDetailView.class, 1, e1);
+			LogController.logEvent(SpaceDetailView.class, C.ERROR, e1);
 		}
 		Label lblCreatedBy = new Label(rowRight1, SWT.NONE);
 		lblCreatedBy.setFont(C.FONT_10B);
@@ -458,8 +461,7 @@ public class SpaceDetailView {
 		try {
 			epRows = EntrypointsTable.getRows("SPACE_ID=" + spaceID);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LogController.logEvent(me, C.ERROR, e1);
 		}
 
 		// for loop
@@ -620,9 +622,8 @@ public class SpaceDetailView {
 				try {
 					PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow("path", fp);
 					fn = pRow.getTitle();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				} catch (SQLException ex) {
+					LogController.logEvent(me, C.WARNING, ex);
 				}
 				Image itemImage = C.getExtImage(fp);		
 				if (itemImage != null) {

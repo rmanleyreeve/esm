@@ -144,7 +144,7 @@ public class NewLicenseDialog {
 						msgLabel.setText("Registering license key...");
 						LogController.log("Registering license key");
 					} catch (Exception e1) {
-						LogController.logEvent(this, 2, e1);
+						LogController.logEvent(this, C.FATAL, e1);
 					}					
 					try {
 						Thread.sleep(1000);

@@ -62,7 +62,7 @@ public class InternetController {
 				online = true;
 			}
 		} catch (UnknownHostException e) {
-			LogController.logEvent(me, 2, e);
+			LogController.logEvent(me, C.NOTICE, e);
 		}
 		try {
 			EsmApplication.appData.setField("ONLINE", online);
@@ -102,7 +102,7 @@ public class InternetController {
 			try {
 				Desktop.getDesktop().browse(new URI(url));
 			} catch (Exception e1) {
-				LogController.logEvent(me,2,"Error loading URL: "+ url,e1);
+				LogController.logEvent(me,C.WARNING,"Error loading URL: "+ url,e1);
 
 			}
 		}	
@@ -134,7 +134,7 @@ public class InternetController {
 		try {
 			browser = new Browser(shell, SWT.NONE);
 		} catch (SWTError e) {
-			LogController.logEvent(new InternetController(),2,"Could not instantiate Browser" + e.getMessage());
+			LogController.logEvent(new InternetController(),C.ERROR,"Could not instantiate Browser" + e.getMessage());
 			shell.dispose();
 			return;
 		}

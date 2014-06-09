@@ -13,6 +13,7 @@ public class LogController {
 	static Calendar cal = Calendar.getInstance();
 	static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	static String today = sdf.format(cal.getTime()); 
+	static String[] errNames = {"NOTICE","WARNING","ERROR","FATAL"};
 
 	private static String logfilename = "ESM_LOG_" + today + ".txt";
 
@@ -36,45 +37,44 @@ public class LogController {
 
 	public static void logEvent(Object c, int severity, Object o) {
 		// need to handle severity
-		String classname =c.getClass().getName();	  
+		String classname = c.getClass().getName();	  
 		if (severity > 0) {
 			@SuppressWarnings("deprecation")
 			String t = new java.util.Date().toGMTString();
-			String i = (severity > 1) ? "ERROR\t" : "NOTICE\t";
-			String msg = "["+t+"]\t" + i + classname + "\t" + o.toString();
+			String e = errNames[severity];
+			String msg = "["+t+"]\t" + e + "\t" + classname + "\t" + o.toString();
 			try {
 				write(msg);
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		}
 	}
 
-	public static void logEvent(Object c, int severity, Exception e) {
+	public static void logEvent(Object c, int severity, Exception ex) {
 		// need to handle severity
 		String classname =c.getClass().getName();	  
 		if (severity > 0) {
 			@SuppressWarnings("deprecation")
 			String t = new java.util.Date().toGMTString();
-			String i = (severity > 1) ? "ERROR\t" : "NOTICE\t";
-			String msg = "\n["+t+"]\t" + i + classname + "\t" + e.getMessage()+"\n";
+			String e = errNames[severity];
+			String msg = "\n["+t+"]\t" + e + "\t" + classname + "\t" + ex.getMessage()+"\n";
 			try {
 				write(msg);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			//e.printStackTrace();
 		}
 	}
 
-	public static void logEvent(Object c, int severity, String _msg, Exception e) {
+	public static void logEvent(Object c, int severity, String _msg, Exception ex) {
 		// need to handle severity
 		String classname =c.getClass().getName();	  
 		if (severity > 0) {
 			@SuppressWarnings("deprecation")
 			String t = new java.util.Date().toGMTString();
-			String i = (severity > 1) ? "ERROR\t" : "NOTICE\t";
-			String msg = "\n["+t+"]\t" + i + classname + "\t" + _msg + "\t" + e.getMessage()+"\n";
+			String e = errNames[severity];
+			String msg = "\n["+t+"]\t" + e + "\t" + classname + "\t" + _msg + "\t" + ex.getMessage()+"\n";
 			try {
 				write(msg);
 			} catch (IOException e1) {
@@ -90,7 +90,7 @@ public class LogController {
 		out.write(msg);
 		out.newLine();
 		out.close();  
-		System.out.println(msg); //DEBUG
+		System.out.println(msg); // TODO FOR DEV DEBUGGING
 	}
 
 }

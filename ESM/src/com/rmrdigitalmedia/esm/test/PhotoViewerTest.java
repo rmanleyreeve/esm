@@ -54,7 +54,6 @@ public class PhotoViewerTest {
 			pRow = PhotoMetadataTable.getRow("path", thumbPath);
 			System.out.println(pRow.getID());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

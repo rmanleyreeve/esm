@@ -31,7 +31,7 @@ public class DatabaseController {
 		try {
 			Class.forName("org.h2.Driver");
 		} catch (ClassNotFoundException e) {
-			LogController.logEvent(me,2,"H2 Driver error",e);
+			LogController.logEvent(me,C.FATAL,"H2 Driver error",e);
 		}
 	}
 
@@ -54,8 +54,7 @@ public class DatabaseController {
 			ok = true;
 			close(conn);
 		} catch (SQLException e) {
-			LogController.logEvent(me,2,"testConnection",e);
-			//e.printStackTrace();
+			LogController.logEvent(me,C.FATAL,"testConnection",e);
 		}
 		return ok;
 	}
@@ -65,8 +64,7 @@ public class DatabaseController {
 		try {
 			conn = DriverManager.getConnection(C.DB_CONN_STR, "sa", "");
 		} catch (SQLException e) {
-			LogController.logEvent(me,2,"createConnection",e);
-			//e.printStackTrace();
+			LogController.logEvent(me,C.FATAL,"createConnection",e);
 		}
 		return conn;
 	}
@@ -78,12 +76,12 @@ public class DatabaseController {
 			conn = DriverManager.getConnection(C.DB_CONN_STR_SETUP, "sa", "");
 			LogController.log("OK");
 
-			// TODO DEVELOPMENT ONLY <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+			// TODO FOR DEVELOPMENT ONLY <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 			loadRunSqlFile("DEMO.sql"); 
 
 			//loadRunSqlFile("SETUP.sql");
 		} catch (SQLException e) {
-			LogController.logEvent(me,2,"DB SETUP FAILED",e);
+			LogController.logEvent(me,C.FATAL,"DB SETUP FAILED",e);
 			//e.printStackTrace();
 			System.exit(0);
 		}
@@ -96,13 +94,13 @@ public class DatabaseController {
 		try {
 			sql = CharStreams.toString(new InputStreamReader(DatabaseController.class.getResourceAsStream("/sql/"+fName), Charsets.UTF_8));
 		} catch (IOException e) {
-			LogController.logEvent(me,2,e);
+			LogController.logEvent(me,C.ERROR,e);
 		}
 		try {
 			runQuery(sql);
 			LogController.log("OK");
 		} catch (SQLException e) {
-			LogController.logEvent(me,2,"SQL LOAD FAILED",e);
+			LogController.logEvent(me,C.ERROR,"SQL LOAD FAILED",e);
 			AppLoader.die("Failed to load SQL file '"+fName+"'");
 		}
 	}
@@ -121,7 +119,7 @@ public class DatabaseController {
 			}
 			close(rs);
 		} catch (SQLException e ) {
-			LogController.logEvent(me,2,"login verify",e);
+			LogController.logEvent(me,C.FATAL,"login verify",e);
 			e.printStackTrace();
 		} finally {
 			close(conn);
@@ -144,7 +142,7 @@ public class DatabaseController {
 				LogController.log("Admin NOT Found");
 			}			
 		} catch (SQLException e ) {			
-			LogController.logEvent(me,2,"Admin check",e);
+			LogController.logEvent(me,C.ERROR,"Admin check",e);
 			e.printStackTrace();
 		}
 		return ok;	
@@ -166,7 +164,7 @@ public class DatabaseController {
 				LogController.log("Vessel NOT Found");
 			}						
 		} catch (SQLException e ) {
-			LogController.logEvent(me,2,"Vessel check",e);
+			LogController.logEvent(me,C.ERROR,"Vessel check",e);
 			e.printStackTrace();
 		}
 		return ok;	
@@ -189,7 +187,7 @@ public class DatabaseController {
 				LogController.log("License NOT found");
 			}
 		} catch (SQLException e ) {
-			LogController.logEvent(me,2,"License check",e);
+			LogController.logEvent(me,C.ERROR,"License check",e);
 		}
 		return ok;	
 	}
@@ -213,7 +211,7 @@ public class DatabaseController {
 			try {
 				conn.close();
 			} catch (SQLException e){
-				LogController.logEvent(me, 2, e);
+				LogController.logEvent(me, C.WARNING, e);
 			}
 		}
 	}
@@ -224,7 +222,7 @@ public class DatabaseController {
 				rs.close(); 
 				st.close();    	
 			} catch (SQLException e){
-				LogController.logEvent(me, 2, e);
+				LogController.logEvent(me, C.WARNING, e);
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package com.rmrdigitalmedia.esm.forms;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -22,6 +23,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
@@ -34,6 +36,7 @@ public class EditSpaceCommentForm {
 	int commentID, headerH = 40;
 	private Label sep;
 	SpaceCommentsTable.Row cRow;
+	private static Object me;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -49,6 +52,7 @@ public class EditSpaceCommentForm {
 	}
 
 	public EditSpaceCommentForm(int _commentID) {
+		me = this;
 		LogController.log("Running class " + this.getClass().getName());
 		commentID = _commentID;
 	}
@@ -117,7 +121,7 @@ public class EditSpaceCommentForm {
 		try {
 			cRow = SpaceCommentsTable.getRow(commentID);
 		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
+			LogController.logEvent(me, C.ERROR, e2);
 			e2.printStackTrace();
 		}
 

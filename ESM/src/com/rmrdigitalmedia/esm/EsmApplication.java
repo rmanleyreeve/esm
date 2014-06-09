@@ -51,7 +51,7 @@ public class EsmApplication {
 			mb.setMessage(msg);
 			mb.open();
 		} catch (Exception e) {
-			LogController.logEvent(me, 2, e);
+			LogController.logEvent(me, C.NOTICE, e);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class EsmApplication {
 			mb.setMessage(msg);
 			mb.open();
 		} catch (Exception e) {
-			LogController.logEvent(me, 2, e);
+			LogController.logEvent(me, C.NOTICE, e);
 		}
 	}
 
@@ -86,7 +86,7 @@ public class EsmApplication {
 			try {
 				InternetController.getUpdates();
 			} catch (IOException e) {
-				LogController.logEvent(me, 2, e);
+				LogController.logEvent(me, C.WARNING, e);
 			}
 		}	 
 		runApp(user, loginWindow);

@@ -102,7 +102,7 @@ public class UploadController {
 								.size(C.IMG_WIDTH, C.IMG_HEIGHT)
 								.toFile(destFull);
 							} catch (IOException ex) {
-								LogController.logEvent(this, 1, ex);
+								LogController.logEvent(this, C.WARNING, ex);
 							}
 						} else {
 							// image smaller, just copy
@@ -117,7 +117,7 @@ public class UploadController {
 								is.close();
 								os.close();   
 							} catch (IOException ex){
-								LogController.logEvent(this, 1, ex);;
+								LogController.logEvent(this, C.WARNING, ex);;
 							}
 						}
 						LogController.log("File uploaded: " + destFull + " -> " + destFull.length() + " bytes");
@@ -127,7 +127,7 @@ public class UploadController {
 							.size(C.THUMB_WIDTH, C.THUMB_HEIGHT)
 							.toFile(destThumb);
 						} catch (IOException ex) {
-							LogController.logEvent(this, 1, ex);
+							LogController.logEvent(this, C.WARNING, ex);
 						}
 					}
 
@@ -173,14 +173,14 @@ public class UploadController {
 								currentbyte = is.read();  
 							}
 						} catch (IOException ex){
-							LogController.logEvent(this, 1, ex);;
+							LogController.logEvent(this, C.ERROR, ex);;
 						}
 						LogController.log("File uploaded: " + dest + " -> " + dest.length() + " bytes");
 						try {
 							is.close();
 							os.close();   
 						} catch (IOException e) {
-							LogController.logEvent(this, 1, e);
+							LogController.logEvent(this, C.ERROR, e);
 						}   
 					}
 
