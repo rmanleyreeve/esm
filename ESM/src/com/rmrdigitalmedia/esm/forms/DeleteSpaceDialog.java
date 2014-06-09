@@ -121,7 +121,7 @@ public class DeleteSpaceDialog {
 					LogController.log("Marked space " + spaceID + " as deleted");
 					formOK = true;
 				} catch (SQLException ex) {
-					LogController.logEvent(this, 1, ex);
+					LogController.logEvent(this, C.WARNING, ex);
 					//ex.printStackTrace();
 					LogController.log("Error occurred deleting space " + spaceID);
 				}				

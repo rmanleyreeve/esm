@@ -91,7 +91,14 @@ public final class C {
 	public static String SPACE_AUDIT_PAGE_TITLE = "Internal Space Audit";
 	public static String ENTRY_AUDIT_PAGE_TITLE = "Entry Point Audit";
 
-
+	// error severity
+	public static int NOTICE = 1;
+	public static int WARNING = 2;
+	public static int ERROR = 3;
+	public static int FATAL = 4;
+	
+	
+	
 
 
 	public static void makeHoverButton(final Button b) {

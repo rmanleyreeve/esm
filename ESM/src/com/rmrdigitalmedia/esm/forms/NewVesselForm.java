@@ -171,7 +171,7 @@ public class NewVesselForm {
 						LogController.log("Vessel added to database");
 						EsmApplication.appData.setField("VESSEL",name.getText());
 					} catch (Exception e1) {
-						LogController.logEvent(this, 2, e1);
+						LogController.logEvent(this, C.ERROR, e1);
 					}					
 					try {
 						Thread.sleep(1000);

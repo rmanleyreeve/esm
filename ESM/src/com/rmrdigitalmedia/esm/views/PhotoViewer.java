@@ -2,6 +2,7 @@ package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -13,6 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
@@ -20,11 +22,12 @@ import com.rmrdigitalmedia.esm.forms.DeletePhotoDialog;
 import com.rmrdigitalmedia.esm.forms.EditPhotoMetadataForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
+
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 
 public class PhotoViewer {
-
+	private static Object me;
 	PhotoMetadataTable.Row pRow = null;
 
 	public static void main (String [] args) {
@@ -39,13 +42,12 @@ public class PhotoViewer {
 
 
 	public PhotoViewer(final Shell appwin, final String fullPath, final String thumbPath, final int spaceID) {
-
+		me = this;
 		try {
 			pRow = PhotoMetadataTable.getRow("path", thumbPath);
 			System.out.println(pRow.getID());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LogController.logEvent(me, C.ERROR, e);
 		}
 
 		LogController.log("Running class " + this.getClass().getName());
@@ -90,8 +92,7 @@ public class PhotoViewer {
 			try {
 				strMeta += " by " + EsmUsersTable.getRow(pRow.getAuthorID()).getForename() + " " + EsmUsersTable.getRow(pRow.getAuthorID()).getSurname();
 			} catch (SQLException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
+				LogController.logEvent(me, C.WARNING, e2);
 			}			
 			imgMeta.setText(strMeta);
 

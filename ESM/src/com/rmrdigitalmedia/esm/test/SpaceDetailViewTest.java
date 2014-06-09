@@ -326,7 +326,7 @@ public class SpaceDetailViewTest {
 		try {
 			author = EsmUsersTable.getRow(row.getAuthorID());
 		} catch (SQLException e1) {
-			LogController.logEvent(SpaceDetailViewTest.class, 1, e1);
+			LogController.logEvent(SpaceDetailViewTest.class, C.ERROR, e1);
 		}
 		Label lblCreatedBy = new Label(rowRight1, SWT.NONE);
 		lblCreatedBy.setFont(C.FONT_10B);
@@ -445,7 +445,6 @@ public class SpaceDetailViewTest {
 		try {
 			epRows = EntrypointsTable.getRows("SPACE_ID=" + spaceID);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 

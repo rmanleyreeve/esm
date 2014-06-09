@@ -3,6 +3,8 @@ package com.rmrdigitalmedia.esm.views;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Vector;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
@@ -16,11 +18,14 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
+import com.rmrdigitalmedia.esm.models.SpaceChecklistQuestionsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
+
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.events.MouseAdapter;
@@ -72,7 +77,7 @@ public class SpaceAuditView {
 		question.setLayoutData(gd);
 		question.setBackground(C.APP_BGCOLOR);
 		question.setFont(C.FONT_11);
-		question.setText(text + "\n");
+		question.setText(text);
 		return question;
 	}	
 	// hint icon & text
@@ -149,12 +154,20 @@ public class SpaceAuditView {
 
 	public static void buildPage(Composite parent, final int spaceID) {
 
-		SpacesTable.Row sRow = null;
+		SpaceChecklistQuestionsTable.Row[] qRows = null;
+		Vector<String> qText = new Vector<String>();
+		Vector<String> qHints = new Vector<String>();
 		try {
-			sRow = SpacesTable.getRow(spaceID);
+			qText.add(0, null); qHints.add(0,null);
+			qRows = SpaceChecklistQuestionsTable.getRows("1=1 ORDER BY SEQUENCE ASC");
+			for(SpaceChecklistQuestionsTable.Row qRow:qRows) {
+				qText.add(qRow.getSequence(), qRow.getQText());
+				qHints.add(qRow.getSequence(), qRow.getQHint());
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
+		
 
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 
@@ -243,8 +256,8 @@ public class SpaceAuditView {
 
 		// start loop through audit checklist questions
 		qNum = 1;
-		Label q1_col1 = MakeColumn1(tbl,"What are the internal dimensions of the space: H, W, L?", false);
-		Label q1_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q1_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q1_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q1_col3 = makeColumn3(tbl,6, false);
 		Label q1_lblH = new Label(q1_col3, SWT.NONE);
 		q1_lblH.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -284,7 +297,7 @@ public class SpaceAuditView {
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 2;
 		Label q2_col1 = MakeColumn1(tbl,"Is the enclosed space Compartmentalised?\n(If so, describe internal layout)", false);
-		Label q2_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q2_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q2_col3 = makeColumn3(tbl,1, false);
 		Button q2_check = new Button(q2_col3, SWT.CHECK);
 		q2_check.setBackground(C.APP_BGCOLOR);
@@ -293,8 +306,8 @@ public class SpaceAuditView {
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 3;
-		Label q3_col1 = MakeColumn1(tbl,"Are internal obstacles present (baffles, pipes etc)?", false);
-		Label q3_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q3_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q3_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q3_col3 = makeColumn3(tbl,1, false);
 		Button q3_check = new Button(q3_col3, SWT.CHECK);
 		q3_check.setBackground(C.APP_BGCOLOR);
@@ -305,7 +318,7 @@ public class SpaceAuditView {
 		qNum = 4;
 		final String q4_txt = "Are there any restrictive crawl through holes - i.e. lightening holes etc?\n";
 		final Label q4_col1 = MakeColumn1(tbl,q4_txt, false);
-		Label q4_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q4_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q4_col3 = makeColumn3(tbl,4, false);
 		final Button q4_check = new Button(q4_col3, SWT.CHECK);
 		q4_check.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 4, 1));
@@ -355,8 +368,8 @@ public class SpaceAuditView {
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 5;
-		Label q5_col1 = MakeColumn1(tbl,"Are there any pipes running through the space that could contain hazardous liquids or gases?", false);
-		Label q5_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q5_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q5_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q5_col3 = makeColumn3(tbl,1, false);
 		Button q5_check = new Button(q5_col3, SWT.CHECK);
 		q5_check.setBackground(C.APP_BGCOLOR);
@@ -365,8 +378,8 @@ public class SpaceAuditView {
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 6;
-		Label q6_col1 = MakeColumn1(tbl,"Are there electrical cables running through the space?", false);
-		Label q6_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q6_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q6_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q6_col3 = makeColumn3(tbl,1, false);
 		Button q6_check = new Button(q6_col3, SWT.CHECK);
 		q6_check.setBackground(C.APP_BGCOLOR);
@@ -377,7 +390,7 @@ public class SpaceAuditView {
 		qNum = 7;
 		final String q7_txt = "Are there internal vertical ladders present?\n";
 		final Label q7_col1 = MakeColumn1(tbl,q7_txt, false);
-		Label q7_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q7_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q7_col3 = makeColumn3(tbl,3, false);
 		final Button q7_check = new Button(q7_col3, SWT.CHECK);
 		q7_check.setBackground(C.APP_BGCOLOR);
@@ -386,14 +399,17 @@ public class SpaceAuditView {
 		q7_check.setLayoutData(gd_q7_check);		
 		final Button q7_radio1 = new Button(q7_col3, SWT.RADIO);
 		q7_radio1.setText("1");
+		q7_radio1.setData(new Integer(1));
 		q7_radio1.setBackground(C.APP_BGCOLOR);
 		q7_radio1.setVisible(false);
 		final Button q7_radio2 = new Button(q7_col3, SWT.RADIO);
 		q7_radio2.setText("2");
+		q7_radio2.setData(new Integer(2));
 		q7_radio2.setBackground(C.APP_BGCOLOR);
 		q7_radio2.setVisible(false);
 		final Button q7_radio3 = new Button(q7_col3, SWT.RADIO);
 		q7_radio3.setText("3");
+		q7_radio3.setData(new Integer(3));
 		q7_radio3.setBackground(C.APP_BGCOLOR);
 		q7_radio3.setVisible(false);
 		q7_check.addSelectionListener(new SelectionAdapter() {
@@ -414,7 +430,7 @@ public class SpaceAuditView {
 		qNum = 8;
 		final String q8_txt = "\t> Do they have staging points/landings?\n";
 		final Label q8_col1 = MakeColumn1(tbl,q8_txt, true);
-		final Label q8_col2 = makeColumn2(tbl, "Hint text here", true);
+		final Label q8_col2 = makeColumn2(tbl, qHints.elementAt(qNum), true);
 		final Composite q8_col3 = makeColumn3(tbl,3, true);
 		final Button q8_check = new Button(q8_col3, SWT.CHECK);
 		q8_check.setBackground(C.APP_BGCOLOR);
@@ -422,15 +438,18 @@ public class SpaceAuditView {
 		GridData gd_q8_check = new GridData(SWT.CENTER, SWT.CENTER, false, false, 3, 1);
 		q8_check.setLayoutData(gd_q8_check);		
 		final Button q8_radio1 = new Button(q8_col3, SWT.RADIO);
-		q8_radio1.setText("1");
+		q8_radio1.setText("1"); 
+		q8_radio1.setData(new Integer(1));
 		q8_radio1.setBackground(C.APP_BGCOLOR);
 		q8_radio1.setVisible(false); 
 		final Button q8_radio2 = new Button(q8_col3, SWT.RADIO);
 		q8_radio2.setText("2");
+		q8_radio2.setData(new Integer(2));
 		q8_radio2.setBackground(C.APP_BGCOLOR);
 		q8_radio2.setVisible(false); 
 		final Button q8_radio3 = new Button(q8_col3, SWT.RADIO);
 		q8_radio3.setText("3");
+		q8_radio3.setData(new Integer(3));
 		q8_radio3.setBackground(C.APP_BGCOLOR);
 		q8_radio3.setVisible(false);
 		q8_check.addSelectionListener(new SelectionAdapter() {
@@ -453,7 +472,7 @@ public class SpaceAuditView {
 		qNum = 9;
 		final String q9_txt = "\t> Do they have safety hoops?\n";
 		final Label q9_col1 = MakeColumn1(tbl,q9_txt, true);
-		final Label q9_col2 = makeColumn2(tbl, "Hint text here", true);
+		final Label q9_col2 = makeColumn2(tbl, qHints.elementAt(qNum), true);
 		final Composite q9_col3 = makeColumn3(tbl, 3, true);
 		final Button q9_check = new Button(q9_col3, SWT.CHECK);
 		q9_check.setBackground(C.APP_BGCOLOR);
@@ -462,14 +481,17 @@ public class SpaceAuditView {
 		q9_check.setLayoutData(gd_q9_check);		
 		final Button q9_radio1 = new Button(q9_col3, SWT.RADIO);
 		q9_radio1.setText("1");
+		q9_radio1.setData(new Integer(1));
 		q9_radio1.setBackground(C.APP_BGCOLOR);
 		q9_radio1.setVisible(false); 
 		final Button q9_radio2 = new Button(q9_col3, SWT.RADIO);
 		q9_radio2.setText("2");
+		q9_radio2.setData(new Integer(2));
 		q9_radio2.setBackground(C.APP_BGCOLOR);
 		q9_radio2.setVisible(false); 
 		final Button q9_radio3 = new Button(q9_col3, SWT.RADIO);
 		q9_radio3.setText("3");
+		q9_radio3.setData(new Integer(3));
 		q9_radio3.setBackground(C.APP_BGCOLOR);
 		q9_radio3.setVisible(false);
 		q9_check.addSelectionListener(new SelectionAdapter() {
@@ -492,7 +514,7 @@ public class SpaceAuditView {
 		qNum = 10;
 		final String q10_txt = "\t> Do they have handrails at landing points?\n";
 		final Label q10_col1 = MakeColumn1(tbl,q10_txt, true);
-		final Label q10_col2 = makeColumn2(tbl, "Hint text here", true);
+		final Label q10_col2 = makeColumn2(tbl, qHints.elementAt(qNum), true);
 		final Composite q10_col3 = makeColumn3(tbl,3, true);
 		final Button q10_check = new Button(q10_col3, SWT.CHECK);
 		q10_check.setBackground(C.APP_BGCOLOR);
@@ -501,14 +523,17 @@ public class SpaceAuditView {
 		q10_check.setLayoutData(gd_q10_check);		
 		final Button q10_radio1 = new Button(q10_col3, SWT.RADIO);
 		q10_radio1.setText("1");
+		q10_radio1.setData(new Integer(1));
 		q10_radio1.setBackground(C.APP_BGCOLOR);
 		q10_radio1.setVisible(false); 
 		final Button q10_radio2 = new Button(q10_col3, SWT.RADIO);
 		q10_radio2.setText("2");
+		q10_radio2.setData(new Integer(2));
 		q10_radio2.setBackground(C.APP_BGCOLOR);
 		q10_radio2.setVisible(false); 
 		final Button q10_radio3 = new Button(q10_col3, SWT.RADIO);
 		q10_radio3.setText("3");
+		q10_radio3.setData(new Integer(3));
 		q10_radio3.setBackground(C.APP_BGCOLOR);
 		q10_radio3.setVisible(false);
 		q10_check.addSelectionListener(new SelectionAdapter() {
@@ -529,8 +554,8 @@ public class SpaceAuditView {
 		final Label q10_sep = Separator(tbl, true);
 		//-------------------------------------------------------------------------------------------------------		
 		qNum = 11;
-		Label q11_col1 = MakeColumn1(tbl,"Are internal anchorage points fitted?", false);
-		Label q11_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q11_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q11_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q11_col3 = makeColumn3(tbl,1, false);
 		Button q11_check = new Button(q11_col3, SWT.CHECK);
 		q11_check.setBackground(C.APP_BGCOLOR);
@@ -539,8 +564,8 @@ public class SpaceAuditView {
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 12;
-		Label q12_col1 = MakeColumn1(tbl,"Does the space contain sloped or curved floors?", false);
-		Label q12_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q12_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q12_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q12_col3 = makeColumn3(tbl,1, false);
 		Button q12_check = new Button(q12_col3, SWT.CHECK);
 		q12_check.setBackground(C.APP_BGCOLOR);
@@ -549,8 +574,8 @@ public class SpaceAuditView {
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 13;
-		Label q13_col1 = MakeColumn1(tbl,"Is internal lighting fitted into the space?", false);
-		Label q13_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q13_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q13_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q13_col3 = makeColumn3(tbl,1, false);
 		Button q13_check = new Button(q13_col3, SWT.CHECK);
 		q13_check.setBackground(C.APP_BGCOLOR);
@@ -559,8 +584,8 @@ public class SpaceAuditView {
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 14;
-		Label q14_col1 = MakeColumn1(tbl,"Are there any power points present in the space?", false);
-		Label q14_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q14_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q14_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q14_col3 = makeColumn3(tbl,1, false);
 		Button q14_check = new Button(q14_col3, SWT.CHECK);
 		q14_check.setBackground(C.APP_BGCOLOR);
@@ -569,13 +594,33 @@ public class SpaceAuditView {
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 15;
-		Label q15_col1 = MakeColumn1(tbl,"Is there potential for communications black spots (steel lined containers)?", false);
-		Label q15_col2 = makeColumn2(tbl, "Hint text here", false);
+		Label q15_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q15_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q15_col3 = makeColumn3(tbl,1, false);
 		Button q15_check = new Button(q15_col3, SWT.CHECK);
 		q15_check.setBackground(C.APP_BGCOLOR);
 		q15_check.setText("Yes");
 		Text q15_col4 = MakeColumn4(tbl, false);
+		sep = Separator(tbl, false);
+		//-------------------------------------------------------------------------------------------------------		
+		qNum = 16;
+		Label q16_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q16_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
+		Composite q16_col3 = makeColumn3(tbl,1, false);
+		Button q16_check = new Button(q16_col3, SWT.CHECK);
+		q16_check.setBackground(C.APP_BGCOLOR);
+		q16_check.setText("Yes");
+		Text q16_col4 = MakeColumn4(tbl, false);
+		sep = Separator(tbl, false);
+		//-------------------------------------------------------------------------------------------------------		
+		qNum = 17;
+		Label q17_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q17_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
+		Composite q17_col3 = makeColumn3(tbl,1, false);
+		Button q17_check = new Button(q17_col3, SWT.CHECK);
+		q17_check.setBackground(C.APP_BGCOLOR);
+		q17_check.setText("Yes");
+		Text q17_col4 = MakeColumn4(tbl, false);
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------		
 		// end loop

@@ -437,7 +437,6 @@ public class AppWindowControllerTest {
 		formHolder.layout();
 	}
 	void pageX() {
-		// TODO Auto-generated method stub
 		slayout.topControl = page2;
 		formHolder.layout();
 		lblPage.setText("New Page");

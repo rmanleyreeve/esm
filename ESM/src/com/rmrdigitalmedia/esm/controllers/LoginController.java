@@ -56,7 +56,7 @@ public class LoginController {
 					user = EsmUsersTable.getRow("USERNAME", un);
 					EsmApplication.appData.setField("ACCESS", user.getAccessLevel());
 				} catch (SQLException uex) {
-					LogController.logEvent(this,3,uex);						
+					LogController.logEvent(this,C.FATAL,uex);						
 				}
 				EsmApplication.appPreLoad(user,shell);
 				// LoginController will be disposed from now
@@ -217,7 +217,7 @@ public class LoginController {
 		try {
 			vtxt = "Version " + CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));
 		} catch (IOException e) {
-			LogController.logEvent(this,2,e);
+			LogController.logEvent(this,C.WARNING,e);
 		}		
 		clbl_Message.setText(vtxt + C.COPYRIGHT);
 

@@ -171,7 +171,6 @@ public class Test {
     		try {
 				doConnect();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	}
@@ -232,7 +231,6 @@ public class Test {
 		Runnable job = new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				try {
 					Class.forName("org.h2.Driver");
 				} catch (ClassNotFoundException e) {
@@ -266,7 +264,6 @@ public class Test {
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}	
 			}
@@ -326,7 +323,6 @@ public class Test {
 							is.close();
 							os.close();   
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}   
 					}

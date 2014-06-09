@@ -104,7 +104,7 @@ public class DeletePhotoDialog {
 					pRow.delete();
 					formOK = true;
 				} catch (SQLException ex) {
-					LogController.logEvent(this, 1, ex);
+					LogController.logEvent(this, C.ERROR, ex);
 					//ex.printStackTrace();
 					LogController.log("Error occurred deleting photo");
 				}				
