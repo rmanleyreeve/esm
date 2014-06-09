@@ -119,7 +119,7 @@ public class SpaceAuditView {
 		comments.setLayoutData(gd);
 		return comments;
 	}
-		private static Label Separator(Composite comp, boolean hide) {
+	private static Label Separator(Composite comp, boolean hide) {
 		Label separator = new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.CENTER);
 		final GridData gd = new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1);
 		gd.exclude = hide;
@@ -127,29 +127,26 @@ public class SpaceAuditView {
 		return separator;
 	}
 
-	private static void toggle(Label l, boolean hide) {
+	static void toggle(Label l, boolean hide) {
 		GridData gd = (GridData) l.getLayoutData();
 		gd.exclude = hide;
 		l.setVisible(!hide);
-		//l.getParent().layout(false);
 	}
-	private static void toggle(Composite c, boolean hide) {
+	static void toggle(Composite c, boolean hide) {
 		GridData gd = (GridData) c.getLayoutData();
 		gd.exclude = hide;
 		c.setVisible(!hide);
-		//c.getParent().layout(false);
 	}
-	private static void toggle(Text t, boolean hide) {
+	static void toggle(Text t, boolean hide) {
 		GridData gd = (GridData) t.getLayoutData();
 		gd.exclude = hide;
 		t.setVisible(!hide);
-		//t.getParent().layout(false);
 	}
 
-	
-//*****************************************************************************************************************
-	
-	
+
+	//*****************************************************************************************************************
+
+
 	public static void buildPage(Composite parent, final int spaceID) {
 
 		SpacesTable.Row sRow = null;
@@ -168,7 +165,6 @@ public class SpaceAuditView {
 		// the grid panel that holds the various info rows
 		final Composite comp = new Composite(scrollPanel, SWT.NONE);
 		GridLayout gl_comp = new GridLayout(1, true);
-		//gl_comp.marginBottom = 10;
 		comp.setLayout(gl_comp);
 		comp.setBackground(C.APP_BGCOLOR);
 
@@ -244,8 +240,6 @@ public class SpaceAuditView {
 		lblComments.setFont(C.FONT_12B);
 		sep = new Label(tbl, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.CENTER);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));				
-
-
 
 		// start loop through audit checklist questions
 		qNum = 1;
@@ -586,7 +580,6 @@ public class SpaceAuditView {
 		//-------------------------------------------------------------------------------------------------------		
 		// end loop
 
-
 		// footer row
 		Group footerRow = new Group(comp, SWT.NONE);
 		footerRow.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, false));
@@ -596,7 +589,7 @@ public class SpaceAuditView {
 		gl_footerRow.marginWidth = 0;
 		footerRow.setLayout(gl_footerRow);
 		footerRow.setBackground(C.APP_BGCOLOR);
-		
+
 		Button btnB = new Button(footerRow, SWT.NONE);
 		btnB.setToolTipText("Previous page");
 		btnB.setEnabled(false);
@@ -610,7 +603,7 @@ public class SpaceAuditView {
 		pageL.setBackground(C.APP_BGCOLOR);
 		pageL.setFont(C.FONT_11B);
 		pageL.setText("Page 1 of 3");
-		
+
 		Button btnF = new Button(footerRow, SWT.NONE);
 		btnF.setToolTipText("Next page");
 		btnF.setBackground(C.APP_BGCOLOR);
@@ -654,7 +647,7 @@ public class SpaceAuditView {
 			}
 		});
 
-		
+
 		// final layout settings	
 		parent.layout();
 
