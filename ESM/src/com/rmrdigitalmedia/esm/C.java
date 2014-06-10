@@ -96,9 +96,9 @@ public final class C {
 	public static int WARNING = 2;
 	public static int ERROR = 3;
 	public static int FATAL = 4;
-	
-	
-	
+
+
+
 
 
 	public static void makeHoverButton(final Button b) {
@@ -122,8 +122,6 @@ public final class C {
 		throw new AssertionError();
 	}
 
-
-
 	public static Image getExtImage(String imgpath) {
 		// test for non-image or system files
 		try {
@@ -137,9 +135,13 @@ public final class C {
 		return SWTResourceManager.getImage(imgpath);
 	}
 
-
-
 	public static Image getImage(String imgpath) {
 		return SWTResourceManager.getImage(UploadController.class, imgpath);	
 	}
+
+	public static String notNull(String s) {
+		return (s != null) ? s : "";
+	}
+
+
 }
