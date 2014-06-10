@@ -48,14 +48,17 @@ public class SpaceChecklistAuditTable
 
     public static final String idColumnName = "ID";
     public static final String spaceIDColumnName = "SPACE_ID";
-    public static final String q1DimensionsColumnName = "Q1_DIMENSIONS";
+    public static final String q1DimsHColumnName = "Q1_DIMS_H";
+    public static final String q1DimsWColumnName = "Q1_DIMS_W";
+    public static final String q1DimsLColumnName = "Q1_DIMS_L";
     public static final String q1CommentsColumnName = "Q1_COMMENTS";
     public static final String q2CheckboxColumnName = "Q2_CHECKBOX";
     public static final String q2DescColumnName = "Q2_DESC";
     public static final String q3CheckboxColumnName = "Q3_CHECKBOX";
     public static final String q3CommentsColumnName = "Q3_COMMENTS";
     public static final String q4CheckboxColumnName = "Q4_CHECKBOX";
-    public static final String q4DimensionsColumnName = "Q4_DIMENSIONS";
+    public static final String q4DimsHColumnName = "Q4_DIMS_H";
+    public static final String q4DimsWColumnName = "Q4_DIMS_W";
     public static final String q4CommentsColumnName = "Q4_COMMENTS";
     public static final String q5CheckboxColumnName = "Q5_CHECKBOX";
     public static final String q5CommentsColumnName = "Q5_COMMENTS";
@@ -86,7 +89,7 @@ public class SpaceChecklistAuditTable
 
     private static String[] allColumns =
     {
-        idColumnName , spaceIDColumnName , q1DimensionsColumnName , q1CommentsColumnName , q2CheckboxColumnName , q2DescColumnName , q3CheckboxColumnName , q3CommentsColumnName , q4CheckboxColumnName , q4DimensionsColumnName , q4CommentsColumnName , q5CheckboxColumnName , q5CommentsColumnName , q6CheckboxColumnName , q6CommentsColumnName , q7CheckboxColumnName , q7RatingColumnName , q7CommentsColumnName , q8CheckboxColumnName , q8RatingColumnName , q8CommentsColumnName , q9CheckboxColumnName , q9RatingColumnName , q9CommentsColumnName , q10CheckboxColumnName , q10RatingColumnName , q10CommentsColumnName , q11CheckboxColumnName , q11CommentsColumnName , q12CheckboxColumnName , q12CommentsColumnName , q13CheckboxColumnName , q13CommentsColumnName , q14CheckboxColumnName , q14CommentsColumnName , q15CheckboxColumnName , q15CommentsColumnName , 
+        idColumnName , spaceIDColumnName , q1DimsHColumnName , q1DimsWColumnName , q1DimsLColumnName , q1CommentsColumnName , q2CheckboxColumnName , q2DescColumnName , q3CheckboxColumnName , q3CommentsColumnName , q4CheckboxColumnName , q4DimsHColumnName , q4DimsWColumnName , q4CommentsColumnName , q5CheckboxColumnName , q5CommentsColumnName , q6CheckboxColumnName , q6CommentsColumnName , q7CheckboxColumnName , q7RatingColumnName , q7CommentsColumnName , q8CheckboxColumnName , q8RatingColumnName , q8CommentsColumnName , q9CheckboxColumnName , q9RatingColumnName , q9CommentsColumnName , q10CheckboxColumnName , q10RatingColumnName , q10CommentsColumnName , q11CheckboxColumnName , q11CommentsColumnName , q12CheckboxColumnName , q12CommentsColumnName , q13CheckboxColumnName , q13CommentsColumnName , q14CheckboxColumnName , q14CommentsColumnName , q15CheckboxColumnName , q15CommentsColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -268,14 +271,17 @@ public class SpaceChecklistAuditTable
 
         private int id ;
         private int spaceID ;
-        private String q1Dimensions ;
+        private String q1DimsH ;
+        private String q1DimsW ;
+        private String q1DimsL ;
         private String q1Comments ;
         private String q2Checkbox ;
         private String q2Desc ;
         private String q3Checkbox ;
         private String q3Comments ;
         private String q4Checkbox ;
-        private String q4Dimensions ;
+        private String q4DimsH ;
+        private String q4DimsW ;
         private String q4Comments ;
         private String q5Checkbox ;
         private String q5Comments ;
@@ -319,45 +325,48 @@ public class SpaceChecklistAuditTable
             {
                 this.id =  Str.toInt( data[0] );
                 this.spaceID =  Str.toInt( data[1] );
-                this.q1Dimensions = data[2];
-                this.q1Comments = data[3];
-                this.q2Checkbox = data[4];
-                this.q2Desc = data[5];
-                this.q3Checkbox = data[6];
-                this.q3Comments = data[7];
-                this.q4Checkbox = data[8];
-                this.q4Dimensions = data[9];
-                this.q4Comments = data[10];
-                this.q5Checkbox = data[11];
-                this.q5Comments = data[12];
-                this.q6Checkbox = data[13];
-                this.q6Comments = data[14];
-                this.q7Checkbox = data[15];
-                this.q7RatingNull = ( data[16] == null );
-                this.q7Rating = q7RatingNull ? 0 : Str.toInt( data[16] );
-                this.q7Comments = data[17];
-                this.q8Checkbox = data[18];
-                this.q8RatingNull = ( data[19] == null );
-                this.q8Rating = q8RatingNull ? 0 : Str.toInt( data[19] );
-                this.q8Comments = data[20];
-                this.q9Checkbox = data[21];
-                this.q9RatingNull = ( data[22] == null );
-                this.q9Rating = q9RatingNull ? 0 : Str.toInt( data[22] );
-                this.q9Comments = data[23];
-                this.q10Checkbox = data[24];
-                this.q10RatingNull = ( data[25] == null );
-                this.q10Rating = q10RatingNull ? 0 : Str.toInt( data[25] );
-                this.q10Comments = data[26];
-                this.q11Checkbox = data[27];
-                this.q11Comments = data[28];
-                this.q12Checkbox = data[29];
-                this.q12Comments = data[30];
-                this.q13Checkbox = data[31];
-                this.q13Comments = data[32];
-                this.q14Checkbox = data[33];
-                this.q14Comments = data[34];
-                this.q15Checkbox = data[35];
-                this.q15Comments = data[36];
+                this.q1DimsH = data[2];
+                this.q1DimsW = data[3];
+                this.q1DimsL = data[4];
+                this.q1Comments = data[5];
+                this.q2Checkbox = data[6];
+                this.q2Desc = data[7];
+                this.q3Checkbox = data[8];
+                this.q3Comments = data[9];
+                this.q4Checkbox = data[10];
+                this.q4DimsH = data[11];
+                this.q4DimsW = data[12];
+                this.q4Comments = data[13];
+                this.q5Checkbox = data[14];
+                this.q5Comments = data[15];
+                this.q6Checkbox = data[16];
+                this.q6Comments = data[17];
+                this.q7Checkbox = data[18];
+                this.q7RatingNull = ( data[19] == null );
+                this.q7Rating = q7RatingNull ? 0 : Str.toInt( data[19] );
+                this.q7Comments = data[20];
+                this.q8Checkbox = data[21];
+                this.q8RatingNull = ( data[22] == null );
+                this.q8Rating = q8RatingNull ? 0 : Str.toInt( data[22] );
+                this.q8Comments = data[23];
+                this.q9Checkbox = data[24];
+                this.q9RatingNull = ( data[25] == null );
+                this.q9Rating = q9RatingNull ? 0 : Str.toInt( data[25] );
+                this.q9Comments = data[26];
+                this.q10Checkbox = data[27];
+                this.q10RatingNull = ( data[28] == null );
+                this.q10Rating = q10RatingNull ? 0 : Str.toInt( data[28] );
+                this.q10Comments = data[29];
+                this.q11Checkbox = data[30];
+                this.q11Comments = data[31];
+                this.q12Checkbox = data[32];
+                this.q12Comments = data[33];
+                this.q13Checkbox = data[34];
+                this.q13Comments = data[35];
+                this.q14Checkbox = data[36];
+                this.q14Comments = data[37];
+                this.q15Checkbox = data[38];
+                this.q15Comments = data[39];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -389,14 +398,36 @@ public class SpaceChecklistAuditTable
         }
 
 
-        public String getQ1Dimensions()
+        public String getQ1DimsH()
         {
-            return q1Dimensions ;
+            return q1DimsH ;
         }
 
-        public void setQ1Dimensions( String q1Dimensions )
+        public void setQ1DimsH( String q1DimsH )
         {
-            this.q1Dimensions = q1Dimensions ;
+            this.q1DimsH = q1DimsH ;
+        }
+
+
+        public String getQ1DimsW()
+        {
+            return q1DimsW ;
+        }
+
+        public void setQ1DimsW( String q1DimsW )
+        {
+            this.q1DimsW = q1DimsW ;
+        }
+
+
+        public String getQ1DimsL()
+        {
+            return q1DimsL ;
+        }
+
+        public void setQ1DimsL( String q1DimsL )
+        {
+            this.q1DimsL = q1DimsL ;
         }
 
 
@@ -466,14 +497,25 @@ public class SpaceChecklistAuditTable
         }
 
 
-        public String getQ4Dimensions()
+        public String getQ4DimsH()
         {
-            return q4Dimensions ;
+            return q4DimsH ;
         }
 
-        public void setQ4Dimensions( String q4Dimensions )
+        public void setQ4DimsH( String q4DimsH )
         {
-            this.q4Dimensions = q4Dimensions ;
+            this.q4DimsH = q4DimsH ;
+        }
+
+
+        public String getQ4DimsW()
+        {
+            return q4DimsW ;
+        }
+
+        public void setQ4DimsW( String q4DimsW )
+        {
+            this.q4DimsW = q4DimsW ;
         }
 
 
@@ -898,14 +940,17 @@ public class SpaceChecklistAuditTable
             Map data = new HashMap();
             data.put( idColumnName , String.valueOf(  this.id ) );
             data.put( spaceIDColumnName , String.valueOf(  this.spaceID ) );
-            data.put( q1DimensionsColumnName , this.q1Dimensions );
+            data.put( q1DimsHColumnName , this.q1DimsH );
+            data.put( q1DimsWColumnName , this.q1DimsW );
+            data.put( q1DimsLColumnName , this.q1DimsL );
             data.put( q1CommentsColumnName , this.q1Comments );
             data.put( q2CheckboxColumnName , this.q2Checkbox );
             data.put( q2DescColumnName , this.q2Desc );
             data.put( q3CheckboxColumnName , this.q3Checkbox );
             data.put( q3CommentsColumnName , this.q3Comments );
             data.put( q4CheckboxColumnName , this.q4Checkbox );
-            data.put( q4DimensionsColumnName , this.q4Dimensions );
+            data.put( q4DimsHColumnName , this.q4DimsH );
+            data.put( q4DimsWColumnName , this.q4DimsW );
             data.put( q4CommentsColumnName , this.q4Comments );
             data.put( q5CheckboxColumnName , this.q5Checkbox );
             data.put( q5CommentsColumnName , this.q5Comments );

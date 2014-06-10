@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
@@ -18,14 +17,14 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
+import com.rmrdigitalmedia.esm.models.SpaceChecklistAuditTable;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistQuestionsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
-
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.events.MouseAdapter;
@@ -43,6 +42,7 @@ public class SpaceAuditView {
 	private static Label sep;
 	private static int qNum;
 	static int rowHeight = 35;
+	static int colHeaderH = 40;
 
 	private static String df(Timestamp ts) {
 		SimpleDateFormat d = new SimpleDateFormat("dd - MM - yyyy");
@@ -215,16 +215,19 @@ public class SpaceAuditView {
 		final Group tbl = new Group(comp, SWT.BORDER);
 		tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout gl_tbl = new GridLayout(4, false);
-		gl_tbl.verticalSpacing = 1;
+		gl_tbl.marginTop = -15;
 		gl_tbl.marginHeight = 0;
-		gl_tbl.horizontalSpacing = 1;
 		gl_tbl.marginWidth = 0;
+		gl_tbl.verticalSpacing = 1;
+		gl_tbl.horizontalSpacing = 1;
 		tbl.setLayout(gl_tbl);
 		tbl.setBackground(C.APP_BGCOLOR);
 
 		// column headers
 		CLabel lblChecklist = new CLabel(tbl, SWT.NONE);
-		lblChecklist.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		GridData gd_lblChecklist = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		gd_lblChecklist.heightHint = colHeaderH;
+		lblChecklist.setLayoutData(gd_lblChecklist);
 		lblChecklist.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
 		lblChecklist.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblChecklist.setFont(C.FONT_12B);
@@ -232,6 +235,7 @@ public class SpaceAuditView {
 		CLabel lblHint = new CLabel(tbl, SWT.CENTER);
 		GridData gd_lblHint = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblHint.widthHint = 50;
+		gd_lblHint.heightHint = colHeaderH;
 		lblHint.setLayoutData(gd_lblHint);
 		lblHint.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
 		lblHint.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -240,19 +244,29 @@ public class SpaceAuditView {
 		CLabel lblOptions = new CLabel(tbl, SWT.NONE);
 		GridData gd_lblOptions = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblOptions.widthHint = 150;
+		gd_lblOptions.heightHint = colHeaderH;
 		lblOptions.setLayoutData(gd_lblOptions);
 		lblOptions.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
 		lblOptions.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblOptions.setText("Options");
 		lblOptions.setFont(C.FONT_12B);
 		CLabel lblComments = new CLabel(tbl, SWT.NONE);
-		lblComments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		GridData gd_lblComments = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		gd_lblComments.heightHint = colHeaderH;
+		lblComments.setLayoutData(gd_lblComments);
 		lblComments.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
 		lblComments.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblComments.setText("Comments");
 		lblComments.setFont(C.FONT_12B);
 		sep = new Label(tbl, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.CENTER);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));				
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));		
+		
+		SpaceChecklistAuditTable.Row[] aRows = null;
+		try {
+			aRows = SpaceChecklistAuditTable.getRows("1=1 ORDER BY SEQUENCE ASC");
+		} catch (SQLException e1) {
+			LogController.logEvent(SpaceAuditView.class, C.ERROR, e1);
+		}
 
 		// start loop through audit checklist questions
 		qNum = 1;
@@ -269,7 +283,8 @@ public class SpaceAuditView {
 		gd_q1_txtH.heightHint = 10;
 		gd_q1_txtH.widthHint = 20;
 		q1_txtH.setLayoutData(gd_q1_txtH);
-		q1_txtH.setFont(C.FONT_9);		
+		q1_txtH.setFont(C.FONT_9);
+		q1_txtH.setText(aRows[qNum-1].getQ1DimsH());
 		Label q1_lblW = new Label(q1_col3, SWT.NONE);
 		q1_lblW.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		q1_lblW.setBackground(C.APP_BGCOLOR);
@@ -281,6 +296,7 @@ public class SpaceAuditView {
 		gd_q1_txtW.widthHint = 20;
 		q1_txtW.setLayoutData(gd_q1_txtW);
 		q1_txtW.setFont(C.FONT_9);		
+		q1_txtW.setText(aRows[qNum-1].getQ1DimsW());
 		Label q1_lblL = new Label(q1_col3, SWT.NONE);
 		q1_lblL.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		q1_lblL.setBackground(C.APP_BGCOLOR);
@@ -292,7 +308,9 @@ public class SpaceAuditView {
 		gd_q1_txtL.widthHint = 20;
 		q1_txtL.setLayoutData(gd_q1_txtL);
 		q1_txtL.setFont(C.FONT_9);		
+		q1_txtL.setText(aRows[qNum-1].getQ1DimsL());
 		Text q1_col4 = MakeColumn4(tbl,false);
+		q1_col4.setText(aRows[qNum-1].getQ1Comments());
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 2;
