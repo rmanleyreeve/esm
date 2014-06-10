@@ -24,7 +24,6 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.audits.SpaceAuditPage1;
 import com.rmrdigitalmedia.esm.audits.SpaceAuditPage2;
-import com.rmrdigitalmedia.esm.audits.SpaceAuditPage3;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
@@ -53,7 +52,7 @@ public class SpaceAuditView {
 	private static int dimBoxW = 30;
 	static Group tbl;
 	static int pageNum;
-	static int numPages = 3;
+	static int numPages = 2;
 
 	private static String df(Timestamp ts) {
 		SimpleDateFormat d = new SimpleDateFormat("dd - MM - yyyy");
@@ -138,7 +137,7 @@ public class SpaceAuditView {
 		footerRow.setBackground(C.APP_BGCOLOR);
 
 		final Button btnB = new Button(footerRow, SWT.NONE);
-		btnB.setToolTipText("Save changes and go to previous page");
+		btnB.setToolTipText("Save Classification and go to Checklist");
 		btnB.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnB.setBackground(C.APP_BGCOLOR);
 		btnB.setFont(C.FONT_11B);
@@ -151,42 +150,34 @@ public class SpaceAuditView {
 		pageLoc.setText("Page "+pageNum+" of "+numPages);
 
 		final Button btnF = new Button(footerRow, SWT.NONE);
-		btnF.setToolTipText("Save changes and go to next page");
+		btnF.setToolTipText("Save Checklist and go to Classification");
 		btnF.setBackground(C.APP_BGCOLOR);
 		btnF.setFont(C.FONT_11B);
 		btnF.setText(">>");
 
-		btnB.setEnabled(pageNum>1);
-		btnF.setEnabled(pageNum<3);
+		btnB.setEnabled(pageNum == 2);
+		btnF.setEnabled(pageNum == 1);
 
 
 		btnB.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				pageNum--;
-				if(pageNum > 0) {
-					for (Control c:tbl.getChildren()) {
-						c.dispose();
-					}
-					if(pageNum==1) {
-						btnB.setEnabled(false);
-						btnF.setEnabled(true);
-						SpaceAuditPage1.buildPage(tbl, spaceID);
-					} else if(pageNum==2) {
-						btnB.setEnabled(true);
-						btnF.setEnabled(true);
-						SpaceAuditPage2.buildPage(tbl, spaceID);
-						tbl.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
-					}
-					tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-					GridLayout gl_tbl = new GridLayout(4, false);
-					tbl.setLayout(gl_tbl);
-					pageLoc.setText("Page "+pageNum+" of "+numPages);
-					Rectangle r = scrollPanel.getClientArea();
-					scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
-					tbl.layout();
-					parent.layout();	
+				pageNum = 1;
+				for (Control c:tbl.getChildren()) {
+					c.dispose();
 				}
+				btnB.setEnabled(false);
+				btnF.setEnabled(true);
+				SpaceAuditPage1.buildPage(tbl, spaceID);
+				tbl.setBackground(C.APP_BGCOLOR);
+				tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				GridLayout gl_tbl = new GridLayout(4, false);
+				tbl.setLayout(gl_tbl);
+				pageLoc.setText("Page "+pageNum+" of "+numPages);
+				Rectangle r = scrollPanel.getClientArea();
+				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
+				tbl.layout();
+				parent.layout();	
 			}
 		});
 
@@ -198,30 +189,24 @@ public class SpaceAuditView {
 				// save to DB
 
 				// load screen 2				
-				pageNum++;
+				pageNum = 2;
 				btnB.setEnabled(true);
-				if(pageNum<4) {
-					for (Control c:tbl.getChildren()) {
-						c.dispose();
-					}
-					if(pageNum==2) {
-						btnF.setEnabled(true);
-						SpaceAuditPage2.buildPage(tbl, spaceID);
-						tbl.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
-					} else if(pageNum==3) {
-						btnF.setEnabled(false);
-						SpaceAuditPage3.buildPage(tbl, spaceID);
-						tbl.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
-					}
-					tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-					GridLayout gl_tbl = new GridLayout(4, false);
-					tbl.setLayout(gl_tbl);
-					pageLoc.setText("Page "+pageNum+" of "+numPages);
-					Rectangle r = scrollPanel.getClientArea();
-					scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
-					tbl.layout();
-					parent.layout();	
+				for (Control c:tbl.getChildren()) {
+					c.dispose();
 				}
+				btnF.setEnabled(false);
+				btnB.setEnabled(true);				
+				SpaceAuditPage2.buildPage(tbl, spaceID);
+				tbl.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
+				tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				GridLayout gl_tbl = new GridLayout(4, false);
+				tbl.setLayout(gl_tbl);
+				pageLoc.setText("Page "+pageNum+" of "+numPages);
+				Rectangle r = scrollPanel.getClientArea();
+				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
+				tbl.layout();
+				parent.layout();	
+
 			}
 		});
 
