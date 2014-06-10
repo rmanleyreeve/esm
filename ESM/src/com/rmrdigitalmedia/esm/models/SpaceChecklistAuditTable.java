@@ -86,10 +86,14 @@ public class SpaceChecklistAuditTable
     public static final String q14CommentsColumnName = "Q14_COMMENTS";
     public static final String q15CheckboxColumnName = "Q15_CHECKBOX";
     public static final String q15CommentsColumnName = "Q15_COMMENTS";
+    public static final String q16CheckboxColumnName = "Q16_CHECKBOX";
+    public static final String q16CommentsColumnName = "Q16_COMMENTS";
+    public static final String q17CheckboxColumnName = "Q17_CHECKBOX";
+    public static final String q17CommentsColumnName = "Q17_COMMENTS";
 
     private static String[] allColumns =
     {
-        idColumnName , spaceIDColumnName , q1DimsHColumnName , q1DimsWColumnName , q1DimsLColumnName , q1CommentsColumnName , q2CheckboxColumnName , q2DescColumnName , q3CheckboxColumnName , q3CommentsColumnName , q4CheckboxColumnName , q4DimsHColumnName , q4DimsWColumnName , q4CommentsColumnName , q5CheckboxColumnName , q5CommentsColumnName , q6CheckboxColumnName , q6CommentsColumnName , q7CheckboxColumnName , q7RatingColumnName , q7CommentsColumnName , q8CheckboxColumnName , q8RatingColumnName , q8CommentsColumnName , q9CheckboxColumnName , q9RatingColumnName , q9CommentsColumnName , q10CheckboxColumnName , q10RatingColumnName , q10CommentsColumnName , q11CheckboxColumnName , q11CommentsColumnName , q12CheckboxColumnName , q12CommentsColumnName , q13CheckboxColumnName , q13CommentsColumnName , q14CheckboxColumnName , q14CommentsColumnName , q15CheckboxColumnName , q15CommentsColumnName , 
+        idColumnName , spaceIDColumnName , q1DimsHColumnName , q1DimsWColumnName , q1DimsLColumnName , q1CommentsColumnName , q2CheckboxColumnName , q2DescColumnName , q3CheckboxColumnName , q3CommentsColumnName , q4CheckboxColumnName , q4DimsHColumnName , q4DimsWColumnName , q4CommentsColumnName , q5CheckboxColumnName , q5CommentsColumnName , q6CheckboxColumnName , q6CommentsColumnName , q7CheckboxColumnName , q7RatingColumnName , q7CommentsColumnName , q8CheckboxColumnName , q8RatingColumnName , q8CommentsColumnName , q9CheckboxColumnName , q9RatingColumnName , q9CommentsColumnName , q10CheckboxColumnName , q10RatingColumnName , q10CommentsColumnName , q11CheckboxColumnName , q11CommentsColumnName , q12CheckboxColumnName , q12CommentsColumnName , q13CheckboxColumnName , q13CommentsColumnName , q14CheckboxColumnName , q14CommentsColumnName , q15CheckboxColumnName , q15CommentsColumnName , q16CheckboxColumnName , q16CommentsColumnName , q17CheckboxColumnName , q17CommentsColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -313,6 +317,10 @@ public class SpaceChecklistAuditTable
         private String q14Comments ;
         private String q15Checkbox ;
         private String q15Comments ;
+        private String q16Checkbox ;
+        private String q16Comments ;
+        private String q17Checkbox ;
+        private String q17Comments ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -367,6 +375,10 @@ public class SpaceChecklistAuditTable
                 this.q14Comments = data[37];
                 this.q15Checkbox = data[38];
                 this.q15Comments = data[39];
+                this.q16Checkbox = data[40];
+                this.q16Comments = data[41];
+                this.q17Checkbox = data[42];
+                this.q17Comments = data[43];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -928,6 +940,50 @@ public class SpaceChecklistAuditTable
         }
 
 
+        public String getQ16Checkbox()
+        {
+            return q16Checkbox ;
+        }
+
+        public void setQ16Checkbox( String q16Checkbox )
+        {
+            this.q16Checkbox = q16Checkbox ;
+        }
+
+
+        public String getQ16Comments()
+        {
+            return q16Comments ;
+        }
+
+        public void setQ16Comments( String q16Comments )
+        {
+            this.q16Comments = q16Comments ;
+        }
+
+
+        public String getQ17Checkbox()
+        {
+            return q17Checkbox ;
+        }
+
+        public void setQ17Checkbox( String q17Checkbox )
+        {
+            this.q17Checkbox = q17Checkbox ;
+        }
+
+
+        public String getQ17Comments()
+        {
+            return q17Comments ;
+        }
+
+        public void setQ17Comments( String q17Comments )
+        {
+            this.q17Comments = q17Comments ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -978,6 +1034,10 @@ public class SpaceChecklistAuditTable
             data.put( q14CommentsColumnName , this.q14Comments );
             data.put( q15CheckboxColumnName , this.q15Checkbox );
             data.put( q15CommentsColumnName , this.q15Comments );
+            data.put( q16CheckboxColumnName , this.q16Checkbox );
+            data.put( q16CommentsColumnName , this.q16Comments );
+            data.put( q17CheckboxColumnName , this.q17Checkbox );
+            data.put( q17CommentsColumnName , this.q17Comments );
             return data ;
         }
 

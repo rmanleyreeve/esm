@@ -415,6 +415,11 @@ public class SpaceAuditViewTest {
 		pageL.setText("Page 1 of 3");
 		
 		Button btnF = new Button(footerRow, SWT.NONE);
+		btnF.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+			}
+		});
 		btnF.setToolTipText("Next page");
 		btnF.setBackground(C.APP_BGCOLOR);
 		btnF.setFont(C.FONT_11B);
