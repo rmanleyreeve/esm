@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm.models ;
 
 import com.javaranch.db.* ;
 import com.rmrdigitalmedia.esm.C;
-
 import java.sql.* ;
 import java.util.Map ;
 

@@ -118,8 +118,9 @@ public class SpaceAuditViewTest {
 
 		//table layout
 		tbl = new Group(comp, SWT.BORDER);
-		tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_tbl = new GridLayout(4, false);
+		gl_tbl.marginTop = -15;
 		gl_tbl.verticalSpacing = 1;
 		gl_tbl.marginHeight = 0;
 		gl_tbl.horizontalSpacing = 1;
@@ -129,13 +130,15 @@ public class SpaceAuditViewTest {
 		
 		// column headers
 		CLabel lblChecklist = new CLabel(tbl, SWT.NONE);
-		lblChecklist.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		GridData gd_lblChecklist = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		gd_lblChecklist.heightHint = 40;
+		lblChecklist.setLayoutData(gd_lblChecklist);
 		lblChecklist.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
 		lblChecklist.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblChecklist.setFont(C.FONT_12B);
 		lblChecklist.setText("Checklist");
 		CLabel lblHint = new CLabel(tbl, SWT.CENTER);
-		GridData gd_lblHint = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		GridData gd_lblHint = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblHint.widthHint = 50;
 		lblHint.setLayoutData(gd_lblHint);
 		lblHint.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
@@ -143,7 +146,7 @@ public class SpaceAuditViewTest {
 		lblHint.setFont(C.FONT_12B);
 		lblHint.setText("Hint");
 		CLabel lblOptions = new CLabel(tbl, SWT.NONE);
-		GridData gd_lblOptions = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		GridData gd_lblOptions = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblOptions.widthHint = 150;
 		lblOptions.setLayoutData(gd_lblOptions);
 		lblOptions.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
@@ -151,7 +154,7 @@ public class SpaceAuditViewTest {
 		lblOptions.setText("Options");
 		lblOptions.setFont(C.FONT_12B);
 		CLabel lblComments = new CLabel(tbl, SWT.NONE);
-		lblComments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		lblComments.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		lblComments.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
 		lblComments.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblComments.setText("Comments");

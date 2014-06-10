@@ -26,10 +26,12 @@ public class EsmApplication {
 		me = this;
 		Display display = new Display();
 		FilesystemController fs = new FilesystemController();
-		
+
 		// TODO for development ONLY
-		fs.deleteDataDir();
-		
+		if(confirm("Do complete fresh install and delete ALL existing data?" )) {
+			fs.deleteDataDir();
+		}
+
 		fs.createLogDir();		
 		System.out.println("LOGFILE: " + LogController.logfile);
 		LogController.log("Running class " + me.getClass().getName());
@@ -73,6 +75,14 @@ public class EsmApplication {
 		}
 	}
 
+	public static boolean confirm(String msg) {
+		Shell sh = new Shell();
+		MessageBox mb =  new MessageBox(sh, SWT.ICON_QUESTION | SWT.OK | SWT.CANCEL);
+		mb.setText("Attention");
+		mb.setMessage(msg);
+		int returnCode = mb.open(); 
+		return (returnCode == 32);
+	}
 	public static void appLogin(Shell loader) {
 		// ** APP LOADER IS DISPOSED NOW **
 		// display login form
