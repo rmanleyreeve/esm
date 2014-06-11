@@ -30,6 +30,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
@@ -197,6 +198,7 @@ public class SpaceAuditChecklistView {
 		gd_lblStatusImg.horizontalIndent = 10;
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
 		lblStatusImg.setImage(C.getImage("/img/Percent_40.png"));
+		lblStatusImg.setText("Calc: "+ AuditController.calculateSpaceChecklistCompletion(spaceID));
 
 		//table layout
 		final Group tbl = new Group(comp, SWT.BORDER);
