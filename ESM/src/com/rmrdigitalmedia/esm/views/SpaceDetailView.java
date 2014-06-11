@@ -4,7 +4,6 @@ import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
@@ -29,6 +28,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
@@ -39,10 +39,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
-import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
@@ -101,6 +99,9 @@ public class SpaceDetailView {
 			ex.printStackTrace();
 		}
 
+		for (Control c:parent.getChildren()) {
+			c.dispose();
+		}
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 		SashForm panels = new SashForm(parent,SWT.NONE);
 		panels.setBackground(C.TITLEBAR_BGCOLOR);
@@ -443,7 +444,7 @@ public class SpaceDetailView {
 		btnShowSpaceAudit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				WindowController.showSpaceAudit(spaceID);
+				WindowController.showSpaceAuditChecklist(spaceID);
 			}
 		});
 
@@ -506,7 +507,7 @@ public class SpaceDetailView {
 			btnShowEntryAudit.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent arg0) {
-					WindowController.showEntryAudit(spaceID, epRow.getID());
+					WindowController.showEntryAuditChecklist(epRow.getID());
 				}
 			});
 
