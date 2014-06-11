@@ -4,13 +4,21 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -18,24 +26,16 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistAuditTable;
-import com.rmrdigitalmedia.esm.models.SpaceChecklistQuestionsTable;
 import com.rmrdigitalmedia.esm.models.SpaceClassificationAuditTable;
 import com.rmrdigitalmedia.esm.models.SpaceClassificationQuestionsTable;
-import com.rmrdigitalmedia.esm.models.SpacesTable;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 
 @SuppressWarnings("unused")
 public class SpaceAuditClassificationView {
@@ -105,8 +105,8 @@ public class SpaceAuditClassificationView {
 	private static Composite makeColumn3(Composite comp, int numCols, boolean hide) {
 		Composite optionsCell = new Composite(comp, SWT.NONE);
 		GridLayout gl_optionsCell = new GridLayout(numCols, false);
-		gl_optionsCell.marginHeight = 1;
-		gl_optionsCell.verticalSpacing = 1;
+		gl_optionsCell.marginHeight = 6;
+		gl_optionsCell.verticalSpacing = 3;
 		optionsCell.setLayout(gl_optionsCell);
 		GridData gd = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd.exclude = hide;
@@ -133,7 +133,7 @@ public class SpaceAuditClassificationView {
 		comments.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		GridData gd = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd.heightHint = rowHeight;
-		gd.widthHint = 200;
+		gd.widthHint = 250;
 		gd.exclude = hide;
 		comments.setLayoutData(gd);
 		return comments;
@@ -339,7 +339,7 @@ public class SpaceAuditClassificationView {
 		q3_radio2.setText("Quite difficult");
 		q3_radio2.setBackground(C.APP_BGCOLOR);
 		if(!empty) q3_radio2.setSelection(aRow.getQ2Value().equals("2")); 
-		final Button q3_radio3 = new Button(q2_col3, SWT.RADIO);
+		final Button q3_radio3 = new Button(q3_col3, SWT.RADIO);
 		q3_radio3.setText("Not difficult");
 		q3_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q3_radio3.setSelection(aRow.getQ3Value().equals("3")); 
@@ -459,7 +459,8 @@ public class SpaceAuditClassificationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(q7_radio1.getSelection()) {
-					EsmApplication.alert("Be aware to check");
+					//EsmApplication.alert("Be aware to check");
+					new SpaceAlert(WindowController.getShell());	
 				}
 			}
 		});		
@@ -468,7 +469,8 @@ public class SpaceAuditClassificationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(q8_radio1.getSelection()) {
-					EsmApplication.alert("Be aware to check");
+					//EsmApplication.alert("Be aware to check");
+					new SpaceAlert(WindowController.getShell());
 				}
 			}
 		});		

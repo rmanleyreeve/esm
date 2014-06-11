@@ -4,39 +4,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Arrays;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.ViewerCell;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
@@ -46,10 +34,9 @@ import com.rmrdigitalmedia.esm.forms.NewSpaceForm;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
-import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
 import com.rmrdigitalmedia.esm.views.AdministrationView;
-import com.rmrdigitalmedia.esm.views.EntryAuditClassificationView;
 import com.rmrdigitalmedia.esm.views.EntryAuditChecklistView;
+import com.rmrdigitalmedia.esm.views.EntryAuditClassificationView;
 import com.rmrdigitalmedia.esm.views.PhotoViewer;
 import com.rmrdigitalmedia.esm.views.SpaceAlert;
 import com.rmrdigitalmedia.esm.views.SpaceAuditChecklistView;
@@ -62,6 +49,9 @@ public class WindowController {
 
 	private static Object me;
 	protected static Shell shell;
+	public static Shell getShell() {
+		return shell;
+	}
 	static Display display;
 	int appHeight, appWidth,headerH = 100,titleH = 40,footerH = 15;
 	Composite container, header, titleBar;
@@ -165,7 +155,6 @@ public class WindowController {
 
 		// SPACE DETAIL PAGE ======================================================
 		pageSpaceDetail = new Composite (formHolder, SWT.NONE);
-		//SpaceDetailViewTest.buildPage(pageSpaceDetail, 0);
 
 		// ADMIN PAGE ===============================================================
 		pageAdministration = new Composite (formHolder, SWT.NONE);
@@ -173,16 +162,9 @@ public class WindowController {
 
 		// SPACE AUDIT PAGE ===============================================================
 		pageSpaceAudit = new Composite (formHolder, SWT.NONE);
-		//SpaceAuditChecklistView.buildPage(pageSpaceAudit, 0);
 
 		// ENTRY AUDIT PAGE ===============================================================
 		pageEntryAudit = new Composite (formHolder, SWT.NONE);
-		//EntryAuditChecklistView.buildPage(pageEntryAudit, 0);
-
-
-
-
-
 
 		Composite footer = new Composite(container,SWT.NONE);
 		footer.setBackground(C.APP_BGCOLOR);

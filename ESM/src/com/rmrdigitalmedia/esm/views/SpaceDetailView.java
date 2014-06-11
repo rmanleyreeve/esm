@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
@@ -39,6 +40,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -489,7 +491,7 @@ public class SpaceDetailView {
 			lblEntryPointAuditImg.setBackground(C.APP_BGCOLOR);
 
 			lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
-			lblEntryPointAuditLight.setImage(C.getImage("/img/amber.png"));
+			lblEntryPointAuditLight.setImage(C.getImage("/img/red.png"));
 			gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 			gd_lblEntryPointAuditLight.horizontalIndent = 10;
 			gd_lblEntryPointAuditLight.heightHint = rh;
