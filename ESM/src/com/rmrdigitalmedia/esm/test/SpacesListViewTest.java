@@ -16,9 +16,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 import com.rmrdigitalmedia.esm.C;
-import com.rmrdigitalmedia.esm.cell.DynamicImageArrayCell;
-import com.rmrdigitalmedia.esm.cell.DynamicImageCell;
-import com.rmrdigitalmedia.esm.cell.ImageCell;
+import com.rmrdigitalmedia.esm.table.DynamicImageArrayCell;
+import com.rmrdigitalmedia.esm.table.DynamicImageCell;
+import com.rmrdigitalmedia.esm.table.ImageCell;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
