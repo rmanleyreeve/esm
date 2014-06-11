@@ -213,7 +213,7 @@ public class EntryAuditChecklistView {
 
 		// column headers
 		CLabel lblChecklist = new CLabel(tbl, SWT.NONE);
-		GridData gd_lblChecklist = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		GridData gd_lblChecklist = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		gd_lblChecklist.heightHint = colHeaderH;
 		lblChecklist.setLayoutData(gd_lblChecklist);
 		lblChecklist.setBackground(C.AUDIT_COLHEADER_BGCOLOR);

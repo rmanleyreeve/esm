@@ -13,6 +13,10 @@ DROP TABLE IF EXISTS SPACE_CHECKLIST_QUESTIONS;
 DROP TABLE IF EXISTS SPACE_CHECKLIST_AUDIT;
 DROP TABLE IF EXISTS ENTRYPOINT_CHECKLIST_QUESTIONS;
 DROP TABLE IF EXISTS ENTRYPOINT_CHECKLIST_AUDIT;
+DROP TABLE IF EXISTS SPACE_CLASSIFICATION_QUESTIONS;
+DROP TABLE IF EXISTS SPACE_CLASSIFICATION_AUDIT;
+DROP TABLE IF EXISTS ENTRYPOINT_CLASSIFICATION_QUESTIONS;
+DROP TABLE IF EXISTS ENTRYPOINT_CLASSIFICATION_AUDIT;
 
 
 
@@ -302,17 +306,46 @@ ADD FOREIGN KEY (ENTRYPOINT_ID)
 REFERENCES ENTRYPOINTS(ID) ON DELETE CASCADE ON UPDATE CASCADE;
 	
 
+CREATE TABLE SPACE_CLASSIFICATION_QUESTIONS (
+	`ID` INT AUTO_INCREMENT NOT NULL,
+	`Q_TEXT` VARCHAR(1000) NOT NULL,
+	`Q_HINT` VARCHAR(2000),
+	`SEQUENCE`INT NOT NULL,
+	PRIMARY KEY (ID)
+);
+INSERT INTO SPACE_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Do height and/or width restrictions within the space make movement: Very difficult, Quite difficult, Not difficult?','Q1 Hint text here',1);
+INSERT INTO SPACE_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Do Internal obstacles (pipes etc) or restrictive crawl ways (lightening holes) within the space make movement: Very difficult, Quite difficult, Not difficult?','Q2 Hint text here',2);
+INSERT INTO SPACE_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Where internal ladders and stairways are present can a winch be rigged and operated: No, Yes with difficulty, Yes without difficulty?','Q3 Hint text here',3);
+INSERT INTO SPACE_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('When using radio communications inside the space please rate the signal strength and reception: 1 (poor) to 5 (excellent)','Q4 Hint text here',4);
+INSERT INTO SPACE_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Would someone wearing a full Breathing Apparatus find operating in the enclosed space: Very difficult, Quite difficult, Not difficult?','Q5 Hint text here',5);
+INSERT INTO SPACE_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Would a casualty be transported through and removed from the space with: Extreme difficulty, Some difficulty, No difficulty?','Q6 Hint text here',6);
+INSERT INTO SPACE_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Can the contents of the space change? (e.g. cargo hold or store room)?','Q7 Hint text here',7);
+INSERT INTO SPACE_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Can the condition of the materials in this space change (e.g. rust)?','Q8 Hint text here',8);
 
-
-
-
-
-
-
-
-
-
-
+CREATE TABLE SPACE_CLASSIFICATION_AUDIT (
+	`ID` INT AUTO_INCREMENT NOT NULL,
+	`SPACE_ID` INT NOT NULL,
+	`Q1_VALUE` VARCHAR(1),
+	`Q1_COMMENTS` VARCHAR(2000),
+	`Q2_VALUE` VARCHAR(1),
+	`Q2_COMMENTS` VARCHAR(2000),
+	`Q3_VALUE` VARCHAR(1),
+	`Q3_COMMENTS` VARCHAR(2000),
+	`Q4_VALUE` VARCHAR(1),
+	`Q4_COMMENTS` VARCHAR(2000),
+	`Q5_VALUE` VARCHAR(1),
+	`Q5_COMMENTS` VARCHAR(2000),
+	`Q6_VALUE` VARCHAR(1),
+	`Q6_COMMENTS` VARCHAR(2000),
+	`Q7_BOOLEAN` VARCHAR(12),
+	`Q7_COMMENTS` VARCHAR(2000),
+	`Q8_BOOLEAN` VARCHAR(1),
+	`Q8_COMMENTS` VARCHAR(2000),
+	PRIMARY KEY (ID)
+);
+ALTER TABLE SPACE_CLASSIFICATION_AUDIT
+ADD FOREIGN KEY (SPACE_ID) 
+REFERENCES SPACES(ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 

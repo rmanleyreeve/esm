@@ -99,8 +99,8 @@ public class SpaceAuditChecklistView {
 		});
 		return hint;
 	}	
+	// options control cell to hold form objects
 	private static Composite makeColumn3(Composite comp, int numCols, boolean hide) {
-		// options control cell to hold form objects
 		Composite optionsCell = new Composite(comp, SWT.NONE);
 		GridLayout gl_optionsCell = new GridLayout(numCols, false);
 		gl_optionsCell.marginHeight = 1;
@@ -119,7 +119,7 @@ public class SpaceAuditChecklistView {
 		comments.setEditable(true);
 		comments.setFont(C.FONT_10);
 		comments.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		GridData gd = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd.heightHint = rowHeight;
 		gd.widthHint = 200;
 		gd.exclude = hide;
@@ -211,7 +211,7 @@ public class SpaceAuditChecklistView {
 
 		// column headers
 		CLabel lblChecklist = new CLabel(tbl, SWT.NONE);
-		GridData gd_lblChecklist = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		GridData gd_lblChecklist = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		gd_lblChecklist.heightHint = colHeaderH;
 		lblChecklist.setLayoutData(gd_lblChecklist);
 		lblChecklist.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
@@ -454,7 +454,7 @@ public class SpaceAuditChecklistView {
 		q7_radio2.setBackground(C.APP_BGCOLOR);
 		if(!empty) q7_radio2.setSelection(aRow.getQ7Boolean().equals("N")); 
 		q7_radio2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		
+
 		final Composite q7_ratings = new Composite(q7_col3, SWT.BORDER);
 		q7_ratings.setBackground(C.APP_BGCOLOR);
 		q7_ratings.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -780,7 +780,7 @@ public class SpaceAuditChecklistView {
 				tbl.layout();			
 			}
 		});		
-		
+
 		// footer row
 		Group footerRow = new Group(comp, SWT.NONE);
 		footerRow.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, false));
