@@ -347,12 +347,37 @@ ALTER TABLE SPACE_CLASSIFICATION_AUDIT
 ADD FOREIGN KEY (SPACE_ID) 
 REFERENCES SPACES(ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
+CREATE TABLE ENTRYPOINT_CLASSIFICATION_QUESTIONS (
+	`ID` INT AUTO_INCREMENT NOT NULL,
+	`Q_TEXT` VARCHAR(1000) NOT NULL,
+	`Q_HINT` VARCHAR(2000),
+	`SEQUENCE`INT NOT NULL,
+	PRIMARY KEY (ID)
+);
+INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Do the physical dimensions and shape of the entry point make entering the enclosed space: Very difficult, Quite difficult, Not difficult?','Q1 Hint text here',1);
+INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Relating to vertical entries, can a winch be rigged and operated: No, Yes with difficulty, Yes without difficulty','Q2 Hint text here',2);
+INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Do the physical dimensions and shape of the entry point make entering the enclosed space: Very difficult, Quite difficult, Not difficult?','Q3 Hint text here',3);
+INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('In relation to casualty evacuation from the space. is there sufficient room for a stretcher to be able to be lifted vertically or removed horizontally from the space?','Q4 Hint text here',4);
+INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Would someone wearing a full Breathing Apparatus find entering the enclosed space via the entry point: Very difficult, Quite difficult, Not difficult?','Q5 Hint text here',5);
 
-
-
-
-
-
+CREATE TABLE ENTRYPOINT_CLASSIFICATION_AUDIT (
+	`ID` INT AUTO_INCREMENT NOT NULL,
+	`ENTRYPOINT_ID` INT NOT NULL,
+	`Q1_VALUE` VARCHAR(1),
+	`Q1_COMMENTS` VARCHAR(2000),
+	`Q2_VALUE` VARCHAR(1),
+	`Q2_COMMENTS` VARCHAR(2000),
+	`Q3_VALUE` VARCHAR(1),
+	`Q3_COMMENTS` VARCHAR(2000),
+	`Q4_BOOLEAN` VARCHAR(1),
+	`Q4_COMMENTS` VARCHAR(2000),
+	`Q5_VALUE` VARCHAR(1),
+	`Q5_COMMENTS` VARCHAR(2000),
+	PRIMARY KEY (ID)
+);
+ALTER TABLE ENTRYPOINT_CLASSIFICATION_AUDIT
+ADD FOREIGN KEY (ENTRYPOINT_ID) 
+REFERENCES ENTRYPOINTS(ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 

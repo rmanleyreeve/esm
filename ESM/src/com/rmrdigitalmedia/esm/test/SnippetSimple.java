@@ -11,7 +11,6 @@ package com.rmrdigitalmedia.esm.test;
  *    Nicolas Richeton (nicolas.richeton@gmail.com) - initial implementation
  *******************************************************************************/
 
-import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
@@ -22,8 +21,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
-import com.rmrdigitalmedia.esm.C;
 
 /**
  * This widget displays a simple gallery with some content.<br/>

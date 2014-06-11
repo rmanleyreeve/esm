@@ -21,7 +21,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import de.ralfebert.rcputils.tables.sort.ColumnSortSelectionListener;
 import de.ralfebert.rcputils.tables.sort.SortColumnComparator;

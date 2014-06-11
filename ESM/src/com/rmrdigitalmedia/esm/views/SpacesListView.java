@@ -1,7 +1,9 @@
 package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Vector;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -16,11 +18,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.cell.DynamicImageArrayCell;
+import com.rmrdigitalmedia.esm.cell.DynamicImageCell;
+import com.rmrdigitalmedia.esm.cell.ImageCell;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
-import com.rmrdigitalmedia.esm.graphics.DynamicImageArrayCell;
-import com.rmrdigitalmedia.esm.graphics.DynamicImageCell;
-import com.rmrdigitalmedia.esm.graphics.ImageCell;
+import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
 
@@ -121,7 +124,17 @@ public class SpacesListView {
 		col = tvb.createColumn("Internal Classification");
 		col.setPercentWidth(10);
 		col.alignCenter();
-		col.setCustomLabelProvider(new ImageCell(C.getImage("/img/amber.png"))); 	  	
+		//col.setCustomLabelProvider(new ImageCell(C.getImage("/img/red.png"))); 	  	
+		col.setCustomLabelProvider(new DynamicImageCell(new BaseValue<Row>() {
+			@Override
+			public Object get(Row r) {
+				int id = r.getID();
+				// we have the row ID so we can perform the entrypoint audit calculations here
+				
+				// get the statuses and return the appropriate images as an array
+				return new String("/img/red.png");
+			}
+		}));
 		col.build();
 
 		// entry points classification --------------------------------------------------------------------------------------
@@ -133,8 +146,17 @@ public class SpacesListView {
 			public Object get(Row r) {
 				int id = r.getID();
 				// we have the row ID so we can perform the entrypoint audit calculations here
+				Vector<String> lights = new Vector<String>();
+				try {
+					for(EntrypointsTable.Row eRow : EntrypointsTable.getRows("SPACE_ID", id)) {
+						lights.add("/img/red.png");
+					}
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+				}
 				// get the statuses and return the appropriate images as an array
-				return new String[] {"/img/green.png","/img/amber.png","/img/red.png","/img/green.png","/img/amber.png"};
+				// e.g. return new String[] {"/img/green.png","/img/amber.png","/img/red.png","/img/green.png","/img/amber.png"};
+				return lights.toArray(new String[lights.size()]);				
 			}
 		}));
 		col.build();
