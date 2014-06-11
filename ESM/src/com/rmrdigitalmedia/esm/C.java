@@ -145,5 +145,8 @@ public final class C {
 		return (s != null) ? s : "";
 	}
 
+	public static boolean notNullOrEmpty(String s) {
+		return (s != null && !s.equals(""));
+	}
 
 }
