@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
@@ -19,18 +18,14 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
-import com.rmrdigitalmedia.esm.audits.SpaceAuditPage1;
-import com.rmrdigitalmedia.esm.audits.SpaceAuditPage2;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistAuditTable;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistQuestionsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
-
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.events.MouseAdapter;
@@ -41,7 +36,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 @SuppressWarnings("unused")
-public class SpaceAuditView {
+public class EntryAuditClassificationView {
 
 	private static Row user = WindowController.user;
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
@@ -50,9 +45,6 @@ public class SpaceAuditView {
 	private static int rowHeight = 35;
 	private static int colHeaderH = 40;
 	private static int dimBoxW = 30;
-	static Group tbl;
-	static int pageNum;
-	static int numPages = 2;
 
 	private static String df(Timestamp ts) {
 		SimpleDateFormat d = new SimpleDateFormat("dd - MM - yyyy");
@@ -66,7 +58,7 @@ public class SpaceAuditView {
 			shell.setSize(1380, 750);
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
 			Composite comp = new Composite(shell, SWT.BORDER);
-			SpaceAuditView.buildPage(comp, 1);
+			EntryAuditClassificationView.buildPage(comp, 1);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!Display.getDefault().readAndDispatch()) {
@@ -78,8 +70,11 @@ public class SpaceAuditView {
 		}
 	}
 
-	public static void buildPage(final Composite parent, final int spaceID) {
+	public static void buildPage(final Composite parent, final int entryID) {
 
+		for (Control c:parent.getChildren()) {
+			c.dispose();
+		}
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 
 		// scrolling frame to hold the grid panel
@@ -108,13 +103,13 @@ public class SpaceAuditView {
 		lblName.setFont(C.FONT_12B);
 		lblName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		lblName.setBackground(C.APP_BGCOLOR);
-		lblName.setText("Internal Space Checklist");		
+		lblName.setText("Entry Point Space Checklist");		
 
 		Label lblStatus = new Label(headerRow, SWT.NONE);
 		lblStatus.setFont(C.FONT_12B);
 		lblStatus.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		lblStatus.setBackground(C.APP_BGCOLOR);
-		lblStatus.setText("Internal Space Completion");		
+		lblStatus.setText("Entry Point Space Completion");		
 
 		Label lblStatusImg = new Label(headerRow,SWT.NONE);
 		GridData gd_lblStatusImg = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
@@ -123,8 +118,7 @@ public class SpaceAuditView {
 		lblStatusImg.setImage(C.getImage("/img/Percent_40.png"));
 
 		//table layout
-		pageNum = 1;				
-		tbl = SpaceAuditPage1.buildPage(comp, spaceID);
+
 
 		// footer row
 		Group footerRow = new Group(comp, SWT.NONE);
@@ -137,78 +131,29 @@ public class SpaceAuditView {
 		footerRow.setBackground(C.APP_BGCOLOR);
 
 		final Button btnB = new Button(footerRow, SWT.NONE);
-		btnB.setToolTipText("Save Classification and go to Checklist");
 		btnB.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
+		btnB.setToolTipText("Save Classification and go to Checklist");
 		btnB.setBackground(C.APP_BGCOLOR);
 		btnB.setFont(C.FONT_11B);
 		btnB.setText("<<");
+		btnB.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				WindowController.showEntryAuditChecklist(entryID);
+			}
+		});
 
 		final Label pageLoc = new Label(footerRow, SWT.NONE);
 		pageLoc.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
 		pageLoc.setBackground(C.APP_BGCOLOR);
 		pageLoc.setFont(C.FONT_11B);
-		pageLoc.setText("Page "+pageNum+" of "+numPages);
+		pageLoc.setText("Page 2 of 2");
 
 		final Button btnF = new Button(footerRow, SWT.NONE);
-		btnF.setToolTipText("Save Checklist and go to Classification");
 		btnF.setBackground(C.APP_BGCOLOR);
 		btnF.setFont(C.FONT_11B);
 		btnF.setText(">>");
-
-		btnB.setEnabled(pageNum == 2);
-		btnF.setEnabled(pageNum == 1);
-
-
-		btnB.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				pageNum = 1;
-				for (Control c:tbl.getChildren()) {
-					c.dispose();
-				}
-				btnB.setEnabled(false);
-				btnF.setEnabled(true);
-				SpaceAuditPage1.buildPage(tbl, spaceID);
-				tbl.setBackground(C.APP_BGCOLOR);
-				tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-				GridLayout gl_tbl = new GridLayout(4, false);
-				tbl.setLayout(gl_tbl);
-				pageLoc.setText("Page "+pageNum+" of "+numPages);
-				Rectangle r = scrollPanel.getClientArea();
-				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
-				tbl.layout();
-				parent.layout();	
-			}
-		});
-
-		btnF.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				// validate form
-
-				// save to DB
-
-				// load screen 2				
-				pageNum = 2;
-				btnB.setEnabled(true);
-				for (Control c:tbl.getChildren()) {
-					c.dispose();
-				}
-				btnF.setEnabled(false);
-				btnB.setEnabled(true);				
-				SpaceAuditPage2.buildPage(tbl, spaceID);
-				tbl.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
-				tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-				GridLayout gl_tbl = new GridLayout(4, false);
-				tbl.setLayout(gl_tbl);
-				pageLoc.setText("Page "+pageNum+" of "+numPages);
-				Rectangle r = scrollPanel.getClientArea();
-				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
-				tbl.layout();
-				parent.layout();	
-
-			}
-		});
+		btnF.setEnabled(false);
 
 		// redraw panel on window resize
 		scrollPanel.setContent(comp);

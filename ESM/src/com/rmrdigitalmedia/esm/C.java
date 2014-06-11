@@ -88,8 +88,10 @@ public final class C {
 	// app screen titles
 	public static String SPACES_LIST_TITLE = "Classified Enclosed Spaces";
 	public static String ADMIN_PAGE_TITLE = "ESM System Administration";
-	public static String SPACE_AUDIT_PAGE_TITLE = "Internal Space Audit";
-	public static String ENTRY_AUDIT_PAGE_TITLE = "Entry Point Audit";
+	public static String SPACE_AUDIT_CHECKLIST_PAGE_TITLE = "Internal Space Audit: Checklist";
+	public static String ENTRY_AUDIT_CHECKLIST_PAGE_TITLE = "Entry Point Audit: Checklist";
+	public static String SPACE_AUDIT_CLASSIFICATION_PAGE_TITLE = "Internal Space Audit: Classification Questions";
+	public static String ENTRY_AUDIT_CLASSIFICATION_PAGE_TITLE = "Entry Point Audit: Classification Questions";
 
 	// error severity
 	public static int NOTICE = 1;

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Arrays;
-
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
@@ -38,7 +37,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
@@ -50,10 +48,12 @@ import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
 import com.rmrdigitalmedia.esm.views.AdministrationView;
-import com.rmrdigitalmedia.esm.views.EntryAuditView;
+import com.rmrdigitalmedia.esm.views.EntryAuditClassificationView;
+import com.rmrdigitalmedia.esm.views.EntryAuditChecklistView;
 import com.rmrdigitalmedia.esm.views.PhotoViewer;
 import com.rmrdigitalmedia.esm.views.SpaceAlert;
-import com.rmrdigitalmedia.esm.views.SpaceAuditView;
+import com.rmrdigitalmedia.esm.views.SpaceAuditChecklistView;
+import com.rmrdigitalmedia.esm.views.SpaceAuditClassificationView;
 import com.rmrdigitalmedia.esm.views.SpaceDetailView;
 import com.rmrdigitalmedia.esm.views.SpacesListView;
 
@@ -173,11 +173,11 @@ public class WindowController {
 
 		// SPACE AUDIT PAGE ===============================================================
 		pageSpaceAudit = new Composite (formHolder, SWT.NONE);
-		//SpaceAuditView.buildPage(pageSpaceAudit, 0);
+		//SpaceAuditChecklistView.buildPage(pageSpaceAudit, 0);
 
 		// ENTRY AUDIT PAGE ===============================================================
 		pageEntryAudit = new Composite (formHolder, SWT.NONE);
-		//EntryAuditView.buildPage(pageEntryAudit, 0);
+		//EntryAuditChecklistView.buildPage(pageEntryAudit, 0);
 
 
 
@@ -414,8 +414,8 @@ public class WindowController {
 
 	}
 
-		// methods to display alerts etc
-		public static void checkSpaceAlert(int id) {
+	// methods to display alerts etc
+	public static void checkSpaceAlert(int id) {
 		boolean showAlert = false;
 		// get internal classification status from ID	
 		showAlert = true;
@@ -427,7 +427,7 @@ public class WindowController {
 	public static void showPhotoViewer(int spaceID, String fullPath, String thumbPath) {
 		new PhotoViewer(shell, fullPath, thumbPath, spaceID);			
 	}
-void showSpacesList(){
+	void showSpacesList(){
 		LogController.log("Displaying Space List page");
 		try {
 			rows = SpacesTable.getRows("DELETED=FALSE");
@@ -458,9 +458,6 @@ void showSpacesList(){
 		btnSpacesList.setVisible(true);
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		LogController.log("Loading Space Detail page for user selection: Space ID "+spaceID);
-		for (Control c:pageSpaceDetail.getChildren()) {
-			c.dispose();
-		}
 		SpaceDetailView.buildPage(pageSpaceDetail, spaceID);
 		stackLayout.topControl = pageSpaceDetail;
 		currentSpaceId = spaceID;
@@ -483,7 +480,7 @@ void showSpacesList(){
 		pageTitle.setText(C.ADMIN_PAGE_TITLE);
 		formHolder.layout();
 	}
-	public static void showSpaceAudit(int spaceID) {
+	public static void showSpaceAuditChecklist(int spaceID) {
 		currentSpaceId = spaceID;
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
@@ -491,20 +488,17 @@ void showSpacesList(){
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
 		btnBackToSpaceDetails.setVisible(true);
-		LogController.log("Displaying Internal Space Audit page for ID:" + spaceID);
-		for (Control c:pageSpaceAudit.getChildren()) {
-			c.dispose();
-		}
-		SpaceAuditView.buildPage(pageSpaceAudit, spaceID);
+		LogController.log("Displaying Internal Space Audit Checklist for ID:" + spaceID);
+		SpaceAuditChecklistView.buildPage(pageSpaceAudit, spaceID);
 		stackLayout.topControl = pageSpaceAudit;
-		String title = C.SPACE_AUDIT_PAGE_TITLE;
+		String title = C.SPACE_AUDIT_CHECKLIST_PAGE_TITLE;
 		try {
-			 title += " for " + SpacesTable.getRow(spaceID).getName();
+			title += " for " + SpacesTable.getRow(spaceID).getName();
 		} catch (SQLException ex) {}
 		pageTitle.setText(title);
 		formHolder.layout();
 	}
-	public static void showEntryAudit(int spaceID, int entryID) {
+	public static void showSpaceAuditClassification(int spaceID) {
 		currentSpaceId = spaceID;
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
@@ -512,15 +506,46 @@ void showSpacesList(){
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
 		btnBackToSpaceDetails.setVisible(true);
-		LogController.log("Displaying Entry Point Audit page for ID:" + entryID);
-		for (Control c:pageEntryAudit.getChildren()) {
-			c.dispose();
-		}
-		EntryAuditView.buildPage(pageEntryAudit, entryID);
-		stackLayout.topControl = pageEntryAudit;
-		String title = C.ENTRY_AUDIT_PAGE_TITLE;
+		LogController.log("Displaying Internal Space Audit Classification for ID:" + spaceID);
+		SpaceAuditClassificationView.buildPage(pageSpaceAudit, spaceID);
+		stackLayout.topControl = pageSpaceAudit;
+		String title = C.SPACE_AUDIT_CLASSIFICATION_PAGE_TITLE;
 		try {
-			 title += " for " + EntrypointsTable.getRow(entryID).getName();
+			title += " for " + SpacesTable.getRow(spaceID).getName();
+		} catch (SQLException ex) {}
+		pageTitle.setText(title);
+		formHolder.layout();
+	}
+	public static void showEntryAuditChecklist(int entryID) {
+		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		btnAddSpace.setVisible(false);	
+		btnViewSpaceDetails.setVisible(false);
+		btnDeleteSpace.setVisible(false);
+		btnSpacesList.setVisible(false);
+		btnBackToSpaceDetails.setVisible(true);
+		LogController.log("Displaying Entry Point Audit Checklist for ID:" + entryID);
+		EntryAuditChecklistView.buildPage(pageEntryAudit, entryID);
+		stackLayout.topControl = pageEntryAudit;
+		String title = C.ENTRY_AUDIT_CHECKLIST_PAGE_TITLE;
+		try {
+			title += " for " + EntrypointsTable.getRow(entryID).getName();
+		} catch (SQLException ex) {}
+		pageTitle.setText(title);
+		formHolder.layout();
+	}
+	public static void showEntryAuditClassification(int entryID) {
+		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		btnAddSpace.setVisible(false);	
+		btnViewSpaceDetails.setVisible(false);
+		btnDeleteSpace.setVisible(false);
+		btnSpacesList.setVisible(false);
+		btnBackToSpaceDetails.setVisible(true);
+		LogController.log("Displaying Entry Point Audit Classification for ID:" + entryID);
+		EntryAuditClassificationView.buildPage(pageEntryAudit, entryID);
+		stackLayout.topControl = pageEntryAudit;
+		String title = C.ENTRY_AUDIT_CLASSIFICATION_PAGE_TITLE;
+		try {
+			title += " for " + EntrypointsTable.getRow(entryID).getName();
 		} catch (SQLException ex) {}
 		pageTitle.setText(title);
 		formHolder.layout();
