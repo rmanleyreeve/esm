@@ -149,7 +149,7 @@ public class SpaceAuditChecklistView {
 		gd.exclude = hide;
 		t.setVisible(!hide);
 	}
-	
+
 	public static void buildPage(final Composite parent, final int spaceID) {
 
 		for (Control c:parent.getChildren()) {
@@ -246,7 +246,7 @@ public class SpaceAuditChecklistView {
 		lblComments.setFont(C.FONT_12B);
 		sep = new Label(tbl, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.CENTER);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));		
-		
+
 		// get from DB
 		SpaceChecklistAuditTable.Row aRow = null;
 		try {
@@ -268,7 +268,7 @@ public class SpaceAuditChecklistView {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		
+
 		// start loop through audit checklist questions
 		qNum = 1;
 		Label q1_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -317,11 +317,15 @@ public class SpaceAuditChecklistView {
 		qNum = 2;
 		Label q2_col1 = MakeColumn1(tbl,"Is the enclosed space Compartmentalised?\n(If so, describe internal layout)", false);
 		Label q2_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q2_col3 = makeColumn3(tbl,1, false);
-		Button q2_check = new Button(q2_col3, SWT.CHECK);
-		q2_check.setBackground(C.APP_BGCOLOR);
-		q2_check.setText("Yes");
-		if(!empty) { q2_check.setSelection(aRow.getQ2Checkbox().equals("TRUE")); }
+		Composite q2_col3 = makeColumn3(tbl,2, false);
+		final Button q2_radio1 = new Button(q2_col3, SWT.RADIO);
+		q2_radio1.setText("Yes");
+		q2_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q2_radio1.setSelection(aRow.getQ2Boolean().equals("Y")); 
+		final Button q2_radio2 = new Button(q2_col3, SWT.RADIO);
+		q2_radio2.setText("No");
+		q2_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q2_radio2.setSelection(aRow.getQ2Boolean().equals("N")); 
 		Text q2_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q2_col4.setText( C.notNull(aRow.getQ2Desc()) ); }
 		sep = Separator(tbl, false);
@@ -329,11 +333,15 @@ public class SpaceAuditChecklistView {
 		qNum = 3;
 		Label q3_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q3_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q3_col3 = makeColumn3(tbl,1, false);
-		Button q3_check = new Button(q3_col3, SWT.CHECK);
-		q3_check.setBackground(C.APP_BGCOLOR);
-		q3_check.setText("Yes");
-		if(!empty) { q3_check.setSelection(aRow.getQ3Checkbox().equals("TRUE")); }
+		Composite q3_col3 = makeColumn3(tbl,2, false);
+		final Button q3_radio1 = new Button(q3_col3, SWT.RADIO);
+		q3_radio1.setText("Yes");
+		q3_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q3_radio1.setSelection(aRow.getQ3Boolean().equals("Y")); 
+		final Button q3_radio2 = new Button(q3_col3, SWT.RADIO);
+		q3_radio2.setText("No");
+		q3_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q3_radio2.setSelection(aRow.getQ3Boolean().equals("N")); 
 		Text q3_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q3_col4.setText( C.notNull(aRow.getQ3Comments()) ); }
 		sep = Separator(tbl, false);
@@ -343,17 +351,22 @@ public class SpaceAuditChecklistView {
 		final Label q4_col1 = MakeColumn1(tbl,q4_txt, false);
 		Label q4_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q4_col3 = makeColumn3(tbl,4, false);
-		final Button q4_check = new Button(q4_col3, SWT.CHECK);
-		q4_check.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 4, 1));
-		q4_check.setBackground(C.APP_BGCOLOR);
-		q4_check.setText("Yes");
-		if(!empty) { q4_check.setSelection(aRow.getQ4Checkbox().equals("TRUE")); }
+		final Button q4_radio1 = new Button(q4_col3, SWT.RADIO);
+		q4_radio1.setText("Yes");
+		q4_radio1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 2, 1));
+		q4_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q4_radio1.setSelection(aRow.getQ4Boolean().equals("Y")); 
+		final Button q4_radio2 = new Button(q4_col3, SWT.RADIO);
+		q4_radio2.setText("No");
+		q4_radio2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		q4_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q4_radio2.setSelection(aRow.getQ4Boolean().equals("N")); 
 		final Label q4_lblH = new Label(q4_col3, SWT.NONE);
 		q4_lblH.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		q4_lblH.setBackground(C.APP_BGCOLOR);
 		q4_lblH.setFont(C.FONT_8);		
 		q4_lblH.setText("Height:");	
-		q4_lblH.setVisible(q4_check.getSelection());
+		q4_lblH.setVisible(q4_radio1.getSelection());
 		final Text q4_txtH = new Text(q4_col3, SWT.BORDER);
 		GridData gd_q4_txtH = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_q4_txtH.heightHint = 10;
@@ -361,13 +374,13 @@ public class SpaceAuditChecklistView {
 		q4_txtH.setLayoutData(gd_q4_txtH);
 		q4_txtH.setFont(C.FONT_8);
 		if(!empty) { q4_txtH.setText(C.notNull(aRow.getQ4DimsH())); }
-		q4_txtH.setVisible(q4_check.getSelection());
+		q4_txtH.setVisible(q4_radio1.getSelection());
 		final Label q4_lblW = new Label(q4_col3, SWT.NONE);
 		q4_lblW.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		q4_lblW.setBackground(C.APP_BGCOLOR);
 		q4_lblW.setFont(C.FONT_8);		
 		q4_lblW.setText("Width:");		
-		q4_lblW.setVisible(q4_check.getSelection());
+		q4_lblW.setVisible(q4_radio1.getSelection());
 		final Text q4_txtW = new Text(q4_col3, SWT.BORDER);
 		GridData gd_q4_txtW = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_q4_txtW.heightHint = 10;
@@ -375,19 +388,18 @@ public class SpaceAuditChecklistView {
 		q4_txtW.setLayoutData(gd_q4_txtW);
 		q4_txtW.setFont(C.FONT_8);				
 		if(!empty) { q4_txtW.setText(C.notNull(aRow.getQ4DimsW())); }
-		q4_txtW.setVisible(q4_check.getSelection());
-		q4_check.addSelectionListener(new SelectionAdapter() {
+		q4_txtW.setVisible(q4_radio1.getSelection());
+		q4_radio1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(q4_check.getSelection()) {
+				if(q4_radio1.getSelection()) {
 					q4_lblH.setVisible(true); q4_lblW.setVisible(true); q4_txtH.setVisible(true); q4_txtW.setVisible(true);				
 					q4_col1.setText(q4_txt+" * Please state the dimensions of the holes (H,W)");
-					tbl.layout();
 				} else {
 					q4_lblH.setVisible(false); q4_lblW.setVisible(false); q4_txtH.setVisible(false); q4_txtW.setVisible(false);
 					q4_col1.setText(q4_txt);
-					tbl.layout();
 				}
+				tbl.layout();
 			}
 		});
 		Text q4_col4 = MakeColumn4(tbl, false);
@@ -397,11 +409,15 @@ public class SpaceAuditChecklistView {
 		qNum = 5;
 		Label q5_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q5_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q5_col3 = makeColumn3(tbl,1, false);
-		Button q5_check = new Button(q5_col3, SWT.CHECK);
-		q5_check.setBackground(C.APP_BGCOLOR);
-		q5_check.setText("Yes");
-		if(!empty) { q5_check.setSelection(aRow.getQ5Checkbox().equals("TRUE")); }
+		Composite q5_col3 = makeColumn3(tbl,2, false);
+		final Button q5_radio1 = new Button(q5_col3, SWT.RADIO);
+		q5_radio1.setText("Yes");
+		q5_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q5_radio1.setSelection(aRow.getQ5Boolean().equals("Y")); 
+		final Button q5_radio2 = new Button(q5_col3, SWT.RADIO);
+		q5_radio2.setText("No");
+		q5_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q5_radio2.setSelection(aRow.getQ5Boolean().equals("N")); 
 		Text q5_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q5_col4.setText( C.notNull(aRow.getQ5Comments()) ); }
 		sep = Separator(tbl, false);
@@ -409,11 +425,15 @@ public class SpaceAuditChecklistView {
 		qNum = 6;
 		Label q6_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q6_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q6_col3 = makeColumn3(tbl,1, false);
-		Button q6_check = new Button(q6_col3, SWT.CHECK);
-		q6_check.setBackground(C.APP_BGCOLOR);
-		q6_check.setText("Yes");
-		if(!empty) { q6_check.setSelection(aRow.getQ6Checkbox().equals("TRUE")); }
+		Composite q6_col3 = makeColumn3(tbl,2, false);
+		final Button q6_radio1 = new Button(q6_col3, SWT.RADIO);
+		q6_radio1.setText("Yes");
+		q6_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q6_radio1.setSelection(aRow.getQ6Boolean().equals("Y")); 
+		final Button q6_radio2 = new Button(q6_col3, SWT.RADIO);
+		q6_radio2.setText("No");
+		q6_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q6_radio2.setSelection(aRow.getQ6Boolean().equals("N")); 
 		Text q6_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q6_col4.setText( C.notNull(aRow.getQ6Comments()) ); }
 		sep = Separator(tbl, false);
@@ -424,198 +444,227 @@ public class SpaceAuditChecklistView {
 		final Label q7_col1 = MakeColumn1(tbl,q7_txt, false);
 		Label q7_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q7_col3 = makeColumn3(tbl,3, false);
-		final Button q7_check = new Button(q7_col3, SWT.CHECK);
-		q7_check.setBackground(C.APP_BGCOLOR);
-		q7_check.setText("Yes");
-		if(!empty) { q7_check.setSelection(aRow.getQ7Checkbox().equals("TRUE")); }
-		GridData gd_q7_check = new GridData(SWT.CENTER, SWT.CENTER, false, false, 3, 1);
-		q7_check.setLayoutData(gd_q7_check);		
 		final Button q7_radio1 = new Button(q7_col3, SWT.RADIO);
-		q7_radio1.setText("1");
-		q7_radio1.setData(new Integer(1));
+		q7_radio1.setText("Yes");
 		q7_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q7_radio1.setSelection(aRow.getQ7Rating()==1); 
-		q7_radio1.setVisible(q7_check.getSelection());
+		if(!empty) q7_radio1.setSelection(aRow.getQ7Boolean().equals("Y")); 
+		q7_radio1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));		
 		final Button q7_radio2 = new Button(q7_col3, SWT.RADIO);
-		q7_radio2.setText("2");
-		q7_radio2.setData(new Integer(2));
+		q7_radio2.setText("No");
 		q7_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q7_radio2.setSelection(aRow.getQ7Rating()==2);
-		q7_radio2.setVisible(q7_check.getSelection());
-		final Button q7_radio3 = new Button(q7_col3, SWT.RADIO);
-		q7_radio3.setText("3");
-		q7_radio3.setData(new Integer(3));
-		q7_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q7_radio3.setSelection(aRow.getQ7Rating()==3);
-		q7_radio3.setVisible(q7_check.getSelection());
-		q7_check.addSelectionListener(new SelectionAdapter() {
+		if(!empty) q7_radio2.setSelection(aRow.getQ7Boolean().equals("N")); 
+		q7_radio2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		
+		final Composite q7_ratings = new Composite(q7_col3, SWT.BORDER);
+		q7_ratings.setBackground(C.APP_BGCOLOR);
+		q7_ratings.setLayout(new FillLayout(SWT.HORIZONTAL));
+		q7_ratings.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 3, 1));
+		q7_ratings.setVisible(q7_radio1.getSelection());
+		final Button q7_rate_radio1 = new Button(q7_ratings, SWT.RADIO);
+		q7_rate_radio1.setText("1");
+		q7_rate_radio1.setData(new Integer(1));
+		q7_rate_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q7_rate_radio1.setSelection(aRow.getQ7Rating()==1); 
+		final Button q7_rate_radio2 = new Button(q7_ratings, SWT.RADIO);
+		q7_rate_radio2.setText("2");
+		q7_rate_radio2.setData(new Integer(2));
+		q7_rate_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q7_rate_radio2.setSelection(aRow.getQ7Rating()==2);
+		final Button q7_rate_radio3 = new Button(q7_ratings, SWT.RADIO);
+		q7_rate_radio3.setText("3");
+		q7_rate_radio3.setData(new Integer(3));
+		q7_rate_radio3.setBackground(C.APP_BGCOLOR);
+		if(!empty) q7_rate_radio3.setSelection(aRow.getQ7Rating()==3);
+		q7_radio1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(q7_check.getSelection()) {
-					q7_radio1.setVisible(true); q7_radio2.setVisible(true); q7_radio3.setVisible(true);
+				if(q7_radio1.getSelection()) {
 					q7_col1.setText(q7_txt+q7_txt_2);
+					q7_ratings.setVisible(true);
 				} else {
-					q7_radio1.setVisible(false); q7_radio2.setVisible(false); q7_radio3.setVisible(false);
 					q7_col1.setText(q7_txt);
+					q7_ratings.setVisible(false);
 				}
+				tbl.layout();
 			}
 		});
 		Text q7_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q7_col4.setText( C.notNull(aRow.getQ7Comments()) ); }
 		sep = Separator(tbl, false);
-		if(q7_check.getSelection()) q7_col1.setText(q7_txt+q7_txt_2);
+		if(q7_radio1.getSelection()) q7_col1.setText(q7_txt+q7_txt_2);
 		//-------------------------------------------------------------------------------------------------------
+
 		qNum = 8;
 		final String q8_txt = "\t> Do they have staging points/landings?\n";
 		final String q8_txt_2 = "\t * Rate the condition of these (1=poor, 3=good)";
-		final Label q8_col1 = MakeColumn1(tbl,q8_txt, !q7_check.getSelection());
-		final Label q8_col2 = makeColumn2(tbl, qHints.elementAt(qNum), !q7_check.getSelection());
-		final Composite q8_col3 = makeColumn3(tbl,3, !q7_check.getSelection());
-		final Button q8_check = new Button(q8_col3, SWT.CHECK);
-		q8_check.setBackground(C.APP_BGCOLOR);
-		q8_check.setText("Yes");
-		if(!empty) { q8_check.setSelection(aRow.getQ8Checkbox().equals("TRUE")); }
-		GridData gd_q8_check = new GridData(SWT.CENTER, SWT.CENTER, false, false, 3, 1);
-		q8_check.setLayoutData(gd_q8_check);		
+		final Label q8_col1 = MakeColumn1(tbl,q8_txt, !q7_radio1.getSelection());
+		final Label q8_col2 = makeColumn2(tbl, qHints.elementAt(qNum), !q7_radio1.getSelection());
+		final Composite q8_col3 = makeColumn3(tbl,3, !q7_radio1.getSelection());
 		final Button q8_radio1 = new Button(q8_col3, SWT.RADIO);
-		q8_radio1.setText("1"); 
-		q8_radio1.setData(new Integer(1));
+		q8_radio1.setText("Yes");
 		q8_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q8_radio1.setSelection(aRow.getQ8Rating()==1);
-		q8_radio1.setVisible(q8_check.getSelection()); 
+		if(!empty) q8_radio1.setSelection(aRow.getQ8Boolean().equals("Y")); 
+		q8_radio1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));		
 		final Button q8_radio2 = new Button(q8_col3, SWT.RADIO);
-		q8_radio2.setText("2");
-		q8_radio2.setData(new Integer(2));
+		q8_radio2.setText("No");
 		q8_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q8_radio2.setSelection(aRow.getQ8Rating()==2);
-		q8_radio2.setVisible(q8_check.getSelection()); 
-		final Button q8_radio3 = new Button(q8_col3, SWT.RADIO);
-		q8_radio3.setText("3");
-		q8_radio3.setData(new Integer(3));
-		q8_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q8_radio3.setSelection(aRow.getQ8Rating()==3);
-		q8_radio3.setVisible(q8_check.getSelection());
-		q8_check.addSelectionListener(new SelectionAdapter() {
+		if(!empty) q8_radio2.setSelection(aRow.getQ8Boolean().equals("N")); 
+		q8_radio2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));						
+		final Composite q8_ratings = new Composite(q8_col3, SWT.BORDER);
+		q8_ratings.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 3, 1));
+		q8_ratings.setBackground(C.APP_BGCOLOR);
+		q8_ratings.setLayout(new FillLayout(SWT.HORIZONTAL));
+		q8_ratings.setVisible(q8_radio1.getSelection());
+		final Button q8_rate_radio1 = new Button(q8_ratings, SWT.RADIO);
+		q8_rate_radio1.setText("1"); 
+		q8_rate_radio1.setData(new Integer(1));
+		q8_rate_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q8_rate_radio1.setSelection(aRow.getQ8Rating()==1);
+		final Button q8_rate_radio2 = new Button(q8_ratings, SWT.RADIO);
+		q8_rate_radio2.setText("2");
+		q8_rate_radio2.setData(new Integer(2));
+		q8_rate_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q8_rate_radio2.setSelection(aRow.getQ8Rating()==2);
+		final Button q8_rate_radio3 = new Button(q8_ratings, SWT.RADIO);
+		q8_rate_radio3.setText("3");
+		q8_rate_radio3.setData(new Integer(3));
+		q8_rate_radio3.setBackground(C.APP_BGCOLOR);
+		if(!empty) q8_rate_radio3.setSelection(aRow.getQ8Rating()==3);
+		q8_radio1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(q8_check.getSelection()) {
-					q8_radio1.setVisible(true); q8_radio2.setVisible(true); q8_radio3.setVisible(true);
+				if(q8_radio1.getSelection()) {
+					q8_ratings.setVisible(true); 
 					q8_col1.setText(q8_txt+q8_txt_2);
-					tbl.layout();
 				} else {
-					q8_radio1.setVisible(false); q8_radio2.setVisible(false); q8_radio3.setVisible(false);
+					q8_ratings.setVisible(false); 
 					q8_col1.setText(q8_txt);
-					tbl.layout();
 				}
+				tbl.layout();
 			}
 		});
-		final Text q8_col4 = MakeColumn4(tbl, !q7_check.getSelection());
+		final Text q8_col4 = MakeColumn4(tbl, !q7_radio1.getSelection());
 		if(!empty) { q8_col4.setText( C.notNull(aRow.getQ8Comments()) ); }
-		final Label q8_sep = Separator(tbl, !q7_check.getSelection());
-		if(q8_check.getSelection()) q8_col1.setText(q8_txt+q8_txt_2);
+		final Label q8_sep = Separator(tbl, !q7_radio1.getSelection());
+		if(q8_radio1.getSelection()) q8_col1.setText(q8_txt+q8_txt_2);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 9;
 		final String q9_txt = "\t> Do they have safety hoops?\n";
-		final Label q9_col1 = MakeColumn1(tbl,q9_txt, !q7_check.getSelection());
-		final Label q9_col2 = makeColumn2(tbl, qHints.elementAt(qNum), !q7_check.getSelection());
-		final Composite q9_col3 = makeColumn3(tbl, 3, !q7_check.getSelection());
-		final Button q9_check = new Button(q9_col3, SWT.CHECK);
-		q9_check.setBackground(C.APP_BGCOLOR);
-		q9_check.setText("Yes");
-		if(!empty) { q9_check.setSelection(aRow.getQ9Checkbox().equals("TRUE")); }
-		GridData gd_q9_check = new GridData(SWT.CENTER, SWT.CENTER, false, false, 3, 1);
-		q9_check.setLayoutData(gd_q9_check);		
+		final Label q9_col1 = MakeColumn1(tbl,q9_txt, !q7_radio1.getSelection());
+		final Label q9_col2 = makeColumn2(tbl, qHints.elementAt(qNum), !q7_radio1.getSelection());
+		final Composite q9_col3 = makeColumn3(tbl, 3, !q7_radio1.getSelection());
 		final Button q9_radio1 = new Button(q9_col3, SWT.RADIO);
-		q9_radio1.setText("1");
-		q9_radio1.setData(new Integer(1));
+		q9_radio1.setText("Yes");
 		q9_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q9_radio1.setSelection(aRow.getQ9Rating()==1);
-		q9_radio1.setVisible(q9_check.getSelection()); 
+		if(!empty) q9_radio1.setSelection(aRow.getQ9Boolean().equals("Y")); 
+		q9_radio1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));		
 		final Button q9_radio2 = new Button(q9_col3, SWT.RADIO);
-		q9_radio2.setText("2");
-		q9_radio2.setData(new Integer(2));
+		q9_radio2.setText("No");
 		q9_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q9_radio2.setSelection(aRow.getQ9Rating()==2);
-		q9_radio2.setVisible(q9_check.getSelection()); 
-		final Button q9_radio3 = new Button(q9_col3, SWT.RADIO);
-		q9_radio3.setText("3");
-		q9_radio3.setData(new Integer(3));
-		q9_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q9_radio3.setSelection(aRow.getQ9Rating()==3);
-		q9_radio3.setVisible(q9_check.getSelection());
-		q9_check.addSelectionListener(new SelectionAdapter() {
+		if(!empty) q9_radio2.setSelection(aRow.getQ9Boolean().equals("N")); 
+		q9_radio2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		final Composite q9_ratings = new Composite(q9_col3, SWT.BORDER);
+		q9_ratings.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 3, 1));
+		q9_ratings.setBackground(C.APP_BGCOLOR);
+		q9_ratings.setLayout(new FillLayout(SWT.HORIZONTAL));
+		q9_ratings.setVisible(q9_radio1.getSelection());
+		final Button q9_rate_radio1 = new Button(q9_ratings, SWT.RADIO);
+		q9_rate_radio1.setText("1");
+		q9_rate_radio1.setData(new Integer(1));
+		q9_rate_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q9_rate_radio1.setSelection(aRow.getQ9Rating()==1);
+		final Button q9_rate_radio2 = new Button(q9_ratings, SWT.RADIO);
+		q9_rate_radio2.setText("2");
+		q9_rate_radio2.setData(new Integer(2));
+		q9_rate_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q9_rate_radio2.setSelection(aRow.getQ9Rating()==2);
+		final Button q9_rate_radio3 = new Button(q9_ratings, SWT.RADIO);
+		q9_rate_radio3.setText("3");
+		q9_rate_radio3.setData(new Integer(3));
+		q9_rate_radio3.setBackground(C.APP_BGCOLOR);
+		if(!empty) q9_rate_radio3.setSelection(aRow.getQ9Rating()==3);
+		q9_radio1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(q9_check.getSelection()) {
-					q9_radio1.setVisible(true);	q9_radio2.setVisible(true);	q9_radio3.setVisible(true);
+				if(q9_radio1.getSelection()) {
+					q9_ratings.setVisible(true);
 					q9_col1.setText(q9_txt + q8_txt_2);
-					tbl.layout();
 				} else {
-					q9_radio1.setVisible(false); q9_radio2.setVisible(false); q9_radio3.setVisible(false);
+					q9_ratings.setVisible(false);
 					q9_col1.setText(q9_txt);
-					tbl.layout();
 				}
+				tbl.layout();
 			}
 		});
-		final Text q9_col4 = MakeColumn4(tbl, !q7_check.getSelection());
-		final Label q9_sep = Separator(tbl, !q7_check.getSelection());
-		if(q9_check.getSelection()) q9_col1.setText(q9_txt+q8_txt_2);
+		final Text q9_col4 = MakeColumn4(tbl, !q7_radio1.getSelection());
+		final Label q9_sep = Separator(tbl, !q7_radio1.getSelection());
+		if(q9_radio1.getSelection()) q9_col1.setText(q9_txt+q8_txt_2);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 10;
 		final String q10_txt = "\t> Do they have handrails at landing points?\n";
-		final Label q10_col1 = MakeColumn1(tbl,q10_txt, !q7_check.getSelection());
-		final Label q10_col2 = makeColumn2(tbl, qHints.elementAt(qNum), !q7_check.getSelection());
-		final Composite q10_col3 = makeColumn3(tbl,3, !q7_check.getSelection());
-		final Button q10_check = new Button(q10_col3, SWT.CHECK);
-		q10_check.setBackground(C.APP_BGCOLOR);
-		q10_check.setText("Yes");
-		if(!empty) { q10_check.setSelection(aRow.getQ10Checkbox().equals("TRUE")); }
-		GridData gd_q10_check = new GridData(SWT.CENTER, SWT.CENTER, false, false, 3, 1);
-		q10_check.setLayoutData(gd_q10_check);		
+		final Label q10_col1 = MakeColumn1(tbl,q10_txt, !q7_radio1.getSelection());
+		final Label q10_col2 = makeColumn2(tbl, qHints.elementAt(qNum), !q7_radio1.getSelection());
+		final Composite q10_col3 = makeColumn3(tbl,3, !q7_radio1.getSelection());
 		final Button q10_radio1 = new Button(q10_col3, SWT.RADIO);
-		q10_radio1.setText("1");
-		q10_radio1.setData(new Integer(1));
+		q10_radio1.setText("Yes");
 		q10_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q10_radio1.setSelection(aRow.getQ10Rating()==1);
-		q10_radio1.setVisible(q10_check.getSelection()); 
+		if(!empty) q10_radio1.setSelection(aRow.getQ10Boolean().equals("Y")); 
+		q10_radio1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));		
 		final Button q10_radio2 = new Button(q10_col3, SWT.RADIO);
-		q10_radio2.setText("2");
-		q10_radio2.setData(new Integer(2));
+		q10_radio2.setText("No");
 		q10_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q10_radio2.setSelection(aRow.getQ10Rating()==2);
-		q10_radio2.setVisible(q10_check.getSelection()); 
-		final Button q10_radio3 = new Button(q10_col3, SWT.RADIO);
-		q10_radio3.setText("3");
-		q10_radio3.setData(new Integer(3));
-		q10_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q10_radio3.setSelection(aRow.getQ10Rating()==3);
-		q10_radio3.setVisible(q10_check.getSelection());
-		q10_check.addSelectionListener(new SelectionAdapter() {
+		if(!empty) q10_radio2.setSelection(aRow.getQ10Boolean().equals("N")); 
+		q10_radio2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));				
+		final Composite q10_ratings = new Composite(q10_col3, SWT.BORDER);
+		q10_ratings.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 3, 1));
+		q10_ratings.setBackground(C.APP_BGCOLOR);
+		q10_ratings.setLayout(new FillLayout(SWT.HORIZONTAL));
+		q10_ratings.setVisible(q10_radio1.getSelection());
+		final Button q10_rate_radio1 = new Button(q10_ratings, SWT.RADIO);
+		q10_rate_radio1.setText("1");
+		q10_rate_radio1.setData(new Integer(1));
+		q10_rate_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q10_rate_radio1.setSelection(aRow.getQ10Rating()==1);
+		final Button q10_rate_radio2 = new Button(q10_ratings, SWT.RADIO);
+		q10_rate_radio2.setText("2");
+		q10_rate_radio2.setData(new Integer(2));
+		q10_rate_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q10_rate_radio2.setSelection(aRow.getQ10Rating()==2);
+		final Button q10_rate_radio3 = new Button(q10_ratings, SWT.RADIO);
+		q10_rate_radio3.setText("3");
+		q10_rate_radio3.setData(new Integer(3));
+		q10_rate_radio3.setBackground(C.APP_BGCOLOR);
+		if(!empty) q10_rate_radio3.setSelection(aRow.getQ10Rating()==3);
+		q10_radio1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(q10_check.getSelection()) {
-					q10_radio1.setVisible(true); q10_radio2.setVisible(true); q10_radio3.setVisible(true);
+				if(q10_radio1.getSelection()) {
+					q10_ratings.setVisible(true);
 					q10_col1.setText(q10_txt+q8_txt_2);
 					tbl.layout();
 				} else {
-					q10_radio1.setVisible(false); q10_radio2.setVisible(false); q10_radio3.setVisible(false);
+					q10_ratings.setVisible(false);
 					q10_col1.setText(q10_txt);
 					tbl.layout();
 				}
 			}
 		});
-		final Text q10_col4 = MakeColumn4(tbl, !q7_check.getSelection());
-		final Label q10_sep = Separator(tbl, !q7_check.getSelection());
-		if(q10_check.getSelection()) q10_col1.setText(q10_txt+q8_txt_2);
+		final Text q10_col4 = MakeColumn4(tbl, !q7_radio1.getSelection());
+		final Label q10_sep = Separator(tbl, !q7_radio1.getSelection());
+		if(q10_radio1.getSelection()) q10_col1.setText(q10_txt+q8_txt_2);
 		//-------------------------------------------------------------------------------------------------------		
 		qNum = 11;
 		Label q11_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q11_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q11_col3 = makeColumn3(tbl,1, false);
-		Button q11_check = new Button(q11_col3, SWT.CHECK);
-		q11_check.setBackground(C.APP_BGCOLOR);
-		q11_check.setText("Yes");
-		if(!empty) { q11_check.setSelection(aRow.getQ11Checkbox().equals("TRUE")); }
+		Composite q11_col3 = makeColumn3(tbl,2, false);
+		final Button q11_radio1 = new Button(q11_col3, SWT.RADIO);
+		q11_radio1.setText("Yes");
+		q11_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q11_radio1.setSelection(aRow.getQ11Boolean().equals("Y")); 
+		final Button q11_radio2 = new Button(q11_col3, SWT.RADIO);
+		q11_radio2.setText("No");
+		q11_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q11_radio2.setSelection(aRow.getQ11Boolean().equals("N")); 
 		Text q11_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q11_col4.setText( C.notNull(aRow.getQ11Comments()) ); }
 		sep = Separator(tbl, false);
@@ -623,11 +672,15 @@ public class SpaceAuditChecklistView {
 		qNum = 12;
 		Label q12_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q12_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q12_col3 = makeColumn3(tbl,1, false);
-		Button q12_check = new Button(q12_col3, SWT.CHECK);
-		q12_check.setBackground(C.APP_BGCOLOR);
-		q12_check.setText("Yes");
-		if(!empty) { q12_check.setSelection(aRow.getQ12Checkbox().equals("TRUE")); }
+		Composite q12_col3 = makeColumn3(tbl,2, false);
+		final Button q12_radio1 = new Button(q12_col3, SWT.RADIO);
+		q12_radio1.setText("Yes");
+		q12_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q12_radio1.setSelection(aRow.getQ12Boolean().equals("Y")); 
+		final Button q12_radio2 = new Button(q12_col3, SWT.RADIO);
+		q12_radio2.setText("No");
+		q12_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q12_radio2.setSelection(aRow.getQ12Boolean().equals("N")); 
 		Text q12_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q12_col4.setText( C.notNull(aRow.getQ12Comments()) ); }
 		sep = Separator(tbl, false);
@@ -635,11 +688,15 @@ public class SpaceAuditChecklistView {
 		qNum = 13;
 		Label q13_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q13_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q13_col3 = makeColumn3(tbl,1, false);
-		Button q13_check = new Button(q13_col3, SWT.CHECK);
-		q13_check.setBackground(C.APP_BGCOLOR);
-		q13_check.setText("Yes");
-		if(!empty) { q13_check.setSelection(aRow.getQ13Checkbox().equals("TRUE")); }
+		Composite q13_col3 = makeColumn3(tbl,2, false);
+		final Button q13_radio1 = new Button(q13_col3, SWT.RADIO);
+		q13_radio1.setText("Yes");
+		q13_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q13_radio1.setSelection(aRow.getQ13Boolean().equals("Y")); 
+		final Button q13_radio2 = new Button(q13_col3, SWT.RADIO);
+		q13_radio2.setText("No");
+		q13_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q13_radio2.setSelection(aRow.getQ13Boolean().equals("N")); 
 		Text q13_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q13_col4.setText( C.notNull(aRow.getQ13Comments()) ); }
 		sep = Separator(tbl, false);
@@ -647,11 +704,15 @@ public class SpaceAuditChecklistView {
 		qNum = 14;
 		Label q14_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q14_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q14_col3 = makeColumn3(tbl,1, false);
-		Button q14_check = new Button(q14_col3, SWT.CHECK);
-		q14_check.setBackground(C.APP_BGCOLOR);
-		q14_check.setText("Yes");
-		if(!empty) { q14_check.setSelection(aRow.getQ14Checkbox().equals("TRUE")); }
+		Composite q14_col3 = makeColumn3(tbl,2, false);
+		final Button q14_radio1 = new Button(q14_col3, SWT.RADIO);
+		q14_radio1.setText("Yes");
+		q14_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q14_radio1.setSelection(aRow.getQ14Boolean().equals("Y")); 
+		final Button q14_radio2 = new Button(q14_col3, SWT.RADIO);
+		q14_radio2.setText("No");
+		q14_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q14_radio2.setSelection(aRow.getQ14Boolean().equals("N")); 
 		Text q14_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q14_col4.setText( C.notNull(aRow.getQ14Comments()) ); }
 		sep = Separator(tbl, false);
@@ -659,11 +720,15 @@ public class SpaceAuditChecklistView {
 		qNum = 15;
 		Label q15_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q15_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q15_col3 = makeColumn3(tbl,1, false);
-		Button q15_check = new Button(q15_col3, SWT.CHECK);
-		q15_check.setBackground(C.APP_BGCOLOR);
-		q15_check.setText("Yes");
-		if(!empty) { q15_check.setSelection(aRow.getQ15Checkbox().equals("TRUE")); }
+		Composite q15_col3 = makeColumn3(tbl,2, false);
+		final Button q15_radio1 = new Button(q15_col3, SWT.RADIO);
+		q15_radio1.setText("Yes");
+		q15_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q15_radio1.setSelection(aRow.getQ15Boolean().equals("Y")); 
+		final Button q15_radio2 = new Button(q15_col3, SWT.RADIO);
+		q15_radio2.setText("No");
+		q15_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q15_radio2.setSelection(aRow.getQ15Boolean().equals("N")); 
 		Text q15_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q15_col4.setText( C.notNull(aRow.getQ15Comments()) ); }
 		sep = Separator(tbl, false);
@@ -671,11 +736,15 @@ public class SpaceAuditChecklistView {
 		qNum = 16;
 		Label q16_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q16_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q16_col3 = makeColumn3(tbl,1, false);
-		Button q16_check = new Button(q16_col3, SWT.CHECK);
-		q16_check.setBackground(C.APP_BGCOLOR);
-		q16_check.setText("Yes");
-		if(!empty) { q16_check.setSelection(aRow.getQ16Checkbox().equals("TRUE")); }
+		Composite q16_col3 = makeColumn3(tbl,2, false);
+		final Button q16_radio1 = new Button(q16_col3, SWT.RADIO);
+		q16_radio1.setText("Yes");
+		q16_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q16_radio1.setSelection(aRow.getQ16Boolean().equals("Y")); 
+		final Button q16_radio2 = new Button(q16_col3, SWT.RADIO);
+		q16_radio2.setText("No");
+		q16_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q16_radio2.setSelection(aRow.getQ16Boolean().equals("N")); 
 		Text q16_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q16_col4.setText( C.notNull(aRow.getQ16Comments()) ); }
 		sep = Separator(tbl, false);
@@ -683,36 +752,29 @@ public class SpaceAuditChecklistView {
 		qNum = 17;
 		Label q17_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q17_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q17_col3 = makeColumn3(tbl,1, false);
-		Button q17_check = new Button(q17_col3, SWT.CHECK);
-		q17_check.setBackground(C.APP_BGCOLOR);
-		q17_check.setText("Yes");
-		if(!empty) { q17_check.setSelection(aRow.getQ17Checkbox().equals("TRUE")); }
+		Composite q17_col3 = makeColumn3(tbl,2, false);
+		final Button q17_radio1 = new Button(q17_col3, SWT.RADIO);
+		q17_radio1.setText("Yes");
+		q17_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q17_radio1.setSelection(aRow.getQ17Boolean().equals("Y")); 
+		final Button q17_radio2 = new Button(q17_col3, SWT.RADIO);
+		q17_radio2.setText("No");
+		q17_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q17_radio2.setSelection(aRow.getQ17Boolean().equals("N")); 
 		Text q17_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q17_col4.setText( C.notNull(aRow.getQ17Comments()) ); }
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------		
 		// end loop
-		//q7 checkbox event handler to toggle dependent fields & redraw panel
-		q7_check.addSelectionListener(new SelectionAdapter() {
+
+		// Q7 toggle for Q8 Q9 Q10 rows
+		q7_radio1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				boolean selected = !q7_check.getSelection();
-				toggle(q8_col1,selected);
-				toggle(q8_col2,selected);
-				toggle(q8_col3,selected);
-				toggle(q8_col4,selected);
-				toggle(q8_sep,selected);					
-				toggle(q9_col1,selected);
-				toggle(q9_col2,selected);
-				toggle(q9_col3,selected);
-				toggle(q9_col4,selected);
-				toggle(q9_sep,selected);					
-				toggle(q10_col1,selected);
-				toggle(q10_col2,selected);
-				toggle(q10_col3,selected);
-				toggle(q10_col4,selected);
-				toggle(q10_sep,selected);					
+				boolean selected = !q7_radio1.getSelection();
+				toggle(q8_col1,selected); toggle(q8_col2,selected); toggle(q8_col3,selected); toggle(q8_col4,selected); toggle(q8_sep,selected);					
+				toggle(q9_col1,selected); toggle(q9_col2,selected); toggle(q9_col3,selected); toggle(q9_col4,selected); toggle(q9_sep,selected);					
+				toggle(q10_col1,selected); toggle(q10_col2,selected); toggle(q10_col3,selected); toggle(q10_col4,selected); toggle(q10_sep,selected);					
 				Rectangle r = comp.getParent().getClientArea();
 				((ScrolledComposite) comp.getParent()).setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
 				tbl.layout();			

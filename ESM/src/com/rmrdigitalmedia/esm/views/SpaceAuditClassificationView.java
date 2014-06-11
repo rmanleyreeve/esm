@@ -106,7 +106,7 @@ public class SpaceAuditClassificationView {
 		lblName.setFont(C.FONT_12B);
 		lblName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		lblName.setBackground(C.APP_BGCOLOR);
-		lblName.setText("Internal Space Checklist");		
+		lblName.setText("Internal Space Classification");		
 
 		Label lblStatus = new Label(headerRow, SWT.NONE);
 		lblStatus.setFont(C.FONT_12B);

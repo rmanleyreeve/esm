@@ -50,41 +50,41 @@ public class EntrypointChecklistAuditTable
     public static final String entrypointIDColumnName = "ENTRYPOINT_ID";
     public static final String q1ValueColumnName = "Q1_VALUE";
     public static final String q1CommentsColumnName = "Q1_COMMENTS";
-    public static final String q2CheckboxColumnName = "Q2_CHECKBOX";
+    public static final String q2BooleanColumnName = "Q2_BOOLEAN";
     public static final String q2CommentsColumnName = "Q2_COMMENTS";
-    public static final String q3CheckboxColumnName = "Q3_CHECKBOX";
+    public static final String q3BooleanColumnName = "Q3_BOOLEAN";
     public static final String q3CommentsColumnName = "Q3_COMMENTS";
     public static final String q4ValueColumnName = "Q4_VALUE";
     public static final String q4CommentsColumnName = "Q4_COMMENTS";
     public static final String q5DimsHColumnName = "Q5_DIMS_H";
     public static final String q5DimsWColumnName = "Q5_DIMS_W";
     public static final String q5CommentsColumnName = "Q5_COMMENTS";
-    public static final String q6CheckboxColumnName = "Q6_CHECKBOX";
+    public static final String q6BooleanColumnName = "Q6_BOOLEAN";
     public static final String q6CommentsColumnName = "Q6_COMMENTS";
     public static final String q7ValueColumnName = "Q7_VALUE";
     public static final String q7CommentsColumnName = "Q7_COMMENTS";
-    public static final String q8CheckboxColumnName = "Q8_CHECKBOX";
+    public static final String q8BooleanColumnName = "Q8_BOOLEAN";
     public static final String q8CommentsColumnName = "Q8_COMMENTS";
-    public static final String q9CheckboxColumnName = "Q9_CHECKBOX";
+    public static final String q9BooleanColumnName = "Q9_BOOLEAN";
     public static final String q9CommentsColumnName = "Q9_COMMENTS";
-    public static final String q10CheckboxColumnName = "Q10_CHECKBOX";
+    public static final String q10BooleanColumnName = "Q10_BOOLEAN";
     public static final String q10CommentsColumnName = "Q10_COMMENTS";
-    public static final String q11CheckboxColumnName = "Q11_CHECKBOX";
+    public static final String q11BooleanColumnName = "Q11_BOOLEAN";
     public static final String q11CommentsColumnName = "Q11_COMMENTS";
-    public static final String q12CheckboxColumnName = "Q12_CHECKBOX";
+    public static final String q12BooleanColumnName = "Q12_BOOLEAN";
     public static final String q12CommentsColumnName = "Q12_COMMENTS";
-    public static final String q13CheckboxColumnName = "Q13_CHECKBOX";
+    public static final String q13BooleanColumnName = "Q13_BOOLEAN";
     public static final String q13CommentsColumnName = "Q13_COMMENTS";
-    public static final String q14CheckboxColumnName = "Q14_CHECKBOX";
+    public static final String q14BooleanColumnName = "Q14_BOOLEAN";
     public static final String q14CommentsColumnName = "Q14_COMMENTS";
-    public static final String q15CheckboxColumnName = "Q15_CHECKBOX";
+    public static final String q15BooleanColumnName = "Q15_BOOLEAN";
     public static final String q15CommentsColumnName = "Q15_COMMENTS";
-    public static final String q16CheckboxColumnName = "Q16_CHECKBOX";
+    public static final String q16BooleanColumnName = "Q16_BOOLEAN";
     public static final String q16CommentsColumnName = "Q16_COMMENTS";
 
     private static String[] allColumns =
     {
-        idColumnName , entrypointIDColumnName , q1ValueColumnName , q1CommentsColumnName , q2CheckboxColumnName , q2CommentsColumnName , q3CheckboxColumnName , q3CommentsColumnName , q4ValueColumnName , q4CommentsColumnName , q5DimsHColumnName , q5DimsWColumnName , q5CommentsColumnName , q6CheckboxColumnName , q6CommentsColumnName , q7ValueColumnName , q7CommentsColumnName , q8CheckboxColumnName , q8CommentsColumnName , q9CheckboxColumnName , q9CommentsColumnName , q10CheckboxColumnName , q10CommentsColumnName , q11CheckboxColumnName , q11CommentsColumnName , q12CheckboxColumnName , q12CommentsColumnName , q13CheckboxColumnName , q13CommentsColumnName , q14CheckboxColumnName , q14CommentsColumnName , q15CheckboxColumnName , q15CommentsColumnName , q16CheckboxColumnName , q16CommentsColumnName , 
+        idColumnName , entrypointIDColumnName , q1ValueColumnName , q1CommentsColumnName , q2BooleanColumnName , q2CommentsColumnName , q3BooleanColumnName , q3CommentsColumnName , q4ValueColumnName , q4CommentsColumnName , q5DimsHColumnName , q5DimsWColumnName , q5CommentsColumnName , q6BooleanColumnName , q6CommentsColumnName , q7ValueColumnName , q7CommentsColumnName , q8BooleanColumnName , q8CommentsColumnName , q9BooleanColumnName , q9CommentsColumnName , q10BooleanColumnName , q10CommentsColumnName , q11BooleanColumnName , q11CommentsColumnName , q12BooleanColumnName , q12CommentsColumnName , q13BooleanColumnName , q13CommentsColumnName , q14BooleanColumnName , q14CommentsColumnName , q15BooleanColumnName , q15CommentsColumnName , q16BooleanColumnName , q16CommentsColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -268,36 +268,36 @@ public class EntrypointChecklistAuditTable
         private int entrypointID ;
         private String q1Value ;
         private String q1Comments ;
-        private String q2Checkbox ;
+        private String q2Boolean ;
         private String q2Comments ;
-        private String q3Checkbox ;
+        private String q3Boolean ;
         private String q3Comments ;
         private String q4Value ;
         private String q4Comments ;
         private String q5DimsH ;
         private String q5DimsW ;
         private String q5Comments ;
-        private String q6Checkbox ;
+        private String q6Boolean ;
         private String q6Comments ;
         private String q7Value ;
         private String q7Comments ;
-        private String q8Checkbox ;
+        private String q8Boolean ;
         private String q8Comments ;
-        private String q9Checkbox ;
+        private String q9Boolean ;
         private String q9Comments ;
-        private String q10Checkbox ;
+        private String q10Boolean ;
         private String q10Comments ;
-        private String q11Checkbox ;
+        private String q11Boolean ;
         private String q11Comments ;
-        private String q12Checkbox ;
+        private String q12Boolean ;
         private String q12Comments ;
-        private String q13Checkbox ;
+        private String q13Boolean ;
         private String q13Comments ;
-        private String q14Checkbox ;
+        private String q14Boolean ;
         private String q14Comments ;
-        private String q15Checkbox ;
+        private String q15Boolean ;
         private String q15Comments ;
-        private String q16Checkbox ;
+        private String q16Boolean ;
         private String q16Comments ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
@@ -313,36 +313,36 @@ public class EntrypointChecklistAuditTable
                 this.entrypointID =  Str.toInt( data[1] );
                 this.q1Value = data[2];
                 this.q1Comments = data[3];
-                this.q2Checkbox = data[4];
+                this.q2Boolean = data[4];
                 this.q2Comments = data[5];
-                this.q3Checkbox = data[6];
+                this.q3Boolean = data[6];
                 this.q3Comments = data[7];
                 this.q4Value = data[8];
                 this.q4Comments = data[9];
                 this.q5DimsH = data[10];
                 this.q5DimsW = data[11];
                 this.q5Comments = data[12];
-                this.q6Checkbox = data[13];
+                this.q6Boolean = data[13];
                 this.q6Comments = data[14];
                 this.q7Value = data[15];
                 this.q7Comments = data[16];
-                this.q8Checkbox = data[17];
+                this.q8Boolean = data[17];
                 this.q8Comments = data[18];
-                this.q9Checkbox = data[19];
+                this.q9Boolean = data[19];
                 this.q9Comments = data[20];
-                this.q10Checkbox = data[21];
+                this.q10Boolean = data[21];
                 this.q10Comments = data[22];
-                this.q11Checkbox = data[23];
+                this.q11Boolean = data[23];
                 this.q11Comments = data[24];
-                this.q12Checkbox = data[25];
+                this.q12Boolean = data[25];
                 this.q12Comments = data[26];
-                this.q13Checkbox = data[27];
+                this.q13Boolean = data[27];
                 this.q13Comments = data[28];
-                this.q14Checkbox = data[29];
+                this.q14Boolean = data[29];
                 this.q14Comments = data[30];
-                this.q15Checkbox = data[31];
+                this.q15Boolean = data[31];
                 this.q15Comments = data[32];
-                this.q16Checkbox = data[33];
+                this.q16Boolean = data[33];
                 this.q16Comments = data[34];
                 dataLoadedFromDatabase = true ;
             }
@@ -397,14 +397,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ2Checkbox()
+        public String getQ2Boolean()
         {
-            return q2Checkbox ;
+            return q2Boolean ;
         }
 
-        public void setQ2Checkbox( String q2Checkbox )
+        public void setQ2Boolean( String q2Boolean )
         {
-            this.q2Checkbox = q2Checkbox ;
+            this.q2Boolean = q2Boolean ;
         }
 
 
@@ -419,14 +419,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ3Checkbox()
+        public String getQ3Boolean()
         {
-            return q3Checkbox ;
+            return q3Boolean ;
         }
 
-        public void setQ3Checkbox( String q3Checkbox )
+        public void setQ3Boolean( String q3Boolean )
         {
-            this.q3Checkbox = q3Checkbox ;
+            this.q3Boolean = q3Boolean ;
         }
 
 
@@ -496,14 +496,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ6Checkbox()
+        public String getQ6Boolean()
         {
-            return q6Checkbox ;
+            return q6Boolean ;
         }
 
-        public void setQ6Checkbox( String q6Checkbox )
+        public void setQ6Boolean( String q6Boolean )
         {
-            this.q6Checkbox = q6Checkbox ;
+            this.q6Boolean = q6Boolean ;
         }
 
 
@@ -540,14 +540,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ8Checkbox()
+        public String getQ8Boolean()
         {
-            return q8Checkbox ;
+            return q8Boolean ;
         }
 
-        public void setQ8Checkbox( String q8Checkbox )
+        public void setQ8Boolean( String q8Boolean )
         {
-            this.q8Checkbox = q8Checkbox ;
+            this.q8Boolean = q8Boolean ;
         }
 
 
@@ -562,14 +562,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ9Checkbox()
+        public String getQ9Boolean()
         {
-            return q9Checkbox ;
+            return q9Boolean ;
         }
 
-        public void setQ9Checkbox( String q9Checkbox )
+        public void setQ9Boolean( String q9Boolean )
         {
-            this.q9Checkbox = q9Checkbox ;
+            this.q9Boolean = q9Boolean ;
         }
 
 
@@ -584,14 +584,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ10Checkbox()
+        public String getQ10Boolean()
         {
-            return q10Checkbox ;
+            return q10Boolean ;
         }
 
-        public void setQ10Checkbox( String q10Checkbox )
+        public void setQ10Boolean( String q10Boolean )
         {
-            this.q10Checkbox = q10Checkbox ;
+            this.q10Boolean = q10Boolean ;
         }
 
 
@@ -606,14 +606,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ11Checkbox()
+        public String getQ11Boolean()
         {
-            return q11Checkbox ;
+            return q11Boolean ;
         }
 
-        public void setQ11Checkbox( String q11Checkbox )
+        public void setQ11Boolean( String q11Boolean )
         {
-            this.q11Checkbox = q11Checkbox ;
+            this.q11Boolean = q11Boolean ;
         }
 
 
@@ -628,14 +628,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ12Checkbox()
+        public String getQ12Boolean()
         {
-            return q12Checkbox ;
+            return q12Boolean ;
         }
 
-        public void setQ12Checkbox( String q12Checkbox )
+        public void setQ12Boolean( String q12Boolean )
         {
-            this.q12Checkbox = q12Checkbox ;
+            this.q12Boolean = q12Boolean ;
         }
 
 
@@ -650,14 +650,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ13Checkbox()
+        public String getQ13Boolean()
         {
-            return q13Checkbox ;
+            return q13Boolean ;
         }
 
-        public void setQ13Checkbox( String q13Checkbox )
+        public void setQ13Boolean( String q13Boolean )
         {
-            this.q13Checkbox = q13Checkbox ;
+            this.q13Boolean = q13Boolean ;
         }
 
 
@@ -672,14 +672,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ14Checkbox()
+        public String getQ14Boolean()
         {
-            return q14Checkbox ;
+            return q14Boolean ;
         }
 
-        public void setQ14Checkbox( String q14Checkbox )
+        public void setQ14Boolean( String q14Boolean )
         {
-            this.q14Checkbox = q14Checkbox ;
+            this.q14Boolean = q14Boolean ;
         }
 
 
@@ -694,14 +694,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ15Checkbox()
+        public String getQ15Boolean()
         {
-            return q15Checkbox ;
+            return q15Boolean ;
         }
 
-        public void setQ15Checkbox( String q15Checkbox )
+        public void setQ15Boolean( String q15Boolean )
         {
-            this.q15Checkbox = q15Checkbox ;
+            this.q15Boolean = q15Boolean ;
         }
 
 
@@ -716,14 +716,14 @@ public class EntrypointChecklistAuditTable
         }
 
 
-        public String getQ16Checkbox()
+        public String getQ16Boolean()
         {
-            return q16Checkbox ;
+            return q16Boolean ;
         }
 
-        public void setQ16Checkbox( String q16Checkbox )
+        public void setQ16Boolean( String q16Boolean )
         {
-            this.q16Checkbox = q16Checkbox ;
+            this.q16Boolean = q16Boolean ;
         }
 
 
@@ -752,36 +752,36 @@ public class EntrypointChecklistAuditTable
             data.put( entrypointIDColumnName , String.valueOf(  this.entrypointID ) );
             data.put( q1ValueColumnName , this.q1Value );
             data.put( q1CommentsColumnName , this.q1Comments );
-            data.put( q2CheckboxColumnName , this.q2Checkbox );
+            data.put( q2BooleanColumnName , this.q2Boolean );
             data.put( q2CommentsColumnName , this.q2Comments );
-            data.put( q3CheckboxColumnName , this.q3Checkbox );
+            data.put( q3BooleanColumnName , this.q3Boolean );
             data.put( q3CommentsColumnName , this.q3Comments );
             data.put( q4ValueColumnName , this.q4Value );
             data.put( q4CommentsColumnName , this.q4Comments );
             data.put( q5DimsHColumnName , this.q5DimsH );
             data.put( q5DimsWColumnName , this.q5DimsW );
             data.put( q5CommentsColumnName , this.q5Comments );
-            data.put( q6CheckboxColumnName , this.q6Checkbox );
+            data.put( q6BooleanColumnName , this.q6Boolean );
             data.put( q6CommentsColumnName , this.q6Comments );
             data.put( q7ValueColumnName , this.q7Value );
             data.put( q7CommentsColumnName , this.q7Comments );
-            data.put( q8CheckboxColumnName , this.q8Checkbox );
+            data.put( q8BooleanColumnName , this.q8Boolean );
             data.put( q8CommentsColumnName , this.q8Comments );
-            data.put( q9CheckboxColumnName , this.q9Checkbox );
+            data.put( q9BooleanColumnName , this.q9Boolean );
             data.put( q9CommentsColumnName , this.q9Comments );
-            data.put( q10CheckboxColumnName , this.q10Checkbox );
+            data.put( q10BooleanColumnName , this.q10Boolean );
             data.put( q10CommentsColumnName , this.q10Comments );
-            data.put( q11CheckboxColumnName , this.q11Checkbox );
+            data.put( q11BooleanColumnName , this.q11Boolean );
             data.put( q11CommentsColumnName , this.q11Comments );
-            data.put( q12CheckboxColumnName , this.q12Checkbox );
+            data.put( q12BooleanColumnName , this.q12Boolean );
             data.put( q12CommentsColumnName , this.q12Comments );
-            data.put( q13CheckboxColumnName , this.q13Checkbox );
+            data.put( q13BooleanColumnName , this.q13Boolean );
             data.put( q13CommentsColumnName , this.q13Comments );
-            data.put( q14CheckboxColumnName , this.q14Checkbox );
+            data.put( q14BooleanColumnName , this.q14Boolean );
             data.put( q14CommentsColumnName , this.q14Comments );
-            data.put( q15CheckboxColumnName , this.q15Checkbox );
+            data.put( q15BooleanColumnName , this.q15Boolean );
             data.put( q15CommentsColumnName , this.q15Comments );
-            data.put( q16CheckboxColumnName , this.q16Checkbox );
+            data.put( q16BooleanColumnName , this.q16Boolean );
             data.put( q16CommentsColumnName , this.q16Comments );
             return data ;
         }
