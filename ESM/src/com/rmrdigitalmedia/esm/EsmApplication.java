@@ -27,7 +27,7 @@ public class EsmApplication {
 		Display display = new Display();
 		FilesystemController fs = new FilesystemController();
 
-		// TODO for development ONLY
+		// TODO for development ONLY!!
 		if(confirm("Do complete fresh install and delete ALL existing data?" )) {
 			fs.deleteDataDir();
 		}
@@ -77,9 +77,10 @@ public class EsmApplication {
 
 	public static boolean confirm(String msg) {
 		Shell sh = new Shell();
-		MessageBox mb =  new MessageBox(sh, SWT.ICON_QUESTION | SWT.OK | SWT.CANCEL);
+		MessageBox mb =  new MessageBox(sh, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 		mb.setText("Attention");
 		mb.setMessage(msg);
+		
 		int returnCode = mb.open(); 
 		return (returnCode == 32);
 	}
