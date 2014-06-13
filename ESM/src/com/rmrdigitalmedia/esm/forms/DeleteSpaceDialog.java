@@ -19,7 +19,6 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
-@SuppressWarnings("unused")
 public class DeleteSpaceDialog {
 
 	private FormData fd_lblAProgramUpdate;

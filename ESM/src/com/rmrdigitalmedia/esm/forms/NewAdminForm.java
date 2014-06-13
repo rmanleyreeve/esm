@@ -29,7 +29,6 @@ import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
-@SuppressWarnings("unused")
 public class NewAdminForm {
 
 	Shell myshell;
