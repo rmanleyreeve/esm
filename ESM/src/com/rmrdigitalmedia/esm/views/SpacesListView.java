@@ -1,10 +1,8 @@
 package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
-
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
@@ -16,23 +14,21 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.table.DynamicImageArrayCell;
 import com.rmrdigitalmedia.esm.table.DynamicImageCell;
-import com.rmrdigitalmedia.esm.table.ImageCell;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
-
 import de.ralfebert.rcputils.properties.BaseValue;
 import de.ralfebert.rcputils.tables.ColumnBuilder;
 import de.ralfebert.rcputils.tables.ICellFormatter;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 
+@SuppressWarnings("unused")
 public class SpacesListView {
 
 	private static Row[] rows;
@@ -76,7 +72,6 @@ public class SpacesListView {
 		return table;
 	}
 
-	@SuppressWarnings("unused")
 	public static void buildTable(Composite parent) {
 
 		// based on http://www.ralfebert.de/archive/eclipse_rcp/tableviewerbuilder/
@@ -122,7 +117,7 @@ public class SpacesListView {
 
 		// internal classification --------------------------------------------------------------------------------------
 		col = tvb.createColumn("Internal Classification");
-		col.setPercentWidth(10);
+		col.setPixelWidth(165);
 		col.alignCenter();
 		//col.setCustomLabelProvider(new ImageCell(C.getImage("/img/red.png"))); 	  	
 		col.setCustomLabelProvider(new DynamicImageCell(new BaseValue<Row>() {
@@ -139,7 +134,7 @@ public class SpacesListView {
 
 		// entry points classification --------------------------------------------------------------------------------------
 		col = tvb.createColumn("Entry Points Classification");
-		col.setPixelWidth(180);
+		col.setPixelWidth(220);
 		col.alignCenter();
 		col.setCustomLabelProvider(new DynamicImageArrayCell(new BaseValue<Row>() {
 			@Override
@@ -147,16 +142,21 @@ public class SpacesListView {
 				int id = r.getID();
 				// we have the row ID so we can perform the entrypoint audit calculations here
 				Vector<String> lights = new Vector<String>();
-				try {
-					for(EntrypointsTable.Row eRow : EntrypointsTable.getRows("SPACE_ID", id)) {
-						lights.add("/img/red.png");
-					}
-				} catch (SQLException ex) {
-					ex.printStackTrace();
-				}
+				
+				// TODO This routine is really slows - need investigation
+//				try {
+//					for(EntrypointsTable.Row eRow : EntrypointsTable.getRows("SPACE_ID", id)) {
+//						lights.add("/img/red.png");
+//					}
+//				} catch (SQLException ex) {
+//					ex.printStackTrace();
+//				}
 				// get the statuses and return the appropriate images as an array
-				// e.g. return new String[] {"/img/green.png","/img/amber.png","/img/red.png","/img/green.png","/img/amber.png"};
-				return lights.toArray(new String[lights.size()]);				
+				// return new String[] {"/img/green.png","/img/amber.png","/img/red.png","/img/green.png","/img/amber.png"};
+				//return lights.toArray(new String[lights.size()]);			
+				
+				return new String[] {"/img/green.png","/img/amber.png","/img/red.png","/img/green.png","/img/amber.png"};
+
 			}
 		}));
 		col.build();
