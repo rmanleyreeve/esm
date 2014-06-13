@@ -44,7 +44,6 @@ import com.rmrdigitalmedia.esm.views.SpaceAuditClassificationView;
 import com.rmrdigitalmedia.esm.views.SpaceDetailView;
 import com.rmrdigitalmedia.esm.views.SpacesListView;
 
-@SuppressWarnings("unused")
 public class WindowController {
 
 	private static Object me;
@@ -417,7 +416,7 @@ public class WindowController {
 			LogController.logEvent(me, C.ERROR, e);
 		}
 		SpacesListView.getTVB().setInput(Arrays.asList(rows));
-		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(true);
 		btnDeleteSpace.setVisible(true);
 		btnDeleteSpace.setEnabled(false);
@@ -438,7 +437,7 @@ public class WindowController {
 		btnBackToSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
-		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		LogController.log("Loading Space Detail page for user selection: Space ID "+spaceID);
 		SpaceDetailView.buildPage(pageSpaceDetail, spaceID);
 		stackLayout.topControl = pageSpaceDetail;
@@ -451,7 +450,7 @@ public class WindowController {
 		formHolder.layout();
 	}
 	void showAdministration() {
-		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnBackToSpaceDetails.setVisible(false);
@@ -464,7 +463,7 @@ public class WindowController {
 	}
 	public static void showSpaceAuditChecklist(int spaceID) {
 		currentSpaceId = spaceID;
-		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
@@ -482,7 +481,7 @@ public class WindowController {
 	}
 	public static void showSpaceAuditClassification(int spaceID) {
 		currentSpaceId = spaceID;
-		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
@@ -499,7 +498,7 @@ public class WindowController {
 		formHolder.layout();
 	}
 	public static void showEntryAuditChecklist(int entryID) {
-		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
@@ -516,7 +515,7 @@ public class WindowController {
 		formHolder.layout();
 	}
 	public static void showEntryAuditClassification(int entryID) {
-		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
