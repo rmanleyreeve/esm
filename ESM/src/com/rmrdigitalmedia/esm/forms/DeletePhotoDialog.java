@@ -20,7 +20,6 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 
-@SuppressWarnings("unused")
 public class DeletePhotoDialog {
 
 	private FormData fd_lblAProgramUpdate;
