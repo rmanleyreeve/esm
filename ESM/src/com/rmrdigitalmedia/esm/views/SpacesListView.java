@@ -2,6 +2,8 @@ package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Vector;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -32,6 +34,9 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 public class SpacesListView {
 
 	private static Row[] rows;
+	static TableViewerBuilder tvb;
+	static TableViewer tv;
+	static Table table;
 
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
@@ -57,11 +62,6 @@ public class SpacesListView {
 		}
 	}
 
-
-	static TableViewerBuilder tvb;
-	static TableViewer tv;
-	static Table table;
-
 	public static TableViewerBuilder getTVB() {
 		return tvb;
 	}
@@ -72,7 +72,49 @@ public class SpacesListView {
 		return table;
 	}
 
-	public static void buildTable(Composite parent) {
+	public static void buildTable(Composite parent) {	
+
+		// do calculations & get image strings
+		//"Completion Status","Internal Classification","Entry Points Classification", "S/O"
+
+		final Hashtable<Integer,String> imagesCS = new Hashtable<Integer,String>();
+		final Hashtable<Integer,String> imagesIC = new Hashtable<Integer,String>();
+		final Hashtable<Integer,String[]> imagesEPC = new Hashtable<Integer,String[]>();
+		final Hashtable<Integer,String> imagesSO = new Hashtable<Integer,String>();
+
+		try {
+			// loop through spaces (table rows)
+			for (SpacesTable.Row sRow : SpacesTable.getAllRows()) {
+				int spaceID = sRow.getID();
+
+				// calculate completion status
+				imagesCS.put(spaceID, "/img/Percent_"+ (spaceID*20) +".png");
+
+				// calculate internal classification status
+				imagesIC.put(spaceID, "/img/red.png");
+
+				
+				// calculate entrypoint classifications
+				Vector<String> epImgs = new Vector<String>();
+				for (EntrypointsTable.Row eRow : EntrypointsTable.getRows("SPACE_ID", spaceID)) {
+					epImgs.add("/img/red.png");
+				}				
+				imagesEPC.put(spaceID, epImgs.toArray(new String[epImgs.size()]));
+				// calculate s/o status
+				imagesSO.put(spaceID, "/img/bluetick.png");
+
+
+			} // end loop
+
+
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+
+		//System.out.println(imagesEPC);
+
+
 
 		// based on http://www.ralfebert.de/archive/eclipse_rcp/tableviewerbuilder/
 
@@ -108,9 +150,8 @@ public class SpacesListView {
 			@Override
 			public Object get(Row r) {
 				int id = r.getID();
-				// we have the row ID so we can perform the completion status calculations here
-				// get the % value and return the appropriate image
-				return "/img/Percent_"+ (id*20) +".png";
+				// we have the row ID so we can return the appropriate image
+				return (String)imagesCS.get(id);
 			}
 		}));
 		col.build();
@@ -124,10 +165,8 @@ public class SpacesListView {
 			@Override
 			public Object get(Row r) {
 				int id = r.getID();
-				// we have the row ID so we can perform the entrypoint audit calculations here
-				
-				// get the statuses and return the appropriate images as an array
-				return new String("/img/red.png");
+				// we have the row ID so we can return the appropriate image
+				return (String)imagesIC.get(id);
 			}
 		}));
 		col.build();
@@ -136,29 +175,18 @@ public class SpacesListView {
 		col = tvb.createColumn("Entry Points Classification");
 		col.setPixelWidth(220);
 		col.alignCenter();
-		col.setCustomLabelProvider(new DynamicImageArrayCell(new BaseValue<Row>() {
+
+		col.setCustomLabelProvider(new DynamicImageArrayCell(new BaseValue<Row>() {			
 			@Override
 			public Object get(Row r) {
-				int id = r.getID();
-				// we have the row ID so we can perform the entrypoint audit calculations here
-				Vector<String> lights = new Vector<String>();
-				
-				// TODO This routine is really slows - need investigation
-//				try {
-//					for(EntrypointsTable.Row eRow : EntrypointsTable.getRows("SPACE_ID", id)) {
-//						lights.add("/img/red.png");
-//					}
-//				} catch (SQLException ex) {
-//					ex.printStackTrace();
-//				}
-				// get the statuses and return the appropriate images as an array
-				// return new String[] {"/img/green.png","/img/amber.png","/img/red.png","/img/green.png","/img/amber.png"};
-				//return lights.toArray(new String[lights.size()]);			
-				
-				return new String[] {"/img/green.png","/img/amber.png","/img/red.png","/img/green.png","/img/amber.png"};
-
+				int id = r.getID();			
+				// we have the row ID so we can return the appropriate images array
+				//return new String[] {"/img/green.png","/img/amber.png","/img/red.png"};
+				return (String[])imagesEPC.get(id);
 			}
 		}));
+
+
 		col.build();
 
 		// signed off --------------------------------------------------------------------------------------
@@ -166,12 +194,12 @@ public class SpacesListView {
 		col.setPercentWidth(5);
 		col.alignCenter();
 		col.setCustomLabelProvider(new DynamicImageCell(new BaseValue<Row>() {
+			int id;
 			@Override
 			public Object get(Row r) {
-				int id = r.getID();
-				// we have the row ID so we can work out the signoff status calculations here
-				// get the value and return the appropriate image
-				return "/img/bluetick.png";
+				id = r.getID();
+				// we have the row ID so we can return the appropriate image
+				return (String)imagesSO.get(id);
 			}
 		}));
 		col.build();
@@ -202,7 +230,6 @@ public class SpacesListView {
 				WindowController.checkSpaceAlert(_id);
 			}
 		});
-
 
 	}
 
