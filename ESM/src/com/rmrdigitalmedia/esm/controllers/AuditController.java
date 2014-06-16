@@ -1,8 +1,8 @@
 package com.rmrdigitalmedia.esm.controllers;
 
 import java.sql.SQLException;
-
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistAuditTable;
 
 public class AuditController {
@@ -23,7 +23,8 @@ public class AuditController {
 		try {
 			row = SpaceChecklistAuditTable.getRow("SPACE_ID", ""+spaceID);
 		} catch (SQLException ex) {
-			LogController.logEvent(AuditController.class, C.FATAL, ex);		}
+			LogController.logEvent(AuditController.class, C.FATAL, ex);		
+		}
 		if(row != null) {
 			score += ( C.notNullOrEmpty(row.getQ1DimsH()) && C.notNullOrEmpty(row.getQ1DimsL()) && C.notNullOrEmpty(row.getQ1DimsW()) ) ? 1:0;
 			score += (isY(row.getQ2Boolean()) && C.notNullOrEmpty(row.getQ2Desc())) ? 1:0;
@@ -48,21 +49,48 @@ public class AuditController {
 			}
 			percent = Math.round( ( (float)score/max ) * 100 );
 		}
-		
-		System.out.println(score);
-		System.out.println(max);
-		System.out.println( (float)score / max);		
-		System.out.println(percent);
-		
+		System.out.println("Space checklist: " + score + "/" + max + "=" + (float)score / max + "->" + percent + "%");		
 		return percent;		
 	}
 
 	public static int calculateEntryChecklistCompletion(int entryID) {
-
-
-
-
-		return 0;		
+		int percent = 0;
+		int max = 0;
+		int score = 0;
+		EntrypointChecklistAuditTable.Row row = null;
+		try {
+			row = EntrypointChecklistAuditTable.getRow("ENTRYPOINT_ID", ""+entryID);
+		} catch (SQLException ex) {
+			LogController.logEvent(AuditController.class, C.FATAL, ex);		
+		}
+		if(row != null) {
+			score += ( row.getQ1Value()!=null ) ? 1:0;
+			score += ( row.getQ1Value()!=null && row.getQ1Value().equals("OUTSIDE") && row.getQ2Boolean()!=null) ? 1:0;
+			score += (row.getQ3Boolean()!=null) ? 1:0;
+			score += ( row.getQ4Value()!=null ) ? 1:0;
+			score += ( C.notNullOrEmpty(row.getQ5DimsH()) && C.notNullOrEmpty(row.getQ5DimsW()) ) ? 1:0;
+			score += (row.getQ6Boolean()!=null) ? 1:0;
+			score += ( row.getQ7Value()!=null ) ? 1:0;
+			score += ( row.getQ7Value()!=null && row.getQ7Value().equals("VERTICAL") && row.getQ8Boolean()!=null) ? 1:0;
+			score += ( row.getQ7Value()!=null && row.getQ7Value().equals("VERTICAL") && row.getQ9Boolean()!=null) ? 1:0;
+			score += (row.getQ10Boolean()!=null) ? 1:0;
+			score += (row.getQ11Boolean()!=null) ? 1:0;
+			score += (row.getQ12Boolean()!=null) ? 1:0;
+			score += (row.getQ13Boolean()!=null) ? 1:0;
+			score += (row.getQ14Boolean()!=null) ? 1:0;
+			score += (row.getQ15Boolean()!=null) ? 1:0;
+			score += (row.getQ16Boolean()!=null) ? 1:0;
+			max = 16;
+			if (row.getQ1Value()!=null && row.getQ1Value().equals("INSIDE")) {
+				max--;
+			}
+			if (row.getQ7Value()!=null && row.getQ7Value().equals("HORIZONTAL")) {
+				max--;max--;
+			}
+			percent = Math.round( ( (float)score/max ) * 100 );
+		}
+		System.out.println("Entry checklist: " + score + "/" + max + "=" + (float)score / max + "->" + percent + "%");		
+		return percent;		
 	}
 
 
