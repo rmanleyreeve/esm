@@ -31,26 +31,27 @@ public final class C {
 	public static String IMG_DIR = DATA_DIR + SEP + IMG_DIR_NAME;
 	public static String DOC_DIR = DATA_DIR + SEP + DOC_DIR_NAME;
 	public static String LOG_DIR = DATA_DIR + SEP + LOG_DIR_NAME;
-
+	
+	// database properties
 	public static String DB_NAME = "ESM";
 	public static String DB_CONN_STR = "jdbc:h2:~/../"+INSTALL_DIR+"/" + DATA_DIR_NAME + "/"+DB_NAME+";IFEXISTS=TRUE";
 	public static String DB_CONN_STR_SETUP = "jdbc:h2:~/../"+INSTALL_DIR+"/" + DATA_DIR_NAME + "/" + DB_NAME;
 	public static String DB_SETUP_FILE = "SETUP.sql";
-	public static String APP_NAME = "Enclosed Spaces Management System";
-
+	
+	// image properties
 	public static int IMG_WIDTH = 800;
 	public static int IMG_HEIGHT = 600;
 	public static int THUMB_WIDTH = 150;
 	public static int THUMB_HEIGHT = 150;
 
-	// styling properties
+	// UI style properties
 	public static Color APP_BGCOLOR = SWTResourceManager.getColor(222, 224, 226);
 	public static Color TITLEBAR_BGCOLOR = SWTResourceManager.getColor(122, 130, 137);
 	public static Color FIELD_BGCOLOR = SWTResourceManager.getColor(238, 238, 238);
 	public static Color BAR_BGCOLOR = SWTResourceManager.getColor(182, 186, 190);
 	public static Color AUDIT_COLHEADER_BGCOLOR = SWTResourceManager.getColor(38, 147, 255);
 
-	// fonts
+	// UI fonts
 	public static String FONT = (OS.equals("cocoa")) ? "Lucida Grande" : "Arial";
 	private static int FONT_ADD = (OS.equals("cocoa")) ? 2 : 0;
 	public static Font BUTTON_FONT = SWTResourceManager.getFont(FONT, 9+FONT_ADD,SWT.NORMAL);
@@ -71,7 +72,6 @@ public final class C {
 	// web properties
 	public static String USER_AGENT = "Mozilla/5.0";
 	public static String REMOTE_URL = "http://www.rmrdigitalmedia.co.uk/esm/";
-	public static String LICENSE_URL = REMOTE_URL + "check_license.php";
 	public static String LATEST_VERSION_URL = REMOTE_URL + "version.txt";
 	public static String UPDATE_URL = REMOTE_URL + "updates.php";
 
@@ -84,6 +84,7 @@ public final class C {
 	public static String COPYRIGHT = "\t\u00a9 Videotel 2014";
 
 	// app screen titles
+	public static String APP_NAME = "Enclosed Spaces Management System";
 	public static String SPACES_LIST_TITLE = "Classified Enclosed Spaces";
 	public static String ADMIN_PAGE_TITLE = "ESM System Administration";
 	public static String SPACE_AUDIT_CHECKLIST_PAGE_TITLE = "Internal Space Audit: Checklist";
@@ -113,7 +114,7 @@ public final class C {
 			}
 		});
 	}
-	*/
+	 */
 
 	private C() {
 		throw new AssertionError();
