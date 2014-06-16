@@ -3,9 +3,7 @@ package com.rmrdigitalmedia.esm;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
@@ -14,9 +12,9 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 
+@SuppressWarnings("unused")
 public final class C {
 
 	// app setup properties
@@ -100,9 +98,7 @@ public final class C {
 	public static int FATAL = 4;
 
 
-
-
-
+	/*
 	public static void makeHoverButton(final Button b) {
 		// NOT SUPPORTED ON WINDOWS :-(
 		b.addMouseTrackListener(new MouseTrackAdapter() {
@@ -117,13 +113,13 @@ public final class C {
 			}
 		});
 	}
-
-
+	*/
 
 	private C() {
 		throw new AssertionError();
 	}
 
+	// public utility methods
 	public static Image getExtImage(String imgpath) {
 		// test for non-image or system files
 		try {

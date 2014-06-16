@@ -422,7 +422,7 @@ public class SpaceDetailView {
 
 		Label lblSpaceAuditImg = new Label(rowRight2, SWT.NONE);
 		// work out completion status based on id
-		int scs = (sRow.getID()*20);
+		int scs = 20;
 		lblSpaceAuditImg.setImage(C.getImage("/img/Percent_"+ scs +".png"));
 		GridData gd_lblSpaceAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditImg.widthHint = 160;
@@ -481,7 +481,7 @@ public class SpaceDetailView {
 			lblEntryPoint.setText(epRow.getName());
 
 			// work out completion status based on id
-			int epcs = (epRow.getID()*20);
+			int epcs = 40;
 			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
 			lblEntryPointAuditImg.setImage(C.getImage("/img/Percent_"+ epcs +".png"));
 			gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
