@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -27,9 +26,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
@@ -248,6 +247,7 @@ public class EntryAuditChecklistView {
 		gd_lblStatusImg.horizontalIndent = 10;
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
 		lblStatusImg.setImage(C.getImage("/img/Percent_40.png"));
+		lblStatusImg.setText("Calc: "+ AuditController.calculateEntryChecklistCompletion(entryID) + "%");
 
 		//table layout
 		final Group tbl = new Group(comp, SWT.BORDER);
@@ -321,8 +321,6 @@ public class EntryAuditChecklistView {
 			ex.printStackTrace();
 		}
 
-		//System.out.println("DB empty="+empty);
-
 		// start loop through audit checklist questions
 		qNum = 1;
 		Label q1_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -341,7 +339,6 @@ public class EntryAuditChecklistView {
 		q1_col4 = MakeColumn4(tbl,false);
 		if(!empty) { q1_col4.setText( C.notNull(aRow.getQ1Comments()) ); }
 		sep = Separator(tbl, false);
-		q1_radio1.setSelection(false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 2;
 		final Label q2_col1 = MakeColumn1(tbl,"\t> "+qText.elementAt(qNum), !q1_radio2.getSelection());
@@ -611,10 +608,10 @@ public class EntryAuditChecklistView {
 		// end loop
 
 		// Q1 toggle for Q2 row
-		q1_radio1.addSelectionListener(new SelectionAdapter() {
+		q1_radio2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {	
-				toggle(q2_col1,q1_radio1.getSelection()); toggle(q2_col2,q1_radio1.getSelection()); toggle(q2_col3,q1_radio1.getSelection()); toggle(q2_col4,q1_radio1.getSelection()); toggle(q2_sep,q1_radio1.getSelection());					
+				toggle(q2_col1,!q1_radio2.getSelection()); toggle(q2_col2,!q1_radio2.getSelection()); toggle(q2_col3,!q1_radio2.getSelection()); toggle(q2_col4,!q1_radio2.getSelection()); toggle(q2_sep,!q1_radio2.getSelection());					
 				Rectangle r = comp.getParent().getClientArea();
 				((ScrolledComposite) comp.getParent()).setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
 				tbl.layout();			
