@@ -1,13 +1,12 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "ENTRYPOINT_CLASSIFICATION_AUDIT".
  *
@@ -244,15 +243,19 @@ public class EntrypointClassificationAuditTable
 
         private int id ;
         private int entrypointID ;
-        private String q1Value ;
+        private int q1Value ;
+        private boolean q1ValueNull = true ;
         private String q1Comments ;
-        private String q2Value ;
+        private int q2Value ;
+        private boolean q2ValueNull = true ;
         private String q2Comments ;
-        private String q3Value ;
+        private int q3Value ;
+        private boolean q3ValueNull = true ;
         private String q3Comments ;
         private String q4Boolean ;
         private String q4Comments ;
-        private String q5Value ;
+        private int q5Value ;
+        private boolean q5ValueNull = true ;
         private String q5Comments ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
@@ -266,15 +269,19 @@ public class EntrypointClassificationAuditTable
             {
                 this.id =  Str.toInt( data[0] );
                 this.entrypointID =  Str.toInt( data[1] );
-                this.q1Value = data[2];
+                this.q1ValueNull = ( data[2] == null );
+                this.q1Value = q1ValueNull ? 0 : Str.toInt( data[2] );
                 this.q1Comments = data[3];
-                this.q2Value = data[4];
+                this.q2ValueNull = ( data[4] == null );
+                this.q2Value = q2ValueNull ? 0 : Str.toInt( data[4] );
                 this.q2Comments = data[5];
-                this.q3Value = data[6];
+                this.q3ValueNull = ( data[6] == null );
+                this.q3Value = q3ValueNull ? 0 : Str.toInt( data[6] );
                 this.q3Comments = data[7];
                 this.q4Boolean = data[8];
                 this.q4Comments = data[9];
-                this.q5Value = data[10];
+                this.q5ValueNull = ( data[10] == null );
+                this.q5Value = q5ValueNull ? 0 : Str.toInt( data[10] );
                 this.q5Comments = data[11];
                 dataLoadedFromDatabase = true ;
             }
@@ -307,14 +314,42 @@ public class EntrypointClassificationAuditTable
         }
 
 
-        public String getQ1Value()
+        public int getQ1Value()
         {
             return q1Value ;
         }
 
-        public void setQ1Value( String q1Value )
+        public void setQ1Value( int q1Value )
         {
             this.q1Value = q1Value ;
+            q1ValueNull = false ;
+        }
+
+        public void setQ1Value( Integer q1Value )
+        {
+            q1ValueNull = ( q1Value == null );
+            if ( q1ValueNull )
+            {
+                this.q1Value = 0 ;
+            }
+            else
+            {
+                this.q1Value = q1Value.intValue() ;
+            }
+        }
+
+        public boolean isQ1ValueNull()
+        {
+            return q1ValueNull ;
+        }
+
+        public void setQ1ValueNull( boolean q1ValueNull )
+        {
+            this.q1ValueNull = q1ValueNull ;
+            if ( q1ValueNull )
+            {
+                q1Value = 0 ;
+            }
         }
 
 
@@ -329,14 +364,42 @@ public class EntrypointClassificationAuditTable
         }
 
 
-        public String getQ2Value()
+        public int getQ2Value()
         {
             return q2Value ;
         }
 
-        public void setQ2Value( String q2Value )
+        public void setQ2Value( int q2Value )
         {
             this.q2Value = q2Value ;
+            q2ValueNull = false ;
+        }
+
+        public void setQ2Value( Integer q2Value )
+        {
+            q2ValueNull = ( q2Value == null );
+            if ( q2ValueNull )
+            {
+                this.q2Value = 0 ;
+            }
+            else
+            {
+                this.q2Value = q2Value.intValue() ;
+            }
+        }
+
+        public boolean isQ2ValueNull()
+        {
+            return q2ValueNull ;
+        }
+
+        public void setQ2ValueNull( boolean q2ValueNull )
+        {
+            this.q2ValueNull = q2ValueNull ;
+            if ( q2ValueNull )
+            {
+                q2Value = 0 ;
+            }
         }
 
 
@@ -351,14 +414,42 @@ public class EntrypointClassificationAuditTable
         }
 
 
-        public String getQ3Value()
+        public int getQ3Value()
         {
             return q3Value ;
         }
 
-        public void setQ3Value( String q3Value )
+        public void setQ3Value( int q3Value )
         {
             this.q3Value = q3Value ;
+            q3ValueNull = false ;
+        }
+
+        public void setQ3Value( Integer q3Value )
+        {
+            q3ValueNull = ( q3Value == null );
+            if ( q3ValueNull )
+            {
+                this.q3Value = 0 ;
+            }
+            else
+            {
+                this.q3Value = q3Value.intValue() ;
+            }
+        }
+
+        public boolean isQ3ValueNull()
+        {
+            return q3ValueNull ;
+        }
+
+        public void setQ3ValueNull( boolean q3ValueNull )
+        {
+            this.q3ValueNull = q3ValueNull ;
+            if ( q3ValueNull )
+            {
+                q3Value = 0 ;
+            }
         }
 
 
@@ -395,14 +486,42 @@ public class EntrypointClassificationAuditTable
         }
 
 
-        public String getQ5Value()
+        public int getQ5Value()
         {
             return q5Value ;
         }
 
-        public void setQ5Value( String q5Value )
+        public void setQ5Value( int q5Value )
         {
             this.q5Value = q5Value ;
+            q5ValueNull = false ;
+        }
+
+        public void setQ5Value( Integer q5Value )
+        {
+            q5ValueNull = ( q5Value == null );
+            if ( q5ValueNull )
+            {
+                this.q5Value = 0 ;
+            }
+            else
+            {
+                this.q5Value = q5Value.intValue() ;
+            }
+        }
+
+        public boolean isQ5ValueNull()
+        {
+            return q5ValueNull ;
+        }
+
+        public void setQ5ValueNull( boolean q5ValueNull )
+        {
+            this.q5ValueNull = q5ValueNull ;
+            if ( q5ValueNull )
+            {
+                q5Value = 0 ;
+            }
         }
 
 
@@ -429,15 +548,15 @@ public class EntrypointClassificationAuditTable
             Map data = new HashMap();
             data.put( idColumnName , String.valueOf(  this.id ) );
             data.put( entrypointIDColumnName , String.valueOf(  this.entrypointID ) );
-            data.put( q1ValueColumnName , this.q1Value );
+            data.put( q1ValueColumnName , this.q1ValueNull ? null : String.valueOf( this.q1Value ) );
             data.put( q1CommentsColumnName , this.q1Comments );
-            data.put( q2ValueColumnName , this.q2Value );
+            data.put( q2ValueColumnName , this.q2ValueNull ? null : String.valueOf( this.q2Value ) );
             data.put( q2CommentsColumnName , this.q2Comments );
-            data.put( q3ValueColumnName , this.q3Value );
+            data.put( q3ValueColumnName , this.q3ValueNull ? null : String.valueOf( this.q3Value ) );
             data.put( q3CommentsColumnName , this.q3Comments );
             data.put( q4BooleanColumnName , this.q4Boolean );
             data.put( q4CommentsColumnName , this.q4Comments );
-            data.put( q5ValueColumnName , this.q5Value );
+            data.put( q5ValueColumnName , this.q5ValueNull ? null : String.valueOf( this.q5Value ) );
             data.put( q5CommentsColumnName , this.q5Comments );
             return data ;
         }
