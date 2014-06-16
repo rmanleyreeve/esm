@@ -47,7 +47,42 @@ public class SpaceAuditClassificationView {
 	private static int rowHeight = 40;
 	private static int colHeaderH = 40;
 	private static int dimBoxW = 30;
-
+	private static boolean empty;
+	private static boolean show;	
+	// form fields
+	private static Button q1_radio1;
+	private static Button q1_radio2;
+	private static Button q1_radio3;
+	private static Text q1_col5;
+	private static Button q2_radio1;
+	private static Button q2_radio2;
+	private static Button q2_radio3;
+	private static Text q2_col5;
+	private static Button q3_radio1;
+	private static Button q3_radio2;
+	private static Button q3_radio3;
+	private static Text q3_col5;
+	private static Button q4_radio1;
+	private static Button q4_radio2;
+	private static Button q4_radio3;
+	private static Button q4_radio4;
+	private static Button q4_radio5;
+	private static Text q4_col5;
+	private static Button q5_radio1;
+	private static Button q5_radio2;
+	private static Button q5_radio3;
+	private static Text q5_col5;
+	private static Button q6_radio1;
+	private static Button q6_radio2;
+	private static Button q6_radio3;
+	private static Text q6_col5;
+	private static Button q7_radio1;
+	private static Button q7_radio2;
+	private static Text q7_col5;
+	private static Button q8_radio1;
+	private static Button q8_radio2;
+	private static Text q8_col5;
+	
 	private static String df(Timestamp ts) {
 		SimpleDateFormat d = new SimpleDateFormat("dd - MM - yyyy");
 		SimpleDateFormat t = new SimpleDateFormat("kk:mm");
@@ -146,7 +181,6 @@ public class SpaceAuditClassificationView {
 		separator.setLayoutData(gd);		
 		return separator;
 	}
-	
 	
 	public static void buildPage(final Composite parent, final int spaceID) {
 
@@ -261,7 +295,7 @@ public class SpaceAuditClassificationView {
 		} catch (SQLException e1) {
 			LogController.logEvent(SpaceAuditClassificationView.class, C.ERROR, e1);
 		}
-		boolean empty = (aRow==null);
+		empty = (aRow==null);
 		SpaceClassificationQuestionsTable.Row[] qRows = null;
 		Vector<String> qText = new Vector<String>();
 		Vector<String> qHints = new Vector<String>();
@@ -281,20 +315,20 @@ public class SpaceAuditClassificationView {
 		Label q1_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q1_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q1_col3 = makeColumn3(tbl,1, false);
-		final Button q1_radio1 = new Button(q1_col3, SWT.RADIO);
+		q1_radio1 = new Button(q1_col3, SWT.RADIO);
 		q1_radio1.setText("Very difficult");
 		q1_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q1_radio1.setSelection(aRow.getQ1Value()!=null && aRow.getQ1Value().equals("1")); 
-		final Button q1_radio2 = new Button(q1_col3, SWT.RADIO);
+		if(!empty) q1_radio1.setSelection(aRow.getQ1Value()==1); 
+		q1_radio2 = new Button(q1_col3, SWT.RADIO);
 		q1_radio2.setText("Quite difficult");
 		q1_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q1_radio2.setSelection(aRow.getQ1Value()!=null && aRow.getQ1Value().equals("2")); 
-		final Button q1_radio3 = new Button(q1_col3, SWT.RADIO);
+		if(!empty) q1_radio2.setSelection(!aRow.isQ1ValueNull() && aRow.getQ1Value()==2); 
+		q1_radio3 = new Button(q1_col3, SWT.RADIO);
 		q1_radio3.setText("Not difficult");
 		q1_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q1_radio3.setSelection(aRow.getQ1Value()!=null && aRow.getQ1Value().equals("3")); 
+		if(!empty) q1_radio3.setSelection(!aRow.isQ1ValueNull() && aRow.getQ1Value()==3); 
 		Label q1_col4 = makeColumn4(tbl, false);	
-		Text q1_col5 = MakeColumn5(tbl, false);
+		q1_col5 = MakeColumn5(tbl, false);
 		if(!empty) q1_col5.setText( C.notNull(aRow.getQ1Comments()) );
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
@@ -302,25 +336,25 @@ public class SpaceAuditClassificationView {
 		Label q2_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q2_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q2_col3 = makeColumn3(tbl,1, false);
-		final Button q2_radio1 = new Button(q2_col3, SWT.RADIO);
+		q2_radio1 = new Button(q2_col3, SWT.RADIO);
 		q2_radio1.setText("Very difficult");
 		q2_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q2_radio1.setSelection(aRow.getQ2Value()!=null && aRow.getQ2Value().equals("1")); 
-		final Button q2_radio2 = new Button(q2_col3, SWT.RADIO);
+		if(!empty) q2_radio1.setSelection(aRow.getQ2Value()==1); 
+		q2_radio2 = new Button(q2_col3, SWT.RADIO);
 		q2_radio2.setText("Quite difficult");
 		q2_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q2_radio2.setSelection(aRow.getQ2Value()!=null && aRow.getQ2Value().equals("2")); 
-		final Button q2_radio3 = new Button(q2_col3, SWT.RADIO);
+		if(!empty) q2_radio2.setSelection(aRow.getQ2Value()==2); 
+		q2_radio3 = new Button(q2_col3, SWT.RADIO);
 		q2_radio3.setText("Not difficult");
 		q2_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q2_radio3.setSelection(aRow.getQ2Value()!=null && aRow.getQ2Value().equals("3")); 
+		if(!empty) q2_radio3.setSelection(aRow.getQ2Value()==3); 
 		Label q2_col4 = makeColumn4(tbl, false);	
-		Text q2_col5 = MakeColumn5(tbl, false);
+		q2_col5 = MakeColumn5(tbl, false);
 		if(!empty) q2_col5.setText( C.notNull(aRow.getQ2Comments()) );
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 3;		
-		boolean show = false;
+		show = false;
 		try {
 			SpaceChecklistAuditTable.Row r = SpaceChecklistAuditTable.getRow("SPACE_ID", ""+spaceID);
 			show = (r != null && (r.getQ7Boolean()!=null && r.getQ7Boolean().equals("Y")));
@@ -331,20 +365,20 @@ public class SpaceAuditClassificationView {
 		Label q3_col1 = MakeColumn1(tbl,qText.elementAt(qNum), !show);
 		Label q3_col2 = makeColumn2(tbl, qHints.elementAt(qNum), !show);
 		Composite q3_col3 = makeColumn3(tbl,1, !show);
-		final Button q3_radio1 = new Button(q3_col3, SWT.RADIO);
+		q3_radio1 = new Button(q3_col3, SWT.RADIO);
 		q3_radio1.setText("Very difficult");
 		q3_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q3_radio1.setSelection(aRow.getQ3Value()!=null && aRow.getQ3Value().equals("1")); 
-		final Button q3_radio2 = new Button(q3_col3, SWT.RADIO);
+		if(!empty) q3_radio1.setSelection(aRow.getQ3Value()==1); 
+		q3_radio2 = new Button(q3_col3, SWT.RADIO);
 		q3_radio2.setText("Quite difficult");
 		q3_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q3_radio2.setSelection(aRow.getQ3Value()!=null && aRow.getQ2Value().equals("2")); 
-		final Button q3_radio3 = new Button(q3_col3, SWT.RADIO);
+		if(!empty) q3_radio2.setSelection(aRow.getQ2Value()==2); 
+		q3_radio3 = new Button(q3_col3, SWT.RADIO);
 		q3_radio3.setText("Not difficult");
 		q3_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q3_radio3.setSelection(aRow.getQ3Value()!=null && aRow.getQ3Value().equals("3")); 
+		if(!empty) q3_radio3.setSelection(aRow.getQ3Value()==3); 
 		Label q3_col4 = makeColumn4(tbl, !show);	
-		Text q3_col5 = MakeColumn5(tbl, !show);
+		q3_col5 = MakeColumn5(tbl, !show);
 		if(!empty) q3_col5.setText( C.notNull(aRow.getQ3Comments()) );
 		sep = Separator(tbl, !show);
 		//-------------------------------------------------------------------------------------------------------
@@ -352,28 +386,28 @@ public class SpaceAuditClassificationView {
 		Label q4_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q4_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q4_col3 = makeColumn3(tbl,5, false);
-		final Button q4_radio1 = new Button(q4_col3, SWT.RADIO);
+		q4_radio1 = new Button(q4_col3, SWT.RADIO);
 		q4_radio1.setText("1");
 		q4_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q4_radio1.setSelection(aRow.getQ4Value()!=null && aRow.getQ4Value().equals("1")); 
-		final Button q4_radio2 = new Button(q4_col3, SWT.RADIO);
+		if(!empty) q4_radio1.setSelection(aRow.getQ4Value()==1); 
+		q4_radio2 = new Button(q4_col3, SWT.RADIO);
 		q4_radio2.setText("2");
 		q4_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q4_radio2.setSelection(aRow.getQ4Value()!=null && aRow.getQ4Value().equals("2")); 
-		final Button q4_radio3 = new Button(q4_col3, SWT.RADIO);
+		if(!empty) q4_radio2.setSelection(aRow.getQ4Value()==2); 
+		q4_radio3 = new Button(q4_col3, SWT.RADIO);
 		q4_radio3.setText("3");
 		q4_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q4_radio3.setSelection(aRow.getQ4Value()!=null && aRow.getQ4Value().equals("3")); 
-		final Button q4_radio4 = new Button(q4_col3, SWT.RADIO);
+		if(!empty) q4_radio3.setSelection(aRow.getQ4Value()==3); 
+		q4_radio4 = new Button(q4_col3, SWT.RADIO);
 		q4_radio4.setText("4");
 		q4_radio4.setBackground(C.APP_BGCOLOR);
-		if(!empty) q4_radio4.setSelection(aRow.getQ4Value()!=null && aRow.getQ4Value().equals("4")); 
-		final Button q4_radio5 = new Button(q4_col3, SWT.RADIO);
+		if(!empty) q4_radio4.setSelection(aRow.getQ4Value()==4); 
+		q4_radio5 = new Button(q4_col3, SWT.RADIO);
 		q4_radio5.setText("5");
 		q4_radio5.setBackground(C.APP_BGCOLOR);
-		if(!empty) q4_radio5.setSelection(aRow.getQ4Value()!=null && aRow.getQ4Value().equals("5")); 
+		if(!empty) q4_radio5.setSelection(aRow.getQ4Value()==5); 
 		Label q4_col4 = makeColumn4(tbl, false);	
-		Text q4_col5 = MakeColumn5(tbl, false);
+		q4_col5 = MakeColumn5(tbl, false);
 		if(!empty) q4_col5.setText( C.notNull(aRow.getQ4Comments()) );
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
@@ -381,20 +415,20 @@ public class SpaceAuditClassificationView {
 		Label q5_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q5_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q5_col3 = makeColumn3(tbl,1, false);
-		final Button q5_radio1 = new Button(q5_col3, SWT.RADIO);
+		q5_radio1 = new Button(q5_col3, SWT.RADIO);
 		q5_radio1.setText("Very difficult");
 		q5_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q5_radio1.setSelection(aRow.getQ5Value()!=null && aRow.getQ5Value().equals("1")); 
-		final Button q5_radio2 = new Button(q5_col3, SWT.RADIO);
+		if(!empty) q5_radio1.setSelection(aRow.getQ5Value()==1); 
+		q5_radio2 = new Button(q5_col3, SWT.RADIO);
 		q5_radio2.setText("Fairly difficult");
 		q5_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q5_radio2.setSelection(aRow.getQ5Value()!=null && aRow.getQ5Value().equals("2")); 
-		final Button q5_radio3 = new Button(q5_col3, SWT.RADIO);
+		if(!empty) q5_radio2.setSelection(aRow.getQ5Value()==2); 
+		q5_radio3 = new Button(q5_col3, SWT.RADIO);
 		q5_radio3.setText("Not difficult");
 		q5_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q5_radio3.setSelection(aRow.getQ5Value()!=null && aRow.getQ5Value().equals("3")); 
+		if(!empty) q5_radio3.setSelection(aRow.getQ5Value()==3); 
 		Label q5_col4 = makeColumn4(tbl, false);	
-		Text q5_col5 = MakeColumn5(tbl, false);
+		q5_col5 = MakeColumn5(tbl, false);
 		if(!empty) q5_col5.setText( C.notNull(aRow.getQ5Comments()) );
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
@@ -402,20 +436,20 @@ public class SpaceAuditClassificationView {
 		Label q6_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q6_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q6_col3 = makeColumn3(tbl,1, false);
-		final Button q6_radio1 = new Button(q6_col3, SWT.RADIO);
+		q6_radio1 = new Button(q6_col3, SWT.RADIO);
 		q6_radio1.setText("Extreme difficulty");
 		q6_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q6_radio1.setSelection(aRow.getQ6Value()!=null && aRow.getQ6Value().equals("1")); 
-		final Button q6_radio2 = new Button(q6_col3, SWT.RADIO);
+		if(!empty) q6_radio1.setSelection(aRow.getQ6Value()==1); 
+		q6_radio2 = new Button(q6_col3, SWT.RADIO);
 		q6_radio2.setText("Some difficulty");
 		q6_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q6_radio2.setSelection(aRow.getQ6Value()!=null && aRow.getQ6Value().equals("2")); 
-		final Button q6_radio3 = new Button(q6_col3, SWT.RADIO);
+		if(!empty) q6_radio2.setSelection(aRow.getQ6Value()==2); 
+		q6_radio3 = new Button(q6_col3, SWT.RADIO);
 		q6_radio3.setText("No difficulty");
 		q6_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q6_radio3.setSelection(aRow.getQ6Value()!=null && aRow.getQ6Value().equals("3")); 
+		if(!empty) q6_radio3.setSelection(aRow.getQ6Value()==3); 
 		Label q6_col4 = makeColumn4(tbl, false);	
-		Text q6_col5 = MakeColumn5(tbl, false);
+		q6_col5 = MakeColumn5(tbl, false);
 		if(!empty) q6_col5.setText( C.notNull(aRow.getQ6Comments()) );
 		sep = Separator(tbl, false);	
 		//-------------------------------------------------------------------------------------------------------
@@ -423,16 +457,16 @@ public class SpaceAuditClassificationView {
 		Label q7_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q7_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q7_col3 = makeColumn3(tbl,1, false);
-		final Button q7_radio1 = new Button(q7_col3, SWT.RADIO);
+		q7_radio1 = new Button(q7_col3, SWT.RADIO);
 		q7_radio1.setText("Yes");
 		q7_radio1.setBackground(C.APP_BGCOLOR);
 		if(!empty) q7_radio1.setSelection(aRow.getQ7Boolean()!=null && aRow.getQ7Boolean().equals("Y")); 
-		final Button q7_radio2 = new Button(q7_col3, SWT.RADIO);
+		q7_radio2 = new Button(q7_col3, SWT.RADIO);
 		q7_radio2.setText("No");
 		q7_radio2.setBackground(C.APP_BGCOLOR);
 		if(!empty) q7_radio2.setSelection(aRow.getQ7Boolean()!=null && aRow.getQ7Boolean().equals("N")); 
 		Label q7_col4 = makeColumn4(tbl, false);	
-		Text q7_col5 = MakeColumn5(tbl, false);
+		q7_col5 = MakeColumn5(tbl, false);
 		if(!empty) q7_col5.setText( C.notNull(aRow.getQ7Comments()) );
 		sep = Separator(tbl, false);	
 		//-------------------------------------------------------------------------------------------------------
@@ -440,16 +474,16 @@ public class SpaceAuditClassificationView {
 		Label q8_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q8_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q8_col3 = makeColumn3(tbl,1, false);
-		final Button q8_radio1 = new Button(q8_col3, SWT.RADIO);
+		q8_radio1 = new Button(q8_col3, SWT.RADIO);
 		q8_radio1.setText("Yes");
 		q8_radio1.setBackground(C.APP_BGCOLOR);
 		if(!empty) q8_radio1.setSelection(aRow.getQ8Boolean()!=null && aRow.getQ8Boolean().equals("Y")); 
-		final Button q8_radio2 = new Button(q8_col3, SWT.RADIO);
+		q8_radio2 = new Button(q8_col3, SWT.RADIO);
 		q8_radio2.setText("No");
 		q8_radio2.setBackground(C.APP_BGCOLOR);
 		if(!empty) q8_radio2.setSelection(aRow.getQ8Boolean()!=null && aRow.getQ8Boolean().equals("N")); 
 		Label q8_col4 = makeColumn4(tbl, false);	
-		Text q8_col5 = MakeColumn5(tbl, false);
+		q8_col5 = MakeColumn5(tbl, false);
 		if(!empty) q8_col5.setText( C.notNull(aRow.getQ8Comments()) );
 		sep = Separator(tbl, false);	
 		//-------------------------------------------------------------------------------------------------------
@@ -495,6 +529,9 @@ public class SpaceAuditClassificationView {
 		btnB.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				// save to DB
+				saveAudit(spaceID);
+				// next screen			
 				WindowController.showSpaceAuditChecklist(spaceID);
 			}
 		});
@@ -524,6 +561,71 @@ public class SpaceAuditClassificationView {
 
 		// final layout settings	
 		parent.layout();
-
 	}
+	
+	static void saveAudit(int spaceID) {
+		// insert new row if empty
+		if(empty) {
+			try {
+				SpaceClassificationAuditTable.Row r = SpaceClassificationAuditTable.getRow();
+				r.setSpaceID(spaceID);
+				r.insert();
+			} catch (SQLException e1) {
+				LogController.logEvent(SpaceAuditClassificationView.class, C.FATAL, "ERROR INSERT SPACE CLASSIFICATION ROW", e1);
+			}			
+		}
+		SpaceClassificationAuditTable.Row aRow = null;
+		try {
+			aRow = SpaceClassificationAuditTable.getRow("SPACE_ID", ""+spaceID);
+		} catch (Exception ex) {
+			LogController.logEvent(SpaceAuditClassificationView.class, C.FATAL, "ERROR SELECT SPACE CLASSIFICATION ROW", ex);
+		}
+		if(aRow != null) {
+			try {
+				//1
+				if(q1_radio1.getSelection()) { aRow.setQ1Value(1); }
+				else if(q1_radio2.getSelection()) { aRow.setQ1Value(2); }
+				else if(q1_radio3.getSelection()) { aRow.setQ1Value(3); }	
+				else { aRow.setQ1Value(0); }
+				//2
+				if(q2_radio1.getSelection()) { aRow.setQ2Value(1); }
+				else if(q2_radio2.getSelection()) { aRow.setQ2Value(2); }
+				else if(q2_radio3.getSelection()) { aRow.setQ2Value(3); }	
+				else { aRow.setQ2Value(0); }
+				//3
+				if(show && q3_radio1.getSelection()) { aRow.setQ3Value(1); }
+				else if(show && q3_radio2.getSelection()) { aRow.setQ3Value(2); }
+				else if(show && q3_radio3.getSelection()) { aRow.setQ3Value(3); }	
+				else { aRow.setQ3Value(0); }
+				//4
+				if(q4_radio1.getSelection()) { aRow.setQ4Value(1); }
+				else if(q4_radio2.getSelection()) { aRow.setQ4Value(2); }
+				else if(q4_radio3.getSelection()) { aRow.setQ4Value(3); }	
+				else if(q4_radio4.getSelection()) { aRow.setQ4Value(4); }	
+				else if(q4_radio5.getSelection()) { aRow.setQ4Value(5); }	
+				else { aRow.setQ4Value(0); }
+				//5
+				if(q5_radio1.getSelection()) { aRow.setQ5Value(1); }
+				else if(q5_radio2.getSelection()) { aRow.setQ5Value(2); }
+				else if(q5_radio3.getSelection()) { aRow.setQ5Value(3); }	
+				else { aRow.setQ5Value(0); }
+				//6
+				if(q6_radio1.getSelection()) { aRow.setQ6Value(1); }
+				else if(q6_radio2.getSelection()) { aRow.setQ6Value(2); }
+				else if(q6_radio3.getSelection()) { aRow.setQ6Value(3); }	
+				else { aRow.setQ6Value(0); }
+				//7
+				aRow.setQ7Boolean( C.getRB(q7_radio1,q7_radio2) );
+				//8
+				aRow.setQ8Boolean( C.getRB(q8_radio1,q8_radio2) );
+				// commit the transaction
+				aRow.update();
+			} catch (SQLException e) {
+				LogController.logEvent(SpaceAuditClassificationView.class, C.FATAL, "ERROR UPDATE SPACE CLASSIFICATION", e);
+			}
+		}
+		
+	}
+
+	
 }

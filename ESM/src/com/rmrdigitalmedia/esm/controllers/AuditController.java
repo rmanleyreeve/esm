@@ -26,7 +26,7 @@ public class AuditController {
 			LogController.logEvent(AuditController.class, C.FATAL, ex);		}
 		if(row != null) {
 			score += ( C.notNullOrEmpty(row.getQ1DimsH()) && C.notNullOrEmpty(row.getQ1DimsL()) && C.notNullOrEmpty(row.getQ1DimsW()) ) ? 1:0;
-			score += (row.getQ2Boolean().equals("Y") && C.notNullOrEmpty(row.getQ2Desc())) ? 1:0;
+			score += (isY(row.getQ2Boolean()) && C.notNullOrEmpty(row.getQ2Desc())) ? 1:0;
 			score += (row.getQ3Boolean()!=null) ? 1:0;
 			score += isN(row.getQ4Boolean()) || ( isY(row.getQ4Boolean()) && C.notNullOrEmpty(row.getQ4DimsH()) && C.notNullOrEmpty(row.getQ4DimsW()) )  ? 1:0;
 			score += (row.getQ5Boolean()!=null) ? 1:0;
