@@ -17,15 +17,13 @@ public class AuditController {
 
 	public static int calculateSpaceChecklistCompletion(int spaceID) {
 		int percent = 0;
-		int max;
+		int max = 0;
 		int score = 0;
 		SpaceChecklistAuditTable.Row row = null;
 		try {
 			row = SpaceChecklistAuditTable.getRow("SPACE_ID", ""+spaceID);
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
-			//ex.printStackTrace();
-		}
+			LogController.logEvent(AuditController.class, C.FATAL, ex);		}
 		if(row != null) {
 			score += ( C.notNullOrEmpty(row.getQ1DimsH()) && C.notNullOrEmpty(row.getQ1DimsL()) && C.notNullOrEmpty(row.getQ1DimsW()) ) ? 1:0;
 			score += (row.getQ2Boolean().equals("Y") && C.notNullOrEmpty(row.getQ2Desc())) ? 1:0;
@@ -45,11 +43,17 @@ public class AuditController {
 			score += (row.getQ16Boolean()!=null) ? 1:0;
 			score += (row.getQ17Boolean()!=null) ? 1:0;
 			max = 17;
-			if (isN(row.getQ7Boolean())) {
+			if (row.getQ7Boolean()!=null && isN(row.getQ7Boolean())) {
 				max = 14;
 			}
-			percent = Math.round((score / max) * 100);
+			percent = Math.round( ( (float)score/max ) * 100 );
 		}
+		
+		System.out.println(score);
+		System.out.println(max);
+		System.out.println( (float)score / max);		
+		System.out.println(percent);
+		
 		return percent;		
 	}
 

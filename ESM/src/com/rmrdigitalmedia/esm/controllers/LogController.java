@@ -61,6 +61,9 @@ public class LogController {
 			String msg = "\n["+t+"]\t" + e + "\t" + classname + "\t" + ex.getMessage()+"\n";
 			try {
 				write(msg);
+				if(severity>2) {
+					ex.printStackTrace();
+				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -77,6 +80,9 @@ public class LogController {
 			String msg = "\n["+t+"]\t" + e + "\t" + classname + "\t" + _msg + "\t" + ex.getMessage()+"\n";
 			try {
 				write(msg);
+				if(severity>2) {
+					ex.printStackTrace();
+				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
