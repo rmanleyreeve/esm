@@ -4,7 +4,6 @@ import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
@@ -40,9 +39,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
@@ -392,7 +391,7 @@ public class SpaceDetailView {
 
 		Label lblCompletionImg = new Label(rowRight1, SWT.NONE);
 		// work out completion status based on id
-		int cs = (sRow.getID()*20);
+		int cs = 0;
 		lblCompletionImg.setImage(C.getImage("/img/Percent_"+ cs +".png"));
 		lblCompletionImg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		lblCompletionImg.setBackground(C.APP_BGCOLOR);		
@@ -422,7 +421,7 @@ public class SpaceDetailView {
 
 		Label lblSpaceAuditImg = new Label(rowRight2, SWT.NONE);
 		// work out completion status based on id
-		int scs = 20;
+		int scs = AuditController.calculateSpaceChecklistCompletion(spaceID);
 		lblSpaceAuditImg.setImage(C.getImage("/img/Percent_"+ scs +".png"));
 		GridData gd_lblSpaceAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditImg.widthHint = 160;
@@ -481,7 +480,7 @@ public class SpaceDetailView {
 			lblEntryPoint.setText(epRow.getName());
 
 			// work out completion status based on id
-			int epcs = 40;
+			int epcs = AuditController.calculateEntryChecklistCompletion(epRow.getID());;
 			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
 			lblEntryPointAuditImg.setImage(C.getImage("/img/Percent_"+ epcs +".png"));
 			gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);

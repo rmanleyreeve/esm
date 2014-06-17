@@ -88,7 +88,8 @@ public class SpacesListView {
 				int spaceID = sRow.getID();
 
 				// calculate completion status
-				imagesCS.put(spaceID, "/img/Percent_"+ (spaceID*20) +".png");
+				int cs = 0;
+				imagesCS.put(spaceID, "/img/Percent_"+ cs +".png");
 
 				// calculate internal classification status
 				imagesIC.put(spaceID, "/img/red.png");

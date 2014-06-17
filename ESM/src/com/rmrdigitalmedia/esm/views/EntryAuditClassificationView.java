@@ -23,15 +23,18 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EntrypointClassificationAuditTable;
 import com.rmrdigitalmedia.esm.models.EntrypointClassificationQuestionsTable;
+import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpaceClassificationAuditTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 
@@ -165,8 +168,8 @@ public class EntryAuditClassificationView {
 		separator.setLayoutData(gd);		
 		return separator;
 	}
-	
-	
+
+
 	public static void buildPage(final Composite parent, final int entryID) {
 
 		for (Control c:parent.getChildren()) {
@@ -212,7 +215,9 @@ public class EntryAuditClassificationView {
 		GridData gd_lblStatusImg = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_lblStatusImg.horizontalIndent = 10;
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
-		lblStatusImg.setImage(C.getImage("/img/Percent_20.png"));
+		// progress image
+		int progress = AuditController.calculateEntryClassificationCompletion(entryID);
+		lblStatusImg.setImage(C.getImage("/img/Percent_"+progress+".png"));
 
 		//table layout
 		final Group tbl = new Group(comp, SWT.BORDER);
@@ -225,7 +230,7 @@ public class EntryAuditClassificationView {
 		gl_tbl.horizontalSpacing = 1;
 		tbl.setLayout(gl_tbl);
 		tbl.setBackground(C.APP_BGCOLOR);
-		
+
 		// column headers
 		CLabel lblChecklist = new CLabel(tbl, SWT.NONE);
 		GridData gd_lblChecklist = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
@@ -272,7 +277,7 @@ public class EntryAuditClassificationView {
 		lblComments.setFont(C.FONT_12B);
 		sep = new Label(tbl, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.CENTER);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 5, 1));				
-		
+
 		// get from DB
 		EntrypointClassificationAuditTable.Row aRow = null;
 		try {
@@ -294,7 +299,7 @@ public class EntryAuditClassificationView {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		
+
 		// start loop through audit classification questions
 		qNum = 1;
 		Label q1_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -313,6 +318,8 @@ public class EntryAuditClassificationView {
 		q1_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q1_radio3.setSelection(aRow.getQ1Value()==3); 
 		Label q1_col4 = makeColumn4(tbl, false);	
+		if(q1_radio2.getSelection()) { q1_col4.setImage(C.getImage("/img/amber.png")); }
+		if(q1_radio3.getSelection()) { q1_col4.setImage(C.getImage("/img/green.png")); }
 		q1_col5 = MakeColumn5(tbl, false);
 		if(!empty) q1_col5.setText( C.notNull(aRow.getQ1Comments()) );
 		sep = Separator(tbl, false);
@@ -334,6 +341,8 @@ public class EntryAuditClassificationView {
 		q2_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q2_radio3.setSelection(aRow.getQ2Value()==3); 
 		Label q2_col4 = makeColumn4(tbl, false);	
+		if(q2_radio2.getSelection()) { q2_col4.setImage(C.getImage("/img/amber.png")); }
+		if(q2_radio3.getSelection()) { q2_col4.setImage(C.getImage("/img/green.png")); }
 		q2_col5 = MakeColumn5(tbl, false);
 		if(!empty) q2_col5.setText( C.notNull(aRow.getQ2Comments()) );
 		sep = Separator(tbl, false);
@@ -355,6 +364,8 @@ public class EntryAuditClassificationView {
 		q3_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q3_radio3.setSelection(aRow.getQ3Value()==3); 
 		Label q3_col4 = makeColumn4(tbl, false);	
+		if(q3_radio2.getSelection()) { q3_col4.setImage(C.getImage("/img/amber.png")); }
+		if(q3_radio3.getSelection()) { q3_col4.setImage(C.getImage("/img/green.png")); }
 		q3_col5 = MakeColumn5(tbl, false);
 		if(!empty) q3_col5.setText( C.notNull(aRow.getQ3Comments()) );
 		sep = Separator(tbl, false);
@@ -372,6 +383,7 @@ public class EntryAuditClassificationView {
 		q4_radio2.setBackground(C.APP_BGCOLOR);
 		if(!empty) q4_radio2.setSelection(aRow.getQ4Boolean()!=null && aRow.getQ4Boolean().equals("N")); 
 		Label q4_col4 = makeColumn4(tbl, false);	
+		if(q4_radio2.getSelection()) { q4_col4.setImage(C.getImage("/img/green.png")); }
 		q4_col5 = MakeColumn5(tbl, false);
 		if(!empty) q4_col5.setText( C.notNull(aRow.getQ4Comments()) );
 		sep = Separator(tbl, false);	
@@ -393,10 +405,12 @@ public class EntryAuditClassificationView {
 		q5_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q5_radio3.setSelection(aRow.getQ5Value()==3); 
 		Label q5_col4 = makeColumn4(tbl, false);	
+		if(q5_radio2.getSelection()) { q5_col4.setImage(C.getImage("/img/amber.png")); }
+		if(q5_radio3.getSelection()) { q5_col4.setImage(C.getImage("/img/green.png")); }
 		q5_col5 = MakeColumn5(tbl, false);
 		if(!empty) q5_col5.setText( C.notNull(aRow.getQ5Comments()) );
 		sep = Separator(tbl, false);
-				
+
 		// footer row
 		Group footerRow = new Group(comp, SWT.NONE);
 		footerRow.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, false));
@@ -445,11 +459,26 @@ public class EntryAuditClassificationView {
 				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
 			}
 		});
+		for (Listener l:WindowController.btnBackToSpaceDetails.getListeners(SWT.Selection)) {
+			WindowController.btnBackToSpaceDetails.removeListener(SWT.Selection, l);
+		}
+		// set back button
+		WindowController.btnBackToSpaceDetails.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {	
+				saveAudit(entryID);
+				int spaceID = WindowController.currentSpaceId;
+				try {
+					spaceID = EntrypointsTable.getRow(entryID).getSpaceID();
+				} catch (SQLException e) {}
+				WindowController.showSpaceDetail(spaceID);
+			}
+		});
 
 		// final layout settings	
 		parent.layout();
 	}
-	
+
 	static void saveAudit(int entryID) {
 		// insert new row if empty
 		if(empty) {
@@ -498,6 +527,6 @@ public class EntryAuditClassificationView {
 			}
 		}
 	}
-	
-	
+
+
 }

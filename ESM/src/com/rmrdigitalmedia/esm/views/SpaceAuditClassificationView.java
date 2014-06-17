@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -14,6 +13,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -24,12 +24,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
@@ -226,8 +227,9 @@ public class SpaceAuditClassificationView {
 		Label lblStatusImg = new Label(headerRow,SWT.NONE);
 		GridData gd_lblStatusImg = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_lblStatusImg.horizontalIndent = 10;
-		lblStatusImg.setLayoutData(gd_lblStatusImg);
-		lblStatusImg.setImage(C.getImage("/img/Percent_20.png"));
+		// progress image 
+		int progress = AuditController.calculateSpaceClassificationCompletion(spaceID);
+		lblStatusImg.setImage(C.getImage("/img/Percent_"+progress+".png"));
 
 		//table layout
 		final Group tbl = new Group(comp, SWT.BORDER);
@@ -327,7 +329,9 @@ public class SpaceAuditClassificationView {
 		q1_radio3.setText("Not difficult");
 		q1_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q1_radio3.setSelection(!aRow.isQ1ValueNull() && aRow.getQ1Value()==3); 
-		Label q1_col4 = makeColumn4(tbl, false);	
+		Label q1_col4 = makeColumn4(tbl, false);
+		if(q1_radio2.getSelection()) { q1_col4.setImage(C.getImage("/img/amber.png")); }
+		if(q1_radio3.getSelection()) { q1_col4.setImage(C.getImage("/img/green.png")); }
 		q1_col5 = MakeColumn5(tbl, false);
 		if(!empty) q1_col5.setText( C.notNull(aRow.getQ1Comments()) );
 		sep = Separator(tbl, false);
@@ -349,6 +353,8 @@ public class SpaceAuditClassificationView {
 		q2_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q2_radio3.setSelection(aRow.getQ2Value()==3); 
 		Label q2_col4 = makeColumn4(tbl, false);	
+		if(q2_radio2.getSelection()) { q2_col4.setImage(C.getImage("/img/amber.png")); }
+		if(q2_radio3.getSelection()) { q2_col4.setImage(C.getImage("/img/green.png")); }
 		q2_col5 = MakeColumn5(tbl, false);
 		if(!empty) q2_col5.setText( C.notNull(aRow.getQ2Comments()) );
 		sep = Separator(tbl, false);
@@ -378,6 +384,8 @@ public class SpaceAuditClassificationView {
 		q3_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q3_radio3.setSelection(aRow.getQ3Value()==3); 
 		Label q3_col4 = makeColumn4(tbl, !show);	
+		if(q3_radio2.getSelection()) { q3_col4.setImage(C.getImage("/img/amber.png")); }
+		if(q3_radio3.getSelection()) { q3_col4.setImage(C.getImage("/img/green.png")); }
 		q3_col5 = MakeColumn5(tbl, !show);
 		if(!empty) q3_col5.setText( C.notNull(aRow.getQ3Comments()) );
 		sep = Separator(tbl, !show);
@@ -428,6 +436,8 @@ public class SpaceAuditClassificationView {
 		q5_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q5_radio3.setSelection(aRow.getQ5Value()==3); 
 		Label q5_col4 = makeColumn4(tbl, false);	
+		if(q5_radio2.getSelection()) { q5_col4.setImage(C.getImage("/img/amber.png")); }
+		if(q5_radio3.getSelection()) { q5_col4.setImage(C.getImage("/img/green.png")); }
 		q5_col5 = MakeColumn5(tbl, false);
 		if(!empty) q5_col5.setText( C.notNull(aRow.getQ5Comments()) );
 		sep = Separator(tbl, false);
@@ -449,6 +459,8 @@ public class SpaceAuditClassificationView {
 		q6_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q6_radio3.setSelection(aRow.getQ6Value()==3); 
 		Label q6_col4 = makeColumn4(tbl, false);	
+		if(q6_radio2.getSelection()) { q6_col4.setImage(C.getImage("/img/amber.png")); }
+		if(q6_radio3.getSelection()) { q6_col4.setImage(C.getImage("/img/green.png")); }
 		q6_col5 = MakeColumn5(tbl, false);
 		if(!empty) q6_col5.setText( C.notNull(aRow.getQ6Comments()) );
 		sep = Separator(tbl, false);	
@@ -466,6 +478,7 @@ public class SpaceAuditClassificationView {
 		q7_radio2.setBackground(C.APP_BGCOLOR);
 		if(!empty) q7_radio2.setSelection(aRow.getQ7Boolean()!=null && aRow.getQ7Boolean().equals("N")); 
 		Label q7_col4 = makeColumn4(tbl, false);	
+		if(q7_radio2.getSelection()) { q7_col4.setImage(C.getImage("/img/green.png")); }
 		q7_col5 = MakeColumn5(tbl, false);
 		if(!empty) q7_col5.setText( C.notNull(aRow.getQ7Comments()) );
 		sep = Separator(tbl, false);	
@@ -483,6 +496,7 @@ public class SpaceAuditClassificationView {
 		q8_radio2.setBackground(C.APP_BGCOLOR);
 		if(!empty) q8_radio2.setSelection(aRow.getQ8Boolean()!=null && aRow.getQ8Boolean().equals("N")); 
 		Label q8_col4 = makeColumn4(tbl, false);	
+		if(q8_radio2.getSelection()) { q8_col4.setImage(C.getImage("/img/green.png")); }
 		q8_col5 = MakeColumn5(tbl, false);
 		if(!empty) q8_col5.setText( C.notNull(aRow.getQ8Comments()) );
 		sep = Separator(tbl, false);	
@@ -556,6 +570,17 @@ public class SpaceAuditClassificationView {
 			public void controlResized(ControlEvent e) {
 				Rectangle r = scrollPanel.getClientArea();
 				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
+			}
+		});
+		// set back button
+		for (Listener l:WindowController.btnBackToSpaceDetails.getListeners(SWT.Selection)) {
+			WindowController.btnBackToSpaceDetails.removeListener(SWT.Selection, l);
+		}
+		WindowController.btnBackToSpaceDetails.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {	
+				saveAudit(spaceID);
+				WindowController.showSpaceDetail(spaceID);
 			}
 		});
 

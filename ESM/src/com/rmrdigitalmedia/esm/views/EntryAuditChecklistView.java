@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -33,6 +34,7 @@ import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
 import com.rmrdigitalmedia.esm.models.EntrypointChecklistQuestionsTable;
+import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 
 @SuppressWarnings("unused")
@@ -246,8 +248,10 @@ public class EntryAuditChecklistView {
 		GridData gd_lblStatusImg = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_lblStatusImg.horizontalIndent = 10;
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
-		lblStatusImg.setImage(C.getImage("/img/Percent_40.png"));
-		lblStatusImg.setText("Calc: "+ AuditController.calculateEntryChecklistCompletion(entryID) + "%");
+		// progress image
+		int progress = AuditController.calculateEntryChecklistCompletion(entryID);
+		lblStatusImg.setImage(C.getImage("/img/Percent_"+progress+".png"));
+		//lblStatusImg.setText("Calc: "+ progress + "%");
 
 		//table layout
 		final Group tbl = new Group(comp, SWT.BORDER);
@@ -677,6 +681,21 @@ public class EntryAuditChecklistView {
 			public void controlResized(ControlEvent e) {
 				Rectangle r = scrollPanel.getClientArea();
 				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
+			}
+		});
+		// set back button
+		for (Listener l:WindowController.btnBackToSpaceDetails.getListeners(SWT.Selection)) {
+			WindowController.btnBackToSpaceDetails.removeListener(SWT.Selection, l);
+		}
+		WindowController.btnBackToSpaceDetails.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {	
+				saveAudit(entryID);
+				int spaceID = WindowController.currentSpaceId;
+				try {
+					spaceID = EntrypointsTable.getRow(entryID).getSpaceID();
+				} catch (SQLException e) {}
+				WindowController.showSpaceDetail(spaceID);
 			}
 		});
 
