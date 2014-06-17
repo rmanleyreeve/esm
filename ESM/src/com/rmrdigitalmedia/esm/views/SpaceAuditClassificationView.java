@@ -646,7 +646,7 @@ public class SpaceAuditClassificationView {
 				// commit the transaction
 				aRow.update();
 			} catch (SQLException e) {
-				LogController.logEvent(SpaceAuditClassificationView.class, C.FATAL, "ERROR UPDATE SPACE CLASSIFICATION", e);
+				LogController.logEvent(SpaceAuditClassificationView.class, C.FATAL, "ERROR UPDATE SPACE CLASSIFICATION ROW", e);
 			}
 		}
 		

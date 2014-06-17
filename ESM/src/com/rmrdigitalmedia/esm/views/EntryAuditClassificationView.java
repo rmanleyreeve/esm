@@ -523,7 +523,7 @@ public class EntryAuditClassificationView {
 				// commit the transaction
 				aRow.update();
 			} catch (SQLException e) {
-				LogController.logEvent(EntryAuditClassificationView.class, C.FATAL, "ERROR UPDATE SPACE CLASSIFICATION", e);
+				LogController.logEvent(EntryAuditClassificationView.class, C.FATAL, "ERROR UPDATE SPACE CLASSIFICATION ROW", e);
 			}
 		}
 	}

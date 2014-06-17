@@ -1041,7 +1041,7 @@ public class SpaceAuditChecklistView {
 				// commit the transaction
 				aRow.update();
 			} catch (SQLException e) {
-				LogController.logEvent(SpaceAuditChecklistView.class, C.FATAL, "ERROR UPDATE SPACE CHECKLIST", e);
+				LogController.logEvent(SpaceAuditChecklistView.class, C.FATAL, "ERROR UPDATE SPACE CHECKLIST ROW", e);
 			}
 		}
 	}
