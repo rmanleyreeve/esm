@@ -30,7 +30,7 @@ import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.forms.DeleteSpaceDialog;
-import com.rmrdigitalmedia.esm.forms.NewSpaceForm;
+import com.rmrdigitalmedia.esm.forms.AddSpaceForm;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
@@ -223,8 +223,8 @@ public class WindowController {
 		btnAddSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				NewSpaceForm nsf = new NewSpaceForm(user.getID());					
-				if(nsf.complete()) {
+				AddSpaceForm asf = new AddSpaceForm(user.getID());					
+				if(asf.complete()) {
 					LogController.log("New Space & Entry Point saved in database");
 					showSpacesList();					
 				}

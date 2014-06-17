@@ -49,9 +49,9 @@ import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.DeleteSpaceCommentDialog;
 import com.rmrdigitalmedia.esm.forms.EditSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceForm;
-import com.rmrdigitalmedia.esm.forms.NewEntryForm;
-import com.rmrdigitalmedia.esm.forms.NewSpaceCommentForm;
-import com.rmrdigitalmedia.esm.forms.NewSpacePhotoForm;
+import com.rmrdigitalmedia.esm.forms.AddEntrypointForm;
+import com.rmrdigitalmedia.esm.forms.AddSpaceCommentForm;
+import com.rmrdigitalmedia.esm.forms.AddSpacePhotoForm;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
@@ -209,8 +209,8 @@ public class SpaceDetailView {
 		btnAddComment.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				NewSpaceCommentForm nscf = new NewSpaceCommentForm(spaceID, user.getID());					
-				if(nscf.complete()) {
+				AddSpaceCommentForm ascf = new AddSpaceCommentForm(spaceID, user.getID());					
+				if(ascf.complete()) {
 					LogController.log("New Space Comment saved in database");
 					WindowController.showSpaceDetail(spaceID);					
 				}
@@ -528,8 +528,8 @@ public class SpaceDetailView {
 		btnAddEntry.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				NewEntryForm nef = new NewEntryForm(spaceID, user.getID());					
-				if(nef.complete()) {
+				AddEntrypointForm aef = new AddEntrypointForm(spaceID, user.getID());					
+				if(aef.complete()) {
 					LogController.log("New Entry Point saved in database");
 					WindowController.showSpaceDetail(spaceID);					
 				}
@@ -572,8 +572,8 @@ public class SpaceDetailView {
 		btnAddPhoto.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				NewSpacePhotoForm nspf = new NewSpacePhotoForm(spaceID, user.getID());					
-				if(nspf.complete()) {
+				AddSpacePhotoForm aspf = new AddSpacePhotoForm(spaceID, user.getID());					
+				if(aspf.complete()) {
 					LogController.log("New Space Photo & Comment saved in database");
 					WindowController.showSpaceDetail(spaceID);					
 				}

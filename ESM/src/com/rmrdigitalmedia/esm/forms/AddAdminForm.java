@@ -25,31 +25,32 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
-public class NewUserForm {
+public class AddAdminForm {
 
 	Shell myshell;
 	boolean formOK = false;
 	Text username,password,forename,surname,rank,jobtitle,workid;
-	int accesslevel,month;
-	Combo dd,mm,yyyy,accessLevels;
-	Label sep;	
+	int month, accesslevel = 9;
+	Combo dd,mm,yyyy;
 	// form layout  guides
 	int headerH = 40;
+	Label sep;
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			NewUserForm nuf = new NewUserForm();
-			nuf.complete();
+			AddAdminForm naf = new AddAdminForm();
+			naf.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public NewUserForm() {
+	public AddAdminForm() {
 		LogController.log("Running class " + this.getClass().getName());
 	}
 
@@ -59,8 +60,8 @@ public class NewUserForm {
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.myshell = shell;
 		shell.setSize(340, 420);
-		shell.setText("ESM Setup");
 		shell.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
+		shell.setText("ESM Setup");
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 
 		Composite container = new Composite(shell,SWT.NONE);
@@ -79,7 +80,7 @@ public class NewUserForm {
 		header.setLayoutData(fd_header);
 
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(C.getImage("/img/users.png"));
+		lblImg.setImage(C.getImage("/img/user.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
@@ -93,7 +94,7 @@ public class NewUserForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("CREATE PROGRAM USER");
+		lblTitle.setText("CREATE ADMINISTRATOR");
 
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -122,7 +123,8 @@ public class NewUserForm {
 		GridData gd_username = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_username.widthHint = 100;
 		username.setLayoutData(gd_username);
-		username.setFocus();
+		username.setText("admin");
+		//username.setFocus();
 
 		Label lblPassword = new Label(form, SWT.NONE);
 		lblPassword.setBackground(C.APP_BGCOLOR);
@@ -132,6 +134,7 @@ public class NewUserForm {
 		gd_password.widthHint = 100;
 		password.setLayoutData(gd_password);
 		password.setEchoChar('*');
+		password.setFocus();
 
 		Label lblForename = new Label(form, SWT.NONE);
 		lblForename.setBackground(C.APP_BGCOLOR);
@@ -198,28 +201,13 @@ public class NewUserForm {
 		}
 		yyyy.select(0);
 
-
-		Label lblAccess = new Label(form, SWT.NONE);
-		lblAccess.setBackground(C.APP_BGCOLOR);
-		lblAccess.setText("Access Level:");	
-		accessLevels = new Combo(form, SWT.DROP_DOWN);
-		String[] levels = {"Disabled","Moderated User","Approved User","User with Sign-Off"};
-		for (int i=0;i<levels.length;i++) {
-			accessLevels.add(levels[i]);
-			accessLevels.setData(levels[i],i);
-		}
-		accessLevels.select(1);
-		GridData gd_access = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
-		gd_access.widthHint = 160;
-		accessLevels.setLayoutData(gd_access);
-
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1));		
 
 		//==================================================================		
 
-		Button ok = new Button (form, SWT.PUSH);
-		ok.setToolTipText("Click to save these details");
+		Button ok = new Button (form, SWT.NONE);
+		ok.setToolTipText("Click to save details");
 		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
@@ -227,8 +215,7 @@ public class NewUserForm {
 			public void widgetSelected (SelectionEvent e) {
 				Text[] fields = {username,password,forename,surname,rank,jobtitle,workid}; Validation.validateFields(fields);
 				Combo[] dates = {dd,mm,yyyy}; Validation.validateDates(dates);			
-				accesslevel = (Integer)accessLevels.getData(accessLevels.getText());
-				month = (Integer)mm.getData(mm.getText());
+				month = (Integer)mm.getData(mm.getText());				
 				if( Validation.validateFields(fields) && Validation.validateDates(dates) ) {
 					try {
 						EsmUsersTable.Row row = EsmUsersTable.getRow();
@@ -240,22 +227,23 @@ public class NewUserForm {
 						row.setJobTitle(jobtitle.getText());
 						row.setWorkIdentifier(workid.getText());
 						row.setAccessLevel(accesslevel);
-						row.setDob(yyyy.getText() + "-" + mm.getText() + "-" + dd.getText());
+						row.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());
 						row.setCreatedDate(new Timestamp(new Date().getTime()));
 						row.setUpdateDate(new Timestamp(new Date().getTime()));
 						row.setDeleted("FALSE");
 						row.insert();
 						formOK = true;
-						LogController.log("User added to database.");
+						LogController.log("Admin User added to database");
+						EsmApplication.appData.setField("ADMIN",username.getText());
 					} catch (Exception e1) {
-						LogController.logEvent(this, C.ERROR, e1);
+						LogController.logEvent(this, C.WARNING, e1);
 					}					
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {}
 					shell.close ();
 				} else {
-					Validation.validateError(myshell);
+					Validation.validateError(myshell);;
 				}
 			}
 		});	

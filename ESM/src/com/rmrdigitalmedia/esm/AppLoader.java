@@ -21,9 +21,9 @@ import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.forms.NewAdminForm;
-import com.rmrdigitalmedia.esm.forms.NewLicenseDialog;
-import com.rmrdigitalmedia.esm.forms.NewVesselForm;
+import com.rmrdigitalmedia.esm.forms.AddAdminForm;
+import com.rmrdigitalmedia.esm.forms.LicenseDialog;
+import com.rmrdigitalmedia.esm.forms.AddVesselForm;
 
 @SuppressWarnings("unused")
 public class AppLoader {
@@ -144,7 +144,7 @@ public class AppLoader {
 				if(!DatabaseController.checkLicenseKey()) {
 					//open license key dialog
 					EsmApplication.alert(myshell,"License key not found!");
-					NewLicenseDialog nld = new NewLicenseDialog();
+					LicenseDialog nld = new LicenseDialog();
 					if (nld.complete()) {
 						LogController.log("License saved in database");
 					} else {				
@@ -160,7 +160,7 @@ public class AppLoader {
 				if(!DatabaseController.checkAdmin()) {
 					//open admin user dialog
 					EsmApplication.alert(myshell,"System Administrator not found!");
-					NewAdminForm naf = new NewAdminForm();					
+					AddAdminForm naf = new AddAdminForm();					
 					if(naf.complete()) {
 						LogController.log("System Administrator saved in database");
 					} else {
@@ -176,7 +176,7 @@ public class AppLoader {
 				if(!DatabaseController.checkVessel()) {
 					//open admin user dialog
 					EsmApplication.alert(myshell,"Vessel info not found!");
-					NewVesselForm nvf = new NewVesselForm();					
+					AddVesselForm nvf = new AddVesselForm();					
 					if(nvf.complete()) {
 						LogController.log("Vessel saved in database");
 					} else {
