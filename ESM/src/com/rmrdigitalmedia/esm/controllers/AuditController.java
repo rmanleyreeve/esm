@@ -3,7 +3,9 @@ package com.rmrdigitalmedia.esm.controllers;
 import java.sql.SQLException;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
+import com.rmrdigitalmedia.esm.models.EntrypointClassificationAuditTable;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistAuditTable;
+import com.rmrdigitalmedia.esm.models.SpaceClassificationAuditTable;
 
 public class AuditController {
 
@@ -16,7 +18,8 @@ public class AuditController {
 	}
 
 	public static int calculateSpaceChecklistCompletion(int spaceID) {
-		int percent = 0;
+		double percent = 0;
+		int progress = 0;
 		int max = 0;
 		int score = 0;
 		SpaceChecklistAuditTable.Row row = null;
@@ -48,13 +51,18 @@ public class AuditController {
 				max = 14;
 			}
 			percent = Math.round( ( (float)score/max ) * 100 );
+			progress = (int) Math.floor(percent/10 ) * 10;
+			
 		}
-		System.out.println("Space checklist: " + score + "/" + max + "=" + (float)score / max + "->" + percent + "%");		
-		return percent;		
+		System.out.println("Space "+spaceID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );		
+		return progress;		
 	}
+	
+	
 
 	public static int calculateEntryChecklistCompletion(int entryID) {
-		int percent = 0;
+		double percent = 0;
+		int progress = 0;
 		int max = 0;
 		int score = 0;
 		EntrypointChecklistAuditTable.Row row = null;
@@ -88,11 +96,66 @@ public class AuditController {
 				max--;max--;
 			}
 			percent = Math.round( ( (float)score/max ) * 100 );
+			progress = (int) Math.floor(percent/10 ) * 10;
 		}
-		System.out.println("Entry checklist: " + score + "/" + max + "=" + (float)score / max + "->" + percent + "%");		
-		return percent;		
+		System.out.println("Entry "+entryID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress);		
+		return progress;		
 	}
 
+	public static int calculateSpaceClassificationCompletion(int spaceID) {
+		double percent = 0;
+		int progress = 0;
+		int max = 0;
+		int score = 0;
+		SpaceClassificationAuditTable.Row row = null;
+		try {
+			row = SpaceClassificationAuditTable.getRow("SPACE_ID", ""+spaceID);
+		} catch (SQLException ex) {
+			LogController.logEvent(AuditController.class, C.FATAL, ex);		
+		}
+		if(row != null) {
+			score += ( row.getQ1Value()!=0 ) ? 1:0;
+			score += ( row.getQ2Value()!=0 ) ? 1:0;
+			score += ( row.getQ3Value()!=0 ) ? 1:0;
+			score += ( row.getQ4Value()!=0 ) ? 1:0;
+			score += ( row.getQ5Value()!=0 ) ? 1:0;
+			score += ( row.getQ6Value()!=0 ) ? 1:0;
+			score += (row.getQ7Boolean()!=null) ? 1:0;
+			score += (row.getQ8Boolean()!=null) ? 1:0;
+			max = 8;
+			percent = Math.round( ( (float)score/max ) * 100 );
+			progress = (int) Math.floor(percent/10 ) * 10;
+			
+		}
+		System.out.println("Space "+spaceID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );		
+		return progress;		
+	}
+
+	public static int calculateEntryClassificationCompletion(int entryID) {
+		double percent = 0;
+		int progress = 0;
+		int max = 0;
+		int score = 0;
+		EntrypointClassificationAuditTable.Row row = null;
+		try {
+			row = EntrypointClassificationAuditTable.getRow("ENTRYPOINT_ID", ""+entryID);
+		} catch (SQLException ex) {
+			LogController.logEvent(AuditController.class, C.FATAL, ex);		
+		}
+		if(row != null) {
+			score += ( row.getQ1Value()!=0 ) ? 1:0;
+			score += ( row.getQ2Value()!=0 ) ? 1:0;
+			score += ( row.getQ3Value()!=0 ) ? 1:0;
+			score += (row.getQ4Boolean()!=null) ? 1:0;
+			score += ( row.getQ5Value()!=0 ) ? 1:0;
+			max = 5;
+			percent = Math.round( ( (float)score/max ) * 100 );
+			progress = (int) Math.floor(percent/10 ) * 10;
+			
+		}
+		System.out.println("Entry "+entryID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );		
+		return progress;		
+	}
 
 
 }

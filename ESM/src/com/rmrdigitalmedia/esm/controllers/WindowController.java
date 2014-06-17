@@ -60,7 +60,7 @@ public class WindowController {
 	public static Button btnAddSpace, btnDeleteSpace, btnAdmin, btnViewSpaceDetails, btnBackToSpaceDetails;
 	static Button btnSpacesList, btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
-	static int currentSpaceId = 0;
+	public static int currentSpaceId = 0;
 	public static EsmUsersTable.Row user;
 	SpacesTable.Row[] rows;
 	private Label lblVtLogo;
@@ -260,14 +260,8 @@ public class WindowController {
 
 
 		btnBackToSpaceDetails = new Button(titleBar, SWT.PUSH);
-		btnBackToSpaceDetails.setToolTipText("View details for the selected Enclosed Space");
+		btnBackToSpaceDetails.setToolTipText("Save and return to Enclosed Space Details page");
 		btnBackToSpaceDetails.setImage(C.getImage("/img/16_edit.png"));
-		btnBackToSpaceDetails.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {				
-				showSpaceDetail(currentSpaceId);
-			}
-		});
 		btnBackToSpaceDetails.setText("Back to Details");
 		btnBackToSpaceDetails.setFont(C.BUTTON_FONT);
 		FormData fd_btnBackToSpaceDetails = new FormData();

@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -14,6 +13,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -24,10 +24,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -267,8 +267,9 @@ public class SpaceAuditChecklistView {
 		GridData gd_lblStatusImg = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_lblStatusImg.horizontalIndent = 10;
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
-		lblStatusImg.setImage(C.getImage("/img/Percent_40.png"));
-		lblStatusImg.setText("Calc: "+ AuditController.calculateSpaceChecklistCompletion(spaceID) + "%");
+		int progress = AuditController.calculateSpaceChecklistCompletion(spaceID);
+		lblStatusImg.setImage(C.getImage("/img/Percent_"+progress+".png"));
+		//lblStatusImg.setText("Calc: "+ progress + "%");
 
 		//table layout
 		final Group tbl = new Group(comp, SWT.BORDER);
@@ -402,6 +403,9 @@ public class SpaceAuditChecklistView {
 		q2_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q2_col4.setText( C.notNull(aRow.getQ2Desc()) ); }
 		sep = Separator(tbl, false);
+		if(q2_radio1.getSelection() && q2_col4.getText().equals("")) {
+			q2_col4.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 3;
 		Label q3_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -903,7 +907,18 @@ public class SpaceAuditChecklistView {
 				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
 			}
 		});
-
+		// set back button
+		for (Listener l:WindowController.btnBackToSpaceDetails.getListeners(SWT.Selection)) {
+			WindowController.btnBackToSpaceDetails.removeListener(SWT.Selection, l);
+		}
+		WindowController.btnBackToSpaceDetails.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {	
+				saveAudit(spaceID);
+				WindowController.showSpaceDetail(spaceID);
+			}
+		});
+		
 		// final layout settings	
 		parent.layout();
 	}
