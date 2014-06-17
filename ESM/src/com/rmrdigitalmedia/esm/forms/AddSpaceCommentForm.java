@@ -24,44 +24,48 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
-import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.models.VesselTable;
+import com.rmrdigitalmedia.esm.models.EsmUsersTable;
+import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 
-public class NewVesselForm {
+public class AddSpaceCommentForm {
 
-	Shell myshell;
+	static Shell myshell;
 	boolean formOK = false;
-	Text name, imo, type, owner;
-	Label sep;	
-	// form layout  guides
-	int headerH = 40;
+	Text s_comment;
+	int spaceID, authorID, headerH = 40;
+	private Label sep;
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			NewVesselForm nvf = new NewVesselForm();
-			nvf.complete();
+			AddSpaceCommentForm nscf = new AddSpaceCommentForm(1,1);
+			nscf.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public NewVesselForm() {
+	public AddSpaceCommentForm(int _spaceID, int _authorID) {
 		LogController.log("Running class " + this.getClass().getName());
-	}	
+		spaceID = _spaceID;
+		authorID = _authorID;
+	}
 
-	public boolean complete() {	
+	public boolean complete() {
 
 		Display display = Display.getDefault();
-		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		this.myshell = shell;
-		shell.setSize(320, 400);
-		shell.setText("ESM Setup");
-		shell.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
-		shell.setLayout(new FillLayout(SWT.VERTICAL));
+		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		AddSpaceCommentForm.myshell = shlVideotelEsm;
+		shlVideotelEsm.setSize(500, 250);
+		shlVideotelEsm.setText("Videotel ESM");
+		shlVideotelEsm.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
+		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Composite container = new Composite(shell,SWT.NONE);
+		Composite container = new Composite(shlVideotelEsm,SWT.NONE);
 		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
 		container.setLayout(new FormLayout());		
 
@@ -77,7 +81,7 @@ public class NewVesselForm {
 		header.setLayoutData(fd_header);
 
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(C.getImage("/img/vessel.png"));
+		lblImg.setImage(C.getImage("/img/space_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
@@ -91,7 +95,7 @@ public class NewVesselForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("ENTER VESSEL DETAILS");
+		lblTitle.setText("ENTER SPACE COMMENT");
 
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -107,79 +111,60 @@ public class NewVesselForm {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 10;
 		gridLayout.marginHeight = 20;
-		gridLayout.numColumns = 2;
+		gridLayout.numColumns = 3;
 		gridLayout.horizontalSpacing = 20;
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
 
 		//FORM LABELS & FIELDS ==================================================================	
-		Label lblName = new Label(form, SWT.NONE);
-		lblName.setBackground(C.APP_BGCOLOR);
-		lblName.setText("Name:");		
-		name = new Text(form, SWT.BORDER);
-		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_name.widthHint = 200;
-		name.setLayoutData(gd_name);
-		name.setFocus();
-
-		Label lblIMO = new Label(form, SWT.NONE);
-		lblIMO.setBackground(C.APP_BGCOLOR);
-		lblIMO.setText("IMO:");		
-		imo = new Text(form, SWT.BORDER);
-		GridData gd_imo = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_imo.widthHint = 200;
-		imo.setLayoutData(gd_imo);
-
-		Label lblType = new Label(form, SWT.NONE);
-		lblType.setBackground(C.APP_BGCOLOR);
-		lblType.setText("Type:");	;		
-		type = new Text(form, SWT.BORDER);
-		GridData gd_type = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_type.widthHint = 200;
-		type.setLayoutData(gd_type);
-
-		Label lblOwner = new Label(form, SWT.NONE);
-		lblOwner.setBackground(C.APP_BGCOLOR);
-		lblOwner.setText("Owner:");	
-		owner = new Text(form, SWT.BORDER | SWT.MULTI);
-		GridData gd_owner = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_owner.heightHint = 60;
-		gd_owner.widthHint = 200;
-		owner.setLayoutData(gd_owner);		
+		Label lblSComment = new Label(form, SWT.NONE);
+		lblSComment.setBackground(C.APP_BGCOLOR);
+		lblSComment.setText("Space\nComment:");		
+		s_comment = new Text(form, SWT.BORDER | SWT.MULTI);
+		GridData gd_comment = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		gd_comment.heightHint = 100;
+		gd_comment.widthHint = 400;
+		s_comment.setLayoutData(gd_comment);
+		s_comment.setFocus();
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
+
 
 		//==================================================================		
 
 		Button ok = new Button (form, SWT.PUSH);
-		ok.setToolTipText("Click to save these details");
+		ok.setToolTipText("Click to save your Comment");
 		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				Text[] fields = {name,imo,type,owner}; Validation.validateFields(fields);				
+				Text[] fields = {s_comment}; Validation.validateFields(fields);				
 				if( Validation.validateFields(fields) ) {
 					try {
-						VesselTable.Row row = VesselTable.getRow();
-						row.setName(name.getText());
-						row.setImoNumber(imo.getText());
-						row.setType(type.getText());
-						row.setOwner(owner.getText());
-						row.setCreatedDate(new Timestamp(new Date().getTime()));
-						row.insert();						
+						SpaceCommentsTable.Row sRow = SpaceCommentsTable.getRow();
+						sRow.setSpaceID(spaceID);
+						sRow.setComment(s_comment.getText());
+						sRow.setAuthorID(authorID);
+						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
+						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
+						if( EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2 ) {
+							sRow.setApproved("TRUE");
+						} else {
+							sRow.setApproved("FALSE");
+						}
+						sRow.setDeleted("FALSE");
+						sRow.insert();
+						LogController.log("Space comment added to database.");		        
 						formOK = true;
-						LogController.log("Vessel added to database");
-						EsmApplication.appData.setField("VESSEL",name.getText());
 					} catch (Exception e1) {
-						LogController.logEvent(this, C.ERROR, e1);
+						e1.printStackTrace();
 					}					
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
-					}
-					shell.close ();
+					} catch (InterruptedException e1) {}
+					shlVideotelEsm.close ();
 				} else {
 					Validation.validateError(myshell);
 				}
@@ -188,19 +173,23 @@ public class NewVesselForm {
 
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
-		Rectangle rect = shell.getBounds ();
+		Rectangle rect = shlVideotelEsm.getBounds ();
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
-		shell.setLocation (x, y);		  		
-		shell.setDefaultButton (ok);
+		shlVideotelEsm.setLocation (x, y);		  		
+		shlVideotelEsm.setDefaultButton (ok);		
+		new Label(form, SWT.NONE);
+		new Label(form, SWT.NONE);
 
-		shell.open ();
-		shell.layout();
+		shlVideotelEsm.open ();
+		shlVideotelEsm.layout();
 
-		while (!shell.isDisposed()) {
+		while (!shlVideotelEsm.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("User form closed");	
+		LogController.log("New Space Comment form closed");	
+
 		return formOK;
 	}
+
 }

@@ -27,7 +27,7 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 
-public class NewEntryForm {
+public class AddEntrypointForm {
 
 	Shell myshell;
 	boolean formOK = false;
@@ -41,14 +41,14 @@ public class NewEntryForm {
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			NewEntryForm nef = new NewEntryForm(1,1);
+			AddEntrypointForm nef = new AddEntrypointForm(1,1);
 			nef.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public NewEntryForm(int _spaceID, int _authorID) {
+	public AddEntrypointForm(int _spaceID, int _authorID) {
 		LogController.log("Running class " + this.getClass().getName());
 		spaceID = _spaceID;
 		authorID = _authorID;

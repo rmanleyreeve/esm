@@ -25,7 +25,7 @@ import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.LicenseTable;
 
-public class NewLicenseDialog {
+public class LicenseDialog {
 
 	boolean formOK = false;
 	int privateKey = 8864;
@@ -33,14 +33,14 @@ public class NewLicenseDialog {
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			NewLicenseDialog nld = new NewLicenseDialog();
+			LicenseDialog nld = new LicenseDialog();
 			nld.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public NewLicenseDialog() {
+	public LicenseDialog() {
 		LogController.log("Running class " + this.getClass().getName());		
 	}
 

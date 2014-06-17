@@ -47,8 +47,8 @@ import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.EditSpaceForm;
-import com.rmrdigitalmedia.esm.forms.NewSpaceCommentForm;
-import com.rmrdigitalmedia.esm.forms.NewSpacePhotoForm;
+import com.rmrdigitalmedia.esm.forms.AddSpaceCommentForm;
+import com.rmrdigitalmedia.esm.forms.AddSpacePhotoForm;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
@@ -205,7 +205,7 @@ public class SpaceDetailViewTest {
 		btnAddComment.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				NewSpaceCommentForm nscf = new NewSpaceCommentForm(spaceID, 1);					
+				AddSpaceCommentForm nscf = new AddSpaceCommentForm(spaceID, 1);					
 				if(nscf.complete()) {
 					LogController.log("New Space Comment saved in database");
 					WindowController.showSpaceDetail(spaceID);					
@@ -552,7 +552,7 @@ public class SpaceDetailViewTest {
 		btnAddPhoto.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				NewSpacePhotoForm nspf = new NewSpacePhotoForm(spaceID, 1);					
+				AddSpacePhotoForm nspf = new AddSpacePhotoForm(spaceID, 1);					
 				if(nspf.complete()) {
 					LogController.log("New Space Photo & Comment saved in database");
 					WindowController.showSpaceDetail(spaceID);					

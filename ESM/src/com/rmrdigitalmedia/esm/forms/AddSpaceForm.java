@@ -1,5 +1,6 @@
 package com.rmrdigitalmedia.esm.forms;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -25,19 +26,17 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.controllers.UploadController;
-import com.rmrdigitalmedia.esm.models.EsmUsersTable;
-import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
+import com.rmrdigitalmedia.esm.models.EntrypointsTable;
+import com.rmrdigitalmedia.esm.models.SpacesTable;
+import com.rmrdigitalmedia.esm.models.VesselTable;
 
-public class NewSpacePhotoForm {
+public class AddSpaceForm {
 
-	static Shell myshell;
+	Shell myshell;
 	boolean formOK = false;
-	Text p_title, p_comment;
-	int spaceID, authorID, headerH = 40;
+	Text s_name, s_description, ep_name, ep_description;
+	int authorID, headerH = 40;
 	private Label sep;
-	static String imgToUploadPath = null, imgToUploadName = null;
-	static Text imgSelected;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -45,25 +44,24 @@ public class NewSpacePhotoForm {
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			NewSpacePhotoForm nspf = new NewSpacePhotoForm(1,1);
-			nspf.complete();
+			AddSpaceForm nsf = new AddSpaceForm(1);
+			nsf.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public NewSpacePhotoForm(int _spaceID, int _authorID) {
+	public AddSpaceForm(int _authorID) {
 		LogController.log("Running class " + this.getClass().getName());
-		spaceID = _spaceID;
 		authorID = _authorID;
-	}
+	}	
 
-	public boolean complete() {
+	public boolean complete() {	
 
 		Display display = Display.getDefault();
-		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		NewSpacePhotoForm.myshell = shlVideotelEsm;
-		shlVideotelEsm.setSize(500, 340);
+		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM);
+		this.myshell = shlVideotelEsm;
+		shlVideotelEsm.setSize(400, 420);
 		shlVideotelEsm.setText("Videotel ESM");
 		shlVideotelEsm.setImages(new Image[] { C.getImage("/img/appicon16.png"), C.getImage("/img/appicon32.png") }); // 16x16 & 32x32
 		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
@@ -98,7 +96,7 @@ public class NewSpacePhotoForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("ADD SPACE PHOTO / COMMENT");
+		lblTitle.setText("ENTER SPACE / ENTRYPOINT DETAILS");
 
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -114,104 +112,95 @@ public class NewSpacePhotoForm {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 10;
 		gridLayout.marginHeight = 20;
-		gridLayout.numColumns = 3;
+		gridLayout.numColumns = 2;
 		gridLayout.horizontalSpacing = 20;
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
 
 		//FORM LABELS & FIELDS ==================================================================	
-		Label lblUploadImg = new Label(form, SWT.NONE);
-		lblUploadImg.setBackground(C.APP_BGCOLOR);
-		lblUploadImg.setText("Select Photo:");
-		// file upload button
-		Button browseImg = new Button(form, SWT.PUSH);
-		browseImg.setToolTipText("Choose an image related to this Space");
-		browseImg.setText("Choose...");        
-		browseImg.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				String[] imgDetails = UploadController.uploadSpaceImageDialog();
-				try {
-					imgToUploadPath = imgDetails[0];
-					imgToUploadName = imgDetails[1];
-					imgSelected.setText(imgToUploadName);
-				} catch (Exception e1) {}
-			}
-		});
+		Label lblSName = new Label(form, SWT.NONE);
+		lblSName.setBackground(C.APP_BGCOLOR);
+		lblSName.setText("Space Name:");		
+		s_name = new Text(form, SWT.BORDER);
+		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_name.widthHint = 230;
+		s_name.setLayoutData(gd_name);
+		s_name.setFocus();
 
-		imgSelected = new Text(form, SWT.NONE);
-		imgSelected.setEditable(false);
-		imgSelected.setBackground(C.APP_BGCOLOR);
-		imgSelected.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		imgSelected.setFont(C.FONT_8);
+		Label lblSDesc = new Label(form, SWT.NONE);
+		lblSDesc.setBackground(C.APP_BGCOLOR);
+		lblSDesc.setText("Space\nDescription:");	
+		s_description = new Text(form, SWT.BORDER | SWT.MULTI);
+		GridData gd_sdesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_sdesc.heightHint = 80;
+		gd_sdesc.widthHint = 230;
+		s_description.setLayoutData(gd_sdesc);		
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
 
-		Label lblPTitle = new Label(form, SWT.NONE);
-		lblPTitle.setBackground(C.APP_BGCOLOR);
-		lblPTitle.setText("Photo Title:");		
-		p_title = new Text(form, SWT.BORDER | SWT.MULTI);
-		GridData gd_title = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
-		gd_title.heightHint = 20;
-		gd_title.widthHint = 400;
-		p_title.setLayoutData(gd_title);
-		p_title.setFocus();
+		Label lblEName = new Label(form, SWT.NONE);
+		lblEName.setBackground(C.APP_BGCOLOR);
+		lblEName.setText("Entry Point Name:");		
+		ep_name = new Text(form, SWT.BORDER);
+		GridData gd_ename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_ename.widthHint = 230;
+		ep_name.setLayoutData(gd_ename);
 
-		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
-
-		Label lblPComment = new Label(form, SWT.NONE);
-		lblPComment.setBackground(C.APP_BGCOLOR);
-		lblPComment.setText("Photo Comment:");		
-		p_comment = new Text(form, SWT.BORDER | SWT.MULTI);
-		GridData gd_comment = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
-		gd_comment.heightHint = 80;
-		gd_comment.widthHint = 400;
-		p_comment.setLayoutData(gd_comment);
-		p_comment.setFocus();
+		Label lblEDesc = new Label(form, SWT.NONE);
+		lblEDesc.setBackground(C.APP_BGCOLOR);
+		lblEDesc.setText("Entry Point\nDescription:");	
+		ep_description = new Text(form, SWT.BORDER | SWT.MULTI);
+		GridData gd_edesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_edesc.heightHint = 80;
+		gd_edesc.widthHint = 230;
+		ep_description.setLayoutData(gd_edesc);		
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
 
 		//==================================================================		
 
 		Button ok = new Button (form, SWT.PUSH);
-		ok.setToolTipText("Click to save your Photo");
+		ok.setToolTipText("Click to save these details");
 		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				Text[] fields = {p_title, p_comment,imgSelected}; Validation.validateFields(fields);				
-				String path = "";
+				Text[] fields = {s_name,s_description,ep_name,ep_description}; Validation.validateFields(fields);				
 				if( Validation.validateFields(fields) ) {
 					try {
-						path = UploadController.uploadSpaceImagePath(spaceID, new String[]{imgToUploadPath,imgToUploadName});
-					} catch (Exception ex) {}
-					if(!path.equals("")) {
-						try {
-							PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow();
-							pRow.setSpaceID(spaceID);
-							pRow.setTitle(p_title.getText());
-							pRow.setComment(p_comment.getText());
-							pRow.setAuthorID(authorID);
-							pRow.setPath(path);
-							pRow.setCreatedDate(new Timestamp(new Date().getTime()));
-							pRow.setUpdateDate(new Timestamp(new Date().getTime()));
-							if( EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2 ) {
-								pRow.setApproved("TRUE");
-							} else {
-								pRow.setApproved("FALSE");
-							}
-							pRow.setDeleted("FALSE");
-							pRow.insert();
-							LogController.log("Photo comment added to database.");		        
-						} catch (Exception e1) {
-							LogController.logEvent("Photo Comment upload", C.NOTICE, e1);
-						}		
+						SpacesTable.Row sRow = SpacesTable.getRow();
+						sRow.setName(s_name.getText());
+						sRow.setDescription(s_description.getText());
+						sRow.setVesselName(VesselTable.getAllRows()[0].getName());
+						sRow.setAuthorID(authorID);
+						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
+						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
+						sRow.setDeleted("FALSE");
+						int spaceID = (int) sRow.insert();
+						LogController.log("Space "+spaceID+" added to database.");
+						//SpacesTable.Row[] rArr = SpacesTable.getAllRows();
+						//int metadataID = rArr[rArr.length-1].getID();
+						new File( C.DOC_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // docs						
+						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // image base dir
+						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP ).mkdir(); // full
+						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "thumb" + C.SEP).mkdir(); // thumbs
+						EntrypointsTable.Row epRow = EntrypointsTable.getRow();
+						epRow.setName(ep_name.getText());
+						epRow.setDescription(ep_description.getText());
+						epRow.setSpaceID(spaceID);
+						epRow.setCreatedDate(new Timestamp(new Date().getTime()));
+						epRow.setUpdateDate(new Timestamp(new Date().getTime()));
+						epRow.setAuthorID(authorID);
+						epRow.setDeleted("FALSE");
+						int epID = (int) epRow.insert();
+						LogController.log("Entry Point "+epID+" added to database.");				        
 						formOK = true;
-					}
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}					
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {}
@@ -220,7 +209,6 @@ public class NewSpacePhotoForm {
 					Validation.validateError(myshell);
 				}
 			}
-
 		});	
 
 		Monitor primary = display.getPrimaryMonitor ();
@@ -231,7 +219,6 @@ public class NewSpacePhotoForm {
 		shlVideotelEsm.setLocation (x, y);		  		
 		shlVideotelEsm.setDefaultButton (ok);		
 		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
 
 		shlVideotelEsm.open ();
 		shlVideotelEsm.layout();
@@ -239,9 +226,7 @@ public class NewSpacePhotoForm {
 		while (!shlVideotelEsm.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("New Space Photo form closed");	
-
+		LogController.log("New Space form closed");	
 		return formOK;
 	}
-
 }
