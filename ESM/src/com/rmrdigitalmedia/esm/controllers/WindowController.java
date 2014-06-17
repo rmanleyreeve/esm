@@ -424,27 +424,9 @@ public class WindowController {
 	}
 
 	// methods to display pages etc
-	public static void showSpaceDetail(int spaceID) {
-		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		btnAddSpace.setVisible(false);
-		btnViewSpaceDetails.setVisible(false);
-		btnBackToSpaceDetails.setVisible(false);
-		btnDeleteSpace.setVisible(false);
-		btnSpacesList.setVisible(true);
-		//onlineStatus.setEnabled(InternetController.checkNetAccess());
-		LogController.log("Loading Space Detail page for user selection: Space ID "+spaceID);
-		SpaceDetailView.buildPage(pageSpaceDetail, spaceID);
-		stackLayout.topControl = pageSpaceDetail;
-		currentSpaceId = spaceID;
-		try {
-			pageTitle.setText("Space " + spaceID + ": " + SpacesTable.getRow("ID", ""+spaceID).getName());
-		} catch (SQLException e) {
-			LogController.logEvent(me, C.WARNING, e);
-		}
-		formHolder.layout();
-	}
 	void showAdministration() {
-		//onlineStatus.setEnabled(InternetController.checkNetAccess());
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
+		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnBackToSpaceDetails.setVisible(false);
@@ -455,9 +437,29 @@ public class WindowController {
 		pageTitle.setText(C.ADMIN_PAGE_TITLE);
 		formHolder.layout();
 	}
-	public static void showSpaceAuditChecklist(int spaceID) {
-		currentSpaceId = spaceID;
+	public static void showSpaceDetail(int spaceID) {
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		//onlineStatus.setEnabled(InternetController.checkNetAccess());
+		currentSpaceId = spaceID;
+		btnAddSpace.setVisible(false);
+		btnViewSpaceDetails.setVisible(false);
+		btnBackToSpaceDetails.setVisible(false);
+		btnDeleteSpace.setVisible(false);
+		btnSpacesList.setVisible(true);
+		LogController.log("Loading Space Detail page for user selection: Space ID "+spaceID);
+		SpaceDetailView.buildPage(pageSpaceDetail, spaceID);
+		stackLayout.topControl = pageSpaceDetail;
+		try {
+			pageTitle.setText("Space " + spaceID + ": " + SpacesTable.getRow("ID", ""+spaceID).getName());
+		} catch (SQLException e) {
+			LogController.logEvent(me, C.WARNING, e);
+		}
+		formHolder.layout();
+	}
+	public static void showSpaceAuditChecklist(int spaceID) {
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
+		//onlineStatus.setEnabled(InternetController.checkNetAccess());
+		currentSpaceId = spaceID;
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
@@ -474,8 +476,9 @@ public class WindowController {
 		formHolder.layout();
 	}
 	public static void showSpaceAuditClassification(int spaceID) {
-		currentSpaceId = spaceID;
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		//onlineStatus.setEnabled(InternetController.checkNetAccess());
+		currentSpaceId = spaceID;
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
@@ -492,6 +495,7 @@ public class WindowController {
 		formHolder.layout();
 	}
 	public static void showEntryAuditChecklist(int entryID) {
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
@@ -509,6 +513,7 @@ public class WindowController {
 		formHolder.layout();
 	}
 	public static void showEntryAuditClassification(int entryID) {
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);

@@ -2,6 +2,7 @@ package com.rmrdigitalmedia.esm.views;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -44,5 +45,8 @@ public class AdministrationView {
 		rightpanel.setLayout(new FillLayout());
 		panels.setWeights(new int[] {1, 3});
 
+		
+		
+		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 	}
 }

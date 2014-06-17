@@ -809,7 +809,6 @@ public class SpaceDetailView {
 		// final layout settings	
 		panels.setWeights(new int[] {2, 1});				
 		parent.layout();
-
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 	}
 }
