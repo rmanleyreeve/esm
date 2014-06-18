@@ -187,7 +187,7 @@ INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Are inte
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Does the space contain sloped or curved floors?','Q12 Hint text here',12);
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Is internal lighting fitted into the space?','Q13 Hint text here',13);
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Are there any power points present in the space?','Q14 Hint text here',14);
-INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Is there potential for communications black spots (steel lined containers?','Q15 Hint text here',15);
+INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Is there potential for communications black spots (steel lined containers)?','Q15 Hint text here',15);
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Would the enclosed space be able to accommodate a stretcher?','Q16 Hint text here',16);
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Can someone wearing a BA set move freely within the confined space?','Q17 Hint text here',17);
 

@@ -149,6 +149,7 @@ public class SpaceAuditClassificationView {
 		optionsCell.setLayout(gl_optionsCell);
 		GridData gd = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd.exclude = hide;
+		gd.widthHint = 450;
 		optionsCell.setLayoutData(gd);		
 		optionsCell.setBackground(C.APP_BGCOLOR);
 		return optionsCell;
@@ -230,8 +231,9 @@ public class SpaceAuditClassificationView {
 		Label lblStatusImg = new Label(headerRow,SWT.NONE);
 		GridData gd_lblStatusImg = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_lblStatusImg.horizontalIndent = 10;
+		lblStatusImg.setLayoutData(gd_lblStatusImg);
 		// progress image 
-		int progress = AuditController.calculateSpaceClassificationCompletion(spaceID);
+		final int progress = AuditController.calculateSpaceClassificationCompletion(spaceID);
 		lblStatusImg.setImage(C.getImage("/img/Percent_"+progress+".png"));
 
 		//table layout
@@ -264,7 +266,7 @@ public class SpaceAuditClassificationView {
 		lblHint.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblHint.setFont(C.FONT_12B);
 		lblHint.setText("Hint");
-		CLabel lblOptions = new CLabel(tbl, SWT.CENTER);
+		CLabel lblOptions = new CLabel(tbl, SWT.LEFT);
 		GridData gd_lblOptions = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblOptions.widthHint = 150;
 		gd_lblOptions.heightHint = colHeaderH;
@@ -418,6 +420,8 @@ public class SpaceAuditClassificationView {
 		q4_radio5.setBackground(C.APP_BGCOLOR);
 		if(!empty) q4_radio5.setSelection(aRow.getQ4Value()==5); 
 		Label q4_col4 = makeColumn4(tbl, false);	
+		if(q4_radio2.getSelection() || q4_radio3.getSelection() || q4_radio4.getSelection()) { q4_col4.setImage(C.getImage("/img/amber.png")); }
+		if(q4_radio5.getSelection()) { q4_col4.setImage(C.getImage("/img/green.png")); }
 		q4_col5 = MakeColumn5(tbl, false);
 		if(!empty) q4_col5.setText( C.notNull(aRow.getQ4Comments()) );
 		sep = Separator(tbl, false);
@@ -538,6 +542,7 @@ public class SpaceAuditClassificationView {
 		footerRow.setBackground(C.APP_BGCOLOR);
 		
 		final Button btnReturn = new Button(footerRow, SWT.NONE);
+		btnReturn.setToolTipText("Save and return to Space Details");
 		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnReturn.setBackground(C.APP_BGCOLOR);
 		btnReturn.setFont(C.FONT_11B);
@@ -554,6 +559,7 @@ public class SpaceAuditClassificationView {
 		});		
 		
 		final Button btnSave = new Button(footerRow, SWT.NONE);
+		btnSave.setToolTipText("Save Classification");
 		btnSave.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnSave.setBackground(C.APP_BGCOLOR);
 		btnSave.setFont(C.FONT_11B);

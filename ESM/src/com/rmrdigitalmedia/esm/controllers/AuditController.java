@@ -123,6 +123,11 @@ public class AuditController {
 			score += (row.getQ7Boolean()!=null) ? 1:0;
 			score += (row.getQ8Boolean()!=null) ? 1:0;
 			max = 8;
+			try {
+				if( isN(SpaceChecklistAuditTable.getRow("SPACE_ID", ""+spaceID).getQ7Boolean())  ) {
+					max = 7;
+				}
+			} catch (SQLException ex) {}
 			percent = Math.round( ( (float)score/max ) * 100 );
 			progress = (int) Math.floor(percent/10 ) * 10;
 			

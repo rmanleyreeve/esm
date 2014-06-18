@@ -270,10 +270,10 @@ public class SpaceAuditChecklistView {
 		GridData gd_lblStatusImg = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_lblStatusImg.horizontalIndent = 10;
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
+		// progress image
 		final int progress = AuditController.calculateSpaceChecklistCompletion(spaceID);
 		lblStatusImg.setImage(C.getImage("/img/Percent_"+progress+".png"));
-		//lblStatusImg.setText("Calc: "+ progress + "%");
-
+	
 		//table layout
 		final Group tbl = new Group(comp, SWT.BORDER);
 		tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -873,6 +873,7 @@ public class SpaceAuditChecklistView {
 		footerRow.setBackground(C.APP_BGCOLOR);
 
 		final Button btnReturn = new Button(footerRow, SWT.NONE);
+		btnReturn.setToolTipText("Save and return to Space Details");
 		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnReturn.setBackground(C.APP_BGCOLOR);
 		btnReturn.setFont(C.FONT_11B);
@@ -888,6 +889,7 @@ public class SpaceAuditChecklistView {
 		});
 
 		final Button btnSave = new Button(footerRow, SWT.NONE);
+		btnSave.setToolTipText("Save Checklist");
 		btnSave.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnSave.setBackground(C.APP_BGCOLOR);
 		btnSave.setFont(C.FONT_11B);
@@ -918,6 +920,7 @@ public class SpaceAuditChecklistView {
 				// next screen
 				if(progress<100 || AuditController.calculateSpaceChecklistCompletion(spaceID)<100) {
 					EsmApplication.alert("Checklist not completed!");
+					parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 				} else {
 					WindowController.showSpaceAuditClassification(spaceID);
 				}
