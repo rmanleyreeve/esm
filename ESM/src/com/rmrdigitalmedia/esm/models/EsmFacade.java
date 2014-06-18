@@ -1,7 +1,6 @@
 package com.rmrdigitalmedia.esm.models ;
 
 import com.javaranch.db.* ;
-import com.rmrdigitalmedia.esm.C;
 import java.sql.* ;
 import java.util.Map ;
 
@@ -15,7 +14,7 @@ public class EsmFacade
 
         Implementation()
         {
-        	super("org.h2.Driver" , C.DB_CONN_STR , "sa" , "");
+        	super("org.h2.Driver" , com.rmrdigitalmedia.esm.C.DB_CONN_STR , "sa" , "");
         }
 
     }

@@ -6,9 +6,9 @@ import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
 import com.rmrdigitalmedia.esm.models.EntrypointClassificationAuditTable;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistAuditTable;
 import com.rmrdigitalmedia.esm.models.SpaceClassificationAuditTable;
+import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class AuditController {
-
 
 	private static boolean isY(String s){
 		return (s !=null && s.equals("Y"));
@@ -157,6 +157,21 @@ public class AuditController {
 		return progress;		
 	}
 
+	public static boolean isSpaceSignedOff(int spaceID) {
+		boolean so = false;
+		try {
+			so = (SpacesTable.getRow(spaceID).getSignedOff().equals("TRUE"));
+		} catch (SQLException e) {}
+		return so;
+	}
 
+	public static int calculateOverallCompletionStatus(int spaceID) {
+		int progress = 0;
+		//
+		return progress;		
+	}
+
+	
+	
 }
 

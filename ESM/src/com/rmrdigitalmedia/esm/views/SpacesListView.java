@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.TableItem;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.table.DynamicImageArrayCell;
 import com.rmrdigitalmedia.esm.table.DynamicImageCell;
+import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
@@ -88,7 +89,7 @@ public class SpacesListView {
 				int spaceID = sRow.getID();
 
 				// calculate completion status
-				int cs = 0;
+				int cs = AuditController.calculateOverallCompletionStatus(spaceID);
 				imgCompletionStatus.put(spaceID, "/img/Percent_"+ cs +".png");
 	
 				// calculate space classification status
@@ -104,7 +105,11 @@ public class SpacesListView {
 				imgArrayEntryClassification.put(spaceID, epImgs.toArray(new String[epImgs.size()]));
 
 				// calculate s/o status
-				imgSignOff.put(spaceID, "/img/bluetick.png");
+				if(AuditController.isSpaceSignedOff(spaceID)) {
+					imgSignOff.put(spaceID, "/img/bluetick.png");
+				} else {
+					imgSignOff.put(spaceID, "/img/null.png");
+				}
 
 			} // end spaces loop
 
