@@ -57,7 +57,7 @@ public class WindowController {
 	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration, pageSpaceAudit, pageEntryAudit;
 	static Label pageTitle, onlineStatus;
 	String displayName;
-	public static Button btnAddSpace, btnDeleteSpace, btnAdmin, btnViewSpaceDetails, btnBackToSpaceDetails;
+	public static Button btnAddSpace, btnDeleteSpace, btnAdmin, btnViewSpaceDetails;
 	static Button btnSpacesList, btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
 	public static int currentSpaceId = 0;
@@ -258,18 +258,6 @@ public class WindowController {
 		btnViewSpaceDetails.setLayoutData(fd_btnEditSpace);
 		btnViewSpaceDetails.setEnabled(false);
 
-
-		btnBackToSpaceDetails = new Button(titleBar, SWT.PUSH);
-		btnBackToSpaceDetails.setToolTipText("Save and return to Enclosed Space Details page");
-		btnBackToSpaceDetails.setImage(C.getImage("/img/16_edit.png"));
-		btnBackToSpaceDetails.setText("Back to Details");
-		btnBackToSpaceDetails.setFont(C.BUTTON_FONT);
-		FormData fd_btnBackToSpaceDetails = new FormData();
-		fd_btnBackToSpaceDetails.top = new FormAttachment(titleBar,titleH/5);
-		fd_btnBackToSpaceDetails.right = new FormAttachment(btnAddSpace,-5);
-		btnBackToSpaceDetails.setLayoutData(fd_btnBackToSpaceDetails);
-		//btnBackToSpaceDetails.setEnabled(false);
-
 		btnDeleteSpace = new Button(titleBar, SWT.PUSH);
 		btnDeleteSpace.setToolTipText("Delete the selected Enclosed Space");
 		btnDeleteSpace.setImage(C.getImage("/img/16_delete.png"));
@@ -293,7 +281,7 @@ public class WindowController {
 		btnDeleteSpace.setFont(C.BUTTON_FONT);
 		FormData fd_btnDeleteSpace = new FormData();
 		fd_btnDeleteSpace.top = new FormAttachment(titleBar,titleH/5);
-		fd_btnDeleteSpace.right = new FormAttachment(btnBackToSpaceDetails,-5);
+		fd_btnDeleteSpace.right = new FormAttachment(btnAddSpace,-5);
 		btnDeleteSpace.setLayoutData(fd_btnDeleteSpace);
 		btnDeleteSpace.setEnabled(false);
 
@@ -417,7 +405,6 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(true);
 		btnViewSpaceDetails.setEnabled(false);
 		btnSpacesList.setVisible(false);
-		btnBackToSpaceDetails.setVisible(false);
 		stackLayout.topControl = pageSpacesList;
 		pageTitle.setText(C.SPACES_LIST_TITLE);
 		formHolder.layout();
@@ -429,7 +416,6 @@ public class WindowController {
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
-		btnBackToSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
 		LogController.log("Displaying Administration page");
@@ -443,7 +429,6 @@ public class WindowController {
 		currentSpaceId = spaceID;
 		btnAddSpace.setVisible(false);
 		btnViewSpaceDetails.setVisible(false);
-		btnBackToSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
 		LogController.log("Loading Space Detail page for user selection: Space ID "+spaceID);
@@ -464,7 +449,6 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
-		btnBackToSpaceDetails.setVisible(true);
 		LogController.log("Displaying Internal Space Audit Checklist for ID:" + spaceID);
 		SpaceAuditChecklistView.buildPage(pageSpaceAudit, spaceID);
 		stackLayout.topControl = pageSpaceAudit;
@@ -483,7 +467,6 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
-		btnBackToSpaceDetails.setVisible(true);
 		LogController.log("Displaying Internal Space Audit Classification for ID:" + spaceID);
 		SpaceAuditClassificationView.buildPage(pageSpaceAudit, spaceID);
 		stackLayout.topControl = pageSpaceAudit;
@@ -501,7 +484,6 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
-		btnBackToSpaceDetails.setVisible(true);
 		LogController.log("Displaying Entry Point Audit Checklist for ID:" + entryID);
 		EntryAuditChecklistView.buildPage(pageEntryAudit, entryID);
 		stackLayout.topControl = pageEntryAudit;
@@ -519,7 +501,6 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
-		btnBackToSpaceDetails.setVisible(true);
 		LogController.log("Displaying Entry Point Audit Classification for ID:" + entryID);
 		EntryAuditClassificationView.buildPage(pageEntryAudit, entryID);
 		stackLayout.topControl = pageEntryAudit;

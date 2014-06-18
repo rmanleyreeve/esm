@@ -252,7 +252,7 @@ public class EntryAuditChecklistView {
 		gd_lblStatusImg.horizontalIndent = 10;
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
 		// progress image
-		int progress = AuditController.calculateEntryChecklistCompletion(entryID);
+		final int progress = AuditController.calculateEntryChecklistCompletion(entryID);
 		lblStatusImg.setImage(C.getImage("/img/Percent_"+progress+".png"));
 		//lblStatusImg.setText("Calc: "+ progress + "%");
 
@@ -286,7 +286,7 @@ public class EntryAuditChecklistView {
 		lblHint.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblHint.setFont(C.FONT_12B);
 		lblHint.setText("Hint");
-		CLabel lblOptions = new CLabel(tbl, SWT.NONE);
+		CLabel lblOptions = new CLabel(tbl, SWT.CENTER);
 		GridData gd_lblOptions = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblOptions.widthHint = 150;
 		gd_lblOptions.heightHint = colHeaderH;
@@ -648,33 +648,59 @@ public class EntryAuditChecklistView {
 		footerRow.setLayout(gl_footerRow);
 		footerRow.setBackground(C.APP_BGCOLOR);
 
-		final Button btnB = new Button(footerRow, SWT.NONE);
-		btnB.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
-		btnB.setBackground(C.APP_BGCOLOR);
-		btnB.setFont(C.FONT_11B);
-		btnB.setText("<<");
-		btnB.setEnabled(false);
+		final Button btnReturn = new Button(footerRow, SWT.NONE);
+		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
+		btnReturn.setBackground(C.APP_BGCOLOR);
+		btnReturn.setFont(C.FONT_11B);
+		btnReturn.setText("<< Back to Details");
+		btnReturn.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				// save to DB
+				saveAudit(entryID);
+				int spaceID = WindowController.currentSpaceId;
+				try {
+					spaceID = EntrypointsTable.getRow(entryID).getSpaceID();
+				} catch (SQLException e) {}
+				WindowController.showSpaceDetail(spaceID);
+			}
+		});
 
-		final Label pageLoc = new Label(footerRow, SWT.NONE);
-		pageLoc.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-		pageLoc.setBackground(C.APP_BGCOLOR);
-		pageLoc.setFont(C.FONT_11B);
-		pageLoc.setText("Page 1 of 2");
+		final Button btnSave = new Button(footerRow, SWT.NONE);
+		btnSave.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
+		btnSave.setBackground(C.APP_BGCOLOR);
+		btnSave.setFont(C.FONT_11B);
+		btnSave.setText("Save Checklist");
+		btnSave.setImage(C.getImage("/img/16_save.png"));
+		btnSave.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				// save to DB
+				saveAudit(entryID);
+				// reload screen
+				WindowController.showEntryAuditChecklist(entryID);
+			}
+		});
 
-		final Button btnF = new Button(footerRow, SWT.NONE);
-		btnF.setToolTipText("Save Checklist and go to Classification");
-		btnF.setBackground(C.APP_BGCOLOR);
-		btnF.setFont(C.FONT_11B);
-		btnF.setText(">>");
-		btnF.addSelectionListener(new SelectionAdapter() {
+		final Button btnProceed = new Button(footerRow, SWT.NONE);
+		btnProceed.setToolTipText("Save Checklist and go to Classification");
+		btnProceed.setBackground(C.APP_BGCOLOR);
+		btnProceed.setFont(C.FONT_11B);
+		btnProceed.setText("Proceed to Classification >>");
+		btnProceed.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				// save to DB
 				saveAudit(entryID);
 				// next screen
-				WindowController.showEntryAuditClassification(entryID);
+				if(progress<100 || AuditController.calculateEntryChecklistCompletion(entryID)<100) {
+					EsmApplication.alert("Checklist not completed!");
+				} else {
+					WindowController.showEntryAuditClassification(entryID);
+				}
 			}
 		});
+		btnProceed.setEnabled(progress >= 100);
 
 		// redraw panel on window resize
 		scrollPanel.setContent(comp);
@@ -684,21 +710,6 @@ public class EntryAuditChecklistView {
 			public void controlResized(ControlEvent e) {
 				Rectangle r = scrollPanel.getClientArea();
 				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
-			}
-		});
-		// set back button
-		for (Listener l:WindowController.btnBackToSpaceDetails.getListeners(SWT.Selection)) {
-			WindowController.btnBackToSpaceDetails.removeListener(SWT.Selection, l);
-		}
-		WindowController.btnBackToSpaceDetails.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {	
-				saveAudit(entryID);
-				int spaceID = WindowController.currentSpaceId;
-				try {
-					spaceID = EntrypointsTable.getRow(entryID).getSpaceID();
-				} catch (SQLException e) {}
-				WindowController.showSpaceDetail(spaceID);
 			}
 		});
 
