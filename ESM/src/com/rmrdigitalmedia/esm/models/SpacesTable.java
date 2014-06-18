@@ -52,13 +52,16 @@ public class SpacesTable
     public static final String nameColumnName = "NAME";
     public static final String descriptionColumnName = "DESCRIPTION";
     public static final String authorIDColumnName = "AUTHOR_ID";
+    public static final String signedOffColumnName = "SIGNED_OFF";
+    public static final String signoffIDColumnName = "SIGNOFF_ID";
+    public static final String signoffDateColumnName = "SIGNOFF_DATE";
     public static final String createdDateColumnName = "CREATED_DATE";
     public static final String updateDateColumnName = "UPDATE_DATE";
     public static final String deletedColumnName = "DELETED";
 
     private static String[] allColumns =
     {
-        idColumnName , vesselNameColumnName , nameColumnName , descriptionColumnName , authorIDColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , 
+        idColumnName , vesselNameColumnName , nameColumnName , descriptionColumnName , authorIDColumnName , signedOffColumnName , signoffIDColumnName , signoffDateColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -243,6 +246,10 @@ public class SpacesTable
         private String name ;
         private String description ;
         private int authorID ;
+        private String signedOff ;
+        private int signoffID ;
+        private boolean signoffIDNull = true ;
+        private Timestamp signoffDate ;
         private Timestamp createdDate ;
         private Timestamp updateDate ;
         private String deleted ;
@@ -261,9 +268,13 @@ public class SpacesTable
                 this.name = data[2];
                 this.description = data[3];
                 this.authorID =  Str.toInt( data[4] );
-                this.createdDate = Str.toTimestamp( data[5] );
-                this.updateDate = Str.toTimestamp( data[6] );
-                this.deleted = data[7];
+                this.signedOff = data[5];
+                this.signoffIDNull = ( data[6] == null );
+                this.signoffID = signoffIDNull ? 0 : Str.toInt( data[6] );
+                this.signoffDate = Str.toTimestamp( data[7] );
+                this.createdDate = Str.toTimestamp( data[8] );
+                this.updateDate = Str.toTimestamp( data[9] );
+                this.deleted = data[10];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -328,6 +339,67 @@ public class SpacesTable
         }
 
 
+        public String getSignedOff()
+        {
+            return signedOff ;
+        }
+
+        public void setSignedOff( String signedOff )
+        {
+            this.signedOff = signedOff ;
+        }
+
+
+        public int getSignoffID()
+        {
+            return signoffID ;
+        }
+
+        public void setSignoffID( int signoffID )
+        {
+            this.signoffID = signoffID ;
+            signoffIDNull = false ;
+        }
+
+        public void setSignoffID( Integer signoffID )
+        {
+            signoffIDNull = ( signoffID == null );
+            if ( signoffIDNull )
+            {
+                this.signoffID = 0 ;
+            }
+            else
+            {
+                this.signoffID = signoffID.intValue() ;
+            }
+        }
+
+        public boolean isSignoffIDNull()
+        {
+            return signoffIDNull ;
+        }
+
+        public void setSignoffIDNull( boolean signoffIDNull )
+        {
+            this.signoffIDNull = signoffIDNull ;
+            if ( signoffIDNull )
+            {
+                signoffID = 0 ;
+            }
+        }
+
+
+        public Timestamp getSignoffDate()
+        {
+            return signoffDate ;
+        }
+
+        public void setSignoffDate( Timestamp signoffDate )
+        {
+            this.signoffDate = signoffDate ;
+        }
+
+
         public Timestamp getCreatedDate()
         {
             return createdDate ;
@@ -376,6 +448,9 @@ public class SpacesTable
             data.put( nameColumnName , this.name );
             data.put( descriptionColumnName , this.description );
             data.put( authorIDColumnName , String.valueOf(  this.authorID ) );
+            data.put( signedOffColumnName , this.signedOff );
+            data.put( signoffIDColumnName , this.signoffIDNull ? null : String.valueOf( this.signoffID ) );
+            data.put( signoffDateColumnName , this.signoffDate == null ? null : this.signoffDate.toString() );
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
             data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );
             data.put( deletedColumnName , this.deleted );

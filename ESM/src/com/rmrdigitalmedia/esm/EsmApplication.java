@@ -25,6 +25,7 @@ public class EsmApplication {
 	public EsmApplication() {
 		me = this;
 		Display display = new Display();
+		// create log dir first
 		FilesystemController fs = new FilesystemController();
 		fs.createLogDir();		
 		System.out.println("LOGFILE: " + LogController.logfile);
