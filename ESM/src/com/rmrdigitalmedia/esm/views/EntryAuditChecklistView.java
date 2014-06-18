@@ -656,6 +656,7 @@ public class EntryAuditChecklistView {
 		btnReturn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				// save to DB
 				saveAudit(entryID);
 				int spaceID = WindowController.currentSpaceId;
@@ -675,6 +676,7 @@ public class EntryAuditChecklistView {
 		btnSave.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				// save to DB
 				saveAudit(entryID);
 				// reload screen
@@ -690,6 +692,7 @@ public class EntryAuditChecklistView {
 		btnProceed.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				// save to DB
 				saveAudit(entryID);
 				// next screen
