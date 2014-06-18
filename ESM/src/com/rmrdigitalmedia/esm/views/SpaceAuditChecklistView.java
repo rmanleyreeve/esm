@@ -880,6 +880,7 @@ public class SpaceAuditChecklistView {
 		btnReturn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				// save to DB
 				saveAudit(spaceID);
 				WindowController.showSpaceDetail(spaceID);
@@ -895,6 +896,7 @@ public class SpaceAuditChecklistView {
 		btnSave.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				// save to DB
 				saveAudit(spaceID);
 				// reload screen
@@ -910,6 +912,7 @@ public class SpaceAuditChecklistView {
 		btnProceed.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				// save to DB
 				saveAudit(spaceID);
 				// next screen
