@@ -252,7 +252,7 @@ public class EntryAuditClassificationView {
 		lblHint.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblHint.setFont(C.FONT_12B);
 		lblHint.setText("Hint");
-		CLabel lblOptions = new CLabel(tbl, SWT.NONE);
+		CLabel lblOptions = new CLabel(tbl, SWT.CENTER);
 		GridData gd_lblOptions = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblOptions.widthHint = 150;
 		gd_lblOptions.heightHint = colHeaderH;
@@ -424,33 +424,54 @@ public class EntryAuditClassificationView {
 		footerRow.setLayout(gl_footerRow);
 		footerRow.setBackground(C.APP_BGCOLOR);
 
-		final Button btnB = new Button(footerRow, SWT.NONE);
-		btnB.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
-		btnB.setToolTipText("Save Classification and go to Checklist");
-		btnB.setBackground(C.APP_BGCOLOR);
-		btnB.setFont(C.FONT_11B);
-		btnB.setText("<<");
-		btnB.addSelectionListener(new SelectionAdapter() {
+		final Button btnReturn = new Button(footerRow, SWT.NONE);
+		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
+		btnReturn.setBackground(C.APP_BGCOLOR);
+		btnReturn.setFont(C.FONT_11B);
+		btnReturn.setText("<< Back to Details");
+		btnReturn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				// save to DB
 				saveAudit(entryID);
-				// next screen			
-				WindowController.showEntryAuditChecklist(entryID);
+				int spaceID = WindowController.currentSpaceId;
+				try {
+					spaceID = EntrypointsTable.getRow(entryID).getSpaceID();
+				} catch (SQLException e) {}
+				WindowController.showSpaceDetail(spaceID);
 			}
 		});
 
-		final Label pageLoc = new Label(footerRow, SWT.NONE);
-		pageLoc.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-		pageLoc.setBackground(C.APP_BGCOLOR);
-		pageLoc.setFont(C.FONT_11B);
-		pageLoc.setText("Page 2 of 2");
+		final Button btnSave = new Button(footerRow, SWT.NONE);
+		btnSave.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
+		btnSave.setBackground(C.APP_BGCOLOR);
+		btnSave.setFont(C.FONT_11B);
+		btnSave.setText("Save Classification");
+		btnSave.setImage(C.getImage("/img/16_save.png"));
+		btnSave.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				// save to DB
+				saveAudit(entryID);
+				// reload screen
+				WindowController.showEntryAuditClassification(entryID);
+			}
+		});
 
-		final Button btnF = new Button(footerRow, SWT.NONE);
-		btnF.setBackground(C.APP_BGCOLOR);
-		btnF.setFont(C.FONT_11B);
-		btnF.setText(">>");
-		btnF.setEnabled(false);
+		final Button btnProceed = new Button(footerRow, SWT.NONE);
+		btnProceed.setToolTipText("Save Classification and go to Checklist");
+		btnProceed.setBackground(C.APP_BGCOLOR);
+		btnProceed.setFont(C.FONT_11B);
+		btnProceed.setText("Entry Checklist");
+		btnProceed.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				// save to DB
+				saveAudit(entryID);
+				// next screen
+				WindowController.showEntryAuditChecklist(entryID);
+			}
+		});
 
 		// redraw panel on window resize
 		scrollPanel.setContent(comp);
@@ -460,21 +481,6 @@ public class EntryAuditClassificationView {
 			public void controlResized(ControlEvent e) {
 				Rectangle r = scrollPanel.getClientArea();
 				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
-			}
-		});
-		for (Listener l:WindowController.btnBackToSpaceDetails.getListeners(SWT.Selection)) {
-			WindowController.btnBackToSpaceDetails.removeListener(SWT.Selection, l);
-		}
-		// set back button
-		WindowController.btnBackToSpaceDetails.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {	
-				saveAudit(entryID);
-				int spaceID = WindowController.currentSpaceId;
-				try {
-					spaceID = EntrypointsTable.getRow(entryID).getSpaceID();
-				} catch (SQLException e) {}
-				WindowController.showSpaceDetail(spaceID);
 			}
 		});
 
