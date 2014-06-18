@@ -15,12 +15,13 @@ public class FilesystemController {
 	}
 
 	public void checkFS() {		
-		EsmApplication.appData.setField("LOGDIR",logdir);
 		LogController.log("Running class " + this.getClass().getName());
+		
 		// set up filesystem
 		LogController.log("Platform: " + C.OS);
 		datadir = new File(C.DATA_DIR);
 		LogController.log("PWD: "+current);
+		
 		// create data dir
 		LogController.log("App Data folder: " + datadir);
 		if(datadir.mkdir() ) {
@@ -28,8 +29,10 @@ public class FilesystemController {
 		} else {
 			LogController.log("EXISTS");
 		}
-		AppLoader.message("Creating System Directories");
+		
 		// create sub-dirs====================================
+		AppLoader.message("Creating System Directories");
+		
 		imgdir = new File(C.IMG_DIR);
 		LogController.log("Images folder: " + imgdir);
 		if(imgdir.mkdir() ) {
@@ -65,7 +68,6 @@ public class FilesystemController {
 		return dir.delete(); 
 	}
 
-	// TODO for development ONLY
 	public void deleteDataDir() {
 		datadir = new File(C.DATA_DIR);
 		if(datadir.exists()){
@@ -76,12 +78,11 @@ public class FilesystemController {
 	}
 
 	public void createLogDir() {
-		datadir = new File(C.DATA_DIR);
 		logdir = new File(C.LOG_DIR);
-		if(datadir.mkdir() && logdir.mkdir() ) {
+		if(logdir.mkdir() ) {
 			System.out.println("LOG DIR CREATED: " + logdir);
 		} else {
-			System.out.println("LOG DIR: " + logdir);
+			System.out.println("Did not create LOG DIR: " + logdir);
 		}
 	}
 }

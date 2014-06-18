@@ -26,12 +26,6 @@ public class EsmApplication {
 		me = this;
 		Display display = new Display();
 		FilesystemController fs = new FilesystemController();
-
-		// TODO for development ONLY!!
-		if(confirm("Do complete fresh install and delete ALL existing data?" )) {
-			fs.deleteDataDir();
-		}
-
 		fs.createLogDir();		
 		System.out.println("LOGFILE: " + LogController.logfile);
 		LogController.log("Running class " + me.getClass().getName());

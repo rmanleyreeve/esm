@@ -77,10 +77,10 @@ public class SpacesListView {
 		// do calculations & get image strings
 		//"Completion Status","Internal Classification","Entry Points Classification", "S/O"
 
-		final Hashtable<Integer,String> imagesCS = new Hashtable<Integer,String>();
-		final Hashtable<Integer,String> imagesIC = new Hashtable<Integer,String>();
-		final Hashtable<Integer,String[]> imagesEPC = new Hashtable<Integer,String[]>();
-		final Hashtable<Integer,String> imagesSO = new Hashtable<Integer,String>();
+		final Hashtable<Integer,String> imgCompletionStatus = new Hashtable<Integer,String>();
+		final Hashtable<Integer,String> imgSpaceClassification = new Hashtable<Integer,String>();
+		final Hashtable<Integer,String[]> imgArrayEntryClassification = new Hashtable<Integer,String[]>();
+		final Hashtable<Integer,String> imgSignOff = new Hashtable<Integer,String>();
 
 		try {
 			// loop through spaces (table rows)
@@ -89,32 +89,28 @@ public class SpacesListView {
 
 				// calculate completion status
 				int cs = 0;
-				imagesCS.put(spaceID, "/img/Percent_"+ cs +".png");
-
-				// calculate internal classification status
-				imagesIC.put(spaceID, "/img/red.png");
-
+				imgCompletionStatus.put(spaceID, "/img/Percent_"+ cs +".png");
+	
+				// calculate space classification status
+				imgSpaceClassification.put(spaceID, "/img/red.png");
 				
-				// calculate entrypoint classifications
+				// calculate entrypoint classification status
 				Vector<String> epImgs = new Vector<String>();
 				for (EntrypointsTable.Row eRow : EntrypointsTable.getRows("SPACE_ID", spaceID)) {
+					int epID = eRow.getID();
+					// calculate status
 					epImgs.add("/img/red.png");
 				}				
-				imagesEPC.put(spaceID, epImgs.toArray(new String[epImgs.size()]));
+				imgArrayEntryClassification.put(spaceID, epImgs.toArray(new String[epImgs.size()]));
+
 				// calculate s/o status
-				imagesSO.put(spaceID, "/img/bluetick.png");
+				imgSignOff.put(spaceID, "/img/bluetick.png");
 
-
-			} // end loop
-
-
+			} // end spaces loop
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-
-		//System.out.println(imagesEPC);
-
 
 
 		// based on http://www.ralfebert.de/archive/eclipse_rcp/tableviewerbuilder/
@@ -152,7 +148,7 @@ public class SpacesListView {
 			public Object get(Row r) {
 				int id = r.getID();
 				// we have the row ID so we can return the appropriate image
-				return (String)imagesCS.get(id);
+				return (String)imgCompletionStatus.get(id);
 			}
 		}));
 		col.build();
@@ -167,7 +163,7 @@ public class SpacesListView {
 			public Object get(Row r) {
 				int id = r.getID();
 				// we have the row ID so we can return the appropriate image
-				return (String)imagesIC.get(id);
+				return (String)imgSpaceClassification.get(id);
 			}
 		}));
 		col.build();
@@ -183,7 +179,7 @@ public class SpacesListView {
 				int id = r.getID();			
 				// we have the row ID so we can return the appropriate images array
 				//return new String[] {"/img/green.png","/img/amber.png","/img/red.png"};
-				return (String[])imagesEPC.get(id);
+				return (String[])imgArrayEntryClassification.get(id);
 			}
 		}));
 
@@ -200,7 +196,7 @@ public class SpacesListView {
 			public Object get(Row r) {
 				id = r.getID();
 				// we have the row ID so we can return the appropriate image
-				return (String)imagesSO.get(id);
+				return (String)imgSignOff.get(id);
 			}
 		}));
 		col.build();
