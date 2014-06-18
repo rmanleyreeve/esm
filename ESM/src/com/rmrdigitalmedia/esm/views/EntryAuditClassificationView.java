@@ -252,7 +252,7 @@ public class EntryAuditClassificationView {
 		lblHint.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblHint.setFont(C.FONT_12B);
 		lblHint.setText("Hint");
-		CLabel lblOptions = new CLabel(tbl, SWT.CENTER);
+		CLabel lblOptions = new CLabel(tbl, SWT.LEFT);
 		GridData gd_lblOptions = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblOptions.widthHint = 150;
 		gd_lblOptions.heightHint = colHeaderH;
@@ -425,6 +425,7 @@ public class EntryAuditClassificationView {
 		footerRow.setBackground(C.APP_BGCOLOR);
 
 		final Button btnReturn = new Button(footerRow, SWT.NONE);
+		btnReturn.setToolTipText("Save and return to Space Details");
 		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnReturn.setBackground(C.APP_BGCOLOR);
 		btnReturn.setFont(C.FONT_11B);
@@ -444,6 +445,7 @@ public class EntryAuditClassificationView {
 		});
 
 		final Button btnSave = new Button(footerRow, SWT.NONE);
+		btnSave.setToolTipText("Save Classification");
 		btnSave.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnSave.setBackground(C.APP_BGCOLOR);
 		btnSave.setFont(C.FONT_11B);

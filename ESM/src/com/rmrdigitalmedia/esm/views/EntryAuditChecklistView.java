@@ -649,6 +649,7 @@ public class EntryAuditChecklistView {
 		footerRow.setBackground(C.APP_BGCOLOR);
 
 		final Button btnReturn = new Button(footerRow, SWT.NONE);
+		btnReturn.setToolTipText("Save and return to Space Details");
 		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnReturn.setBackground(C.APP_BGCOLOR);
 		btnReturn.setFont(C.FONT_11B);
@@ -668,6 +669,7 @@ public class EntryAuditChecklistView {
 		});
 
 		final Button btnSave = new Button(footerRow, SWT.NONE);
+		btnSave.setToolTipText("Save Checklist");
 		btnSave.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnSave.setBackground(C.APP_BGCOLOR);
 		btnSave.setFont(C.FONT_11B);
@@ -698,6 +700,7 @@ public class EntryAuditChecklistView {
 				// next screen
 				if(progress<100 || AuditController.calculateEntryChecklistCompletion(entryID)<100) {
 					EsmApplication.alert("Checklist not completed!");
+					parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 				} else {
 					WindowController.showEntryAuditClassification(entryID);
 				}
