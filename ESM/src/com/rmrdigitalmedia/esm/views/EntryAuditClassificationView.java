@@ -386,7 +386,7 @@ public class EntryAuditClassificationView {
 		q4_radio2.setBackground(C.APP_BGCOLOR);
 		if(!empty) q4_radio2.setSelection(aRow.getQ4Boolean()!=null && aRow.getQ4Boolean().equals("N")); 
 		Label q4_col4 = makeColumn4(tbl, false);	
-		if(q4_radio2.getSelection()) { q4_col4.setImage(C.getImage("/img/green.png")); }
+		if(q4_radio1.getSelection()) { q4_col4.setImage(C.getImage("/img/green.png")); }
 		q4_col5 = MakeColumn5(tbl, false);
 		if(!empty) q4_col5.setText( C.notNull(aRow.getQ4Comments()) );
 		sep = Separator(tbl, false);	

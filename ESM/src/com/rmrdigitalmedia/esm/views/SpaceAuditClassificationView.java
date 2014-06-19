@@ -554,7 +554,7 @@ public class SpaceAuditClassificationView {
 				// save to DB
 				saveAudit(spaceID);
 				// reload screen
-				WindowController.showSpaceAuditChecklist(spaceID);
+				WindowController.showSpaceDetail(spaceID);
 			}
 		});		
 		

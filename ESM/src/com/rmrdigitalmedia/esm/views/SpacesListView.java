@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.table.DynamicImageArrayCell;
 import com.rmrdigitalmedia.esm.table.DynamicImageCell;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -93,7 +94,9 @@ public class SpacesListView {
 				imgCompletionStatus.put(spaceID, "/img/Percent_"+ cs +".png");
 	
 				// calculate space classification status
-				imgSpaceClassification.put(spaceID, "/img/red.png");
+				String light = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);
+				imgSpaceClassification.put(spaceID, "/img/"+light+".png");
+				
 				
 				// calculate entrypoint classification status
 				Vector<String> epImgs = new Vector<String>();
@@ -116,7 +119,8 @@ public class SpacesListView {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-
+		
+		String foo = EsmApplication.appData.dump();
 
 		// based on http://www.ralfebert.de/archive/eclipse_rcp/tableviewerbuilder/
 
