@@ -175,6 +175,11 @@ public class AuditController {
 		//
 		return progress;		
 	}
+	
+	public static boolean isSpaceComplete(int spaceID) {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
 	
 	
