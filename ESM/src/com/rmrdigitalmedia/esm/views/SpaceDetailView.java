@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
@@ -79,6 +80,7 @@ public class SpaceDetailView {
 			shell.setSize(1380, 750);
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
 			Composite comp = new Composite(shell, SWT.BORDER);
+			user = EsmUsersTable.getRow(1);
 			SpaceDetailView.buildPage(comp,1);
 			shell.open();
 			while (!shell.isDisposed()) {
@@ -186,6 +188,10 @@ public class SpaceDetailView {
 				}
 			});		
 		}
+		
+		sep = new Label(compL, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1));		
+
 
 		// row 2 - comments header & button bar
 		Composite row2 = new Composite(compL, SWT.NONE);
@@ -540,11 +546,6 @@ public class SpaceDetailView {
 
 
 
-
-
-
-
-
 		// row 3 - photos header & button bar		
 		Group rowRight3 = new Group(compR, SWT.NONE);
 		rowRight3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -580,7 +581,6 @@ public class SpaceDetailView {
 		});
 		btnAddPhoto.setImage(C.getImage("/img/16_image_add.png"));
 		btnAddPhoto.setText("Add");
-
 
 		// PHOTOS ===============================
 		String imgDir = C.IMG_DIR + C.SEP + spaceID + C.SEP;
@@ -658,6 +658,9 @@ public class SpaceDetailView {
 
 
 		// row 4 - docs header & button bar		
+		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
+
 		Group rowRight4 = new Group(compR, SWT.NONE);
 		rowRight4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowRight4 = new GridLayout(3, false);
@@ -738,6 +741,9 @@ public class SpaceDetailView {
 		} // endif files > 0	
 
 		// row 5 - signoff header 		
+		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
+
 		Group rowRight5 = new Group(compR, SWT.NONE);
 		rowRight5.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowRight5 = new GridLayout(3, false);
@@ -755,14 +761,15 @@ public class SpaceDetailView {
 		lblSignoff.setBackground(C.APP_BGCOLOR);
 		lblSignoff.setText("Sign Off");	
 
-		Button btnSignOff = new Button(rowRight5, SWT.NONE);
+		boolean auth = AuditController.isSpaceSignedOff(spaceID);
+		final Button btnSignOff = new Button(rowRight5, SWT.NONE);
 		btnSignOff.setToolTipText("Mark this space as Signed Off (authorized users only)");
 		GridData gd_btnSignOff = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_btnSignOff.verticalIndent = 3;
 		btnSignOff.setLayoutData(gd_btnSignOff);
 		btnSignOff.setImage(C.getImage("/img/bluetick.png"));
 		btnSignOff.setText("Authorize");
-		btnSignOff.setEnabled(user.getAccessLevel()==9);
+		btnSignOff.setEnabled(user.getAccessLevel()==9 && !auth && AuditController.isSpaceComplete(spaceID));
 
 		Label lblAuthBy = new Label(rowRight5, SWT.NONE);
 		lblAuthBy.setFont(C.FONT_10B);
@@ -774,22 +781,38 @@ public class SpaceDetailView {
 		lblAuthName.setFont(C.FONT_10);
 		lblAuthName.setBackground(C.APP_BGCOLOR);
 		lblAuthName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		lblAuthName.setText(C.SPACE_NOT_AUTH);
-		new Label(rowRight5, SWT.NONE);
-
+		if(auth) {
+			try {
+				EsmUsersTable.Row authUser = EsmUsersTable.getRow(sRow.getSignoffID());
+				lblAuthName.setText(authUser.getForename() + " " + authUser.getSurname());
+			} catch (SQLException e1) {}
+		} else {
+			lblAuthName.setText(C.SPACE_NOT_AUTH);
+		}
 		btnSignOff.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				// do database stuff
-				lblAuthName.setText(user.getForename() + " " + user.getSurname());
+				try {
+					SpacesTable.Row uRow = SpacesTable.getRow(spaceID);
+					uRow.setSignedOff("TRUE");
+					uRow.setSignoffID(user.getID());
+					uRow.setSignoffDate(new Timestamp(new Date().getTime()));
+					uRow.update();
+					lblAuthName.setText(user.getForename() + " " + user.getSurname());
+					btnSignOff.setEnabled(false);
+				} catch (SQLException e) {
+					LogController.logEvent(this.getClass(), C.ERROR, "Error saving Space "+spaceID+" signoff data", e);
+				}				
 			}
 		});
 
+		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
 
 
 
-
-
+		
 
 
 		scrollPanelRight.setContent(compR);
