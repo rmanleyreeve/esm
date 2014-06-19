@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
@@ -397,7 +398,7 @@ public class SpaceDetailView {
 
 		Label lblCompletionImg = new Label(rowRight1, SWT.NONE);
 		// work out completion status based on id
-		int cs = 0;
+		int cs = AuditController.calculateOverallCompletionStatus(spaceID);
 		lblCompletionImg.setImage(C.getImage("/img/Percent_"+ cs +".png"));
 		lblCompletionImg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		lblCompletionImg.setBackground(C.APP_BGCOLOR);		
@@ -427,7 +428,7 @@ public class SpaceDetailView {
 
 		Label lblSpaceAuditImg = new Label(rowRight2, SWT.NONE);
 		// work out completion status based on id
-		int scs = AuditController.calculateSpaceChecklistCompletion(spaceID);
+		int scs = (Integer) EsmApplication.appData.getField("SPACE_CHK_"+spaceID);
 		lblSpaceAuditImg.setImage(C.getImage("/img/Percent_"+ scs +".png"));
 		GridData gd_lblSpaceAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditImg.widthHint = 160;
@@ -435,7 +436,9 @@ public class SpaceDetailView {
 		lblSpaceAuditImg.setBackground(C.APP_BGCOLOR);
 
 		Label lblSpaceAuditLight = new Label(rowRight2, SWT.RIGHT);
-		lblSpaceAuditLight.setImage(C.getImage("/img/red.png"));
+		String sTL = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);
+		lblSpaceAuditLight.setImage(C.getImage("/img/"+sTL+".png"));
+
 		GridData gd_lblSpaceAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditLight.horizontalIndent = 10;
 		lblSpaceAuditLight.setLayoutData(gd_lblSpaceAuditLight);
@@ -474,7 +477,8 @@ public class SpaceDetailView {
 
 		// for loop
 		for (final EntrypointsTable.Row epRow:epRows) {
-
+			final int epID = epRow.getID();
+			String epName = epRow.getName();
 			lblEntryPoint = new CLabel(rowRight2, SWT.NONE);
 			lblEntryPoint.setFont(C.FONT_10);
 			gd_lblEntryPoint = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
@@ -483,11 +487,12 @@ public class SpaceDetailView {
 			lblEntryPoint.setLayoutData(gd_lblEntryPoint);
 			lblEntryPoint.setBackground(C.APP_BGCOLOR);
 			lblEntryPoint.setImage(C.getImage("/img/16_door.png"));
-			lblEntryPoint.setText(epRow.getName());
+			lblEntryPoint.setText(epName);
 
 			// work out completion status based on id
-			int epcs = AuditController.calculateEntryChecklistCompletion(epRow.getID());;
 			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
+			int epcs = AuditController.calculateEntryChecklistCompletion(epID);
+			//int epcs = (Integer) EsmApplication.appData.getField("ENTRY_CHK_"+epID);
 			lblEntryPointAuditImg.setImage(C.getImage("/img/Percent_"+ epcs +".png"));
 			gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 			gd_lblEntryPointAuditImg.widthHint = 160;
@@ -496,7 +501,8 @@ public class SpaceDetailView {
 			lblEntryPointAuditImg.setBackground(C.APP_BGCOLOR);
 
 			lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
-			lblEntryPointAuditLight.setImage(C.getImage("/img/red.png"));
+			String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+epID);
+			lblEntryPointAuditLight.setImage(C.getImage("/img/"+epTL+".png"));
 			gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 			gd_lblEntryPointAuditLight.horizontalIndent = 10;
 			gd_lblEntryPointAuditLight.heightHint = rh;
@@ -504,7 +510,7 @@ public class SpaceDetailView {
 			lblEntryPointAuditLight.setBackground(C.APP_BGCOLOR);
 
 			btnShowEntryAudit = new Button(rowRight2, SWT.NONE);
-			btnShowEntryAudit.setToolTipText("Launch the Entry Point Audit for " + epRow.getName());
+			btnShowEntryAudit.setToolTipText("Launch the Entry Point Audit for " + epName);
 			gd_btnShowEntryAudit = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
 			//gd_btnEditAudit.verticalIndent = 3;
 			gd_btnShowEntryAudit.heightHint = rh;
@@ -514,7 +520,7 @@ public class SpaceDetailView {
 			btnShowEntryAudit.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent arg0) {
-					WindowController.showEntryAuditChecklist(epRow.getID());
+					WindowController.showEntryAuditChecklist(epID);
 				}
 			});
 
