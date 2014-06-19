@@ -12,15 +12,9 @@ import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class AuditController {
 
-	private static boolean isY(String s){
-		return (s !=null && s.equals("Y"));
-	}
-	private static boolean isN(String s){
-		return (s !=null && s.equals("N"));
-	}
-
+	
 	// INTERNAL SPACE CHECKLIST
-	public static int calculateSpaceChecklistCompletion(int spaceID) {
+	public static void calculateSpaceChecklistCompletion(int spaceID) {
 		double percent = 0;
 		int progress = 0;
 		int max = 0;
@@ -58,12 +52,54 @@ public class AuditController {
 		}
 		System.out.println("Space "+spaceID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
 		EsmApplication.appData.setField("SPACE_CHK_"+spaceID, progress);
-		return progress;		
 	}
 	
+	// INTERNAL SPACE CLASSIFICATION
+	public static void calculateSpaceClassificationCompletion(int spaceID) {
+		double percent = 0;
+		int progress = 0;
+		int max = 0;
+		int score = 0;
+		ArrayList<Integer> status = new ArrayList<Integer>();
+		String light = "red";
+		SpaceClassificationAuditTable.Row row = null;
+		try {
+			row = SpaceClassificationAuditTable.getRow("SPACE_ID", ""+spaceID);
+		} catch (SQLException ex) {
+			LogController.logEvent(AuditController.class, C.FATAL, ex);		
+		}
+		if(row != null) {
+			int q1 = row.getQ1Value(); if( q1!=0 ) { score +=1; status.add(q1);} 
+			int q2 = row.getQ2Value(); if( q2!=0 ) { score +=1; status.add(q2); }
+			int q3 = row.getQ3Value(); if( q3!=0 ) { score +=1; status.add(q3); }
+			int q4 = row.getQ4Value(); if( q4!=0 ) { score +=1; if(q4==5) { status.add(3); } else if (q4==1) { status.add(1); } else { status.add(2); } }
+			int q5 = row.getQ5Value(); if( q5!=0 ) { score +=1; status.add(q5); }
+			int q6 = row.getQ6Value(); if( q6!=0 ) { score +=1; status.add(q6); }
+			String q7 = row.getQ7Boolean(); if(q7!=null) { score +=1; if(isY(q7)) { status.add(1); } else if(isN(q7)) { status.add(3); } }
+			String q8 = row.getQ8Boolean(); if(q8!=null) { score +=1; if(isY(q8)) { status.add(1); } else if(isN(q8)) { status.add(3); } }
+			max = 8;
+			try {
+				if( isN(SpaceChecklistAuditTable.getRow("SPACE_ID", ""+spaceID).getQ7Boolean())  ) {
+					max = 7;
+				}
+			} catch (SQLException ex) {}
+			percent = Math.round( ( (float)score/max ) * 100 );
+			progress = (int) Math.floor(percent/10 ) * 10;			
+		}
+		System.out.println(status.toString());
+		if(status.contains(3) && !status.contains(1) && !status.contains(2)) { light = "green"; }
+		if(status.contains(2) && !status.contains(1)) { light = "amber"; }	
+		
+		System.out.println("Space " + spaceID + "status array: " + status.toString());
+		System.out.println("Space "+spaceID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );		
+		EsmApplication.appData.setField("SPACE_CLASS_"+spaceID, progress);
+		EsmApplication.appData.setField("SPACE_STATUS_"+spaceID, light);
+	}
+
+	//=========================================================================================================================
 	
 	// ENTRY POINT CHECKLIST
-	public static int calculateEntryChecklistCompletion(int entryID) {
+	public static void calculateEntryChecklistCompletion(int entryID) {
 		double percent = 0;
 		int progress = 0;
 		int max = 0;
@@ -103,51 +139,6 @@ public class AuditController {
 		}
 		System.out.println("Entry "+entryID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress);		
 		EsmApplication.appData.setField("ENTRY_CHK_"+entryID, progress);
-		return progress;		
-	}
-
-	// INTERNAL SPACE CLASSIFICATION
-	public static int calculateSpaceClassificationCompletion(int spaceID) {
-		double percent = 0;
-		int progress = 0;
-		int max = 0;
-		int score = 0;
-		ArrayList<Integer> status = new ArrayList<Integer>();
-		String light = "red";
-		SpaceClassificationAuditTable.Row row = null;
-		try {
-			row = SpaceClassificationAuditTable.getRow("SPACE_ID", ""+spaceID);
-		} catch (SQLException ex) {
-			LogController.logEvent(AuditController.class, C.FATAL, ex);		
-		}
-		if(row != null) {
-			int q1 = row.getQ1Value(); if( q1!=0 ) { score +=1; status.add(q1);} 
-			int q2 = row.getQ2Value(); if( q2!=0 ) { score +=1; status.add(q2); }
-			int q3 = row.getQ3Value(); if( q3!=0 ) { score +=1; status.add(q3); }
-			int q4 = row.getQ4Value(); if( q4!=0 ) { score +=1; if(q4==5) { status.add(3); } else if (q4==1) { status.add(1); } else { status.add(2); } }
-			int q5 = row.getQ5Value(); if( q5!=0 ) { score +=1; status.add(q5); }
-			int q6 = row.getQ6Value(); if( q6!=0 ) { score +=1; status.add(q6); }
-			String q7 = row.getQ7Boolean(); if(q7!=null) { score +=1; if(isY(q7)) { status.add(1); } else if(isN(q7)) { status.add(3); } }
-			String q8 = row.getQ8Boolean(); if(q8!=null) { score +=1; if(isY(q8)) { status.add(1); } else if(isN(q8)) { status.add(3); } }
-			max = 8;
-			try {
-				if( isN(SpaceChecklistAuditTable.getRow("SPACE_ID", ""+spaceID).getQ7Boolean())  ) {
-					max = 7;
-				}
-			} catch (SQLException ex) {}
-			percent = Math.round( ( (float)score/max ) * 100 );
-			progress = (int) Math.floor(percent/10 ) * 10;			
-		}
-		System.out.println(status.toString());
-		if(status.contains(3) && !status.contains(1) && !status.contains(2)) { light = "green"; }
-		if(status.contains(2) && !status.contains(1)) { light = "amber"; }	
-		
-		System.out.println(status.toString());
-		System.out.println("Space "+spaceID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );		
-		EsmApplication.appData.setField("SPACE_CLASS_"+spaceID, progress);
-		EsmApplication.appData.setField("SPACE_STATUS_"+spaceID, light);
-		
-		return progress;		
 	}
 
 	// ENTRY POINT CLASSIFICATION
@@ -184,13 +175,14 @@ public class AuditController {
 		} catch (SQLException e) {}
 		return so;
 	}
-
+	
 	public static int calculateOverallCompletionStatus(int spaceID) {
 		int progress = 0;
-		progress += calculateSpaceChecklistCompletion(spaceID);
-		progress += calculateSpaceClassificationCompletion(spaceID);
+		calculateSpaceChecklistCompletion(spaceID);
+		calculateSpaceClassificationCompletion(spaceID);
+		progress += (Integer) EsmApplication.appData.getField("SPACE_CHK_"+spaceID);
+		progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_"+spaceID);
 		return (int) Math.floor((progress/2)/10 ) * 10;
-
 	}
 	
 	public static boolean isSpaceComplete(int spaceID) {
@@ -198,6 +190,12 @@ public class AuditController {
 		return true;
 	}
 
+	private static boolean isY(String s){
+		return (s !=null && s.equals("Y"));
+	}
+	private static boolean isN(String s){
+		return (s !=null && s.equals("N"));
+	}
 	
 	
 }
