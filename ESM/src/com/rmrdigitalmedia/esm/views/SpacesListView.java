@@ -88,7 +88,6 @@ public class SpacesListView {
 		final Hashtable<Integer,String[]> imgArrayEntryClassification = new Hashtable<Integer,String[]>();
 		final Hashtable<Integer,String> imgSignOff = new Hashtable<Integer,String>();
 
-		
 		try {
 			// loop through spaces (table rows)
 			for (SpacesTable.Row sRow : SpacesTable.getAllRows()) {
@@ -188,6 +187,7 @@ public class SpacesListView {
 		col = tvb.createColumn("Entry Points Classification");
 		col.setPixelWidth(220);
 		col.alignCenter();
+
 		col.setCustomLabelProvider(new DynamicImageArrayCell(new BaseValue<Row>() {			
 			@Override
 			public Object get(Row r) {
@@ -197,6 +197,8 @@ public class SpacesListView {
 				return (String[])imgArrayEntryClassification.get(id);
 			}
 		}));
+
+
 		col.build();
 
 		// signed off --------------------------------------------------------------------------------------

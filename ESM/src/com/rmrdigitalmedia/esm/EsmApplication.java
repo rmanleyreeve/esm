@@ -33,7 +33,7 @@ public class EsmApplication {
 				display.syncExec(new Runnable() {
 					public void run() {
 						// notify GUI
-						System.out.println("COMPLETE");
+						//System.out.println("COMPLETE");
 					}
 
 				});			

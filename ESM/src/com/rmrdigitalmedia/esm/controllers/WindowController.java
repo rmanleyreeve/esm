@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Arrays;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -24,7 +23,6 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
@@ -376,7 +374,7 @@ public class WindowController {
 		showSpacesList();
 
 	}
-	
+
 	// methods to display pages etc
 	void showSpacesList(){
 		LogController.log("Displaying Space List page");
@@ -395,6 +393,7 @@ public class WindowController {
 		btnSpacesList.setVisible(false);
 		stackLayout.topControl = pageSpacesList;
 		pageTitle.setText(C.SPACES_LIST_TITLE);
+		SpacesListView.getTV().refresh(true);
 		formHolder.layout();
 	}
 
@@ -513,5 +512,5 @@ public class WindowController {
 		new PhotoViewer(shell, fullPath, thumbPath, spaceID);			
 	}
 
-	
+
 }
