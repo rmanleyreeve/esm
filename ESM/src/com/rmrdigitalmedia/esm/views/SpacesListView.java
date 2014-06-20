@@ -8,6 +8,7 @@ import java.util.Vector;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -16,6 +17,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.wb.swt.SWTResourceManager;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.table.DynamicImageArrayCell;
@@ -74,8 +76,10 @@ public class SpacesListView {
 		return table;
 	}
 
-	public static void buildTable(Composite parent) {	
+	public static void buildTable(Composite parent) {
 
+		LogController.log("Building Space List page");
+		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 		// do calculations & get image strings
 		//"Completion Status","Internal Classification","Entry Points Classification", "S/O"
 
@@ -84,6 +88,7 @@ public class SpacesListView {
 		final Hashtable<Integer,String[]> imgArrayEntryClassification = new Hashtable<Integer,String[]>();
 		final Hashtable<Integer,String> imgSignOff = new Hashtable<Integer,String>();
 
+		
 		try {
 			// loop through spaces (table rows)
 			for (SpacesTable.Row sRow : SpacesTable.getAllRows()) {
@@ -92,18 +97,20 @@ public class SpacesListView {
 				// calculate completion status
 				int cs = AuditController.calculateOverallCompletionStatus(spaceID);
 				imgCompletionStatus.put(spaceID, "/img/Percent_"+ cs +".png");
-	
+
 				// calculate space classification status
 				String light = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);
 				imgSpaceClassification.put(spaceID, "/img/"+light+".png");
-				
-				
+
 				// calculate entrypoint classification status
 				Vector<String> epImgs = new Vector<String>();
 				for (EntrypointsTable.Row eRow : EntrypointsTable.getRows("SPACE_ID", spaceID)) {
 					int epID = eRow.getID();
 					// calculate status
-					epImgs.add("/img/red.png");
+					AuditController.calculateEntryClassificationCompletion(epID);
+					String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+epID);
+					if(epTL.equals("")) { epTL = "red"; }
+					epImgs.add("/img/"+epTL+".png");
 				}				
 				imgArrayEntryClassification.put(spaceID, epImgs.toArray(new String[epImgs.size()]));
 
@@ -119,8 +126,8 @@ public class SpacesListView {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		
-		String foo = EsmApplication.appData.dump();
+
+		//String foo = EsmApplication.appData.dump();
 
 		// based on http://www.ralfebert.de/archive/eclipse_rcp/tableviewerbuilder/
 
@@ -181,7 +188,6 @@ public class SpacesListView {
 		col = tvb.createColumn("Entry Points Classification");
 		col.setPixelWidth(220);
 		col.alignCenter();
-
 		col.setCustomLabelProvider(new DynamicImageArrayCell(new BaseValue<Row>() {			
 			@Override
 			public Object get(Row r) {
@@ -191,8 +197,6 @@ public class SpacesListView {
 				return (String[])imgArrayEntryClassification.get(id);
 			}
 		}));
-
-
 		col.build();
 
 		// signed off --------------------------------------------------------------------------------------
@@ -237,6 +241,8 @@ public class SpacesListView {
 			}
 		});
 
+		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
+		
 	}
 
 }

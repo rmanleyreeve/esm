@@ -491,7 +491,11 @@ public class SpaceDetailView {
 
 			// work out completion status based on id
 			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
-			int epcs = (Integer) EsmApplication.appData.getField("ENTRY_CHK_"+epID);
+			AuditController.calculateEntryChecklistCompletion(epID);
+			int epcs = 0;
+			try {
+				epcs = (Integer) EsmApplication.appData.getField("ENTRY_CHK_"+epID);
+			} catch (Exception ex) {}
 			lblEntryPointAuditImg.setImage(C.getImage("/img/Percent_"+ epcs +".png"));
 			gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 			gd_lblEntryPointAuditImg.widthHint = 160;
@@ -500,7 +504,9 @@ public class SpaceDetailView {
 			lblEntryPointAuditImg.setBackground(C.APP_BGCOLOR);
 
 			lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
+			AuditController.calculateEntryClassificationCompletion(epID);
 			String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+epID);
+			if(epTL.equals("")) { epTL = "red"; }
 			lblEntryPointAuditLight.setImage(C.getImage("/img/"+epTL+".png"));
 			gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 			gd_lblEntryPointAuditLight.horizontalIndent = 10;

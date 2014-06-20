@@ -219,7 +219,7 @@ public class EntryAuditClassificationView {
 		gd_lblStatusImg.horizontalIndent = 10;
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
 		// progress image
-		int progress = AuditController.calculateEntryClassificationCompletion(entryID);
+		final int progress = (Integer) EsmApplication.appData.getField("ENTRY_CLASS_"+entryID);
 		lblStatusImg.setImage(C.getImage("/img/Percent_"+progress+".png"));
 
 		//table layout

@@ -103,8 +103,8 @@ public class WindowController {
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shell.setLocation (x, y);		
-		createContents();
 		shell.open();
+		createContents();
 		shell.layout();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -376,20 +376,8 @@ public class WindowController {
 		showSpacesList();
 
 	}
-
-	// methods to display alerts etc
-	public static void checkSpaceAlert(int id) {
-		boolean showAlert = false;
-		// get internal classification status from ID	
-		showAlert = true;
-		if(showAlert){			
-			new SpaceAlert(shell);			
-		}
-		showSpaceDetail(id);
-	}
-	public static void showPhotoViewer(int spaceID, String fullPath, String thumbPath) {
-		new PhotoViewer(shell, fullPath, thumbPath, spaceID);			
-	}
+	
+	// methods to display pages etc
 	void showSpacesList(){
 		LogController.log("Displaying Space List page");
 		try {
@@ -410,7 +398,6 @@ public class WindowController {
 		formHolder.layout();
 	}
 
-	// methods to display pages etc
 	void showAdministration() {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
@@ -512,5 +499,19 @@ public class WindowController {
 		formHolder.layout();
 	}
 
+	// methods to display alerts etc
+	public static void checkSpaceAlert(int spaceID) {
+		boolean showAlert = false;
+		// get internal classification status from ID	
+		showAlert = (EsmApplication.appData.getField("SPACE_STATUS_"+spaceID).equals("red"));
+		if(showAlert){			
+			new SpaceAlert(shell);			
+		}
+		showSpaceDetail(spaceID);
+	}
+	public static void showPhotoViewer(int spaceID, String fullPath, String thumbPath) {
+		new PhotoViewer(shell, fullPath, thumbPath, spaceID);			
+	}
 
+	
 }
