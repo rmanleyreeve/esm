@@ -1,13 +1,12 @@
 package com.rmrdigitalmedia.esm;
 
 import java.io.IOException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-
+import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -23,6 +22,13 @@ public class EsmApplication {
 	public static WindowController wc;
 
 	public EsmApplication() {
+		// background thread for audit init
+		Thread auditInit = new Thread() {
+			public void run() {
+				AuditController.init();
+			}
+		};
+
 		me = this;
 		Display display = new Display();
 		// create log dir first
@@ -30,10 +36,13 @@ public class EsmApplication {
 		fs.createLogDir();		
 		System.out.println("LOGFILE: " + LogController.logfile);
 		LogController.log("Running class " + me.getClass().getName());
-		LogController.log("Starting ESM Application...");    
+		LogController.log("Starting ESM Application...");   
 		appData = new AppData();
+		
+		// do initial audit calculations in background thread
+		auditInit.start();
+		
 		loader = new AppLoader(display);
-
 		while(!display.isDisposed() && display.getShells().length != 0 && !Display.getCurrent().getShells()[0].isDisposed()){
 			if(!display.readAndDispatch()){
 				display.sleep();
@@ -75,7 +84,7 @@ public class EsmApplication {
 		MessageBox mb =  new MessageBox(sh, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 		mb.setText("Attention");
 		mb.setMessage(msg);
-		
+
 		int returnCode = mb.open(); 
 		return (returnCode == 32);
 	}

@@ -3,11 +3,11 @@ package com.rmrdigitalmedia.esm.controllers;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
@@ -49,9 +48,11 @@ public class LoginController {
 	}
 
 	void submit() {
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		//submit login info for verification, if OK then run main App
 		String un = txt_Username.getText();
 		String pw = txt_Password.getText();
+		shell.setCursor(new Cursor(display, SWT.CURSOR_ARROW));
 		if(un != "" && pw != "") {
 			LogController.log("LoginController: " + un + "/" + pw);				
 			if(DatabaseController.verifyLogin(un,pw)) {	
@@ -233,7 +234,7 @@ public class LoginController {
 		shell.setBounds(rect);	 
 		shell.open();
 		LogController.log("Awaiting user input...");
-
+		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();

@@ -908,7 +908,7 @@ public class SpaceAuditChecklistView {
 		btnProceed.setToolTipText("Save Checklist and go to Classification");
 		btnProceed.setBackground(C.APP_BGCOLOR);
 		btnProceed.setFont(C.FONT_11B);
-		btnProceed.setText("Proceed to Classification >>");
+		btnProceed.setText("Space Classification >>");
 		btnProceed.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
