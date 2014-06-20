@@ -17,7 +17,7 @@ public class AuditController {
 	public static void init() {
 		// do initial audit calculations here
 		long startTime = System.currentTimeMillis();
-		LogController.log("Space audits calculation started");
+		LogController.log("Initial Space audits calculation started");
 		try {
 			for (SpacesTable.Row sRow : SpacesTable.getAllRows()) {
 				int spaceID = sRow.getID();
@@ -25,15 +25,14 @@ public class AuditController {
 				AuditController.calculateSpaceClassificationCompletion(spaceID);
 			}
 			LogController.log("Space audits calculation completed in " + (System.currentTimeMillis() - startTime) + "ms");
-			/*
 			startTime = System.currentTimeMillis();
+			LogController.log("Initial Entry audits calculation started");
 			for (EntrypointsTable.Row epRow : EntrypointsTable.getAllRows()) {
 				int entryID = epRow.getID();
-				AuditController.calculateEntryChecklistCompletion(entryID);
+				//AuditController.calculateEntryChecklistCompletion(entryID);
 				AuditController.calculateEntryClassificationCompletion(entryID);				
 			}
 			LogController.log("Entry audits calculation completed in " + (System.currentTimeMillis() - startTime) + "ms");
-			*/
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
