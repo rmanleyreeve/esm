@@ -491,8 +491,7 @@ public class SpaceDetailView {
 
 			// work out completion status based on id
 			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
-			int epcs = AuditController.calculateEntryChecklistCompletion(epID);
-			//int epcs = (Integer) EsmApplication.appData.getField("ENTRY_CHK_"+epID);
+			int epcs = (Integer) EsmApplication.appData.getField("ENTRY_CHK_"+epID);
 			lblEntryPointAuditImg.setImage(C.getImage("/img/Percent_"+ epcs +".png"));
 			gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 			gd_lblEntryPointAuditImg.widthHint = 160;

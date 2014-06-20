@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -30,7 +29,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -271,7 +269,7 @@ public class SpaceAuditChecklistView {
 		gd_lblStatusImg.horizontalIndent = 10;
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
 		// progress image
-		final int progress = AuditController.calculateSpaceChecklistCompletion(spaceID);
+		final int progress = (Integer) EsmApplication.appData.getField("SPACE_CHK_"+spaceID);
 		lblStatusImg.setImage(C.getImage("/img/Percent_"+progress+".png"));
 	
 		//table layout
@@ -918,7 +916,7 @@ public class SpaceAuditChecklistView {
 				// save to DB
 				saveAudit(spaceID);
 				// next screen
-				if(progress<100 || AuditController.calculateSpaceChecklistCompletion(spaceID)<100) {
+				if(progress<100) {
 					EsmApplication.alert("Checklist not completed!");
 					parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 				} else {
@@ -1064,6 +1062,7 @@ public class SpaceAuditChecklistView {
 			} catch (SQLException e) {
 				LogController.logEvent(SpaceAuditChecklistView.class, C.FATAL, "ERROR UPDATE SPACE CHECKLIST ROW", e);
 			}
+			AuditController.calculateSpaceChecklistCompletion(spaceID);
 		}
 	}
 
