@@ -22,15 +22,24 @@ public class EsmApplication {
 	public static WindowController wc;
 
 	public EsmApplication() {
-		// background thread for audit init
+		me = this;
+		final Display display = new Display();
+
+		// background thread
 		Thread auditInit = new Thread() {
 			public void run() {
+				// do expensive processing
 				AuditController.init();
+				display.syncExec(new Runnable() {
+					public void run() {
+						// notify GUI
+						System.out.println("COMPLETE");
+					}
+
+				});			
 			}
 		};
 
-		me = this;
-		Display display = new Display();
 		// create log dir first
 		FilesystemController fs = new FilesystemController();
 		fs.createLogDir();		
@@ -38,10 +47,10 @@ public class EsmApplication {
 		LogController.log("Running class " + me.getClass().getName());
 		LogController.log("Starting ESM Application...");   
 		appData = new AppData();
-		
+
 		// do initial audit calculations in background thread
 		auditInit.start();
-		
+
 		loader = new AppLoader(display);
 		while(!display.isDisposed() && display.getShells().length != 0 && !Display.getCurrent().getShells()[0].isDisposed()){
 			if(!display.readAndDispatch()){
