@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -29,7 +28,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -252,7 +250,7 @@ public class EntryAuditChecklistView {
 		gd_lblStatusImg.horizontalIndent = 10;
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
 		// progress image
-		final int progress = AuditController.calculateEntryChecklistCompletion(entryID);
+		final int progress = (Integer) EsmApplication.appData.getField("ENTRY_CHK_"+entryID);
 		lblStatusImg.setImage(C.getImage("/img/Percent_"+progress+".png"));
 		//lblStatusImg.setText("Calc: "+ progress + "%");
 
@@ -698,7 +696,7 @@ public class EntryAuditChecklistView {
 				// save to DB
 				saveAudit(entryID);
 				// next screen
-				if(progress<100 || AuditController.calculateEntryChecklistCompletion(entryID)<100) {
+				if(progress<100) {
 					EsmApplication.alert("Checklist not completed!");
 					parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 				} else {
@@ -796,6 +794,7 @@ public class EntryAuditChecklistView {
 			} catch (SQLException e) {
 				LogController.logEvent(EntryAuditChecklistView.class, C.FATAL, "ERROR UPDATE ENTRYPOINT CHECKLIST ROW", e);
 			}
+			AuditController.calculateEntryChecklistCompletion(entryID);
 		}
 
 	}

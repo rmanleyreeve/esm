@@ -75,8 +75,8 @@ public class AuditController {
 			int q4 = row.getQ4Value(); if( q4!=0 ) { score +=1; if(q4==5) { status.add(3); } else if (q4==1) { status.add(1); } else { status.add(2); } }
 			int q5 = row.getQ5Value(); if( q5!=0 ) { score +=1; status.add(q5); }
 			int q6 = row.getQ6Value(); if( q6!=0 ) { score +=1; status.add(q6); }
-			String q7 = row.getQ7Boolean(); if(q7!=null) { score +=1; if(isY(q7)) { status.add(1); } else if(isN(q7)) { status.add(3); } }
-			String q8 = row.getQ8Boolean(); if(q8!=null) { score +=1; if(isY(q8)) { status.add(1); } else if(isN(q8)) { status.add(3); } }
+			String q7 = row.getQ7Boolean(); if(q7!=null) { score +=1; if(isY(q7)) { status.add(1); } else if(isN(q7)) { status.add(3); } } // N = green
+			String q8 = row.getQ8Boolean(); if(q8!=null) { score +=1; if(isY(q8)) { status.add(1); } else if(isN(q8)) { status.add(3); } } // N = green
 			max = 8;
 			try {
 				if( isN(SpaceChecklistAuditTable.getRow("SPACE_ID", ""+spaceID).getQ7Boolean())  ) {
@@ -88,8 +88,7 @@ public class AuditController {
 		}
 		System.out.println(status.toString());
 		if(status.contains(3) && !status.contains(1) && !status.contains(2)) { light = "green"; }
-		if(status.contains(2) && !status.contains(1)) { light = "amber"; }	
-		
+		if(status.contains(2) && !status.contains(1)) { light = "amber"; }			
 		System.out.println("Space " + spaceID + "status array: " + status.toString());
 		System.out.println("Space "+spaceID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );		
 		EsmApplication.appData.setField("SPACE_CLASS_"+spaceID, progress);
@@ -142,11 +141,14 @@ public class AuditController {
 	}
 
 	// ENTRY POINT CLASSIFICATION
+	@SuppressWarnings("unused")
 	public static int calculateEntryClassificationCompletion(int entryID) {
 		double percent = 0;
 		int progress = 0;
 		int max = 0;
 		int score = 0;
+		ArrayList<Integer> status = new ArrayList<Integer>();
+		String light = "red";
 		EntrypointClassificationAuditTable.Row row = null;
 		try {
 			row = EntrypointClassificationAuditTable.getRow("ENTRYPOINT_ID", ""+entryID);
@@ -154,15 +156,19 @@ public class AuditController {
 			LogController.logEvent(AuditController.class, C.FATAL, ex);		
 		}
 		if(row != null) {
-			if( row.getQ1Value()!=0 ) { score +=1; }
-			if( row.getQ2Value()!=0 ) { score +=1; }
-			if( row.getQ3Value()!=0 ) { score +=1; }
-			if(row.getQ4Boolean()!=null) { score +=1; }
-			if( row.getQ5Value()!=0 ) { score +=1; }
+			int q1 = row.getQ1Value(); if( q1!=0 ) { score +=1; status.add(q1); }
+			int q2 = row.getQ1Value(); if( q2!=0 ) { score +=1; status.add(q2); }
+			int q3 = row.getQ1Value(); if( q3!=0 ) { score +=1; status.add(q3); }
+			String q4 = row.getQ4Boolean(); if(q4!=null) { score +=1; if(isY(q4)) { status.add(3); } else if(isN(q4)) { status.add(1); } }  // Y = green
+			int q5 = row.getQ1Value(); if( q5!=0 ) { score +=1; status.add(q5); }
 			max = 5;
 			percent = Math.round( ( (float)score/max ) * 100 );
 			progress = (int) Math.floor(percent/10 ) * 10;			
 		}
+		System.out.println(status.toString());
+		if(status.contains(3) && !status.contains(1) && !status.contains(2)) { light = "green"; }
+		if(status.contains(2) && !status.contains(1)) { light = "amber"; }		
+		System.out.println("Entry " + entryID + "status array: " + status.toString());
 		System.out.println("Entry "+entryID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );		
 		EsmApplication.appData.setField("ENTRY_CLASS_"+entryID, progress);
 		return progress;		
