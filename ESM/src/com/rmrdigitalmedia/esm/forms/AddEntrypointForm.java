@@ -38,10 +38,10 @@ public class AddEntrypointForm {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public static void main(String[] args) {
+	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			AddEntrypointForm nef = new AddEntrypointForm(1, 1);
+			AddEntrypointForm nef = new AddEntrypointForm(1,1);
 			nef.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -52,33 +52,31 @@ public class AddEntrypointForm {
 		LogController.log("Running class " + this.getClass().getName());
 		spaceID = _spaceID;
 		authorID = _authorID;
-	}
+	}	
 
-	public boolean complete() {
+	public boolean complete() {	
 
 		Display display = Display.getDefault();
-		final Shell shell = new Shell(display, SWT.DIALOG_TRIM);
+		final Shell shell = new Shell (display, SWT.DIALOG_TRIM);
 		this.myshell = shell;
 		shell.setSize(400, 280);
 		shell.setText("Videotel ESM");
-		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16),
-				C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
+		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Composite container = new Composite(shell, SWT.NONE);
-		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		container.setLayout(new FormLayout());
+		Composite container = new Composite(shell,SWT.NONE);
+		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
+		container.setLayout(new FormLayout());		
 
-		// set up row elements & positions
-		// =======================================================
-		Composite header = new Composite(container, SWT.NONE);
+		//set up row elements & positions =======================================================
+		Composite header = new Composite(container,SWT.NONE);
 		header.setBackground(C.TITLEBAR_BGCOLOR);
-		header.setLayout(new FormLayout());
+		header.setLayout(new FormLayout());		
 		FormData fd_header = new FormData();
-		fd_header.top = new FormAttachment(container, 0);
-		fd_header.right = new FormAttachment(100, 0);
-		fd_header.bottom = new FormAttachment(container, headerH);
-		fd_header.left = new FormAttachment(0, 0);
+		fd_header.top = new FormAttachment(container,0);
+		fd_header.right = new FormAttachment(100,0);
+		fd_header.bottom = new FormAttachment(container,headerH);
+		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);
 
 		Label lblImg = new Label(header, SWT.NONE);
@@ -98,16 +96,16 @@ public class AddEntrypointForm {
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("ENTER SPACE / ENTRYPOINT DETAILS");
 
-		Composite formHolder = new Composite(container, SWT.BORDER);
+		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
 		fd_formHolder.left = new FormAttachment(0);
-		fd_formHolder.top = new FormAttachment(header, 0);
+		fd_formHolder.top = new FormAttachment(header,0);
 		fd_formHolder.right = new FormAttachment(100);
 		fd_formHolder.bottom = new FormAttachment(100);
 		formHolder.setLayoutData(fd_formHolder);
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Composite form = new Composite(formHolder, SWT.NONE);
+		Composite form = new Composite(formHolder,SWT.NONE);
 		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 10;
@@ -119,38 +117,35 @@ public class AddEntrypointForm {
 
 		Label lblEName = new Label(form, SWT.NONE);
 		lblEName.setBackground(C.APP_BGCOLOR);
-		lblEName.setText("Entry Point Name:");
+		lblEName.setText("Entry Point Name:");		
 		ep_name = new Text(form, SWT.BORDER);
-		GridData gd_ename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1,
-				1);
+		GridData gd_ename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_ename.widthHint = 230;
 		ep_name.setLayoutData(gd_ename);
 
 		Label lblEDesc = new Label(form, SWT.NONE);
 		lblEDesc.setBackground(C.APP_BGCOLOR);
-		lblEDesc.setText("Entry Point\nDescription:");
+		lblEDesc.setText("Entry Point\nDescription:");	
 		ep_description = new Text(form, SWT.BORDER | SWT.MULTI);
-		GridData gd_edesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1,
-				1);
+		GridData gd_edesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_edesc.heightHint = 80;
 		gd_edesc.widthHint = 230;
-		ep_description.setLayoutData(gd_edesc);
+		ep_description.setLayoutData(gd_edesc);		
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
 
-		// ==================================================================
+		//==================================================================		
 
-		Button ok = new Button(form, SWT.PUSH);
+		Button ok = new Button (form, SWT.PUSH);
 		ok.setToolTipText("Click to save these details");
 		ok.setFont(C.FONT_10);
-		ok.setText("Submit");
-		ok.addSelectionListener(new SelectionAdapter() {
+		ok.setText ("Submit");
+		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Text[] fields = { ep_name, ep_description };
-				Validation.validateFields(fields);
-				if (Validation.validateFields(fields)) {
+			public void widgetSelected (SelectionEvent e) {
+				Text[] fields = {ep_name,ep_description}; Validation.validateFields(fields);				
+				if( Validation.validateFields(fields) ) {
 					try {
 						EntrypointsTable.Row epRow = EntrypointsTable.getRow();
 						epRow.setName(ep_name.getText());
@@ -161,40 +156,36 @@ public class AddEntrypointForm {
 						epRow.setAuthorID(authorID);
 						epRow.setDeleted("FALSE");
 						int epID = (int) epRow.insert();
-						LogController.log("Entry Point " + epID
-								+ " added to database.");
+						LogController.log("Entry Point "+epID+" added to database.");				        
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
-					}
+					}					
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
-					}
-					shell.close();
+					} catch (InterruptedException e1) {}
+					shell.close ();
 				} else {
 					Validation.validateError(myshell);
 				}
 			}
-		});
+		});	
 
-		Monitor primary = display.getPrimaryMonitor();
-		Rectangle bounds = primary.getBounds();
-		Rectangle rect = shell.getBounds();
+		Monitor primary = display.getPrimaryMonitor ();
+		Rectangle bounds = primary.getBounds ();
+		Rectangle rect = shell.getBounds ();
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
-		shell.setLocation(x, y);
-		shell.setDefaultButton(ok);
-		new Label(form, SWT.NONE);
+		shell.setLocation (x, y);		  		
+		shell.setDefaultButton (ok);		
 
-		shell.open();
+		shell.open ();
 		shell.layout();
 
 		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
+			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("New Entry Point form closed");
+		LogController.log("New Entry Point form closed");	
 		return formOK;
 	}
 }
