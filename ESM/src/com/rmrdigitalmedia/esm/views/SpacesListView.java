@@ -37,7 +37,7 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 @SuppressWarnings("unused")
 public class SpacesListView {
 
-	private static Row[] rows;
+	private static SpacesTable.Row[] rows;
 	static TableViewerBuilder tvb;
 	static TableViewer tv;
 	static Table table;
