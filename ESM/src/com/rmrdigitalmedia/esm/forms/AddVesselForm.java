@@ -33,11 +33,11 @@ public class AddVesselForm {
 	Shell myshell;
 	boolean formOK = false;
 	Text name, imo, type, owner;
-	Label sep;
-	// form layout guides
+	Label sep;	
+	// form layout  guides
 	int headerH = 40;
 
-	public static void main(String[] args) {
+	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
 			AddVesselForm nvf = new AddVesselForm();
@@ -49,34 +49,31 @@ public class AddVesselForm {
 
 	public AddVesselForm() {
 		LogController.log("Running class " + this.getClass().getName());
-	}
+	}	
 
-	public boolean complete() {
+	public boolean complete() {	
 
 		Display display = Display.getDefault();
-		final Shell shell = new Shell(display, SWT.DIALOG_TRIM
-				| SWT.APPLICATION_MODAL);
+		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.myshell = shell;
 		shell.setSize(320, 400);
 		shell.setText("ESM Setup");
-		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16),
-				C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
+		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Composite container = new Composite(shell, SWT.NONE);
-		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		container.setLayout(new FormLayout());
+		Composite container = new Composite(shell,SWT.NONE);
+		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
+		container.setLayout(new FormLayout());		
 
-		// set up row elements & positions
-		// =======================================================
-		Composite header = new Composite(container, SWT.NONE);
+		//set up row elements & positions =======================================================
+		Composite header = new Composite(container,SWT.NONE);
 		header.setBackground(C.TITLEBAR_BGCOLOR);
-		header.setLayout(new FormLayout());
+		header.setLayout(new FormLayout());		
 		FormData fd_header = new FormData();
-		fd_header.top = new FormAttachment(container, 0);
-		fd_header.right = new FormAttachment(100, 0);
-		fd_header.bottom = new FormAttachment(container, headerH);
-		fd_header.left = new FormAttachment(0, 0);
+		fd_header.top = new FormAttachment(container,0);
+		fd_header.right = new FormAttachment(100,0);
+		fd_header.bottom = new FormAttachment(container,headerH);
+		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);
 
 		Label lblImg = new Label(header, SWT.NONE);
@@ -96,16 +93,16 @@ public class AddVesselForm {
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("ENTER VESSEL DETAILS");
 
-		Composite formHolder = new Composite(container, SWT.BORDER);
+		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
 		fd_formHolder.left = new FormAttachment(0);
-		fd_formHolder.top = new FormAttachment(header, 0);
+		fd_formHolder.top = new FormAttachment(header,0);
 		fd_formHolder.right = new FormAttachment(100);
 		fd_formHolder.bottom = new FormAttachment(100);
 		formHolder.setLayoutData(fd_formHolder);
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Composite form = new Composite(formHolder, SWT.NONE);
+		Composite form = new Composite(formHolder,SWT.NONE);
 		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 10;
@@ -115,11 +112,10 @@ public class AddVesselForm {
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
 
-		// FORM LABELS & FIELDS
-		// ==================================================================
+		//FORM LABELS & FIELDS ==================================================================	
 		Label lblName = new Label(form, SWT.NONE);
 		lblName.setBackground(C.APP_BGCOLOR);
-		lblName.setText("Name:");
+		lblName.setText("Name:");		
 		name = new Text(form, SWT.BORDER);
 		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_name.widthHint = 200;
@@ -128,7 +124,7 @@ public class AddVesselForm {
 
 		Label lblIMO = new Label(form, SWT.NONE);
 		lblIMO.setBackground(C.APP_BGCOLOR);
-		lblIMO.setText("IMO:");
+		lblIMO.setText("IMO:");		
 		imo = new Text(form, SWT.BORDER);
 		GridData gd_imo = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_imo.widthHint = 200;
@@ -136,8 +132,7 @@ public class AddVesselForm {
 
 		Label lblType = new Label(form, SWT.NONE);
 		lblType.setBackground(C.APP_BGCOLOR);
-		lblType.setText("Type:");
-		;
+		lblType.setText("Type:");	;		
 		type = new Text(form, SWT.BORDER);
 		GridData gd_type = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_type.widthHint = 200;
@@ -145,29 +140,27 @@ public class AddVesselForm {
 
 		Label lblOwner = new Label(form, SWT.NONE);
 		lblOwner.setBackground(C.APP_BGCOLOR);
-		lblOwner.setText("Owner:");
+		lblOwner.setText("Owner:");	
 		owner = new Text(form, SWT.BORDER | SWT.MULTI);
-		GridData gd_owner = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1,
-				1);
+		GridData gd_owner = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_owner.heightHint = 60;
 		gd_owner.widthHint = 200;
-		owner.setLayoutData(gd_owner);
+		owner.setLayoutData(gd_owner);		
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
 
-		// ==================================================================
+		//==================================================================		
 
-		Button ok = new Button(form, SWT.PUSH);
+		Button ok = new Button (form, SWT.PUSH);
 		ok.setToolTipText("Click to save these details");
 		ok.setFont(C.FONT_10);
-		ok.setText("Submit");
-		ok.addSelectionListener(new SelectionAdapter() {
+		ok.setText ("Submit");
+		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Text[] fields = { name, imo, type, owner };
-				Validation.validateFields(fields);
-				if (Validation.validateFields(fields)) {
+			public void widgetSelected (SelectionEvent e) {
+				Text[] fields = {name,imo,type,owner}; Validation.validateFields(fields);				
+				if( Validation.validateFields(fields) ) {
 					try {
 						VesselTable.Row row = VesselTable.getRow();
 						row.setName(name.getText());
@@ -175,41 +168,39 @@ public class AddVesselForm {
 						row.setType(type.getText());
 						row.setOwner(owner.getText());
 						row.setCreatedDate(new Timestamp(new Date().getTime()));
-						row.insert();
+						row.insert();						
 						formOK = true;
 						LogController.log("Vessel added to database");
-						EsmApplication.appData.setField("VESSEL",
-								name.getText());
+						EsmApplication.appData.setField("VESSEL",name.getText());
 					} catch (Exception e1) {
 						LogController.logEvent(this, C.ERROR, e1);
-					}
+					}					
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {
 					}
-					shell.close();
+					shell.close ();
 				} else {
 					Validation.validateError(myshell);
 				}
 			}
-		});
+		});	
 
-		Monitor primary = display.getPrimaryMonitor();
-		Rectangle bounds = primary.getBounds();
-		Rectangle rect = shell.getBounds();
+		Monitor primary = display.getPrimaryMonitor ();
+		Rectangle bounds = primary.getBounds ();
+		Rectangle rect = shell.getBounds ();
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
-		shell.setLocation(x, y);
-		shell.setDefaultButton(ok);
+		shell.setLocation (x, y);		  		
+		shell.setDefaultButton (ok);
 
-		shell.open();
+		shell.open ();
 		shell.layout();
 
 		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
+			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("User form closed");
+		LogController.log("User form closed");	
 		return formOK;
 	}
 }

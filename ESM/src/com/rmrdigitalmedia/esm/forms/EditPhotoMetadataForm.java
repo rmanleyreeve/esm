@@ -41,7 +41,7 @@ public class EditPhotoMetadataForm {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public static void main(String[] args) {
+	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
 			EditPhotoMetadataForm epmf = new EditPhotoMetadataForm(1);
@@ -51,37 +51,35 @@ public class EditPhotoMetadataForm {
 		}
 	}
 
-	public EditPhotoMetadataForm(int _spaceID) {
+	public EditPhotoMetadataForm(int _metaID) {
 		me = this;
 		LogController.log("Running class " + this.getClass().getName());
-		metaID = _spaceID;
-	}
+		metaID = _metaID;
+	}	
 
-	public boolean complete() {
+	public boolean complete() {	
 
 		Display display = Display.getDefault();
-		final Shell shell = new Shell(display, SWT.DIALOG_TRIM);
+		final Shell shell = new Shell (display, SWT.DIALOG_TRIM);
 		this.myshell = shell;
 		shell.setSize(400, 280);
 		shell.setText("Videotel ESM");
-		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16),
-				C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
+		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Composite container = new Composite(shell, SWT.NONE);
-		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		container.setLayout(new FormLayout());
+		Composite container = new Composite(shell,SWT.NONE);
+		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
+		container.setLayout(new FormLayout());		
 
-		// set up row elements & positions
-		// =======================================================
-		Composite header = new Composite(container, SWT.NONE);
+		//set up row elements & positions =======================================================
+		Composite header = new Composite(container,SWT.NONE);
 		header.setBackground(C.TITLEBAR_BGCOLOR);
-		header.setLayout(new FormLayout());
+		header.setLayout(new FormLayout());		
 		FormData fd_header = new FormData();
-		fd_header.top = new FormAttachment(container, 0);
-		fd_header.right = new FormAttachment(100, 0);
-		fd_header.bottom = new FormAttachment(container, headerH);
-		fd_header.left = new FormAttachment(0, 0);
+		fd_header.top = new FormAttachment(container,0);
+		fd_header.right = new FormAttachment(100,0);
+		fd_header.bottom = new FormAttachment(container,headerH);
+		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);
 
 		Label lblImg = new Label(header, SWT.NONE);
@@ -101,16 +99,16 @@ public class EditPhotoMetadataForm {
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
 		lblTitle.setText("EDIT PHOTO DETAILS");
 
-		Composite formHolder = new Composite(container, SWT.BORDER);
+		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
 		fd_formHolder.left = new FormAttachment(0);
-		fd_formHolder.top = new FormAttachment(header, 0);
+		fd_formHolder.top = new FormAttachment(header,0);
 		fd_formHolder.right = new FormAttachment(100);
 		fd_formHolder.bottom = new FormAttachment(100);
 		formHolder.setLayoutData(fd_formHolder);
 		formHolder.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Composite form = new Composite(formHolder, SWT.NONE);
+		Composite form = new Composite(formHolder,SWT.NONE);
 		form.setBackground(C.APP_BGCOLOR);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 10;
@@ -126,11 +124,10 @@ public class EditPhotoMetadataForm {
 			LogController.logEvent(me, C.WARNING, e2);
 		}
 
-		// FORM LABELS & FIELDS
-		// ==================================================================
+		//FORM LABELS & FIELDS ==================================================================	
 		Label lblSName = new Label(form, SWT.NONE);
 		lblSName.setBackground(C.APP_BGCOLOR);
-		lblSName.setText("Photo Title:");
+		lblSName.setText("Photo Title:");		
 		p_title = new Text(form, SWT.BORDER);
 		p_title.setText(pRow.getTitle());
 		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -140,30 +137,28 @@ public class EditPhotoMetadataForm {
 
 		Label lblSDesc = new Label(form, SWT.NONE);
 		lblSDesc.setBackground(C.APP_BGCOLOR);
-		lblSDesc.setText("Photo\nComment:");
+		lblSDesc.setText("Photo\nComment:");	
 		p_comment = new Text(form, SWT.BORDER | SWT.WRAP | SWT.MULTI);
 		p_comment.setText(pRow.getComment());
-		GridData gd_sdesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1,
-				1);
+		GridData gd_sdesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_sdesc.heightHint = 80;
 		gd_sdesc.widthHint = 230;
 		p_comment.setLayoutData(gd_sdesc);
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
 
-		// ==================================================================
+		//==================================================================		
 
-		Button ok = new Button(form, SWT.PUSH);
+		Button ok = new Button (form, SWT.PUSH);
 		ok.setToolTipText("Click to save these details");
 		ok.setFont(C.FONT_10);
-		ok.setText("Submit");
-		ok.addSelectionListener(new SelectionAdapter() {
+		ok.setText ("Submit");
+		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Text[] fields = { p_title, p_comment };
-				Validation.validateFields(fields);
-				if (Validation.validateFields(fields)) {
+			public void widgetSelected (SelectionEvent e) {
+				Text[] fields = {p_title,p_comment}; Validation.validateFields(fields);				
+				if( Validation.validateFields(fields) ) {
 					try {
 						pRow.setTitle(p_title.getText());
 						pRow.setComment(p_comment.getText());
@@ -173,35 +168,32 @@ public class EditPhotoMetadataForm {
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
-					}
+					}					
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
-					}
-					shell.close();
+					} catch (InterruptedException e1) {}
+					shell.close ();
 				} else {
 					Validation.validateError(myshell);
 				}
 			}
-		});
+		});	
 
-		Monitor primary = display.getPrimaryMonitor();
-		Rectangle bounds = primary.getBounds();
-		Rectangle rect = shell.getBounds();
+		Monitor primary = display.getPrimaryMonitor ();
+		Rectangle bounds = primary.getBounds ();
+		Rectangle rect = shell.getBounds ();
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
-		shell.setLocation(x, y);
-		shell.setDefaultButton(ok);
-		new Label(form, SWT.NONE);
+		shell.setLocation (x, y);		  		
+		shell.setDefaultButton (ok);		
 
-		shell.open();
+		shell.open ();
 		shell.layout();
 
 		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
+			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("Edit Photo Details form closed");
+		LogController.log("Edit Photo Details form closed");	
 		return formOK;
 	}
 }

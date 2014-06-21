@@ -1,5 +1,6 @@
 package com.rmrdigitalmedia.esm.forms;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -28,7 +29,7 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
-public class AddUserForm {
+public class EditUserForm {
 
 	Shell myshell;
 	boolean formOK = false;
@@ -36,21 +37,24 @@ public class AddUserForm {
 	int accesslevel,month;
 	Combo dd,mm,yyyy,accessLevels;
 	Label sep;	
-	// form layout  guides
-	int headerH = 40;
+	int userID, headerH = 40;
+	EsmUsersTable.Row uRow;
+	private static Object me;
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			AddUserForm nuf = new AddUserForm();
-			nuf.complete();
+			EditUserForm euf = new EditUserForm(2);
+			euf.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public AddUserForm() {
+	public EditUserForm(int _userID) {
+		me = this;
 		LogController.log("Running class " + this.getClass().getName());
+		userID = _userID;
 	}
 
 	public boolean complete() {	
@@ -93,7 +97,7 @@ public class AddUserForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("CREATE PROGRAM USER");
+		lblTitle.setText("EDIT PROGRAM USER");
 
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -114,6 +118,12 @@ public class AddUserForm {
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
 
+		try {
+			uRow = EsmUsersTable.getRow(userID);
+		} catch (SQLException e2) {
+			LogController.logEvent(me, C.ERROR, e2);
+		}
+
 		//FORM LABELS & FIELDS ==================================================================	
 		Label lblUsername = new Label(form, SWT.NONE);
 		lblUsername.setBackground(C.APP_BGCOLOR);
@@ -122,16 +132,7 @@ public class AddUserForm {
 		GridData gd_username = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_username.widthHint = 100;
 		username.setLayoutData(gd_username);
-		username.setFocus();
-
-		Label lblPassword = new Label(form, SWT.NONE);
-		lblPassword.setBackground(C.APP_BGCOLOR);
-		lblPassword.setText("Password:");		
-		password = new Text(form, SWT.BORDER);
-		GridData gd_password = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
-		gd_password.widthHint = 100;
-		password.setLayoutData(gd_password);
-		password.setEchoChar('*');
+		username.setText(uRow.getUsername());
 
 		Label lblForename = new Label(form, SWT.NONE);
 		lblForename.setBackground(C.APP_BGCOLOR);
@@ -140,6 +141,7 @@ public class AddUserForm {
 		GridData gd_forename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
 		gd_forename.widthHint = 250;
 		forename.setLayoutData(gd_forename);
+		forename.setText(uRow.getForename());
 
 		Label lblSurname = new Label(form, SWT.NONE);
 		lblSurname.setBackground(C.APP_BGCOLOR);
@@ -148,6 +150,7 @@ public class AddUserForm {
 		GridData gd_surname = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_surname.widthHint = 250;
 		surname.setLayoutData(gd_surname);
+		surname.setText(uRow.getSurname());
 
 		Label lblRank = new Label(form, SWT.NONE);
 		lblRank.setBackground(C.APP_BGCOLOR);
@@ -156,6 +159,7 @@ public class AddUserForm {
 		GridData gd_rank = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_rank.widthHint = 250;
 		rank.setLayoutData(gd_rank);
+		rank.setText(uRow.getRank());
 
 		Label lblJobTitle = new Label(form, SWT.NONE);
 		lblJobTitle.setBackground(C.APP_BGCOLOR);
@@ -164,6 +168,7 @@ public class AddUserForm {
 		GridData gd_jobtitle = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_jobtitle.widthHint = 250;
 		jobtitle.setLayoutData(gd_jobtitle);
+		jobtitle.setText(uRow.getJobTitle());
 
 		Label lblWorkID = new Label(form, SWT.NONE);
 		lblWorkID.setBackground(C.APP_BGCOLOR);
@@ -172,7 +177,10 @@ public class AddUserForm {
 		GridData gd_workid = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_workid.widthHint = 250;
 		workid.setLayoutData(gd_workid);
-
+		workid.setText(uRow.getWorkIdentifier());
+		
+		//System.out.println(uRow.getDob());
+		String[] dob = uRow.getDob().split("-");
 		Label lblDOB = new Label(form, SWT.NONE);
 		lblDOB.setBackground(C.APP_BGCOLOR);
 		lblDOB.setText("Date of Birth:");		
@@ -181,22 +189,25 @@ public class AddUserForm {
 		for(int i=1;i<32;i++) {
 			dd.add(""+i);
 		}
-		dd.select(0);
+		dd.select(Integer.parseInt(dob[2]));
 		mm = new Combo(form, SWT.DROP_DOWN | SWT.READ_ONLY);
 		String[] months = {"MONTH","January" , "February" , "March" , "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 		for(int i=0;i<months.length;i++) {
 			mm.add(months[i]);
 			mm.setData(months[i],i);
 		}
-		mm.select(0);
+		mm.select(Integer.parseInt(dob[1]));
 		yyyy = new Combo(form, SWT.DROP_DOWN | SWT.READ_ONLY);
 		yyyy.add("YEAR");
 		@SuppressWarnings("deprecation")
 		int now = new Date().getYear() + 1900 - 16;
+		int s = 0; int ii = 1;
 		for(int i=now;i>(now-65);i--) {
 			yyyy.add(""+i);
+			if(i == Integer.parseInt(dob[0])) { s = ii; }
+			ii++;
 		}
-		yyyy.select(0);
+		yyyy.select(s);
 
 
 		Label lblAccess = new Label(form, SWT.NONE);
@@ -208,7 +219,7 @@ public class AddUserForm {
 			accessLevels.add(levels[i]);
 			accessLevels.setData(levels[i],i);
 		}
-		accessLevels.select(1);
+		accessLevels.select(uRow.getAccessLevel());
 		GridData gd_access = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_access.widthHint = 160;
 		accessLevels.setLayoutData(gd_access);
@@ -225,28 +236,26 @@ public class AddUserForm {
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				Text[] fields = {username,password,forename,surname,rank,jobtitle,workid}; Validation.validateFields(fields);
+				Text[] fields = {username,forename,surname,rank,jobtitle,workid}; Validation.validateFields(fields);
 				Combo[] dates = {dd,mm,yyyy}; Validation.validateDates(dates);			
 				accesslevel = (Integer)accessLevels.getData(accessLevels.getText());
 				month = (Integer)mm.getData(mm.getText());
 				if( Validation.validateFields(fields) && Validation.validateDates(dates) ) {
 					try {
-						EsmUsersTable.Row row = EsmUsersTable.getRow();
-						row.setUsername(username.getText());
-						row.setPassword(password.getText());
-						row.setForename(forename.getText());
-						row.setSurname(surname.getText());
-						row.setRank(rank.getText());
-						row.setJobTitle(jobtitle.getText());
-						row.setWorkIdentifier(workid.getText());
-						row.setAccessLevel(accesslevel);
-						row.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());
-						row.setCreatedDate(new Timestamp(new Date().getTime()));
-						row.setUpdateDate(new Timestamp(new Date().getTime()));
-						row.setDeleted("FALSE");
-						row.insert();
+						uRow.setUsername(username.getText());
+						uRow.setForename(forename.getText());
+						uRow.setSurname(surname.getText());
+						uRow.setRank(rank.getText());
+						uRow.setJobTitle(jobtitle.getText());
+						uRow.setWorkIdentifier(workid.getText());
+						uRow.setAccessLevel(accesslevel);
+						uRow.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());
+						uRow.setCreatedDate(new Timestamp(new Date().getTime()));
+						uRow.setUpdateDate(new Timestamp(new Date().getTime()));
+						uRow.setDeleted("FALSE");
+						uRow.update();
 						formOK = true;
-						LogController.log("User added to database.");
+						LogController.log("User edited in database.");
 					} catch (Exception e1) {
 						LogController.logEvent(this, C.ERROR, e1);
 					}					
