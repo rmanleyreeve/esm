@@ -372,7 +372,6 @@ public class WindowController {
 		shell.setDefaultButton(foo);
 
 		showSpacesList();
-
 	}
 
 	// methods to display pages etc
