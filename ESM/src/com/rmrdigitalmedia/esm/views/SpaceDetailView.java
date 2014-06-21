@@ -820,9 +820,6 @@ public class SpaceDetailView {
 
 		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
-
-
-
 		
 
 
