@@ -42,6 +42,7 @@ public class AdministrationView {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
 			Shell shell = new Shell();
+			shell.setSize(1380, 750);
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
 			Composite comp = new Composite(shell, SWT.BORDER);
 			user = EsmUsersTable.getRow(1);
@@ -99,7 +100,7 @@ public class AdministrationView {
 
 		// row 1 - photos header & button bar		
 		Group rowLeft1 = new Group(compL, SWT.NONE);
-		rowLeft1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		rowLeft1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowRight3 = new GridLayout(3, true);
 		gl_rowRight3.marginBottom = 5;
 		gl_rowRight3.marginHeight = 0;
