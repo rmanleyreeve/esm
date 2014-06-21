@@ -100,9 +100,9 @@ public class AdministrationViewTest {
 
 
 
-		// row 1 - photos header & button bar		
+		// row 1 - users header & button bar		
 		Group rowLeft1 = new Group(compL, SWT.NONE);
-		rowLeft1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		rowLeft1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowRight3 = new GridLayout(3, true);
 		gl_rowRight3.marginBottom = 5;
 		gl_rowRight3.marginHeight = 0;
