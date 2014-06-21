@@ -19,10 +19,10 @@ import com.rmrdigitalmedia.esm.controllers.LogController;
 
 public class SpaceAlert {
 
-	public static void main (String [] args) {
+	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			new SpaceAlert(new Shell());			
+			new SpaceAlert(new Shell());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -32,13 +32,14 @@ public class SpaceAlert {
 		LogController.log("Running class " + this.getClass().getName());
 		Display display = Display.getDefault();
 		final Shell shell = new Shell(SWT.APPLICATION_MODAL | SWT.ON_TOP);
-		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		shell.setBackground(SWTResourceManager
+				.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		shell.setSize(400, 250);
-		Rectangle bounds = appwin.getBounds ();
-		Rectangle rect = shell.getBounds ();
+		Rectangle bounds = appwin.getBounds();
+		Rectangle rect = shell.getBounds();
 		int x = bounds.x + (bounds.width - rect.width) / 2;
-		int y = bounds.y + 200;//(bounds.height - rect.height) / 2;
-		shell.setLocation (x, y);
+		int y = bounds.y + 200;// (bounds.height - rect.height) / 2;
+		shell.setLocation(x, y);
 		RowLayout rl_shell = new RowLayout(SWT.HORIZONTAL);
 		rl_shell.marginTop = 10;
 		rl_shell.marginRight = 10;
@@ -62,7 +63,7 @@ public class SpaceAlert {
 
 		Label lblIcon = new Label(compIcon, SWT.NONE);
 		lblIcon.setAlignment(SWT.CENTER);
-		lblIcon.setImage(C.getImage("/img/alert-icon-red.png"));
+		lblIcon.setImage(C.getImage("alert-icon-red.png"));
 
 		Composite compMsg = new Composite(shell, SWT.NONE);
 		compMsg.setLayoutData(new RowData(380, SWT.DEFAULT));
@@ -91,9 +92,10 @@ public class SpaceAlert {
 
 		shell.open();
 		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch ()) display.sleep ();
+			if (!display.readAndDispatch())
+				display.sleep();
 		}
-		LogController.log("Space alert closed");	
+		LogController.log("Space alert closed");
 		shell.dispose();
 	}
 }

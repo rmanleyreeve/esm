@@ -11,9 +11,9 @@ public class Validation {
 
 	public static boolean validateFields(Text[] req) {
 		boolean ok = true;
-		for(Text t:req) {
+		for (Text t : req) {
 			t.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-			if(t.getText()==null || t.getText().equals("")) {
+			if (t.getText() == null || t.getText().equals("")) {
 				t.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
 				ok = false;
 			}
@@ -21,18 +21,14 @@ public class Validation {
 		return ok;
 	}
 
-	public static boolean validateDates(Combo[] req) {		
+	public static boolean validateDates(Combo[] req) {
 		boolean ok = true;
-		for(Combo c:req) {
+		for (Combo c : req) {
 			c.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-			if(
-			c.getText().equals("") ||
-			c.getText().equals("0") ||
-			c.getText().equals("DAY") || 
-			c.getText().equals("MONTH") ||
-			c.getText().equals("YEAR")
-			) {
-				ok = false;				
+			if (c.getText().equals("") || c.getText().equals("0")
+					|| c.getText().equals("DAY") || c.getText().equals("MONTH")
+					|| c.getText().equals("YEAR")) {
+				ok = false;
 				c.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
 			}
 		}
@@ -45,9 +41,5 @@ public class Validation {
 		mb.setMessage("Please complete the form");
 		mb.open();
 	}
-
-
-
-
 
 }

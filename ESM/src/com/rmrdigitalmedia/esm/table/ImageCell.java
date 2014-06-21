@@ -8,13 +8,13 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TreeItem;
 
 public class ImageCell extends StyledCellLabelProvider {
-	
+
 	private Image image;
 
 	public ImageCell(Image img) {
 		image = img;
 	}
-		
+
 	@Override
 	protected void paint(Event event, Object element) {
 		super.paint(event, element);
@@ -27,8 +27,10 @@ public class ImageCell extends StyledCellLabelProvider {
 		}
 		Rectangle bounds = image.getBounds();
 		// center the image in the given space
-		int x = cellBounds.x + Math.max(0, (cellBounds.width - bounds.width) / 2);
-		int y = cellBounds.y + Math.max(0, (cellBounds.height - bounds.height) / 2);
+		int x = cellBounds.x
+				+ Math.max(0, (cellBounds.width - bounds.width) / 2);
+		int y = cellBounds.y
+				+ Math.max(0, (cellBounds.height - bounds.height) / 2);
 		event.gc.drawImage(image, x, y);
 	}
 
@@ -37,9 +39,6 @@ public class ImageCell extends StyledCellLabelProvider {
 			return ((TableItem) event.item).getBounds(event.index);
 		}
 		return ((TreeItem) event.item).getBounds(event.index);
-	}  	
-	
-	
-	
+	}
 
 }

@@ -24,7 +24,7 @@ public class AppData {
 	}
 
 	public Object getField(String field) {
-		if (this.data.get(field)!=null) {
+		if (this.data.get(field) != null) {
 			return this.data.get(field);
 		}
 		return new String("");
@@ -40,12 +40,12 @@ public class AppData {
 	}
 
 	public void serialize() throws SQLException {
-		// loop through hashtable & save to db		
+		// loop through hashtable & save to db
 		Enumeration<String> enumKey = this.data.keys();
 		AppdataTable.delete("ID", "IS NOT NULL");
-		while(enumKey.hasMoreElements()) {
+		while (enumKey.hasMoreElements()) {
 			String key = enumKey.nextElement();
-			String val = (String)this.data.get(key);
+			String val = (String) this.data.get(key);
 			AppdataTable.Row row = AppdataTable.getRow();
 			row.setKey(key);
 			row.setValue(val);
@@ -58,9 +58,9 @@ public class AppData {
 		// load data from db
 		this.data.clear();
 		AppdataTable.Row[] rows = AppdataTable.getAllRows();
-		for (AppdataTable.Row row:rows){
+		for (AppdataTable.Row row : rows) {
 			this.data.put(row.getKey(), row.getValue());
-		}		
+		}
 	}
 
 }
