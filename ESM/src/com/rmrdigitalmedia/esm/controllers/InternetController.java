@@ -34,25 +34,17 @@ public class InternetController {
 		boolean online = false;
 
 		/*
-		Enumeration<NetworkInterface> interfaces = null;		
-		try {
-			interfaces = NetworkInterface.getNetworkInterfaces();
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
-		while (interfaces.hasMoreElements()) {
-		  NetworkInterface interf = interfaces.nextElement();
-		  try {
-				if (interf.isUp() && !interf.isLoopback())
-				  online = true;
-			} catch (SocketException e) {
-				e.printStackTrace();
-			}
-		}
+		 * Enumeration<NetworkInterface> interfaces = null; try { interfaces =
+		 * NetworkInterface.getNetworkInterfaces(); } catch (SocketException e)
+		 * { e.printStackTrace(); } while (interfaces.hasMoreElements()) {
+		 * NetworkInterface interf = interfaces.nextElement(); try { if
+		 * (interf.isUp() && !interf.isLoopback()) online = true; } catch
+		 * (SocketException e) { e.printStackTrace(); } }
 		 */
 
 		try {
-			if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress().toString()) == false) {
+			if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
+					.toString()) == false) {
 				online = true;
 			}
 		} catch (UnknownHostException e) {
@@ -60,18 +52,20 @@ public class InternetController {
 		}
 		try {
 			EsmApplication.appData.setField("ONLINE", online);
-		} catch (Exception e) {}
-		LogController.log("NET ACCESS = "+online);
+		} catch (Exception e) {
+		}
+		LogController.log("NET ACCESS = " + online);
 		return online;
 	}
 
-	public static void getUpdates() throws IOException {		
-		String currentVersion = (String)EsmApplication.appData.getField("VERSION");
+	public static void getUpdates() throws IOException {
+		String currentVersion = (String) EsmApplication.appData
+				.getField("VERSION");
 		URL u = new URL(C.LATEST_VERSION_URL);
 		InputStream is = u.openStream();
 		BufferedReader in = new BufferedReader(new InputStreamReader(is));
 		String inputLine;
-		StringBuffer response = new StringBuffer();	 
+		StringBuffer response = new StringBuffer();
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
 		}
@@ -79,47 +73,47 @@ public class InternetController {
 		// compare versions
 		String[] lvarr = latestVersion.split("\\.");
 		String[] cvarr = currentVersion.split("\\.");
-		if(
-				Integer.parseInt(lvarr[0]) > Integer.parseInt(cvarr[0]) ||
-				Integer.parseInt(lvarr[1]) > Integer.parseInt(cvarr[1]) ||
-				Integer.parseInt(lvarr[2]) > Integer.parseInt(cvarr[2])
-				) {
+		if (Integer.parseInt(lvarr[0]) > Integer.parseInt(cvarr[0])
+				|| Integer.parseInt(lvarr[1]) > Integer.parseInt(cvarr[1])
+				|| Integer.parseInt(lvarr[2]) > Integer.parseInt(cvarr[2])) {
 			// new version available
 			LogController.log("NEW VERSION AVAILABLE: " + latestVersion);
-			//EsmApplication.alert(C.NEW_VERSION_ALERT);
+			// EsmApplication.alert(C.NEW_VERSION_ALERT);
 			UpdateDialog ud = new UpdateDialog(latestVersion);
-		}		
-	}	
+		}
+	}
 
 	public static void open(String url) {
-		if(Desktop.isDesktopSupported()){
+		if (Desktop.isDesktopSupported()) {
 			try {
 				Desktop.getDesktop().browse(new URI(url));
 			} catch (Exception e1) {
-				LogController.logEvent(me,C.WARNING,"Error loading URL: "+ url,e1);
+				LogController.logEvent(me, C.WARNING, "Error loading URL: "
+						+ url, e1);
 
 			}
-		}	
+		}
 	}
 
 	public static void doGet(String url) throws Exception {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		con.setRequestMethod("GET");
-		con.setRequestProperty("User-Agent", C.USER_AGENT); 
+		con.setRequestProperty("User-Agent", C.USER_AGENT);
 		int responseCode = con.getResponseCode();
 		LogController.log("\nSending 'GET' request to URL : " + url);
 		LogController.log("Response Code : " + responseCode);
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				con.getInputStream()));
 		String inputLine;
-		StringBuffer response = new StringBuffer(); 
+		StringBuffer response = new StringBuffer();
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
 		}
 		in.close();
-		//print result
-		renderHTML(response.toString());	 
-	}		
+		// print result
+		renderHTML(response.toString());
+	}
 
 	public static void renderHTML(String html) {
 		Shell shell = new Shell(Display.getDefault());
@@ -128,7 +122,8 @@ public class InternetController {
 		try {
 			browser = new Browser(shell, SWT.NONE);
 		} catch (SWTError e) {
-			LogController.logEvent(new InternetController(),C.ERROR,"Could not instantiate Browser" + e.getMessage());
+			LogController.logEvent(new InternetController(), C.ERROR,
+					"Could not instantiate Browser" + e.getMessage());
 			shell.dispose();
 			return;
 		}
@@ -138,8 +133,7 @@ public class InternetController {
 			if (!Display.getDefault().readAndDispatch())
 				Display.getDefault().sleep();
 		}
-		//display.dispose();
+		// display.dispose();
 	}
-
 
 }

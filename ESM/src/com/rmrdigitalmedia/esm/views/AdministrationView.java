@@ -5,6 +5,7 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -30,23 +31,28 @@ public class AdministrationView {
 		}
 	}
 
-
 	public static void buildPage(Composite parent) {
 
+		for (Control c : parent.getChildren()) {
+			c.dispose();
+		}
+
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
-		SashForm panels = new SashForm(parent,SWT.NONE);
+		SashForm panels = new SashForm(parent, SWT.NONE);
 		panels.setBackground(C.TITLEBAR_BGCOLOR);
 		panels.setLayout(new FillLayout());
-		Composite mainpanel = new Composite(panels,SWT.NONE);
+		Composite mainpanel = new Composite(panels, SWT.NONE);
 		mainpanel.setBackground(C.APP_BGCOLOR);
 		mainpanel.setLayout(new FillLayout());
-		Composite rightpanel = new Composite(panels,SWT.NONE);
+		Composite rightpanel = new Composite(panels, SWT.NONE);
 		rightpanel.setBackground(C.APP_BGCOLOR);
 		rightpanel.setLayout(new FillLayout());
-		panels.setWeights(new int[] {1, 3});
+		panels.setWeights(new int[] { 1, 3 });
 
-		
-		
-		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
+		// final layout settings
+		panels.setWeights(new int[] { 2, 1 });
+		parent.layout();
+		parent.getShell().setCursor(
+				new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 	}
 }

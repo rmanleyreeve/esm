@@ -12,25 +12,28 @@ import com.rmrdigitalmedia.esm.C;
 import de.ralfebert.rcputils.properties.IValue;
 
 /**
- * DynamicImageArrayCell generates a series of images in a cell using a String array of image names
- * @param imageName an {@link IValue} object that returns a String[] array
+ * DynamicImageArrayCell generates a series of images in a cell using a String
+ * array of image names
+ * 
+ * @param imageName
+ *            an {@link IValue} object that returns a String[] array
  * 
  */
 
 @SuppressWarnings("javadoc")
 public class DynamicImageArrayCell extends StyledCellLabelProvider {
-	
+
 	private Image image;
 	private IValue imageName;
 
 	public DynamicImageArrayCell(IValue imageName) {
 		this.imageName = imageName;
-	}		
-	
+	}
+
 	@Override
 	protected void paint(Event event, Object element) {
-		String[] imgName = (String[])imageName.getValue(element);
-		int numImages = imgName.length;		
+		String[] imgName = (String[]) imageName.getValue(element);
+		int numImages = imgName.length;
 		image = C.getImage(imgName[0]);
 		super.paint(event, element);
 		if (image == null || numImages > 5) {
@@ -41,28 +44,30 @@ public class DynamicImageArrayCell extends StyledCellLabelProvider {
 			return;
 		}
 		Rectangle bounds = image.getBounds();
-		int centreX = cellBounds.x + Math.max(0, (cellBounds.width - bounds.width) / 2);
-		int y = cellBounds.y + Math.max(0, (cellBounds.height - bounds.height) / 2);
+		int centreX = cellBounds.x
+				+ Math.max(0, (cellBounds.width - bounds.width) / 2);
+		int y = cellBounds.y
+				+ Math.max(0, (cellBounds.height - bounds.height) / 2);
 		// work out x based on number of images
 		int x = cellBounds.x;
-		switch(numImages){
-			case 1:
-				x = centreX;
-				break;
-			case 2:
-				x = (centreX - 20);
-				break;
-			case 3:
-				x = (centreX - 30);
-				break;
-			case 4:
-				x = (centreX - 40);
-				break;
-			case 5:
-				x = (centreX - 50);
-				break;
-		}				
-		for (int i=0;i<numImages;i++){
+		switch (numImages) {
+		case 1:
+			x = centreX;
+			break;
+		case 2:
+			x = (centreX - 20);
+			break;
+		case 3:
+			x = (centreX - 30);
+			break;
+		case 4:
+			x = (centreX - 40);
+			break;
+		case 5:
+			x = (centreX - 50);
+			break;
+		}
+		for (int i = 0; i < numImages; i++) {
 			image = C.getImage(imgName[i]);
 			event.gc.drawImage(image, x, y);
 			x += 25;
@@ -74,7 +79,6 @@ public class DynamicImageArrayCell extends StyledCellLabelProvider {
 			return ((TableItem) event.item).getBounds(event.index);
 		}
 		return ((TreeItem) event.item).getBounds(event.index);
-	}  	
-	
-	
+	}
+
 }
