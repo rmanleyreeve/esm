@@ -224,8 +224,19 @@ public class AuditController {
 	}
 
 	public static boolean isSpaceComplete(int spaceID) {
-		// TODO Auto-generated method stub
-		return true;
+		boolean complete = true;
+		if( (Integer) EsmApplication.appData.getField("SPACE_CHK_"+spaceID) <100) { complete = false; }
+		if( (Integer) EsmApplication.appData.getField("SPACE_CLASS_"+spaceID) <100) { complete = false; }
+		try {
+			for(EntrypointsTable.Row epRow:EntrypointsTable.getRows("SPACE_ID", spaceID)) {
+				int epID = epRow.getID();
+				if( (Integer) EsmApplication.appData.getField("ENTRY_CHK_"+epID) <100) { complete = false; }
+				if( (Integer) EsmApplication.appData.getField("ENTRY_CLASS_"+epID) <100) { complete = false; }
+			}
+		} catch (SQLException ex) {
+			complete = false;
+		}		
+		return complete;
 	}
 
 	private static boolean isY(String s){

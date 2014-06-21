@@ -279,7 +279,7 @@ public class WindowController {
 		btnDeleteSpace.setFont(C.BUTTON_FONT);
 		FormData fd_btnDeleteSpace = new FormData();
 		fd_btnDeleteSpace.top = new FormAttachment(titleBar,titleH/5);
-		fd_btnDeleteSpace.right = new FormAttachment(btnAddSpace,-5);
+		fd_btnDeleteSpace.right = new FormAttachment(btnViewSpaceDetails,-5);
 		btnDeleteSpace.setLayoutData(fd_btnDeleteSpace);
 		btnDeleteSpace.setEnabled(false);
 

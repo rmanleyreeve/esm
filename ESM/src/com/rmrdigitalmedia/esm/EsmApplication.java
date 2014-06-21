@@ -27,10 +27,12 @@ public class EsmApplication {
 
 		// background thread
 		Thread auditInit = new Thread() {
+			@Override
 			public void run() {
 				// do expensive processing
 				AuditController.init();
 				display.syncExec(new Runnable() {
+					@Override
 					public void run() {
 						// notify GUI
 						//System.out.println("COMPLETE");

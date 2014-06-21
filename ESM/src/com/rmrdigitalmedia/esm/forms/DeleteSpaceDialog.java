@@ -45,7 +45,7 @@ public class DeleteSpaceDialog {
 		this.spaceID = _id;
 		Display display = Display.getDefault();
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
-		dialog.setSize(250, 130);
+		dialog.setSize(280, 130);
 		dialog.setText("ESM Alert");
 		dialog.setImage(C.getImage("/img/appicon16.png"));
 		FormLayout formLayout = new FormLayout ();

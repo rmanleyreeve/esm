@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.table.DynamicImageArrayCell;
 import com.rmrdigitalmedia.esm.table.DynamicImageCell;
 import com.rmrdigitalmedia.esm.table.ImageCell;
@@ -119,9 +120,18 @@ public class SpacesListViewTest {
 
 		// internal classification --------------------------------------------------------------------------------------
 		col = tvb.createColumn("Internal Classification");
-		col.setPercentWidth(10);
+		col.setPixelWidth(165);
 		col.alignCenter();
-		col.setCustomLabelProvider(new ImageCell(C.getImage("/img/amber.png"))); 	  	
+		//col.setCustomLabelProvider(new ImageCell(C.getImage("/img/red.png"))); 	  	
+		col.setCustomLabelProvider(new DynamicImageCell(new BaseValue<Row>() {
+			@Override
+			public Object get(Row r) {
+				int id = r.getID();
+				// we have the row ID so we can return the appropriate image
+				String light = (String) EsmApplication.appData.getField("SPACE_STATUS_"+id);				
+				return "/img/"+light+".png";
+			}
+		}));
 		col.build();
 
 		// entry points classification --------------------------------------------------------------------------------------
