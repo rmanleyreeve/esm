@@ -387,16 +387,19 @@ public class AuditController {
 	public static boolean isSpaceSignedOff(int spaceID) {
 		boolean so = false;
 		try {
-			so = (SpacesTable.getRow(spaceID).getSignedOff().equals("TRUE"));
+			String s = SpacesTable.getRow(spaceID).getSignedOff();
+			so = (s!=null && s.equals("TRUE"));
 		} catch (SQLException e) {
-		}
+}
 		return so;
 	}
 
 	public static int calculateOverallCompletionStatus(int spaceID) {
 		int progress = 0;
-		progress += (Integer) EsmApplication.appData.getField("SPACE_CHK_" + spaceID);
-		progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID);
+		try {
+			progress += (Integer) EsmApplication.appData.getField("SPACE_CHK_" + spaceID);
+			progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID);
+		} catch (Exception ex) {}
 		return (int) Math.floor((progress / 2) / 10) * 10;
 	}
 

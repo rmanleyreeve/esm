@@ -165,7 +165,7 @@ public class SpacesListView {
 
 		// start loop through spaces rows ==============================================
 		try {
-			sRows = SpacesTable.getAllRows();
+			sRows = SpacesTable.getRows("DELETED=FALSE");
 		} catch (SQLException ex) {
 			LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading spaces from DB",ex);		
 		}
@@ -213,7 +213,8 @@ public class SpacesListView {
 			gd_lblLoopIC.heightHint = colHeaderH;
 			lblLoopIC.setLayoutData(gd_lblLoopIC);
 			lblLoopIC.setBackground(C.FIELD_BGCOLOR);
-			String light = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);				
+			String light = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);
+			if(light.equals("")) { light = "red"; }
 			lblLoopIC.setImage(C.getImage(light+".png"));
 
 			final CLabel lblLoopEPC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);

@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
@@ -180,9 +181,9 @@ public class AddSpaceForm {
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						sRow.setDeleted("FALSE");
 						int spaceID = (int) sRow.insert();
+						EsmApplication.appData.setField("SPACE_CHK_" + spaceID,0);
+						EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, "");
 						LogController.log("Space "+spaceID+" added to database.");
-						//SpacesTable.Row[] rArr = SpacesTable.getAllRows();
-						//int metadataID = rArr[rArr.length-1].getID();
 						new File( C.DOC_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // docs						
 						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // image base dir
 						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP ).mkdir(); // full
@@ -196,6 +197,8 @@ public class AddSpaceForm {
 						epRow.setAuthorID(authorID);
 						epRow.setDeleted("FALSE");
 						int epID = (int) epRow.insert();
+						EsmApplication.appData.setField("ENTRY_CHK_" + epID, 0);						
+						EsmApplication.appData.setField("ENTRY_CLASS_" + epID, "");
 						LogController.log("Entry Point "+epID+" added to database.");				        
 						formOK = true;
 					} catch (Exception e1) {
