@@ -32,7 +32,6 @@ import com.rmrdigitalmedia.esm.forms.DeleteSpaceDialog;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
-import com.rmrdigitalmedia.esm.test.SpacesListViewTest;
 import com.rmrdigitalmedia.esm.views.AdministrationView;
 import com.rmrdigitalmedia.esm.views.EntryAuditChecklistView;
 import com.rmrdigitalmedia.esm.views.EntryAuditClassificationView;
