@@ -375,13 +375,7 @@ public class WindowController {
 
 	// methods to display pages etc
 	void showSpacesList(){
-		LogController.log("Displaying Space List page");
-		try {
-			rows = SpacesTable.getRows("DELETED=FALSE");
-		} catch (SQLException e) {
-			LogController.logEvent(me, C.ERROR, e);
-		}
-		SpacesListView.getTVB().setInput(Arrays.asList(rows));
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(true);
 		btnDeleteSpace.setVisible(true);
@@ -390,10 +384,17 @@ public class WindowController {
 		btnViewSpaceDetails.setEnabled(false);
 		btnSpacesList.setVisible(false);
 		btnAdmin.setEnabled(true);
+		LogController.log("Displaying Space List page");
+		try {
+			rows = SpacesTable.getRows("DELETED=FALSE");
+		} catch (SQLException e) {
+			LogController.logEvent(me, C.ERROR, e);
+		}
+		SpacesListView.getTVB().setInput(Arrays.asList(rows));
 		stackLayout.topControl = pageSpacesList;
 		pageTitle.setText(C.SPACES_LIST_TITLE);
-		SpacesListView.getTV().refresh(true);
 		formHolder.layout();
+		shell.setCursor(new Cursor(display, SWT.CURSOR_ARROW));
 	}
 
 	public static void showAdministration() {
