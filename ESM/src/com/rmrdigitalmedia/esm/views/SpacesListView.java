@@ -1,17 +1,16 @@
 package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Vector;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.ViewerCell;
+import java.util.HashMap;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -23,39 +22,32 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.SWTResourceManager;
-import com.rmrdigitalmedia.esm.AppData;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
-import com.rmrdigitalmedia.esm.table.DynamicImageArrayCell;
-import com.rmrdigitalmedia.esm.table.DynamicImageCell;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
-import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
-import de.ralfebert.rcputils.properties.BaseValue;
-import de.ralfebert.rcputils.tables.ColumnBuilder;
-import de.ralfebert.rcputils.tables.ICellFormatter;
-import de.ralfebert.rcputils.tables.TableViewerBuilder;
-import org.eclipse.swt.layout.RowLayout;
 
 
 @SuppressWarnings("unused")
 public class SpacesListView {
 
-	private static SpacesTable.Row[] rows;
+	private static SpacesTable.Row[] sRows;
 	private static Label sep;
 	private static int rowHeight = 35;
 	private static int colHeaderH = 40;
-	
+	private static int imgStatusW = 160;
+	static HashMap<Integer,CLabel[]> tableRows = new HashMap<Integer,CLabel[]>();
+	static int selectedRow = 0;
+
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
@@ -74,11 +66,11 @@ public class SpacesListView {
 			e.printStackTrace();
 		}
 	}	
-	
+
 	public static void buildTable(Composite parent) {
 		LogController.log("Building Space List page");
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
-		
+
 		for (Control c:parent.getChildren()) {
 			c.dispose();
 		}
@@ -95,30 +87,31 @@ public class SpacesListView {
 		comp.setBackground(C.APP_BGCOLOR);
 
 		//table layout
-		final Group tbl = new Group(comp, SWT.BORDER);
+		final Composite tbl = new Composite(comp, SWT.BORDER);
 		tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout gl_tbl = new GridLayout(6, false);
-		gl_tbl.marginTop = -15;
+		gl_tbl.marginTop = 0;
 		gl_tbl.marginHeight = 0;
 		gl_tbl.marginWidth = 0;
 		gl_tbl.verticalSpacing = 1;
 		gl_tbl.horizontalSpacing = 1;
 		tbl.setLayout(gl_tbl);
 		tbl.setBackground(C.APP_BGCOLOR);
-		
+
 		// column headers
 		// final String[] titles = { "ID", "Name", "Completion Status","Internal Classification","Entry Points Classification", "S/O" };
-
 		CLabel lblHeaderID = new CLabel(tbl, SWT.BORDER);
 		GridData gd_lblHeaderID = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		lblHeaderID.setLeftMargin(5);
 		gd_lblHeaderID.widthHint = 75;
 		gd_lblHeaderID.heightHint = colHeaderH;
 		lblHeaderID.setLayoutData(gd_lblHeaderID);
 		lblHeaderID.setBackground(C.BAR_BGCOLOR);
 		lblHeaderID.setFont(C.FONT_12B);
 		lblHeaderID.setText("ID");
-		
+
 		CLabel lblHeaderName = new CLabel(tbl, SWT.BORDER);
+		lblHeaderName.setLeftMargin(5);
 		GridData gd_lblHeaderName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		gd_lblHeaderName.minimumWidth = 200;
 		gd_lblHeaderName.widthHint = 200;
@@ -127,8 +120,9 @@ public class SpacesListView {
 		lblHeaderName.setBackground(C.BAR_BGCOLOR);
 		lblHeaderName.setFont(C.FONT_12B);
 		lblHeaderName.setText("Name");
-		
+
 		CLabel lblHeaderCS = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
+		lblHeaderCS.setLeftMargin(5);
 		GridData gd_lblHeaderCS = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblHeaderCS.widthHint = 160;
 		gd_lblHeaderCS.heightHint = colHeaderH;
@@ -136,8 +130,9 @@ public class SpacesListView {
 		lblHeaderCS.setBackground(C.BAR_BGCOLOR);
 		lblHeaderCS.setFont(C.FONT_12B);
 		lblHeaderCS.setText("Completion Status");
-		
+
 		CLabel lblHeaderIC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
+		lblHeaderIC.setLeftMargin(5);
 		GridData gd_lblHeaderIC = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblHeaderIC.widthHint = 220;
 		gd_lblHeaderIC.heightHint = colHeaderH;
@@ -145,8 +140,9 @@ public class SpacesListView {
 		lblHeaderIC.setBackground(C.BAR_BGCOLOR);
 		lblHeaderIC.setText("Internal Classification");
 		lblHeaderIC.setFont(C.FONT_12B);
-		
+
 		CLabel lblHeaderEPC = new CLabel(tbl, SWT.BORDER);
+		lblHeaderEPC.setLeftMargin(5);
 		lblHeaderEPC.setAlignment(SWT.CENTER);
 		GridData gd_lblHeaderEPC = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblHeaderEPC.widthHint = 220;
@@ -155,8 +151,9 @@ public class SpacesListView {
 		lblHeaderEPC.setBackground(C.BAR_BGCOLOR);
 		lblHeaderEPC.setText("Entry Points Classification");
 		lblHeaderEPC.setFont(C.FONT_12B);
-		
+
 		CLabel lblHeaderSO = new CLabel(tbl, SWT.BORDER);
+		lblHeaderSO.setRightMargin(5);
 		lblHeaderSO.setAlignment(SWT.CENTER);
 		GridData gd_lblHeaderSO = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblHeaderSO.widthHint = 75;
@@ -165,71 +162,195 @@ public class SpacesListView {
 		lblHeaderSO.setBackground(C.BAR_BGCOLOR);
 		lblHeaderSO.setText("S/O");
 		lblHeaderSO.setFont(C.FONT_12B);
-		
-		// start loop through spaces rows
-		CLabel lblLoopID = new CLabel(tbl, SWT.BORDER);
-		GridData gd_lblLoopID = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-		gd_lblLoopID.widthHint = 75;
-		gd_lblLoopID.heightHint = colHeaderH;
-		lblLoopID.setLayoutData(gd_lblLoopID);
-		lblLoopID.setBackground(C.FIELD_BGCOLOR);
-		lblLoopID.setFont(C.FONT_11);
-		lblLoopID.setText("001");
-		
-		CLabel lblLoopName = new CLabel(tbl, SWT.BORDER);
-		GridData gd_lblLoopName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
-		gd_lblLoopName.minimumWidth = 200;
-		gd_lblLoopName.widthHint = 200;
-		gd_lblLoopName.heightHint = colHeaderH;
-		lblLoopName.setLayoutData(gd_lblLoopName);
-		lblLoopName.setBackground(C.FIELD_BGCOLOR);
-		lblLoopName.setFont(C.FONT_11);
-		lblLoopName.setText("Forepeak Tank");
-		
-		CLabel lblLoopCS = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
-		GridData gd_lblLoopCS = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-		gd_lblLoopCS.widthHint = 160;
-		gd_lblLoopCS.heightHint = colHeaderH;
-		lblLoopCS.setLayoutData(gd_lblLoopCS);
-		lblLoopCS.setBackground(C.FIELD_BGCOLOR);
-		lblLoopCS.setImage(C.getImage("Percent_20.png"));
-		
-		CLabel lblLoopIC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
-		GridData gd_lblLoopIC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-		gd_lblLoopIC.widthHint = 220;
-		gd_lblLoopIC.heightHint = colHeaderH;
-		lblLoopIC.setLayoutData(gd_lblLoopIC);
-		lblLoopIC.setBackground(C.FIELD_BGCOLOR);
-		lblLoopIC.setImage(C.getImage("red.png"));
-		
-		CLabel lblLoopEPC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
-		GridData gd_lblLoopEPC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-		gd_lblLoopEPC.widthHint = 220;
-		gd_lblLoopEPC.heightHint = colHeaderH;
-		lblLoopEPC.setLayoutData(gd_lblLoopEPC);
-		lblLoopEPC.setBackground(C.FIELD_BGCOLOR);
-		
-		Image img = new Image(Display.getDefault(),120,22);
-		
-		GC gc = new GC(img);
-		gc.setBackground(C.FIELD_BGCOLOR);
-		gc.drawImage(C.getImage("red.png"), 0, 0);
-		gc.drawImage(C.getImage("amber.png"), 25, 0);
-				
-		lblLoopEPC.setImage(img);	
-		
-		CLabel lblLoopSO = new CLabel(tbl, SWT.BORDER);
-		lblLoopSO.setAlignment(SWT.CENTER);
-		GridData gd_lblLoopSO = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-		gd_lblLoopSO.widthHint = 75;
-		gd_lblLoopSO.heightHint = colHeaderH;
-		lblLoopSO.setLayoutData(gd_lblLoopSO);
-		lblLoopSO.setBackground(C.FIELD_BGCOLOR);
-		lblLoopSO.setImage(C.getImage("bluetick.png"));
+
+
+		// start loop through spaces rows ==============================================
+		try {
+			sRows = SpacesTable.getAllRows();
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+
+		for (SpacesTable.Row sRow : sRows) {
+
+			final int spaceID = sRow.getID();
+
+			final CLabel lblLoopID = new CLabel(tbl, SWT.BORDER);
+			lblLoopID.setLeftMargin(5);
+			GridData gd_lblLoopID = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+			gd_lblLoopID.widthHint = 75;
+			gd_lblLoopID.heightHint = colHeaderH;
+			lblLoopID.setLayoutData(gd_lblLoopID);
+			lblLoopID.setBackground(C.FIELD_BGCOLOR);
+			lblLoopID.setFont(C.FONT_11);
+			lblLoopID.setText(""+spaceID);
+
+			final CLabel lblLoopName = new CLabel(tbl, SWT.BORDER);
+			lblLoopName.setLeftMargin(5);
+			GridData gd_lblLoopName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
+			gd_lblLoopName.minimumWidth = 200;
+			gd_lblLoopName.widthHint = 200;
+			gd_lblLoopName.heightHint = colHeaderH;
+			lblLoopName.setLayoutData(gd_lblLoopName);
+			lblLoopName.setBackground(C.FIELD_BGCOLOR);
+			lblLoopName.setFont(C.FONT_11);
+			lblLoopName.setText(sRow.getName());
+			lblLoopName.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseDoubleClick(MouseEvent arg0) {
+					WindowController.showSpaceDetail(spaceID);
+				}
+			});
+
+			final CLabel lblLoopCS = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
+			lblLoopCS.setLeftMargin(5);
+			GridData gd_lblLoopCS = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+			gd_lblLoopCS.widthHint = 160;
+			gd_lblLoopCS.heightHint = colHeaderH;
+			lblLoopCS.setLayoutData(gd_lblLoopCS);
+			lblLoopCS.setBackground(C.FIELD_BGCOLOR);
+			int cs = AuditController.calculateOverallCompletionStatus(spaceID);
+			lblLoopCS.setImage(C.getImage("Percent_"+ cs +".png"));
+
+			final CLabel lblLoopIC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
+			lblLoopIC.setLeftMargin(5);
+			GridData gd_lblLoopIC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+			gd_lblLoopIC.widthHint = 220;
+			gd_lblLoopIC.heightHint = colHeaderH;
+			lblLoopIC.setLayoutData(gd_lblLoopIC);
+			lblLoopIC.setBackground(C.FIELD_BGCOLOR);
+			String light = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);				
+			lblLoopIC.setImage(C.getImage(light+".png"));
+
+			final CLabel lblLoopEPC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
+			lblLoopEPC.setLeftMargin(5);
+			GridData gd_lblLoopEPC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+			gd_lblLoopEPC.widthHint = 220;
+			gd_lblLoopEPC.heightHint = colHeaderH;
+			lblLoopEPC.setLayoutData(gd_lblLoopEPC);
+			lblLoopEPC.setBackground(C.FIELD_BGCOLOR);
+
+			final Image img = new Image(Display.getDefault(), C.getImage("blank.png"), 0);
+			GC gc = new GC(img);
+			gc.setAntialias(SWT.ON);
+			gc.setBackground(C.FIELD_BGCOLOR);
+			EntrypointsTable.Row[] eRows;
+			try {
+				eRows = EntrypointsTable.getRows("SPACE_ID", spaceID);
+				int centreX = (imgStatusW/2) - 10;
+				int x=0;
+				switch (eRows.length) {
+				case 1:
+					x = centreX;
+					break;
+				case 2:
+					x = (centreX - 20);
+					break;
+				case 3:
+					x = (centreX - 30);
+					break;
+				case 4:
+					x = (centreX - 40);
+					break;
+				case 5:
+					x = (centreX - 50);
+					break;
+				}
+				for (EntrypointsTable.Row eRow : eRows) {
+					String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+eRow.getID());
+					if(epTL.equals("")) { epTL = "red"; }
+					gc.drawImage(C.getImage(epTL+".png"), x, 0);
+					//gc.setBackground(C.TRAFFICLIGHTS.get(epTL));
+					//gc.fillOval(x, 0, 18, 18);
+					x += 25;
+				}
+			} catch (SQLException ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
+			lblLoopEPC.setImage(img);	
+
+
+			final CLabel lblLoopSO = new CLabel(tbl, SWT.BORDER);
+			lblLoopSO.setRightMargin(5);
+			lblLoopSO.setAlignment(SWT.CENTER);
+			GridData gd_lblLoopSO = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+			gd_lblLoopSO.widthHint = 75;
+			gd_lblLoopSO.heightHint = colHeaderH;
+			lblLoopSO.setLayoutData(gd_lblLoopSO);
+			lblLoopSO.setBackground(C.FIELD_BGCOLOR);
+			lblLoopSO.setImage( (AuditController.isSpaceSignedOff(spaceID)) ? C.getImage("bluetick.png") : C.getImage("null.png") );
+
+			CLabel[] tableRow = { lblLoopID,lblLoopName,lblLoopCS,lblLoopIC,lblLoopEPC,lblLoopSO };
+			tableRows.put(spaceID, tableRow);
+
+			// table row hover behaviour
+			lblLoopName.addMouseTrackListener(new MouseTrackAdapter() {
+				@Override
+				public void mouseEnter(MouseEvent arg0) {
+					for (CLabel l : tableRows.get(spaceID)) {
+						if(spaceID != selectedRow) {
+							l.setBackground(C.ROW_HIGHLIGHT);
+						}
+					}
+				}
+				@Override
+				public void mouseExit(MouseEvent arg0) {
+					for (CLabel l : tableRows.get(spaceID)) {
+						if(spaceID != selectedRow) {
+							l.setBackground(C.FIELD_BGCOLOR);
+						}
+					}
+				}
+			});
+			// click behaviour
+			lblLoopName.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseUp(MouseEvent arg0) {
+					selectedRow = (selectedRow != spaceID) ? spaceID : 0;
+					LogController.log("Space " + spaceID + " selected");
+					for (int key : tableRows.keySet()) {
+						for (CLabel l : tableRows.get(key)) {
+							if(key == selectedRow) {
+								// SELECT THIS ROW
+								l.setBackground(C.TITLEBAR_BGCOLOR);
+								WindowController.currentSpaceId = spaceID;
+								WindowController.btnViewSpaceDetails.setEnabled(true);
+								if(WindowController.user.getAccessLevel()==9) {
+									WindowController.btnDeleteSpace.setEnabled(true);   
+								}
+							} else {
+								l.setBackground(C.FIELD_BGCOLOR);
+								if(selectedRow==0) {
+									WindowController.currentSpaceId = 0;
+									WindowController.btnViewSpaceDetails.setEnabled(false);
+									WindowController.btnDeleteSpace.setEnabled(false);  
+								}
+							}
+						}
+					}
+
+
+				}
+			});
+			// double click behaviour
+			lblLoopName.addListener(SWT.MouseDoubleClick, new Listener() {
+				@Override
+				public void handleEvent(Event e) {
+					WindowController.currentSpaceId = spaceID;
+					LogController.log("User clicked item " + spaceID);
+					WindowController.checkSpaceAlert(spaceID);
+				}
+			});
+
+
+		}
+
 		// end loop
-		
-		
-		
+
+
+
 		// redraw panel on window resize
 		scrollPanel.setContent(comp);
 		scrollPanel.setExpandVertical(true);
@@ -240,7 +361,7 @@ public class SpacesListView {
 				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
 			}
 		});
-		
+
 		// final layout settings	
 		parent.layout();
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));

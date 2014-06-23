@@ -3,7 +3,7 @@ package com.rmrdigitalmedia.esm.controllers;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.util.Arrays;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -21,17 +21,18 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
-import com.rmrdigitalmedia.esm.forms.DeleteSpaceDialog;
 import com.rmrdigitalmedia.esm.forms.AddSpaceForm;
+import com.rmrdigitalmedia.esm.forms.DeleteSpaceDialog;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
+import com.rmrdigitalmedia.esm.test.SpacesListViewTest;
 import com.rmrdigitalmedia.esm.views.AdministrationView;
 import com.rmrdigitalmedia.esm.views.EntryAuditChecklistView;
 import com.rmrdigitalmedia.esm.views.EntryAuditClassificationView;
@@ -148,7 +149,7 @@ public class WindowController {
 
 		// SPACES LISTING PAGE ======================================================
 		pageSpacesList = new Composite (formHolder, SWT.NONE);
-		SpacesListView.buildTable(pageSpacesList);
+		SpacesListViewTest.buildTable(pageSpacesList);
 
 		// SPACE DETAIL PAGE ======================================================
 		pageSpaceDetail = new Composite (formHolder, SWT.NONE);
@@ -240,11 +241,8 @@ public class WindowController {
 		btnViewSpaceDetails.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				TableItem[] selection = SpacesListView.getTable().getSelection();
-				String s = selection[0].getText();
-				LogController.log("Details Selection={" + s + "}");
-				int _id = Integer.parseInt(s);
-				checkSpaceAlert(_id);
+				LogController.log("Details Selection={" + currentSpaceId + "}");
+				checkSpaceAlert(currentSpaceId);
 			}
 		});
 		btnViewSpaceDetails.setText("Details");
@@ -261,16 +259,13 @@ public class WindowController {
 		btnDeleteSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				TableItem[] selection = SpacesListView.getTable().getSelection();
-				String s = selection[0].getText();
-				LogController.log("Delete Selection={" + s + "}");
-				int _id = Integer.parseInt(s);		          
+				LogController.log("Delete Selection={" + currentSpaceId + "}");
 				DeleteSpaceDialog dsd = new DeleteSpaceDialog();					
-				if(dsd.deleteOK(_id)) {
-					LogController.log("Space "+_id+" marked as deleted in database");
+				if(dsd.deleteOK(currentSpaceId)) {
+					LogController.log("Space "+currentSpaceId+" marked as deleted in database");
 					showSpacesList();						
 				} else {
-					LogController.log("Space " + _id + " not deleted");
+					LogController.log("Space " + currentSpaceId + " not deleted");
 				}
 			}			
 		});
@@ -385,12 +380,7 @@ public class WindowController {
 		btnSpacesList.setVisible(false);
 		btnAdmin.setEnabled(true);
 		LogController.log("Displaying Space List page");
-		try {
-			rows = SpacesTable.getRows("DELETED=FALSE");
-		} catch (SQLException e) {
-			LogController.logEvent(me, C.ERROR, e);
-		}
-		SpacesListView.getTVB().setInput(Arrays.asList(rows));
+		SpacesListView.buildTable(pageSpacesList);
 		stackLayout.topControl = pageSpacesList;
 		pageTitle.setText(C.SPACES_LIST_TITLE);
 		formHolder.layout();

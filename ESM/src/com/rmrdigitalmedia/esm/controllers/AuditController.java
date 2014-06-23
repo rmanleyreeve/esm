@@ -144,8 +144,7 @@ public class AuditController {
 		String light = "red";
 		SpaceClassificationAuditTable.Row row = null;
 		try {
-			row = SpaceClassificationAuditTable
-					.getRow("SPACE_ID", "" + spaceID);
+			row = SpaceClassificationAuditTable.getRow("SPACE_ID", "" + spaceID);
 		} catch (SQLException ex) {
 			LogController.logEvent(AuditController.class, C.FATAL, ex);
 		}
@@ -206,8 +205,7 @@ public class AuditController {
 			} // N = green
 			max = 8;
 			try {
-				if (isN(SpaceChecklistAuditTable.getRow("SPACE_ID",
-						"" + spaceID).getQ7Boolean())) {
+				if (isN(SpaceChecklistAuditTable.getRow("SPACE_ID", "" + spaceID).getQ7Boolean())) {
 					max = 7;
 				}
 			} catch (SQLException ex) {
@@ -397,10 +395,8 @@ public class AuditController {
 
 	public static int calculateOverallCompletionStatus(int spaceID) {
 		int progress = 0;
-		progress += (Integer) EsmApplication.appData.getField("SPACE_CHK_"
-				+ spaceID);
-		progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_"
-				+ spaceID);
+		progress += (Integer) EsmApplication.appData.getField("SPACE_CHK_" + spaceID);
+		progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID);
 		return (int) Math.floor((progress / 2) / 10) * 10;
 	}
 
@@ -416,12 +412,10 @@ public class AuditController {
 			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows(
 					"SPACE_ID", spaceID)) {
 				int epID = epRow.getID();
-				if ((Integer) EsmApplication.appData.getField("ENTRY_CHK_"
-						+ epID) < 100) {
+				if ((Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID) < 100) {
 					complete = false;
 				}
-				if ((Integer) EsmApplication.appData.getField("ENTRY_CLASS_"
-						+ epID) < 100) {
+				if ((Integer) EsmApplication.appData.getField("ENTRY_CLASS_" + epID) < 100) {
 					complete = false;
 				}
 			}
