@@ -95,6 +95,8 @@ public class SpaceDetailView {
 
 	public static void buildPage(final Composite parent, final int spaceID) {
 
+		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
+
 		SpacesTable.Row sRow = null;
 		try {
 			sRow = SpacesTable.getRow(spaceID);
