@@ -1,10 +1,11 @@
-package com.rmrdigitalmedia.esm.views;
+package com.rmrdigitalmedia.esm.table;
 
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
@@ -18,17 +19,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
-import com.rmrdigitalmedia.esm.table.DynamicImageArrayCell;
-import com.rmrdigitalmedia.esm.table.DynamicImageCell;
+import com.rmrdigitalmedia.esm.views.SpacesListView;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable.Row;
+
 import de.ralfebert.rcputils.properties.BaseValue;
 import de.ralfebert.rcputils.tables.ColumnBuilder;
 import de.ralfebert.rcputils.tables.ICellFormatter;
@@ -36,7 +38,7 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 
 @SuppressWarnings("unused")
-public class SpacesListView {
+public class SpacesListTableView {
 
 	private static SpacesTable.Row[] rows;
 	static TableViewerBuilder tvb;
@@ -56,7 +58,7 @@ public class SpacesListView {
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
-			SpacesListView.getTVB().setInput(Arrays.asList(rows));
+			SpacesListTableView.getTVB().setInput(Arrays.asList(rows));
 			while (!shell.isDisposed()) {
 				if (!Display.getDefault().readAndDispatch()) {
 					Display.getDefault().sleep();
