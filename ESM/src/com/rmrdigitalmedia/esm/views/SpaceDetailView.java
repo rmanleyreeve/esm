@@ -55,7 +55,6 @@ import com.rmrdigitalmedia.esm.forms.AddSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.AddSpacePhotoForm;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
-import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
@@ -773,7 +772,7 @@ public class SpaceDetailView {
 		lblSignoff.setBackground(C.APP_BGCOLOR);
 		lblSignoff.setText("Sign Off");	
 
-		boolean auth = AuditController.isSpaceSignedOff(spaceID);
+		boolean signedoff = AuditController.isSpaceSignedOff(spaceID);
 		final Button btnSignOff = new Button(rowRight5, SWT.NONE);
 		btnSignOff.setToolTipText("Mark this space as Signed Off (authorized users only)");
 		GridData gd_btnSignOff = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
@@ -781,7 +780,7 @@ public class SpaceDetailView {
 		btnSignOff.setLayoutData(gd_btnSignOff);
 		btnSignOff.setImage(C.getImage("bluetick.png"));
 		btnSignOff.setText("Authorize");
-		btnSignOff.setEnabled(user.getAccessLevel()==9 && !auth && AuditController.isSpaceComplete(spaceID));
+		btnSignOff.setEnabled(user.getAccessLevel()==9 && !signedoff && AuditController.isSpaceComplete(spaceID));
 
 		Label lblAuthBy = new Label(rowRight5, SWT.NONE);
 		lblAuthBy.setFont(C.FONT_10B);
@@ -793,7 +792,7 @@ public class SpaceDetailView {
 		lblAuthName.setFont(C.FONT_10);
 		lblAuthName.setBackground(C.APP_BGCOLOR);
 		lblAuthName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		if(auth) {
+		if(signedoff) {
 			try {
 				EsmUsersTable.Row authUser = EsmUsersTable.getRow(sRow.getSignoffID());
 				lblAuthName.setText(authUser.getForename() + " " + authUser.getSurname());

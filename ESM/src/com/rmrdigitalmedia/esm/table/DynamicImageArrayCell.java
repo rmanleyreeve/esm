@@ -44,10 +44,8 @@ public class DynamicImageArrayCell extends StyledCellLabelProvider {
 			return;
 		}
 		Rectangle bounds = image.getBounds();
-		int centreX = cellBounds.x
-				+ Math.max(0, (cellBounds.width - bounds.width) / 2);
-		int y = cellBounds.y
-				+ Math.max(0, (cellBounds.height - bounds.height) / 2);
+		int centreX = cellBounds.x + Math.max(0, (cellBounds.width - bounds.width) / 2);
+		int y = cellBounds.y + Math.max(0, (cellBounds.height - bounds.height) / 2);
 		// work out x based on number of images
 		int x = cellBounds.x;
 		switch (numImages) {

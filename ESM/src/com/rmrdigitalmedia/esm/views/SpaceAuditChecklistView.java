@@ -34,14 +34,14 @@ import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
-import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
+import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistAuditTable;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistQuestionsTable;
 
 @SuppressWarnings("unused")
 public class SpaceAuditChecklistView {
 
-	private static Row user = WindowController.user;
+	private static EsmUsersTable.Row user = WindowController.user;
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 	private static Label sep;
 	private static int qNum;
