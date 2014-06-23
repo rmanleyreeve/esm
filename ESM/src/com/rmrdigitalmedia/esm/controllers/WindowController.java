@@ -149,7 +149,6 @@ public class WindowController {
 
 		// SPACES LISTING PAGE ======================================================
 		pageSpacesList = new Composite (formHolder, SWT.NONE);
-		SpacesListViewTest.buildTable(pageSpacesList);
 
 		// SPACE DETAIL PAGE ======================================================
 		pageSpaceDetail = new Composite (formHolder, SWT.NONE);

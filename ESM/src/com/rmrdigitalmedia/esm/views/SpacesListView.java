@@ -69,7 +69,6 @@ public class SpacesListView {
 
 	public static void buildTable(Composite parent) {
 		LogController.log("Building Space List page");
-		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 
 		for (Control c:parent.getChildren()) {
 			c.dispose();
@@ -168,8 +167,7 @@ public class SpacesListView {
 		try {
 			sRows = SpacesTable.getAllRows();
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
+			LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading spaces from DB",ex);		
 		}
 
 		for (SpacesTable.Row sRow : sRows) {
@@ -196,12 +194,7 @@ public class SpacesListView {
 			lblLoopName.setBackground(C.FIELD_BGCOLOR);
 			lblLoopName.setFont(C.FONT_11);
 			lblLoopName.setText(sRow.getName());
-			lblLoopName.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseDoubleClick(MouseEvent arg0) {
-					WindowController.showSpaceDetail(spaceID);
-				}
-			});
+			lblLoopName.setToolTipText("Double-click to view details of this enclosed space");
 
 			final CLabel lblLoopCS = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
 			lblLoopCS.setLeftMargin(5);
@@ -266,11 +259,9 @@ public class SpacesListView {
 					x += 25;
 				}
 			} catch (SQLException ex) {
-				// TODO Auto-generated catch block
-				ex.printStackTrace();
+				LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading entry points from DB",ex);		
 			}
 			lblLoopEPC.setImage(img);	
-
 
 			final CLabel lblLoopSO = new CLabel(tbl, SWT.BORDER);
 			lblLoopSO.setRightMargin(5);
@@ -309,19 +300,23 @@ public class SpacesListView {
 				@Override
 				public void mouseUp(MouseEvent arg0) {
 					selectedRow = (selectedRow != spaceID) ? spaceID : 0;
-					LogController.log("Space " + spaceID + " selected");
 					for (int key : tableRows.keySet()) {
-						for (CLabel l : tableRows.get(key)) {
-							if(key == selectedRow) {
+						if(key == selectedRow) {
+							LogController.log("Space " + spaceID + " selected");
+							for (CLabel l : tableRows.get(key)) {
 								// SELECT THIS ROW
-								l.setBackground(C.TITLEBAR_BGCOLOR);
+								l.setBackground(C.ROW_SELECTED);
+								l.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 								WindowController.currentSpaceId = spaceID;
 								WindowController.btnViewSpaceDetails.setEnabled(true);
 								if(WindowController.user.getAccessLevel()==9) {
 									WindowController.btnDeleteSpace.setEnabled(true);   
 								}
-							} else {
+							}
+						} else {
+							for (CLabel l : tableRows.get(key)) {
 								l.setBackground(C.FIELD_BGCOLOR);
+								l.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 								if(selectedRow==0) {
 									WindowController.currentSpaceId = 0;
 									WindowController.btnViewSpaceDetails.setEnabled(false);
@@ -329,9 +324,7 @@ public class SpacesListView {
 								}
 							}
 						}
-					}
-
-
+					} // end for keyset
 				}
 			});
 			// double click behaviour
@@ -364,6 +357,5 @@ public class SpacesListView {
 
 		// final layout settings	
 		parent.layout();
-		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 	}
 }
