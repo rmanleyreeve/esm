@@ -630,16 +630,19 @@ public class SpaceAuditClassificationView {
 				else if(q1_radio2.getSelection()) { aRow.setQ1Value(2); }
 				else if(q1_radio3.getSelection()) { aRow.setQ1Value(3); }	
 				else { aRow.setQ1Value(0); }
+				if(q1_col5.getText()!=null) aRow.setQ1Comments(q1_col5.getText());
 				//2
 				if(q2_radio1.getSelection()) { aRow.setQ2Value(1); }
 				else if(q2_radio2.getSelection()) { aRow.setQ2Value(2); }
 				else if(q2_radio3.getSelection()) { aRow.setQ2Value(3); }	
 				else { aRow.setQ2Value(0); }
+				if(q2_col5.getText()!=null) aRow.setQ2Comments(q2_col5.getText());
 				//3
 				if(show && q3_radio1.getSelection()) { aRow.setQ3Value(1); }
 				else if(show && q3_radio2.getSelection()) { aRow.setQ3Value(2); }
 				else if(show && q3_radio3.getSelection()) { aRow.setQ3Value(3); }	
 				else { aRow.setQ3Value(0); }
+				if(q3_col5.getText()!=null) aRow.setQ3Comments(q3_col5.getText());
 				//4
 				if(q4_radio1.getSelection()) { aRow.setQ4Value(1); }
 				else if(q4_radio2.getSelection()) { aRow.setQ4Value(2); }
@@ -647,20 +650,25 @@ public class SpaceAuditClassificationView {
 				else if(q4_radio4.getSelection()) { aRow.setQ4Value(4); }	
 				else if(q4_radio5.getSelection()) { aRow.setQ4Value(5); }	
 				else { aRow.setQ4Value(0); }
+				if(q4_col5.getText()!=null) aRow.setQ4Comments(q4_col5.getText());
 				//5
 				if(q5_radio1.getSelection()) { aRow.setQ5Value(1); }
 				else if(q5_radio2.getSelection()) { aRow.setQ5Value(2); }
 				else if(q5_radio3.getSelection()) { aRow.setQ5Value(3); }	
 				else { aRow.setQ5Value(0); }
+				if(q5_col5.getText()!=null) aRow.setQ5Comments(q5_col5.getText());
 				//6
 				if(q6_radio1.getSelection()) { aRow.setQ6Value(1); }
 				else if(q6_radio2.getSelection()) { aRow.setQ6Value(2); }
 				else if(q6_radio3.getSelection()) { aRow.setQ6Value(3); }	
 				else { aRow.setQ6Value(0); }
+				if(q6_col5.getText()!=null) aRow.setQ6Comments(q6_col5.getText());
 				//7
 				aRow.setQ7Boolean( C.getRB(q7_radio1,q7_radio2) );
+				if(q7_col5.getText()!=null) aRow.setQ7Comments(q7_col5.getText());
 				//8
 				aRow.setQ8Boolean( C.getRB(q8_radio1,q8_radio2) );
+				if(q8_col5.getText()!=null) aRow.setQ8Comments(q8_col5.getText());
 				// commit the transaction
 				aRow.update();
 			} catch (SQLException e) {

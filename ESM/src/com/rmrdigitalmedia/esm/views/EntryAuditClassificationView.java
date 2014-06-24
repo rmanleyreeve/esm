@@ -518,23 +518,28 @@ public class EntryAuditClassificationView {
 				else if(q1_radio2.getSelection()) { aRow.setQ1Value(2); }
 				else if(q1_radio3.getSelection()) { aRow.setQ1Value(3); }	
 				else { aRow.setQ1Value(0); }
+				if(q1_col5.getText()!=null) aRow.setQ1Comments(q1_col5.getText());
 				//2
 				if(q2_radio1.getSelection()) { aRow.setQ2Value(1); }
 				else if(q2_radio2.getSelection()) { aRow.setQ2Value(2); }
 				else if(q2_radio3.getSelection()) { aRow.setQ2Value(3); }	
 				else { aRow.setQ2Value(0); }
+				if(q2_col5.getText()!=null) aRow.setQ2Comments(q2_col5.getText());
 				//3
 				if(q3_radio1.getSelection()) { aRow.setQ3Value(1); }
 				else if(q3_radio2.getSelection()) { aRow.setQ3Value(2); }
 				else if(q3_radio3.getSelection()) { aRow.setQ3Value(3); }	
 				else { aRow.setQ3Value(0); }
+				if(q3_col5.getText()!=null) aRow.setQ3Comments(q3_col5.getText());
 				//4
 				aRow.setQ4Boolean( C.getRB(q4_radio1,q4_radio2) );
+				if(q4_col5.getText()!=null) aRow.setQ4Comments(q4_col5.getText());
 				//5
 				if(q5_radio1.getSelection()) { aRow.setQ5Value(1); }
 				else if(q5_radio2.getSelection()) { aRow.setQ5Value(2); }
 				else if(q5_radio3.getSelection()) { aRow.setQ5Value(3); }	
 				else { aRow.setQ5Value(0); }
+				if(q5_col5.getText()!=null) aRow.setQ5Comments(q5_col5.getText());
 				// commit the transaction
 				aRow.update();
 			} catch (SQLException e) {
