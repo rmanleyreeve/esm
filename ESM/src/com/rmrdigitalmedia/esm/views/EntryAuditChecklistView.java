@@ -745,50 +745,66 @@ public class EntryAuditChecklistView {
 				if(q1_radio1.getSelection()) { aRow.setQ1Value((String)q1_radio1.getData()); }
 				else if(q1_radio2.getSelection()) { aRow.setQ1Value((String)q1_radio2.getData()); }
 				else { aRow.setQ1Value(null); }
+				if(q1_col4.getText()!=null) aRow.setQ1Comments(q1_col4.getText());
 				//2
 				aRow.setQ2Boolean( C.getRB(q2_radio1,q2_radio2) );
+				if(q2_col4.getText()!=null) aRow.setQ2Comments(q2_col4.getText());
 				//3
 				aRow.setQ3Boolean( C.getRB(q3_radio1,q3_radio2) );
+				if(q3_col4.getText()!=null) aRow.setQ3Comments(q3_col4.getText());
 				//4
 				if(q4_radio1.getSelection()) { aRow.setQ4Value((String)q4_radio1.getData()); }
 				else if(q4_radio2.getSelection()) { aRow.setQ4Value((String)q4_radio2.getData()); }
 				else if(q4_radio3.getSelection()) { aRow.setQ4Value((String)q4_radio3.getData()); }
 				else { aRow.setQ4Value(null); }
+				if(q4_col4.getText()!=null) aRow.setQ4Comments(q4_col4.getText());
 				//5
 				aRow.setQ5DimsH( q5_txtH.getText() );
 				aRow.setQ5DimsW( q5_txtW.getText() );
+				if(q5_col4.getText()!=null) aRow.setQ5Comments(q5_col4.getText());
 				//6
 				aRow.setQ6Boolean( C.getRB(q6_radio1,q6_radio2) );
+				if(q6_col4.getText()!=null) aRow.setQ6Comments(q6_col4.getText());
 				//7				
 				if(q7_radio1.getSelection()) { aRow.setQ7Value((String)q7_radio1.getData()); }
 				else if(q7_radio2.getSelection()) { aRow.setQ7Value((String)q7_radio2.getData()); }
 				else { aRow.setQ7Value(null); }
+				if(q7_col4.getText()!=null) aRow.setQ7Comments(q7_col4.getText());
 				//8
 				if(q7_radio1.getSelection()) { 
 					aRow.setQ8Boolean( C.getRB(q8_radio1,q8_radio2) ); 
 				} else { 
 					aRow.setQ8Boolean(null); 
 				}				
+				if(q8_col4.getText()!=null) aRow.setQ8Comments(q8_col4.getText());
 				//9
 				if(q7_radio1.getSelection()) { 
 					aRow.setQ9Boolean( C.getRB(q9_radio1,q9_radio2) ); 
 				} else { 
 					aRow.setQ9Boolean(null); 
 				}
+				if(q9_col4.getText()!=null) aRow.setQ9Comments(q9_col4.getText());
 				//10
 				aRow.setQ10Boolean( C.getRB(q10_radio1,q10_radio2) );
+				if(q10_col4.getText()!=null) aRow.setQ10Comments(q10_col4.getText());
 				//11
 				aRow.setQ11Boolean( C.getRB(q11_radio1,q11_radio2) );
+				if(q11_col4.getText()!=null) aRow.setQ11Comments(q11_col4.getText());
 				//12
 				aRow.setQ12Boolean( C.getRB(q12_radio1,q12_radio2) );
+				if(q12_col4.getText()!=null) aRow.setQ12Comments(q12_col4.getText());
 				//13
 				aRow.setQ13Boolean( C.getRB(q13_radio1,q13_radio2) );
+				if(q13_col4.getText()!=null) aRow.setQ13Comments(q13_col4.getText());
 				//14
 				aRow.setQ14Boolean( C.getRB(q14_radio1,q14_radio2) );
+				if(q14_col4.getText()!=null) aRow.setQ14Comments(q14_col4.getText());
 				//15
 				aRow.setQ15Boolean( C.getRB(q15_radio1,q15_radio2) );
+				if(q15_col4.getText()!=null) aRow.setQ15Comments(q15_col4.getText());
 				//16
 				aRow.setQ16Boolean( C.getRB(q16_radio1,q16_radio2) );				
+				if(q16_col4.getText()!=null) aRow.setQ16Comments(q16_col4.getText());
 				// commit the transaction
 				aRow.update();
 			} catch (SQLException e) {
