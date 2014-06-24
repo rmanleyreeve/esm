@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -15,9 +14,9 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
+import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -61,7 +60,7 @@ public class AppLoader {
 		System.exit(0);
 	}
 
-	public AppLoader(Display display) {
+	public AppLoader(final Display display) {
 		me = this;
 		LogController.log("Running class " + this.getClass().getName());
 
@@ -142,6 +141,25 @@ public class AppLoader {
 				db.checkDB();
 				message("Database integrity check complete");
 				update(); // 40%
+
+				// background thread
+				Thread auditInit = new Thread() {
+					@Override
+					public void run() {
+						// do expensive processing
+						AuditController.init();
+						display.syncExec(new Runnable() {
+							@Override
+							public void run() {
+								// notify GUI
+								// System.out.println("COMPLETE");
+							}
+
+						});
+					}
+				};
+				// do initial audit calculations in background thread
+				auditInit.start();
 
 				// check license key in DB
 				message("Checking License Key");

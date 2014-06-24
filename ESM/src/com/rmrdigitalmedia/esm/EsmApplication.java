@@ -1,14 +1,11 @@
 package com.rmrdigitalmedia.esm;
 
 import java.io.IOException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-
-import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -27,22 +24,6 @@ public class EsmApplication {
 		me = this;
 		final Display display = new Display();
 
-		// background thread
-		Thread auditInit = new Thread() {
-			@Override
-			public void run() {
-				// do expensive processing
-				AuditController.init();
-				display.syncExec(new Runnable() {
-					@Override
-					public void run() {
-						// notify GUI
-						// System.out.println("COMPLETE");
-					}
-
-				});
-			}
-		};
 
 		// create log dir first
 		FilesystemController fs = new FilesystemController();
@@ -51,9 +32,6 @@ public class EsmApplication {
 		LogController.log("Running class " + me.getClass().getName());
 		LogController.log("Starting ESM Application...");
 		appData = new AppData();
-
-		// do initial audit calculations in background thread
-		auditInit.start();
 
 		loader = new AppLoader(display);
 		while (!display.isDisposed() && display.getShells().length != 0
