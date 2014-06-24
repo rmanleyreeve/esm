@@ -361,7 +361,7 @@ public class EntryAuditClassificationView {
 		q3_radio2 = new Button(q3_col3, SWT.RADIO);
 		q3_radio2.setText("Quite difficult");
 		q3_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q3_radio2.setSelection(aRow.getQ2Value()==2); 
+		if(!empty) q3_radio2.setSelection(aRow.getQ3Value()==2); 
 		q3_radio3 = new Button(q3_col3, SWT.RADIO);
 		q3_radio3.setText("Not difficult");
 		q3_radio3.setBackground(C.APP_BGCOLOR);
