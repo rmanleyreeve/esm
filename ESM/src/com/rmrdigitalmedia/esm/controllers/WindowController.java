@@ -370,6 +370,10 @@ public class WindowController {
 	void showSpacesList(){
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		//onlineStatus.setEnabled(InternetController.checkNetAccess());
+		LogController.log("Displaying Space List page");
+		SpacesListView.buildTable(pageSpacesList);
+		stackLayout.topControl = pageSpacesList;
+		pageTitle.setText(C.SPACES_LIST_TITLE);
 		btnAddSpace.setVisible(true);
 		btnDeleteSpace.setVisible(true);
 		btnDeleteSpace.setEnabled(false);
@@ -377,10 +381,6 @@ public class WindowController {
 		btnViewSpaceDetails.setEnabled(false);
 		btnSpacesList.setVisible(false);
 		btnAdmin.setEnabled(true);
-		LogController.log("Displaying Space List page");
-		SpacesListView.buildTable(pageSpacesList);
-		stackLayout.topControl = pageSpacesList;
-		pageTitle.setText(C.SPACES_LIST_TITLE);
 		formHolder.layout();
 		shell.setCursor(new Cursor(display, SWT.CURSOR_ARROW));
 	}
@@ -388,26 +388,21 @@ public class WindowController {
 	public static void showAdministration() {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		LogController.log("Displaying Administration page");
+		AdministrationView.buildPage(pageAdministration);
+		stackLayout.topControl = pageAdministration;
+		pageTitle.setText(C.ADMIN_PAGE_TITLE);
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
 		btnAdmin.setEnabled(false);
-		LogController.log("Displaying Administration page");
-		AdministrationView.buildPage(pageAdministration);
-		stackLayout.topControl = pageAdministration;
-		pageTitle.setText(C.ADMIN_PAGE_TITLE);
 		formHolder.layout();
 	}
 	public static void showSpaceDetail(int spaceID) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		currentSpaceId = spaceID;
-		btnAddSpace.setVisible(false);
-		btnViewSpaceDetails.setVisible(false);
-		btnDeleteSpace.setVisible(false);
-		btnSpacesList.setVisible(true);
-		btnAdmin.setEnabled(true);
 		LogController.log("Loading Space Detail page for user selection: Space ID "+spaceID);
 		SpaceDetailView.buildPage(pageSpaceDetail, spaceID);
 		stackLayout.topControl = pageSpaceDetail;
@@ -416,17 +411,17 @@ public class WindowController {
 		} catch (SQLException e) {
 			LogController.logEvent(me, C.WARNING, e);
 		}
+		btnAddSpace.setVisible(false);
+		btnViewSpaceDetails.setVisible(false);
+		btnDeleteSpace.setVisible(false);
+		btnSpacesList.setVisible(true);
+		btnAdmin.setEnabled(true);
 		formHolder.layout();
 	}
 	public static void showSpaceAuditChecklist(int spaceID) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		currentSpaceId = spaceID;
-		btnAddSpace.setVisible(false);	
-		btnViewSpaceDetails.setVisible(false);
-		btnDeleteSpace.setVisible(false);
-		btnSpacesList.setVisible(false);
-		btnAdmin.setEnabled(true);
 		LogController.log("Displaying Internal Space Audit Checklist for ID:" + spaceID);
 		SpaceAuditChecklistView.buildPage(pageSpaceAudit, spaceID);
 		stackLayout.topControl = pageSpaceAudit;
@@ -435,17 +430,17 @@ public class WindowController {
 			title += " for " + SpacesTable.getRow(spaceID).getName();
 		} catch (SQLException ex) {}
 		pageTitle.setText(title);
+		btnAddSpace.setVisible(false);	
+		btnViewSpaceDetails.setVisible(false);
+		btnDeleteSpace.setVisible(false);
+		btnSpacesList.setVisible(false);
+		btnAdmin.setEnabled(true);
 		formHolder.layout();
 	}
 	public static void showSpaceAuditClassification(int spaceID) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		currentSpaceId = spaceID;
-		btnAddSpace.setVisible(false);	
-		btnViewSpaceDetails.setVisible(false);
-		btnDeleteSpace.setVisible(false);
-		btnSpacesList.setVisible(false);
-		btnAdmin.setEnabled(true);
 		LogController.log("Displaying Internal Space Audit Classification for ID:" + spaceID);
 		SpaceAuditClassificationView.buildPage(pageSpaceAudit, spaceID);
 		stackLayout.topControl = pageSpaceAudit;
@@ -454,16 +449,16 @@ public class WindowController {
 			title += " for " + SpacesTable.getRow(spaceID).getName();
 		} catch (SQLException ex) {}
 		pageTitle.setText(title);
-		formHolder.layout();
-	}
-	public static void showEntryAuditChecklist(int entryID) {
-		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
 		btnAdmin.setEnabled(true);
+		formHolder.layout();
+	}
+	public static void showEntryAuditChecklist(int entryID) {
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
+		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		LogController.log("Displaying Entry Point Audit Checklist for ID:" + entryID);
 		EntryAuditChecklistView.buildPage(pageEntryAudit, entryID);
 		stackLayout.topControl = pageEntryAudit;
@@ -472,16 +467,16 @@ public class WindowController {
 			title += " for " + EntrypointsTable.getRow(entryID).getName();
 		} catch (SQLException ex) {}
 		pageTitle.setText(title);
-		formHolder.layout();
-	}
-	public static void showEntryAuditClassification(int entryID) {
-		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
 		btnAdmin.setEnabled(true);
+		formHolder.layout();
+	}
+	public static void showEntryAuditClassification(int entryID) {
+		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
+		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		LogController.log("Displaying Entry Point Audit Classification for ID:" + entryID);
 		EntryAuditClassificationView.buildPage(pageEntryAudit, entryID);
 		stackLayout.topControl = pageEntryAudit;
@@ -490,6 +485,11 @@ public class WindowController {
 			title += " for " + EntrypointsTable.getRow(entryID).getName();
 		} catch (SQLException ex) {}
 		pageTitle.setText(title);
+		btnAddSpace.setVisible(false);	
+		btnViewSpaceDetails.setVisible(false);
+		btnDeleteSpace.setVisible(false);
+		btnSpacesList.setVisible(false);
+		btnAdmin.setEnabled(true);
 		formHolder.layout();
 	}
 

@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -14,6 +13,8 @@ import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -27,7 +28,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.SWTResourceManager;
-
+import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -99,6 +100,8 @@ public class SpacesListView {
 
 		// column headers
 		// final String[] titles = { "ID", "Name", "Completion Status","Internal Classification","Entry Points Classification", "S/O" };
+
+		// ID HEADER
 		CLabel lblHeaderID = new CLabel(tbl, SWT.BORDER);
 		GridData gd_lblHeaderID = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		lblHeaderID.setLeftMargin(5);
@@ -108,7 +111,7 @@ public class SpacesListView {
 		lblHeaderID.setBackground(C.BAR_BGCOLOR);
 		lblHeaderID.setFont(C.FONT_12B);
 		lblHeaderID.setText("ID");
-
+		// NAME
 		CLabel lblHeaderName = new CLabel(tbl, SWT.BORDER);
 		lblHeaderName.setLeftMargin(5);
 		GridData gd_lblHeaderName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
@@ -119,7 +122,7 @@ public class SpacesListView {
 		lblHeaderName.setBackground(C.BAR_BGCOLOR);
 		lblHeaderName.setFont(C.FONT_12B);
 		lblHeaderName.setText("Name");
-
+		// COMPLETION STATUS
 		CLabel lblHeaderCS = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
 		lblHeaderCS.setLeftMargin(5);
 		GridData gd_lblHeaderCS = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
@@ -129,7 +132,7 @@ public class SpacesListView {
 		lblHeaderCS.setBackground(C.BAR_BGCOLOR);
 		lblHeaderCS.setFont(C.FONT_12B);
 		lblHeaderCS.setText("Completion Status");
-
+		// INTERNAL CLASSIFICATION
 		CLabel lblHeaderIC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
 		lblHeaderIC.setLeftMargin(5);
 		GridData gd_lblHeaderIC = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
@@ -139,7 +142,7 @@ public class SpacesListView {
 		lblHeaderIC.setBackground(C.BAR_BGCOLOR);
 		lblHeaderIC.setText("Internal Classification");
 		lblHeaderIC.setFont(C.FONT_12B);
-
+		// ENTRY POINTS CLASSIFICATION
 		CLabel lblHeaderEPC = new CLabel(tbl, SWT.BORDER);
 		lblHeaderEPC.setLeftMargin(5);
 		lblHeaderEPC.setAlignment(SWT.CENTER);
@@ -150,7 +153,7 @@ public class SpacesListView {
 		lblHeaderEPC.setBackground(C.BAR_BGCOLOR);
 		lblHeaderEPC.setText("Entry Points Classification");
 		lblHeaderEPC.setFont(C.FONT_12B);
-
+		// SIGNED OFF
 		CLabel lblHeaderSO = new CLabel(tbl, SWT.BORDER);
 		lblHeaderSO.setRightMargin(5);
 		lblHeaderSO.setAlignment(SWT.CENTER);
@@ -162,18 +165,16 @@ public class SpacesListView {
 		lblHeaderSO.setText("S/O");
 		lblHeaderSO.setFont(C.FONT_12B);
 
-
-		// start loop through spaces rows ==============================================
+		// get spaces from DB
 		try {
 			sRows = SpacesTable.getRows("DELETED=FALSE");
 		} catch (SQLException ex) {
 			LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading spaces from DB",ex);		
 		}
-
+		// start loop through spaces rows ==============================================
 		for (SpacesTable.Row sRow : sRows) {
-
 			final int spaceID = sRow.getID();
-
+			// ID
 			final CLabel lblLoopID = new CLabel(tbl, SWT.BORDER);
 			lblLoopID.setLeftMargin(5);
 			GridData gd_lblLoopID = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
@@ -181,9 +182,9 @@ public class SpacesListView {
 			gd_lblLoopID.heightHint = colHeaderH;
 			lblLoopID.setLayoutData(gd_lblLoopID);
 			lblLoopID.setBackground(C.FIELD_BGCOLOR);
-			lblLoopID.setFont(C.FONT_11);
+			lblLoopID.setFont(C.FONT_11B);
 			lblLoopID.setText(""+spaceID);
-
+			// NAME
 			final CLabel lblLoopName = new CLabel(tbl, SWT.BORDER);
 			lblLoopName.setLeftMargin(5);
 			GridData gd_lblLoopName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
@@ -192,10 +193,10 @@ public class SpacesListView {
 			gd_lblLoopName.heightHint = colHeaderH;
 			lblLoopName.setLayoutData(gd_lblLoopName);
 			lblLoopName.setBackground(C.FIELD_BGCOLOR);
-			lblLoopName.setFont(C.FONT_11);
+			lblLoopName.setFont(C.FONT_11B);
+			//lblLoopName.setToolTipText("Double-click to view details of this enclosed space");
 			lblLoopName.setText(sRow.getName());
-			lblLoopName.setToolTipText("Double-click to view details of this enclosed space");
-
+			// COMPLETION STATUS
 			final CLabel lblLoopCS = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
 			lblLoopCS.setLeftMargin(5);
 			GridData gd_lblLoopCS = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
@@ -205,7 +206,7 @@ public class SpacesListView {
 			lblLoopCS.setBackground(C.FIELD_BGCOLOR);
 			int cs = AuditController.calculateOverallCompletionStatus(spaceID);
 			lblLoopCS.setImage(C.getImage("Percent_"+ cs +".png"));
-
+			// INTERNAL CLASSIFICATION
 			final CLabel lblLoopIC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
 			lblLoopIC.setLeftMargin(5);
 			GridData gd_lblLoopIC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
@@ -216,7 +217,7 @@ public class SpacesListView {
 			String light = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);
 			if(light.equals("")) { light = "red"; }
 			lblLoopIC.setImage(C.getImage(light+".png"));
-
+			// ENTRY POINTS CLASSIFICATION
 			final CLabel lblLoopEPC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
 			lblLoopEPC.setLeftMargin(5);
 			GridData gd_lblLoopEPC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
@@ -224,46 +225,49 @@ public class SpacesListView {
 			gd_lblLoopEPC.heightHint = colHeaderH;
 			lblLoopEPC.setLayoutData(gd_lblLoopEPC);
 			lblLoopEPC.setBackground(C.FIELD_BGCOLOR);
-
-			final Image img = new Image(Display.getDefault(), C.getImage("blank.png"), 0);
+			// build transparent image array
+			ImageData imgData = new ImageData(new AppData().getClass().getResourceAsStream("/img/blank.jpg"));		
+			int whitePixel = imgData.palette.getPixel(new RGB(255,255,255));
+			imgData.transparentPixel = whitePixel;
+			Image img = new Image(Display.getDefault(),imgData);
 			GC gc = new GC(img);
 			gc.setAntialias(SWT.ON);
 			gc.setBackground(C.FIELD_BGCOLOR);
 			EntrypointsTable.Row[] eRows;
 			try {
-				eRows = EntrypointsTable.getRows("SPACE_ID", spaceID);
+				eRows = EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID);
 				int centreX = (imgStatusW/2) - 10;
 				int x=0;
 				switch (eRows.length) {
-				case 1:
-					x = centreX;
-					break;
-				case 2:
-					x = (centreX - 20);
-					break;
-				case 3:
-					x = (centreX - 30);
-					break;
-				case 4:
-					x = (centreX - 40);
-					break;
-				case 5:
-					x = (centreX - 50);
-					break;
+					case 1:
+						x = centreX;
+						break;
+					case 2:
+						x = (centreX - 20);
+						break;
+					case 3:
+						x = (centreX - 30);
+						break;
+					case 4:
+						x = (centreX - 40);
+						break;
+					case 5:
+						x = (centreX - 50);
+						break;
 				}
 				for (EntrypointsTable.Row eRow : eRows) {
 					String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+eRow.getID());
 					if(epTL.equals("")) { epTL = "red"; }
-					gc.drawImage(C.getImage(epTL+".png"), x, 0);
-					//gc.setBackground(C.TRAFFICLIGHTS.get(epTL));
-					//gc.fillOval(x, 0, 18, 18);
+					//gc.drawImage(C.getImage(epTL+".png"), x, 0);
+					gc.setBackground(C.TRAFFICLIGHTS.get(epTL));
+					gc.fillOval(x, 0, 18, 18);
 					x += 25;
 				}
 			} catch (SQLException ex) {
 				LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading entry points from DB",ex);		
 			}
 			lblLoopEPC.setImage(img);	
-
+			// SIGNED OFF
 			final CLabel lblLoopSO = new CLabel(tbl, SWT.BORDER);
 			lblLoopSO.setRightMargin(5);
 			lblLoopSO.setAlignment(SWT.CENTER);
@@ -338,11 +342,8 @@ public class SpacesListView {
 				}
 			});
 
-
 		}
-
 		// end loop
-
 
 
 		// redraw panel on window resize

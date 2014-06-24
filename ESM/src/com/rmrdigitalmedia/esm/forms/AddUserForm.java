@@ -244,9 +244,9 @@ public class AddUserForm {
 						row.setCreatedDate(new Timestamp(new Date().getTime()));
 						row.setUpdateDate(new Timestamp(new Date().getTime()));
 						row.setDeleted("FALSE");
-						row.insert();
+						long newID = row.insert();
 						formOK = true;
-						LogController.log("User added to database.");
+						LogController.log("User "+newID+" added to database.");
 					} catch (Exception e1) {
 						LogController.logEvent(this, C.ERROR, e1);
 					}					

@@ -1,5 +1,7 @@
 package com.rmrdigitalmedia.esm.test;
 
+import java.awt.Color;
+import java.awt.event.PaintEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -8,21 +10,24 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-
+import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
@@ -44,7 +49,7 @@ public class SpacesListViewTest {
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
 			Composite comp1 = new Composite(shell, SWT.BORDER);
 			shell.open();
-			SpacesListViewTest.buildTable(comp1);
+			buildTable(comp1);
 			while (!shell.isDisposed()) {
 				if (!Display.getDefault().readAndDispatch()) {
 					Display.getDefault().sleep();
@@ -174,7 +179,7 @@ public class SpacesListViewTest {
 		gd_lblLoopName.widthHint = 200;
 		gd_lblLoopName.heightHint = colHeaderH;
 		lblLoopName.setLayoutData(gd_lblLoopName);
-		lblLoopName.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
+		lblLoopName.setBackground(C.FIELD_BGCOLOR);
 		lblLoopName.setFont(C.FONT_11);
 		lblLoopName.setText("Forepeak Tank");
 
@@ -204,12 +209,16 @@ public class SpacesListViewTest {
 		lblLoopEPC.setLayoutData(gd_lblLoopEPC);
 		lblLoopEPC.setBackground(C.FIELD_BGCOLOR);
 
-		final Image img = C.getImage("160.png");
-		GC gc = new GC(img);
+		ImageData ideaData = new ImageData(new AppData().getClass().getResourceAsStream("/img/blank.jpg"));		
+		int whitePixel = ideaData.palette.getPixel(new RGB(255,255,255));
+		ideaData.transparentPixel = whitePixel;
+		Image transparentIdeaImage = new Image(Display.getDefault(),ideaData);
+		GC gc = new GC(transparentIdeaImage);
 		gc.setAntialias(SWT.ON);
-		gc.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
-		gc.fillOval(40, 0, 20, 20);
-		lblLoopEPC.setImage(img);	
+		gc.drawImage(C.getImage("red.png"), 70, 0);
+		gc.setBackground(C.AMBER);
+		gc.fillOval(50, 0, 18, 18);
+		lblLoopEPC.setImage(transparentIdeaImage);
 
 		final CLabel lblLoopSO = new CLabel(tbl, SWT.BORDER);
 		lblLoopSO.setRightMargin(5);
@@ -226,12 +235,12 @@ public class SpacesListViewTest {
 			@Override
 			public void mouseEnter(MouseEvent arg0) {
 				if(!(Boolean) lblLoopID.getData()) {
-					lblLoopID.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
-					lblLoopName.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
-					lblLoopCS.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
-					lblLoopIC.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
-					lblLoopEPC.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
-					lblLoopSO.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
+					lblLoopID.setBackground(C.ROW_HIGHLIGHT);
+					lblLoopName.setBackground(C.ROW_HIGHLIGHT);
+					lblLoopCS.setBackground(C.ROW_HIGHLIGHT);
+					lblLoopIC.setBackground(C.ROW_HIGHLIGHT);
+					lblLoopEPC.setBackground(C.ROW_HIGHLIGHT);
+					lblLoopSO.setBackground(C.ROW_HIGHLIGHT);
 				}
 			}
 			@Override
@@ -250,12 +259,12 @@ public class SpacesListViewTest {
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 				lblLoopID.setData( ! (Boolean) lblLoopID.getData());
-				lblLoopID.setBackground(C.TITLEBAR_BGCOLOR);
-				lblLoopName.setBackground(C.TITLEBAR_BGCOLOR);
-				lblLoopCS.setBackground(C.TITLEBAR_BGCOLOR);
-				lblLoopIC.setBackground(C.TITLEBAR_BGCOLOR);
-				lblLoopEPC.setBackground(C.TITLEBAR_BGCOLOR);
-				lblLoopSO.setBackground(C.TITLEBAR_BGCOLOR);
+				lblLoopID.setBackground(C.ROW_SELECTED);
+				lblLoopName.setBackground(C.ROW_SELECTED);
+				lblLoopCS.setBackground(C.ROW_SELECTED);
+				lblLoopIC.setBackground(C.ROW_SELECTED);
+				lblLoopEPC.setBackground(C.ROW_SELECTED);
+				lblLoopSO.setBackground(C.ROW_SELECTED);
 			}
 		});
 

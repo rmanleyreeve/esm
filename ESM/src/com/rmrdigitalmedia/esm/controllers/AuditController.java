@@ -127,7 +127,7 @@ public class AuditController {
 			progress = (int) Math.floor(percent / 10) * 10;
 		}
 		EsmApplication.appData.setField("SPACE_CHK_" + spaceID, progress);
-		// System.out.println("Calculating space "+spaceID+" checklist: " +
+		// System.out.println("Calculating space "+userID+" checklist: " +
 		// score + "/" + max + "=" + percent + "% -> progress=" + progress );
 		// System.out.println("Elapsed: "+ (System.currentTimeMillis() -
 		// startTime));
@@ -221,9 +221,9 @@ public class AuditController {
 		}
 		EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, progress);
 		EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, light);
-		// System.out.println("Calculating space "+spaceID+" classification: " +
+		// System.out.println("Calculating space "+userID+" classification: " +
 		// score + "/" + max + "=" + percent + "% -> progress=" + progress );
-		// System.out.println("Space " + spaceID + " status array: " +
+		// System.out.println("Space " + userID + " status array: " +
 		// status.toString());
 		// System.out.println("Elapsed: "+ (System.currentTimeMillis() -
 		// startTime));
