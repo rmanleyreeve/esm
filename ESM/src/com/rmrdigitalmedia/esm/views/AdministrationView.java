@@ -1,7 +1,6 @@
 package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
@@ -23,12 +22,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.AddUserForm;
+import com.rmrdigitalmedia.esm.forms.DeleteUserDialog;
 import com.rmrdigitalmedia.esm.forms.EditUserForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
@@ -64,7 +63,7 @@ public class AdministrationView {
 		combo.setData("Select...", 0);
 		EsmUsersTable.Row[] uRows = null;
 		try {
-			uRows = EsmUsersTable.getRows("ID <> "+user.getID());
+			uRows = EsmUsersTable.getRows("DELETED=FALSE AND ID <> "+user.getID());
 		} catch (SQLException ex) { }
 		for(EsmUsersTable.Row uRow:uRows) {
 			String un = uRow.getSurname().toUpperCase() + ", " + uRow.getForename() + " : "+ uRow.getRank();
@@ -155,6 +154,7 @@ public class AdministrationView {
 		btnDelUser.setEnabled(false);
 		btnDelUser.setText("Delete");
 
+		// edit button behaviour
 		btnEditUser.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -168,7 +168,24 @@ public class AdministrationView {
 				}
 			}
 		});
-
+		
+		// delete button behaviour
+		btnDelUser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				DeleteUserDialog dud = new DeleteUserDialog();					
+				if(dud.deleteOK(selectedUser)) {
+					LogController.log("User " + selectedUser + " marked as deleted in database");
+					EsmApplication.alert("The user record was deleted!");
+					refreshCombo(comboUsers);
+					btnEditUser.setEnabled(false);
+					btnDelUser.setEnabled(false);
+					btnViewUser.setEnabled(false);
+				} else {
+					LogController.log("User " + selectedUser + " not deleted");
+				}
+			}			
+		});
 
 
 

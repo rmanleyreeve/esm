@@ -1,7 +1,6 @@
 package com.rmrdigitalmedia.esm.forms;
 
 import java.sql.SQLException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -14,35 +13,34 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.models.SpacesTable;
+import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
-public class DeleteSpaceDialog {
+public class DeleteUserDialog {
 
 	private FormData fd_lblAProgramUpdate;
-	int spaceID;
+	int userID;
 	boolean formOK = false;
 
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			DeleteSpaceDialog dsd = new DeleteSpaceDialog();
-			dsd.deleteOK(0);
+			DeleteUserDialog dud = new DeleteUserDialog();
+			dud.deleteOK(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public DeleteSpaceDialog() {
+	public DeleteUserDialog() {
 		LogController.log("Running class " + this.getClass().getName());		
 	}
 
 
 	public boolean deleteOK(int _id) {
-		this.spaceID = _id;
+		this.userID = _id;
 		Display display = Display.getDefault();
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		dialog.setSize(280, 130);
@@ -73,7 +71,7 @@ public class DeleteSpaceDialog {
 		cancel.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				LogController.log("User cancelled delete space dialog");
+				LogController.log("User cancelled delete user dialog");
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e1) {}
@@ -95,33 +93,21 @@ public class DeleteSpaceDialog {
 				try {
 					/*
 					// THE DESTRUCTIVE WAY
-					for(EntrypointsTable.Row entryPoint:EntrypointsTable.getRows("SPACE_ID="+metadataID+" AND DELETED=FALSE")) {
-						for(EntrypointCommentsTable.Row entryComment:EntrypointCommentsTable.getRows("ENTRYPOINT_ID="+entryPoint.getID()+" AND DELETED=FALSE")) {
-							LogController.log("Deleted entrypoint comment " + entryComment.getID());
-							//entryComment.delete();
-						}
-						LogController.log("Deleted entrypoint " + entryPoint.getID());
-						entryPoint.delete();
-					}
-					for (SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("SPACE_ID="+metadataID+" AND DELETED=FALSE")) {
-						LogController.log("Deleted space comment " + spaceComment.getID());
-						spaceComment.delete();						
-					}
-					SpacesTable.Row space = SpacesTable.getRow(metadataID);
-					LogController.log("Deleted space " + metadataID);
-					space.delete();					
+					EsmUsersTable.Row user = EsmUsersTable.getRow(userID);
+					LogController.log("Deleted user " + userID);
+					user.delete();					
 					formOK = true;
 					 */
 					//NON-DESTRUCTIVE
-					SpacesTable.Row space = SpacesTable.getRow(spaceID);
-					space.setDeleted("TRUE");
-					space.update();
-					LogController.log("Marked space " + spaceID + " as deleted");
+					EsmUsersTable.Row user = EsmUsersTable.getRow(userID);
+					user.setDeleted("TRUE");
+					user.update();
+					LogController.log("Marked user " + userID + " as deleted");
 					formOK = true;
 				} catch (SQLException ex) {
 					LogController.logEvent(this, C.WARNING, ex);
 					//ex.printStackTrace();
-					LogController.log("Error occurred deleting space " + spaceID);
+					LogController.log("Error occurred deleting user " + userID);
 				}				
 				dialog.close();
 			}

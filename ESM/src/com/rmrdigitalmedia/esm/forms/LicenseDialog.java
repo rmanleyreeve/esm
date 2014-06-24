@@ -77,7 +77,7 @@ public class LicenseDialog {
 		dialog.setLayout (formLayout);
 
 		CLabel label = new CLabel (dialog, SWT.NONE);
-		label.setImage(C.getImage("Registration32.png"));
+		label.setImage(C.getImage("32_registration.png"));
 		label.setText ("Enter License Key:");
 		FormData data = new FormData ();
 		label.setLayoutData (data);
