@@ -327,11 +327,11 @@ public class SpaceAuditClassificationView {
 		q1_radio2 = new Button(q1_col3, SWT.RADIO);
 		q1_radio2.setText("Quite difficult");
 		q1_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q1_radio2.setSelection(!aRow.isQ1ValueNull() && aRow.getQ1Value()==2); 
+		if(!empty) q1_radio2.setSelection(aRow.getQ1Value()==2); 
 		q1_radio3 = new Button(q1_col3, SWT.RADIO);
 		q1_radio3.setText("Not difficult");
 		q1_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q1_radio3.setSelection(!aRow.isQ1ValueNull() && aRow.getQ1Value()==3); 
+		if(!empty) q1_radio3.setSelection(aRow.getQ1Value()==3); 
 		Label q1_col4 = makeColumn4(tbl, false);
 		if(q1_radio2.getSelection()) { q1_col4.setImage(C.getImage("amber.png")); }
 		if(q1_radio3.getSelection()) { q1_col4.setImage(C.getImage("green.png")); }
@@ -381,7 +381,7 @@ public class SpaceAuditClassificationView {
 		q3_radio2 = new Button(q3_col3, SWT.RADIO);
 		q3_radio2.setText("Quite difficult");
 		q3_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q3_radio2.setSelection(aRow.getQ2Value()==2); 
+		if(!empty) q3_radio2.setSelection(aRow.getQ3Value()==2); 
 		q3_radio3 = new Button(q3_col3, SWT.RADIO);
 		q3_radio3.setText("Not difficult");
 		q3_radio3.setBackground(C.APP_BGCOLOR);
