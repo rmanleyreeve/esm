@@ -41,8 +41,7 @@ public class LoginController {
 	private Rectangle rect;
 	private Label alertTxt;
 
-	public LoginController(Display display,
-			org.eclipse.swt.graphics.Rectangle rect) {
+	public LoginController(Display display, org.eclipse.swt.graphics.Rectangle rect) {
 		this.display = display;
 		this.rect = rect;
 		LogController.log("Running class " + this.getClass().getName());
@@ -62,8 +61,7 @@ public class LoginController {
 				Row user = null;
 				try {
 					user = EsmUsersTable.getRow("USERNAME", un);
-					EsmApplication.appData.setField("ACCESS",
-							user.getAccessLevel());
+					EsmApplication.appData.setField("ACCESS", user.getAccessLevel());
 				} catch (SQLException uex) {
 					LogController.logEvent(this, C.FATAL, uex);
 				}
@@ -114,8 +112,7 @@ public class LoginController {
 		rowLayout.marginRight = 0;
 		rowLayout.fill = true;
 		cmp_Login.setLayout(rowLayout);
-		final GridData gridData = new GridData(GridData.FILL, GridData.FILL,
-				false, false);
+		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, false);
 		gridData.widthHint = 196;
 		cmp_Login.setLayoutData(gridData);
 
@@ -123,8 +120,7 @@ public class LoginController {
 		final CLabel clbl_UserLogin = new CLabel(cmp_Login, SWT.NONE);
 		clbl_UserLogin.setFont(C.FONT_10B);
 		clbl_UserLogin.setAlignment(SWT.CENTER);
-		clbl_UserLogin.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WHITE));
+		clbl_UserLogin.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		final RowData rowData = new RowData();
 		rowData.height = 42;
 		rowData.width = 180;
@@ -138,8 +134,7 @@ public class LoginController {
 
 		// Label for the username
 		final CLabel clbl_Username = new CLabel(cmp_Login, SWT.NONE);
-		clbl_Username.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WHITE));
+		clbl_Username.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		final RowData rowData_1 = new RowData();
 		rowData_1.width = 180;
 		clbl_Username.setLayoutData(rowData_1);
@@ -153,8 +148,7 @@ public class LoginController {
 
 		// Label for the password
 		final CLabel clbl_Password = new CLabel(cmp_Login, SWT.NONE);
-		clbl_Password.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WHITE));
+		clbl_Password.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		final RowData rowData_3 = new RowData();
 		rowData_3.width = 180;
 		clbl_Password.setLayoutData(rowData_3);
@@ -174,12 +168,14 @@ public class LoginController {
 		rowData_4.width = 170;
 		txt_Password.setLayoutData(rowData_4);
 		txt_Password.setEchoChar('*');
+		
+		//TODO for development
+		txt_Username.setText("admin");
+		txt_Password.setText("pass");
 
-		// Composite to hold button as I want the
-		// button to be positioned to my choice.
+		// Composite to hold button as I want the button to be positioned to my choice.
 		final Composite cmp_ButtonBar = new Composite(cmp_Login, SWT.NONE);
-		cmp_ButtonBar.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WHITE));
+		cmp_ButtonBar.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		final RowData rowData_5 = new RowData();
 		rowData_5.height = 85;
 		rowData_5.width = 200;
@@ -232,10 +228,7 @@ public class LoginController {
 		clbl_Message.setLayoutData(rowData_7);
 		String vtxt = "";
 		try {
-			vtxt = "Version "
-					+ CharStreams.toString(new InputStreamReader(
-							this.getClass().getResourceAsStream(
-									"/txt/version.txt"), Charsets.UTF_8));
+			vtxt = "Version " + CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));
 		} catch (IOException e) {
 			LogController.logEvent(this, C.WARNING, e);
 		}
@@ -243,8 +236,7 @@ public class LoginController {
 
 		// render window
 		shell.setDefaultButton(btnLogin);
-		LogController.log("LoginController Window Size: " + rect.width + ":"
-				+ rect.height);
+		LogController.log("LoginController Window Size: " + rect.width + ":" + rect.height);
 		shell.setBounds(rect);
 		shell.open();
 		LogController.log("Awaiting user input...");

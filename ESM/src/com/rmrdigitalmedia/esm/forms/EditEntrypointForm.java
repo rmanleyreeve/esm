@@ -3,6 +3,7 @@ package com.rmrdigitalmedia.esm.forms;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -22,18 +23,19 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.models.SpacesTable;
+import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 
-public class EditSpaceForm {
+public class EditEntrypointForm {
 
 	Shell myshell;
 	boolean formOK = false;
-	Text s_name, s_description;
-	int spaceID, headerH = 40;
+	Text ep_name, ep_description;
+	int entryID, headerH = 40;
 	private Label sep;
-	SpacesTable.Row sRow;
+	EntrypointsTable.Row epRow;
 	private static Object me;
 
 	/**
@@ -42,17 +44,16 @@ public class EditSpaceForm {
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			EditSpaceForm esf = new EditSpaceForm(1);
-			esf.complete();
+			EditEntrypointForm eef = new EditEntrypointForm(1);
+			eef.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public EditSpaceForm(int _spaceID) {
-		me = this;
+	public EditEntrypointForm(int _entryID) {
 		LogController.log("Running class " + this.getClass().getName());
-		spaceID = _spaceID;
+		entryID = _entryID;
 	}	
 
 	public boolean complete() {	
@@ -95,7 +96,7 @@ public class EditSpaceForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("EDIT SPACE DETAILS");
+		lblTitle.setText("EDIT ENTRYPOINT DETAILS");
 
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -114,34 +115,33 @@ public class EditSpaceForm {
 		gridLayout.numColumns = 2;
 		gridLayout.horizontalSpacing = 20;
 		gridLayout.verticalSpacing = 10;
-		form.setLayout(gridLayout);
+		form.setLayout(gridLayout);		
 
 		try {
-			sRow = SpacesTable.getRow(spaceID);
+			epRow = EntrypointsTable.getRow(entryID);
 		} catch (SQLException e2) {
 			LogController.logEvent(me, C.ERROR, e2);
 		}
 
 		//FORM LABELS & FIELDS ==================================================================	
-		Label lblSName = new Label(form, SWT.NONE);
-		lblSName.setBackground(C.APP_BGCOLOR);
-		lblSName.setText("Space Name:");		
-		s_name = new Text(form, SWT.BORDER);
-		s_name.setText(sRow.getName());
-		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_name.widthHint = 230;
-		s_name.setLayoutData(gd_name);
-		s_name.setFocus();
+		Label lblEName = new Label(form, SWT.NONE);
+		lblEName.setBackground(C.APP_BGCOLOR);
+		lblEName.setText("Entry Point Name:");		
+		ep_name = new Text(form, SWT.BORDER);
+		ep_name.setText(epRow.getName());
+		GridData gd_ename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_ename.widthHint = 230;
+		ep_name.setLayoutData(gd_ename);
 
-		Label lblSDesc = new Label(form, SWT.NONE);
-		lblSDesc.setBackground(C.APP_BGCOLOR);
-		lblSDesc.setText("Space\nDescription:");	
-		s_description = new Text(form, SWT.BORDER | SWT.WRAP | SWT.MULTI);
-		s_description.setText(sRow.getDescription());
-		GridData gd_sdesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_sdesc.heightHint = 80;
-		gd_sdesc.widthHint = 230;
-		s_description.setLayoutData(gd_sdesc);
+		Label lblEDesc = new Label(form, SWT.NONE);
+		lblEDesc.setBackground(C.APP_BGCOLOR);
+		lblEDesc.setText("Entry Point\nDescription:");	
+		ep_description = new Text(form, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		ep_description.setText(epRow.getDescription());
+		GridData gd_edesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_edesc.heightHint = 80;
+		gd_edesc.widthHint = 230;
+		ep_description.setLayoutData(gd_edesc);
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
@@ -155,14 +155,14 @@ public class EditSpaceForm {
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				Text[] fields = {s_name,s_description}; Validation.validateFields(fields);				
+				Text[] fields = {ep_name,ep_description}; Validation.validateFields(fields);				
 				if( Validation.validateFields(fields) ) {
 					try {
-						sRow.setName(s_name.getText());
-						sRow.setDescription(s_description.getText());
-						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
-						sRow.update();
-						LogController.log("Space "+ spaceID +" details updated");
+						epRow.setName(ep_name.getText());
+						epRow.setDescription(ep_description.getText());
+						epRow.setUpdateDate(new Timestamp(new Date().getTime()));
+						epRow.update();
+						LogController.log("Entry Point "+entryID+" updated");				        
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -191,7 +191,7 @@ public class EditSpaceForm {
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("Edit Space form closed");	
+		LogController.log("Edit Entry Point form closed");	
 		return formOK;
 	}
 }

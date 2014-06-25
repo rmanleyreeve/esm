@@ -2,6 +2,7 @@ package com.rmrdigitalmedia.esm.forms;
 
 import java.sql.Timestamp;
 import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -21,7 +22,9 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 
@@ -92,7 +95,7 @@ public class AddEntrypointForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("ENTER SPACE / ENTRYPOINT DETAILS");
+		lblTitle.setText("ENTER ENTRYPOINT DETAILS");
 
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -120,6 +123,7 @@ public class AddEntrypointForm {
 		GridData gd_ename = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_ename.widthHint = 230;
 		ep_name.setLayoutData(gd_ename);
+		ep_name.setFocus();
 
 		Label lblEDesc = new Label(form, SWT.NONE);
 		lblEDesc.setBackground(C.APP_BGCOLOR);
@@ -154,6 +158,8 @@ public class AddEntrypointForm {
 						epRow.setAuthorID(authorID);
 						epRow.setDeleted("FALSE");
 						int epID = (int) epRow.insert();
+						EsmApplication.appData.setField("ENTRY_CHK_" + epID, 0);						
+						EsmApplication.appData.setField("ENTRY_CLASS_" + epID, "");
 						LogController.log("Entry Point "+epID+" added to database.");				        
 						formOK = true;
 					} catch (Exception e1) {
