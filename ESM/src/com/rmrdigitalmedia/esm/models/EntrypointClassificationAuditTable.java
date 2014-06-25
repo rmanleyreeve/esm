@@ -1,12 +1,12 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.util.Map ;
-import java.util.HashMap ;
-import java.sql.Connection ;
-import java.sql.SQLException ;
-import com.javaranch.common.Str ;
-import com.javaranch.db.DBResults ;
-import com.javaranch.db.TableFacade ;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import com.javaranch.common.Str;
+import com.javaranch.db.DBResults;
+import com.javaranch.db.TableFacade;
 
 /** Strongly typed access to the database table "ENTRYPOINT_CLASSIFICATION_AUDIT".
  *
@@ -52,16 +52,20 @@ public class EntrypointClassificationAuditTable
     public static final String q1CommentsColumnName = "Q1_COMMENTS";
     public static final String q2ValueColumnName = "Q2_VALUE";
     public static final String q2CommentsColumnName = "Q2_COMMENTS";
-    public static final String q3ValueColumnName = "Q3_VALUE";
+    public static final String q3BooleanColumnName = "Q3_BOOLEAN";
     public static final String q3CommentsColumnName = "Q3_COMMENTS";
-    public static final String q4BooleanColumnName = "Q4_BOOLEAN";
+    public static final String q4ValueColumnName = "Q4_VALUE";
     public static final String q4CommentsColumnName = "Q4_COMMENTS";
-    public static final String q5ValueColumnName = "Q5_VALUE";
+    public static final String q5BooleanColumnName = "Q5_BOOLEAN";
     public static final String q5CommentsColumnName = "Q5_COMMENTS";
+    public static final String q6BooleanColumnName = "Q6_BOOLEAN";
+    public static final String q6CommentsColumnName = "Q6_COMMENTS";
+    public static final String q7ValueColumnName = "Q7_VALUE";
+    public static final String q7CommentsColumnName = "Q7_COMMENTS";
 
     private static String[] allColumns =
     {
-        idColumnName , entrypointIDColumnName , q1ValueColumnName , q1CommentsColumnName , q2ValueColumnName , q2CommentsColumnName , q3ValueColumnName , q3CommentsColumnName , q4BooleanColumnName , q4CommentsColumnName , q5ValueColumnName , q5CommentsColumnName , 
+        idColumnName , entrypointIDColumnName , q1ValueColumnName , q1CommentsColumnName , q2ValueColumnName , q2CommentsColumnName , q3BooleanColumnName , q3CommentsColumnName , q4ValueColumnName , q4CommentsColumnName , q5BooleanColumnName , q5CommentsColumnName , q6BooleanColumnName , q6CommentsColumnName , q7ValueColumnName , q7CommentsColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -249,14 +253,18 @@ public class EntrypointClassificationAuditTable
         private int q2Value ;
         private boolean q2ValueNull = true ;
         private String q2Comments ;
-        private int q3Value ;
-        private boolean q3ValueNull = true ;
+        private String q3Boolean ;
         private String q3Comments ;
-        private String q4Boolean ;
+        private int q4Value ;
+        private boolean q4ValueNull = true ;
         private String q4Comments ;
-        private int q5Value ;
-        private boolean q5ValueNull = true ;
+        private String q5Boolean ;
         private String q5Comments ;
+        private String q6Boolean ;
+        private String q6Comments ;
+        private int q7Value ;
+        private boolean q7ValueNull = true ;
+        private String q7Comments ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -275,14 +283,18 @@ public class EntrypointClassificationAuditTable
                 this.q2ValueNull = ( data[4] == null );
                 this.q2Value = q2ValueNull ? 0 : Str.toInt( data[4] );
                 this.q2Comments = data[5];
-                this.q3ValueNull = ( data[6] == null );
-                this.q3Value = q3ValueNull ? 0 : Str.toInt( data[6] );
+                this.q3Boolean = data[6];
                 this.q3Comments = data[7];
-                this.q4Boolean = data[8];
+                this.q4ValueNull = ( data[8] == null );
+                this.q4Value = q4ValueNull ? 0 : Str.toInt( data[8] );
                 this.q4Comments = data[9];
-                this.q5ValueNull = ( data[10] == null );
-                this.q5Value = q5ValueNull ? 0 : Str.toInt( data[10] );
+                this.q5Boolean = data[10];
                 this.q5Comments = data[11];
+                this.q6Boolean = data[12];
+                this.q6Comments = data[13];
+                this.q7ValueNull = ( data[14] == null );
+                this.q7Value = q7ValueNull ? 0 : Str.toInt( data[14] );
+                this.q7Comments = data[15];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -414,42 +426,14 @@ public class EntrypointClassificationAuditTable
         }
 
 
-        public int getQ3Value()
+        public String getQ3Boolean()
         {
-            return q3Value ;
+            return q3Boolean ;
         }
 
-        public void setQ3Value( int q3Value )
+        public void setQ3Boolean( String q3Boolean )
         {
-            this.q3Value = q3Value ;
-            q3ValueNull = false ;
-        }
-
-        public void setQ3Value( Integer q3Value )
-        {
-            q3ValueNull = ( q3Value == null );
-            if ( q3ValueNull )
-            {
-                this.q3Value = 0 ;
-            }
-            else
-            {
-                this.q3Value = q3Value.intValue() ;
-            }
-        }
-
-        public boolean isQ3ValueNull()
-        {
-            return q3ValueNull ;
-        }
-
-        public void setQ3ValueNull( boolean q3ValueNull )
-        {
-            this.q3ValueNull = q3ValueNull ;
-            if ( q3ValueNull )
-            {
-                q3Value = 0 ;
-            }
+            this.q3Boolean = q3Boolean ;
         }
 
 
@@ -464,14 +448,42 @@ public class EntrypointClassificationAuditTable
         }
 
 
-        public String getQ4Boolean()
+        public int getQ4Value()
         {
-            return q4Boolean ;
+            return q4Value ;
         }
 
-        public void setQ4Boolean( String q4Boolean )
+        public void setQ4Value( int q4Value )
         {
-            this.q4Boolean = q4Boolean ;
+            this.q4Value = q4Value ;
+            q4ValueNull = false ;
+        }
+
+        public void setQ4Value( Integer q4Value )
+        {
+            q4ValueNull = ( q4Value == null );
+            if ( q4ValueNull )
+            {
+                this.q4Value = 0 ;
+            }
+            else
+            {
+                this.q4Value = q4Value.intValue() ;
+            }
+        }
+
+        public boolean isQ4ValueNull()
+        {
+            return q4ValueNull ;
+        }
+
+        public void setQ4ValueNull( boolean q4ValueNull )
+        {
+            this.q4ValueNull = q4ValueNull ;
+            if ( q4ValueNull )
+            {
+                q4Value = 0 ;
+            }
         }
 
 
@@ -486,42 +498,14 @@ public class EntrypointClassificationAuditTable
         }
 
 
-        public int getQ5Value()
+        public String getQ5Boolean()
         {
-            return q5Value ;
+            return q5Boolean ;
         }
 
-        public void setQ5Value( int q5Value )
+        public void setQ5Boolean( String q5Boolean )
         {
-            this.q5Value = q5Value ;
-            q5ValueNull = false ;
-        }
-
-        public void setQ5Value( Integer q5Value )
-        {
-            q5ValueNull = ( q5Value == null );
-            if ( q5ValueNull )
-            {
-                this.q5Value = 0 ;
-            }
-            else
-            {
-                this.q5Value = q5Value.intValue() ;
-            }
-        }
-
-        public boolean isQ5ValueNull()
-        {
-            return q5ValueNull ;
-        }
-
-        public void setQ5ValueNull( boolean q5ValueNull )
-        {
-            this.q5ValueNull = q5ValueNull ;
-            if ( q5ValueNull )
-            {
-                q5Value = 0 ;
-            }
+            this.q5Boolean = q5Boolean ;
         }
 
 
@@ -533,6 +517,78 @@ public class EntrypointClassificationAuditTable
         public void setQ5Comments( String q5Comments )
         {
             this.q5Comments = q5Comments ;
+        }
+
+
+        public String getQ6Boolean()
+        {
+            return q6Boolean ;
+        }
+
+        public void setQ6Boolean( String q6Boolean )
+        {
+            this.q6Boolean = q6Boolean ;
+        }
+
+
+        public String getQ6Comments()
+        {
+            return q6Comments ;
+        }
+
+        public void setQ6Comments( String q6Comments )
+        {
+            this.q6Comments = q6Comments ;
+        }
+
+
+        public int getQ7Value()
+        {
+            return q7Value ;
+        }
+
+        public void setQ7Value( int q7Value )
+        {
+            this.q7Value = q7Value ;
+            q7ValueNull = false ;
+        }
+
+        public void setQ7Value( Integer q7Value )
+        {
+            q7ValueNull = ( q7Value == null );
+            if ( q7ValueNull )
+            {
+                this.q7Value = 0 ;
+            }
+            else
+            {
+                this.q7Value = q7Value.intValue() ;
+            }
+        }
+
+        public boolean isQ7ValueNull()
+        {
+            return q7ValueNull ;
+        }
+
+        public void setQ7ValueNull( boolean q7ValueNull )
+        {
+            this.q7ValueNull = q7ValueNull ;
+            if ( q7ValueNull )
+            {
+                q7Value = 0 ;
+            }
+        }
+
+
+        public String getQ7Comments()
+        {
+            return q7Comments ;
+        }
+
+        public void setQ7Comments( String q7Comments )
+        {
+            this.q7Comments = q7Comments ;
         }
 
 
@@ -552,12 +608,16 @@ public class EntrypointClassificationAuditTable
             data.put( q1CommentsColumnName , this.q1Comments );
             data.put( q2ValueColumnName , this.q2ValueNull ? null : String.valueOf( this.q2Value ) );
             data.put( q2CommentsColumnName , this.q2Comments );
-            data.put( q3ValueColumnName , this.q3ValueNull ? null : String.valueOf( this.q3Value ) );
+            data.put( q3BooleanColumnName , this.q3Boolean );
             data.put( q3CommentsColumnName , this.q3Comments );
-            data.put( q4BooleanColumnName , this.q4Boolean );
+            data.put( q4ValueColumnName , this.q4ValueNull ? null : String.valueOf( this.q4Value ) );
             data.put( q4CommentsColumnName , this.q4Comments );
-            data.put( q5ValueColumnName , this.q5ValueNull ? null : String.valueOf( this.q5Value ) );
+            data.put( q5BooleanColumnName , this.q5Boolean );
             data.put( q5CommentsColumnName , this.q5Comments );
+            data.put( q6BooleanColumnName , this.q6Boolean );
+            data.put( q6CommentsColumnName , this.q6Comments );
+            data.put( q7ValueColumnName , this.q7ValueNull ? null : String.valueOf( this.q7Value ) );
+            data.put( q7CommentsColumnName , this.q7Comments );
             return data ;
         }
 

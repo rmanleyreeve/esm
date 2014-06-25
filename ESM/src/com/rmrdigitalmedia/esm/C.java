@@ -4,16 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.collect.ImmutableMap;
 
 public final class C {
@@ -104,6 +101,7 @@ public final class C {
 	public static String ENTRY_AUDIT_CHECKLIST_PAGE_TITLE = "Entry Point Audit: Checklist";
 	public static String SPACE_AUDIT_CLASSIFICATION_PAGE_TITLE = "Internal Space Audit: Classification Questions";
 	public static String ENTRY_AUDIT_CLASSIFICATION_PAGE_TITLE = "Entry Point Audit: Classification Questions";
+	public static String HINT_TITLE = "Hint";
 
 	// error severity
 	public static int NOTICE = 1;
