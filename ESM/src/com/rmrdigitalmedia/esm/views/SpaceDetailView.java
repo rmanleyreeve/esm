@@ -190,7 +190,7 @@ public class SpaceDetailView {
 				}
 			});		
 		}
-		
+
 		sep = new Label(compL, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1));		
 
@@ -329,7 +329,7 @@ public class SpaceDetailView {
 		});
 
 		//===========================================================================================================================================
-		
+
 		// scrolling frame to hold the RH panel
 		final ScrolledComposite scrollPanelRight = new ScrolledComposite(panels, SWT.V_SCROLL | SWT.BORDER);
 
@@ -408,14 +408,14 @@ public class SpaceDetailView {
 		// row 2 - audit header & button bar		
 		Group rowRight2 = new Group(compR, SWT.NONE);
 		rowRight2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		GridLayout gl_rowRight2 = new GridLayout(4, false);
+		GridLayout gl_rowRight2 = new GridLayout(5, false);
 		gl_rowRight2.marginBottom = 5;
 		gl_rowRight2.marginHeight = 0;
 		rowRight2.setLayout(gl_rowRight2);
 		rowRight2.setBackground(C.APP_BGCOLOR);
 
 		Label lblAudits = new Label(rowRight2, SWT.NONE);
-		GridData gd_lblAudits = new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1);
+		GridData gd_lblAudits = new GridData(SWT.LEFT, SWT.CENTER, false, false, 5, 1);
 		gd_lblAudits.widthHint = 300;
 		lblAudits.setLayoutData(gd_lblAudits);
 		lblAudits.setFont(C.FONT_12B);
@@ -440,7 +440,6 @@ public class SpaceDetailView {
 		Label lblSpaceAuditLight = new Label(rowRight2, SWT.RIGHT);
 		String sTL = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);
 		lblSpaceAuditLight.setImage(C.getImage(""+sTL+".png"));
-
 		GridData gd_lblSpaceAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditLight.horizontalIndent = 10;
 		lblSpaceAuditLight.setLayoutData(gd_lblSpaceAuditLight);
@@ -448,7 +447,7 @@ public class SpaceDetailView {
 
 		Button btnShowSpaceAudit = new Button(rowRight2, SWT.NONE);
 		btnShowSpaceAudit.setToolTipText("Launch the Internal Space Audit for " + sRow.getName());
-		GridData gd_btnShowSpaceAudit = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
+		GridData gd_btnShowSpaceAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_btnShowSpaceAudit.verticalIndent = 3;
 		btnShowSpaceAudit.setLayoutData(gd_btnShowSpaceAudit);
 		btnShowSpaceAudit.setImage(C.getImage("16_edit.png"));
@@ -459,15 +458,13 @@ public class SpaceDetailView {
 				WindowController.showSpaceAuditChecklist(spaceID);
 			}
 		});
-
-
 		sep = new Label(rowRight2, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1));		
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));		
 
 		CLabel lblEntryPoint;
 		Label lblEntryPointAuditImg, lblEntryPointAuditLight;
-		GridData gd_lblEntryPointAuditImg, gd_lblEntryPointAuditLight, gd_btnShowEntryAudit, gd_lblEntryPoint;
-		Button btnShowEntryAudit;
+		GridData gd_lblEntryPointAuditImg, gd_lblEntryPointAuditLight, gd_btnShowEntryAudit, gd_lblEntryPoint, gd_btnEditEntry;
+		Button btnShowEntryAudit, btnEditEntry;
 		EntrypointsTable.Row[] epRows = null;
 		int rh = 20;
 
@@ -518,9 +515,10 @@ public class SpaceDetailView {
 
 			btnShowEntryAudit = new Button(rowRight2, SWT.NONE);
 			btnShowEntryAudit.setToolTipText("Launch the Entry Point Audit for " + epName);
-			gd_btnShowEntryAudit = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
+			gd_btnShowEntryAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 			//gd_btnEditAudit.verticalIndent = 3;
 			gd_btnShowEntryAudit.heightHint = rh;
+			gd_btnShowEntryAudit.widthHint = 70;
 			btnShowEntryAudit.setLayoutData(gd_btnShowEntryAudit);
 			btnShowEntryAudit.setFont(C.FONT_9);
 			btnShowEntryAudit.setText("Audit");
@@ -531,14 +529,30 @@ public class SpaceDetailView {
 				}
 			});
 
+			btnEditEntry = new Button(rowRight2, SWT.NONE);
+			btnEditEntry.setToolTipText("Edit details of the Entry Point");
+			gd_btnEditEntry = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+			//gd_btnEditEntry.verticalIndent = 3;
+			gd_btnEditEntry.heightHint = rh;
+			gd_btnEditEntry.widthHint = 60;
+			btnEditEntry.setLayoutData(gd_btnEditEntry);
+			btnEditEntry.setFont(C.FONT_9);
+			btnEditEntry.setText("Edit");
+			btnEditEntry.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent arg0) {
+					//WindowController.showEntryAuditChecklist(epID);
+					EsmApplication.alert("EDIT");				}
+			});
+
 		} // end for
 
 		sep = new Label(rowRight2, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1));		
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));		
 
 		Button btnAddEntry = new Button(rowRight2, SWT.NONE);
 		btnAddEntry.setToolTipText("Add a new Entry Point to this Space");
-		GridData gd_btnAddAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1);
+		GridData gd_btnAddAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 5, 1);
 		gd_btnAddAudit.verticalIndent = 3;
 		btnAddEntry.setLayoutData(gd_btnAddAudit);
 		btnAddEntry.setImage(C.getImage("16_add.png"));
@@ -822,7 +836,7 @@ public class SpaceDetailView {
 
 		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
-		
+
 
 
 		scrollPanelRight.setContent(compR);
@@ -840,7 +854,7 @@ public class SpaceDetailView {
 
 
 		// final layout settings	
-		panels.setWeights(new int[] {2, 1});				
+		panels.setWeights(new int[] {5, 3});				
 		parent.layout();
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 	}
