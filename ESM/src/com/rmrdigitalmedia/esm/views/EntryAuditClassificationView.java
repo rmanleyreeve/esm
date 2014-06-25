@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -25,11 +24,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -38,7 +35,6 @@ import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EntrypointClassificationAuditTable;
 import com.rmrdigitalmedia.esm.models.EntrypointClassificationQuestionsTable;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
-import com.rmrdigitalmedia.esm.models.SpaceClassificationAuditTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 
 @SuppressWarnings("unused")
@@ -63,15 +59,23 @@ public class EntryAuditClassificationView {
 	private static Text q2_col5;
 	private static Button q3_radio1;
 	private static Button q3_radio2;
-	private static Button q3_radio3;
 	private static Text q3_col5;
 	private static Button q4_radio1;
 	private static Button q4_radio2;
+	private static Button q4_radio3;
+	private static Button q4_radio4;
+	private static Button q4_radio5;
 	private static Text q4_col5;
 	private static Button q5_radio1;
 	private static Button q5_radio2;
-	private static Button q5_radio3;
 	private static Text q5_col5;
+	private static Button q6_radio1;
+	private static Button q6_radio2;
+	private static Text q6_col5;
+	private static Button q7_radio1;
+	private static Button q7_radio2;
+	private static Button q7_radio3;
+	private static Text q7_col5;
 
 	private static String df(Timestamp ts) {
 		SimpleDateFormat d = new SimpleDateFormat("dd - MM - yyyy");
@@ -121,7 +125,7 @@ public class EntryAuditClassificationView {
 		hint.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent arg0) {
-				EsmApplication.alert(text);
+				EsmApplication.alert(text, C.HINT_TITLE);
 			}
 		});
 		return hint;
@@ -350,68 +354,112 @@ public class EntryAuditClassificationView {
 		if(!empty) q2_col5.setText( C.notNull(aRow.getQ2Comments()) );
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
-		qNum = 3;		
+		qNum = 3;
 		Label q3_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q3_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q3_col3 = makeColumn3(tbl,1, false);
 		q3_radio1 = new Button(q3_col3, SWT.RADIO);
-		q3_radio1.setText("Very difficult");
+		q3_radio1.setText("Yes");
 		q3_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q3_radio1.setSelection(aRow.getQ3Value()==1); 
+		if(!empty) q3_radio1.setSelection(aRow.getQ3Boolean()!=null && aRow.getQ3Boolean().equals("Y")); 
 		q3_radio2 = new Button(q3_col3, SWT.RADIO);
-		q3_radio2.setText("Quite difficult");
+		q3_radio2.setText("No");
 		q3_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q3_radio2.setSelection(aRow.getQ3Value()==2); 
-		q3_radio3 = new Button(q3_col3, SWT.RADIO);
-		q3_radio3.setText("Not difficult");
-		q3_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q3_radio3.setSelection(aRow.getQ3Value()==3); 
+		if(!empty) q3_radio2.setSelection(aRow.getQ3Boolean()!=null && aRow.getQ3Boolean().equals("N")); 
 		Label q3_col4 = makeColumn4(tbl, false);	
-		if(q3_radio2.getSelection()) { q3_col4.setImage(C.getImage("amber.png")); }
-		if(q3_radio3.getSelection()) { q3_col4.setImage(C.getImage("green.png")); }
+		if(q3_radio1.getSelection()) { q3_col4.setImage(C.getImage("green.png")); }
 		q3_col5 = MakeColumn5(tbl, false);
 		if(!empty) q3_col5.setText( C.notNull(aRow.getQ3Comments()) );
-		sep = Separator(tbl, false);
+		sep = Separator(tbl, false);	
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 4;
 		Label q4_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q4_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q4_col3 = makeColumn3(tbl,1, false);
+		Composite q4_col3 = makeColumn3(tbl,5, false);
 		q4_radio1 = new Button(q4_col3, SWT.RADIO);
-		q4_radio1.setText("Yes");
+		q4_radio1.setText("1");
 		q4_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q4_radio1.setSelection(aRow.getQ4Boolean()!=null && aRow.getQ4Boolean().equals("Y")); 
+		if(!empty) q4_radio1.setSelection(aRow.getQ4Value()==1); 
 		q4_radio2 = new Button(q4_col3, SWT.RADIO);
-		q4_radio2.setText("No");
+		q4_radio2.setText("2");
 		q4_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q4_radio2.setSelection(aRow.getQ4Boolean()!=null && aRow.getQ4Boolean().equals("N")); 
+		if(!empty) q4_radio2.setSelection(aRow.getQ4Value()==2); 
+		q4_radio3 = new Button(q4_col3, SWT.RADIO);
+		q4_radio3.setText("3");
+		q4_radio3.setBackground(C.APP_BGCOLOR);
+		if(!empty) q4_radio3.setSelection(aRow.getQ4Value()==3); 
+		q4_radio4 = new Button(q4_col3, SWT.RADIO);
+		q4_radio4.setText("4");
+		q4_radio4.setBackground(C.APP_BGCOLOR);
+		if(!empty) q4_radio4.setSelection(aRow.getQ4Value()==4); 
+		q4_radio5 = new Button(q4_col3, SWT.RADIO);
+		q4_radio5.setText("5");
+		q4_radio5.setBackground(C.APP_BGCOLOR);
+		if(!empty) q4_radio5.setSelection(aRow.getQ4Value()==5); 
 		Label q4_col4 = makeColumn4(tbl, false);	
-		if(q4_radio1.getSelection()) { q4_col4.setImage(C.getImage("green.png")); }
+		if(q4_radio2.getSelection() || q4_radio3.getSelection() || q4_radio4.getSelection()) { q4_col4.setImage(C.getImage("amber.png")); }
+		if(q4_radio5.getSelection()) { q4_col4.setImage(C.getImage("green.png")); }
 		q4_col5 = MakeColumn5(tbl, false);
 		if(!empty) q4_col5.setText( C.notNull(aRow.getQ4Comments()) );
-		sep = Separator(tbl, false);	
+		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 5;
 		Label q5_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q5_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q5_col3 = makeColumn3(tbl,1, false);
 		q5_radio1 = new Button(q5_col3, SWT.RADIO);
-		q5_radio1.setText("Very difficult");
+		q5_radio1.setText("Yes");
 		q5_radio1.setBackground(C.APP_BGCOLOR);
-		if(!empty) q5_radio1.setSelection(aRow.getQ5Value()==1); 
+		if(!empty) q5_radio1.setSelection(aRow.getQ5Boolean()!=null && aRow.getQ5Boolean().equals("Y")); 
 		q5_radio2 = new Button(q5_col3, SWT.RADIO);
-		q5_radio2.setText("Fairly difficult");
+		q5_radio2.setText("No");
 		q5_radio2.setBackground(C.APP_BGCOLOR);
-		if(!empty) q5_radio2.setSelection(aRow.getQ5Value()==2); 
-		q5_radio3 = new Button(q5_col3, SWT.RADIO);
-		q5_radio3.setText("Not difficult");
-		q5_radio3.setBackground(C.APP_BGCOLOR);
-		if(!empty) q5_radio3.setSelection(aRow.getQ5Value()==3); 
+		if(!empty) q5_radio2.setSelection(aRow.getQ5Boolean()!=null && aRow.getQ5Boolean().equals("N")); 
 		Label q5_col4 = makeColumn4(tbl, false);	
-		if(q5_radio2.getSelection()) { q5_col4.setImage(C.getImage("amber.png")); }
-		if(q5_radio3.getSelection()) { q5_col4.setImage(C.getImage("green.png")); }
+		if(q5_radio1.getSelection()) { q5_col4.setImage(C.getImage("green.png")); }
 		q5_col5 = MakeColumn5(tbl, false);
 		if(!empty) q5_col5.setText( C.notNull(aRow.getQ5Comments()) );
+		sep = Separator(tbl, false);	
+		//-------------------------------------------------------------------------------------------------------
+		qNum = 6;
+		Label q6_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q6_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
+		Composite q6_col3 = makeColumn3(tbl,1, false);
+		q6_radio1 = new Button(q6_col3, SWT.RADIO);
+		q6_radio1.setText("Yes");
+		q6_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q6_radio1.setSelection(aRow.getQ6Boolean()!=null && aRow.getQ6Boolean().equals("Y")); 
+		q6_radio2 = new Button(q6_col3, SWT.RADIO);
+		q6_radio2.setText("No");
+		q6_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q6_radio2.setSelection(aRow.getQ6Boolean()!=null && aRow.getQ6Boolean().equals("N")); 
+		Label q6_col4 = makeColumn4(tbl, false);	
+		if(q6_radio1.getSelection()) { q6_col4.setImage(C.getImage("green.png")); }
+		q6_col5 = MakeColumn5(tbl, false);
+		if(!empty) q6_col5.setText( C.notNull(aRow.getQ6Comments()) );
+		sep = Separator(tbl, false);	
+		//-------------------------------------------------------------------------------------------------------
+		qNum = 7;
+		Label q7_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
+		Label q7_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
+		Composite q7_col3 = makeColumn3(tbl,1, false);
+		q7_radio1 = new Button(q7_col3, SWT.RADIO);
+		q7_radio1.setText("Very difficult");
+		q7_radio1.setBackground(C.APP_BGCOLOR);
+		if(!empty) q7_radio1.setSelection(aRow.getQ7Value()==1); 
+		q7_radio2 = new Button(q7_col3, SWT.RADIO);
+		q7_radio2.setText("Fairly difficult");
+		q7_radio2.setBackground(C.APP_BGCOLOR);
+		if(!empty) q7_radio2.setSelection(aRow.getQ7Value()==2); 
+		q7_radio3 = new Button(q7_col3, SWT.RADIO);
+		q7_radio3.setText("Not difficult");
+		q7_radio3.setBackground(C.APP_BGCOLOR);
+		if(!empty) q7_radio3.setSelection(aRow.getQ7Value()==3); 
+		Label q7_col4 = makeColumn4(tbl, false);	
+		if(q7_radio2.getSelection()) { q7_col4.setImage(C.getImage("amber.png")); }
+		if(q7_radio3.getSelection()) { q7_col4.setImage(C.getImage("green.png")); }
+		q7_col5 = MakeColumn5(tbl, false);
+		if(!empty) q7_col5.setText( C.notNull(aRow.getQ5Comments()) );
 		sep = Separator(tbl, false);
 
 		// footer row
@@ -471,7 +519,7 @@ public class EntryAuditClassificationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
-			// save to DB
+				// save to DB
 				saveAudit(entryID);
 				// next screen
 				WindowController.showEntryAuditChecklist(entryID);
@@ -526,20 +574,28 @@ public class EntryAuditClassificationView {
 				else { aRow.setQ2Value(0); }
 				if(q2_col5.getText()!=null) aRow.setQ2Comments(q2_col5.getText());
 				//3
-				if(q3_radio1.getSelection()) { aRow.setQ3Value(1); }
-				else if(q3_radio2.getSelection()) { aRow.setQ3Value(2); }
-				else if(q3_radio3.getSelection()) { aRow.setQ3Value(3); }	
-				else { aRow.setQ3Value(0); }
+				aRow.setQ3Boolean( C.getRB(q3_radio1,q3_radio2) );
 				if(q3_col5.getText()!=null) aRow.setQ3Comments(q3_col5.getText());
 				//4
-				aRow.setQ4Boolean( C.getRB(q4_radio1,q4_radio2) );
+				if(q4_radio1.getSelection()) { aRow.setQ4Value(1); }
+				else if(q4_radio2.getSelection()) { aRow.setQ4Value(2); }
+				else if(q4_radio3.getSelection()) { aRow.setQ4Value(3); }	
+				else if(q4_radio4.getSelection()) { aRow.setQ4Value(4); }	
+				else if(q4_radio5.getSelection()) { aRow.setQ4Value(5); }	
+				else { aRow.setQ4Value(0); }
 				if(q4_col5.getText()!=null) aRow.setQ4Comments(q4_col5.getText());
 				//5
-				if(q5_radio1.getSelection()) { aRow.setQ5Value(1); }
-				else if(q5_radio2.getSelection()) { aRow.setQ5Value(2); }
-				else if(q5_radio3.getSelection()) { aRow.setQ5Value(3); }	
-				else { aRow.setQ5Value(0); }
+				aRow.setQ5Boolean( C.getRB(q5_radio1,q5_radio2) );
 				if(q5_col5.getText()!=null) aRow.setQ5Comments(q5_col5.getText());
+				//6
+				aRow.setQ6Boolean( C.getRB(q6_radio1,q6_radio2) );
+				if(q6_col5.getText()!=null) aRow.setQ6Comments(q6_col5.getText());
+				//7
+				if(q7_radio1.getSelection()) { aRow.setQ7Value(1); }
+				else if(q7_radio2.getSelection()) { aRow.setQ7Value(2); }
+				else if(q7_radio3.getSelection()) { aRow.setQ7Value(3); }	
+				else { aRow.setQ7Value(0); }
+				if(q7_col5.getText()!=null) aRow.setQ7Comments(q7_col5.getText());
 				// commit the transaction
 				aRow.update();
 			} catch (SQLException e) {

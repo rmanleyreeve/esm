@@ -59,6 +59,18 @@ public class EsmApplication {
 		}
 	}
 
+	public static void alert(String msg, String title) {
+		try {
+			Shell sh = Display.getCurrent().getActiveShell();
+			MessageBox mb = new MessageBox(sh, SWT.OK);
+			mb.setText(title);
+			mb.setMessage(msg);
+			mb.open();
+		} catch (Exception e) {
+			LogController.logEvent(me, C.NOTICE, e);
+		}
+	}
+
 	public static void alert(Shell sh, String msg) {
 		try {
 			MessageBox mb = new MessageBox(sh, SWT.OK);

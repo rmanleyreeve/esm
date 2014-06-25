@@ -47,12 +47,12 @@ import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
-import com.rmrdigitalmedia.esm.forms.DeleteSpaceCommentDialog;
-import com.rmrdigitalmedia.esm.forms.EditSpaceCommentForm;
-import com.rmrdigitalmedia.esm.forms.EditSpaceForm;
 import com.rmrdigitalmedia.esm.forms.AddEntrypointForm;
 import com.rmrdigitalmedia.esm.forms.AddSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.AddSpacePhotoForm;
+import com.rmrdigitalmedia.esm.forms.DeleteSpaceCommentDialog;
+import com.rmrdigitalmedia.esm.forms.EditSpaceCommentForm;
+import com.rmrdigitalmedia.esm.forms.EditSpaceForm;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
@@ -392,18 +392,18 @@ public class SpaceDetailView {
 		lblUpdatedDate.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		lblUpdatedDate.setText(df(sRow.getUpdateDate()));
 
-		Label lblCompletion = new Label(rowRight1, SWT.NONE);
-		lblCompletion.setFont(C.FONT_10B);
-		lblCompletion.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-		lblCompletion.setBackground(C.APP_BGCOLOR);
-		lblCompletion.setText("Completion Status:");		
+		Label lblOverallCompletion = new Label(rowRight1, SWT.NONE);
+		lblOverallCompletion.setFont(C.FONT_10B);
+		lblOverallCompletion.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		lblOverallCompletion.setBackground(C.APP_BGCOLOR);
+		lblOverallCompletion.setText("Completion Status:");		
 
-		Label lblCompletionImg = new Label(rowRight1, SWT.NONE);
+		Label lblOverallCompletionImg = new Label(rowRight1, SWT.NONE);
 		// work out completion status based on id
 		int cs = AuditController.calculateOverallCompletionStatus(spaceID);
-		lblCompletionImg.setImage(C.getImage("Percent_"+ cs +".png"));
-		lblCompletionImg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-		lblCompletionImg.setBackground(C.APP_BGCOLOR);		
+		lblOverallCompletionImg.setImage(C.getImage("Percent_"+ cs +".png"));
+		lblOverallCompletionImg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		lblOverallCompletionImg.setBackground(C.APP_BGCOLOR);		
 
 		// row 2 - audit header & button bar		
 		Group rowRight2 = new Group(compR, SWT.NONE);
@@ -430,7 +430,7 @@ public class SpaceDetailView {
 
 		Label lblSpaceAuditImg = new Label(rowRight2, SWT.NONE);
 		// work out completion status based on id
-		int scs = (Integer) EsmApplication.appData.getField("SPACE_CHK_"+spaceID);
+		int scs = AuditController.calculateSpaceCompletionStatus(spaceID);
 		lblSpaceAuditImg.setImage(C.getImage("Percent_"+ scs +".png"));
 		GridData gd_lblSpaceAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_lblSpaceAuditImg.widthHint = 160;

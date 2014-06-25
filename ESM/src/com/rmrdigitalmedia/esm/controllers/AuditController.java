@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm.controllers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
@@ -25,23 +24,20 @@ public class AuditController {
 				AuditController.calculateSpaceChecklistCompletion(spaceID);
 				AuditController.calculateSpaceClassificationCompletion(spaceID);
 			}
-			LogController.log("Space audits calculation completed in "
-					+ (System.currentTimeMillis() - startTime) + "ms");
+			LogController.log("Space audits calculation completed in " + (System.currentTimeMillis() - startTime) + "ms");
 			startTime = System.currentTimeMillis();
 			LogController.log("Initial Entry audits calculation started");
 			for (EntrypointsTable.Row epRow : EntrypointsTable.getAllRows()) {
 				int entryID = epRow.getID();
-				// AuditController.calculateEntryChecklistCompletion(entryID);
+				AuditController.calculateEntryChecklistCompletion(entryID);
 				AuditController.calculateEntryClassificationCompletion(entryID);
 			}
-			LogController.log("Entry audits calculation completed in "
-					+ (System.currentTimeMillis() - startTime) + "ms");
+			LogController.log("Entry audits calculation completed in " + (System.currentTimeMillis() - startTime) + "ms");
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		// System.out.println("Elapsed: "+ (System.currentTimeMillis() -
-		// startTime));
+		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	// INTERNAL SPACE CHECKLIST
@@ -127,10 +123,8 @@ public class AuditController {
 			progress = (int) Math.floor(percent / 10) * 10;
 		}
 		EsmApplication.appData.setField("SPACE_CHK_" + spaceID, progress);
-		// System.out.println("Calculating space "+userID+" checklist: " +
-		// score + "/" + max + "=" + percent + "% -> progress=" + progress );
-		// System.out.println("Elapsed: "+ (System.currentTimeMillis() -
-		// startTime));
+		// System.out.println("Calculating space "+userID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
+		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	// INTERNAL SPACE CLASSIFICATION
@@ -221,12 +215,9 @@ public class AuditController {
 		}
 		EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, progress);
 		EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, light);
-		// System.out.println("Calculating space "+userID+" classification: " +
-		// score + "/" + max + "=" + percent + "% -> progress=" + progress );
-		// System.out.println("Space " + userID + " status array: " +
-		// status.toString());
-		// System.out.println("Elapsed: "+ (System.currentTimeMillis() -
-		// startTime));
+		// System.out.println("Calculating space "+userID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
+		// System.out.println("Space " + userID + " status array: " + status.toString());
+		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	// =========================================================================================================================
@@ -312,10 +303,8 @@ public class AuditController {
 			progress = (int) Math.floor(percent / 10) * 10;
 		}
 		EsmApplication.appData.setField("ENTRY_CHK_" + entryID, progress);
-		// System.out.println("Calculating entry "+entryID+" checklist: " +
-		// score + "/" + max + "=" + percent + "% -> progress=" + progress);
-		// System.out.println("Elapsed: "+ (System.currentTimeMillis() -
-		// startTime));
+		// System.out.println("Calculating entry "+entryID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress);
+		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	// ENTRY POINT CLASSIFICATION
@@ -340,31 +329,55 @@ public class AuditController {
 				score += 1;
 				status.add(q1);
 			}
-			int q2 = row.getQ1Value();
+			int q2 = row.getQ2Value();
 			if (q2 != 0) {
 				score += 1;
 				status.add(q2);
 			}
-			int q3 = row.getQ1Value();
-			if (q3 != 0) {
+			String q3 = row.getQ3Boolean();
+			if (q3 != null) {
 				score += 1;
-				status.add(q3);
-			}
-			String q4 = row.getQ4Boolean();
-			if (q4 != null) {
-				score += 1;
-				if (isY(q4)) {
+				if (isY(q3)) {
 					status.add(3);
-				} else if (isN(q4)) {
+				} else if (isN(q3)) {
 					status.add(1);
 				}
 			} // Y = green
-			int q5 = row.getQ1Value();
-			if (q5 != 0) {
+			int q4 = row.getQ4Value();
+			if (q4 != 0) {
 				score += 1;
-				status.add(q5);
+				if (q4 == 5) {
+					status.add(3);
+				} else if (q4 == 1) {
+					status.add(1);
+				} else {
+					status.add(2);
+				}
 			}
-			max = 5;
+			String q5 = row.getQ5Boolean();
+			if (q5 != null) {
+				score += 1;
+				if (isY(q5)) {
+					status.add(3);
+				} else if (isN(q5)) {
+					status.add(1);
+				}
+			} // Y = green
+			String q6 = row.getQ6Boolean();
+			if (q6 != null) {
+				score += 1;
+				if (isY(q6)) {
+					status.add(3);
+				} else if (isN(q6)) {
+					status.add(1);
+				}
+			} // Y = green
+			int q7 = row.getQ7Value();
+			if (q7 != 0) {
+				score += 1;
+				status.add(q7);
+			}				
+			max = 7;
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
 		}
@@ -376,12 +389,8 @@ public class AuditController {
 		}
 		EsmApplication.appData.setField("ENTRY_CLASS_" + entryID, progress);
 		EsmApplication.appData.setField("ENTRY_STATUS_" + entryID, light);
-		// System.out.println("Calculating entry "+entryID+" classification: " +
-		// score + "/" + max + "=" + percent + "% -> progress=" + progress );
-		// System.out.println("Entry " + entryID + " status array: " +
-		// status.toString());
-		// System.out.println("Elapsed: "+ (System.currentTimeMillis() -
-		// startTime));
+		//System.out.println("Calculating entry "+entryID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
+		//System.out.println("Entry " + entryID + " status array: " + status.toString());
 	}
 
 	public static boolean isSpaceSignedOff(int spaceID) {
@@ -390,17 +399,40 @@ public class AuditController {
 			String s = SpacesTable.getRow(spaceID).getSignedOff();
 			so = (s!=null && s.equals("TRUE"));
 		} catch (SQLException e) {
-}
+		}
 		return so;
 	}
 
-	public static int calculateOverallCompletionStatus(int spaceID) {
+	public static int calculateSpaceCompletionStatus(int spaceID) {
 		int progress = 0;
+		//System.out.println("Calculating for " + spaceID);
 		try {
 			progress += (Integer) EsmApplication.appData.getField("SPACE_CHK_" + spaceID);
 			progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID);
 		} catch (Exception ex) {}
 		return (int) Math.floor((progress / 2) / 10) * 10;
+	}
+
+	public static int calculateOverallCompletionStatus(int spaceID) {
+		int progress = 0;
+		int num = 2;
+		//System.out.println("Calculating overall for " + spaceID);
+		try {
+			progress += (Integer) EsmApplication.appData.getField("SPACE_CHK_" + spaceID);
+			progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID);
+		} catch (Exception ex) {}
+		try {
+			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows("SPACE_ID", spaceID)) {
+				int epID = epRow.getID();
+				try {
+					progress += (Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID) ;
+					progress += (Integer) EsmApplication.appData.getField("ENTRY_CLASS_" + epID) ;
+					num = num+2;
+				} catch (Exception ex) { System.out.println("EP FAILED" + epID); }
+			}
+		} catch (SQLException ex) {}
+		//System.out.println(progress + "/" + num);
+		return (int) Math.floor((progress / num) / 10) * 10;
 	}
 
 	public static boolean isSpaceComplete(int spaceID) {
@@ -412,8 +444,7 @@ public class AuditController {
 			complete = false;
 		}
 		try {
-			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows(
-					"SPACE_ID", spaceID)) {
+			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows("SPACE_ID", spaceID)) {
 				int epID = epRow.getID();
 				if ((Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID) < 100) {
 					complete = false;
