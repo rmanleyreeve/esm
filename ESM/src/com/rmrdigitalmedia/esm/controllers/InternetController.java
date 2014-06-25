@@ -41,8 +41,7 @@ public class InternetController {
 		 */
 
 		try {
-			if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress()
-					.toString()) == false) {
+			if ("127.0.0.1".equals(InetAddress.getLocalHost().getHostAddress().toString()) == false) {
 				online = true;
 			}
 		} catch (UnknownHostException e) {
@@ -51,14 +50,14 @@ public class InternetController {
 		try {
 			EsmApplication.appData.setField("ONLINE", online);
 		} catch (Exception e) {
+			//
 		}
 		LogController.log("NET ACCESS = " + online);
 		return online;
 	}
 
 	public static void getUpdates() throws IOException {
-		String currentVersion = (String) EsmApplication.appData
-				.getField("VERSION");
+		String currentVersion = (String) EsmApplication.appData.getField("VERSION");
 		URL u = new URL(C.LATEST_VERSION_URL);
 		InputStream is = u.openStream();
 		BufferedReader in = new BufferedReader(new InputStreamReader(is));
@@ -86,9 +85,7 @@ public class InternetController {
 			try {
 				Desktop.getDesktop().browse(new URI(url));
 			} catch (Exception e1) {
-				LogController.logEvent(me, C.WARNING, "Error loading URL: "
-						+ url, e1);
-
+				LogController.logEvent(me, C.WARNING, "Error loading URL: " + url, e1);
 			}
 		}
 	}
@@ -101,8 +98,7 @@ public class InternetController {
 		int responseCode = con.getResponseCode();
 		LogController.log("\nSending 'GET' request to URL : " + url);
 		LogController.log("Response Code : " + responseCode);
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				con.getInputStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 		while ((inputLine = in.readLine()) != null) {
@@ -120,8 +116,7 @@ public class InternetController {
 		try {
 			browser = new Browser(shell, SWT.NONE);
 		} catch (SWTError e) {
-			LogController.logEvent(new InternetController(), C.ERROR,
-					"Could not instantiate Browser" + e.getMessage());
+			LogController.logEvent(InternetController.class, C.ERROR, "Could not instantiate Browser" + e.getMessage());
 			shell.dispose();
 			return;
 		}
