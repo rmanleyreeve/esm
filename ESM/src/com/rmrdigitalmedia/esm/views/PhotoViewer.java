@@ -41,8 +41,7 @@ public class PhotoViewer {
 		}
 	}
 
-	public PhotoViewer(final Shell appwin, final String fullPath,
-			final String thumbPath, final int spaceID) {
+	public PhotoViewer(final Shell appwin, final String fullPath, final String thumbPath, final int spaceID) {
 		me = this;
 		try {
 			pRow = PhotoMetadataTable.getRow("path", thumbPath);
@@ -57,8 +56,7 @@ public class PhotoViewer {
 
 		if (pRow != null) {
 
-			shell.setBackground(SWTResourceManager
-					.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+			shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 			FillLayout rl_shell = new FillLayout();
 			rl_shell.marginHeight = 10;
 			rl_shell.spacing = 5;
@@ -77,58 +75,47 @@ public class PhotoViewer {
 			imgHolder.setLayout(gl_imgHolder);
 
 			final Label imgTitle = new Label(imgHolder, SWT.CENTER);
-			GridData gd_imgTitle = new GridData(SWT.FILL, SWT.FILL, true,
-					false, 3, 1);
+			GridData gd_imgTitle = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
 			// gd_imgTitle.verticalIndent = 5;
 			imgTitle.setLayoutData(gd_imgTitle);
 			imgTitle.setFont(C.FONT_12B);
 			imgTitle.setText(pRow.getTitle());
 
 			final Label imgMeta = new Label(imgHolder, SWT.CENTER);
-			GridData gd_imgMeta = new GridData(SWT.FILL, SWT.FILL, true, false,
-					3, 1);
+			GridData gd_imgMeta = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
 			// gd_imgTitle.verticalIndent = 5;
 			imgMeta.setLayoutData(gd_imgMeta);
 			imgMeta.setFont(C.FONT_9);
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 			String strMeta = "";
 			strMeta = "Posted " + sdf.format(pRow.getUpdateDate());
-			try {
-				strMeta += " by "
-						+ EsmUsersTable.getRow(pRow.getAuthorID())
-								.getForename() + " "
-						+ EsmUsersTable.getRow(pRow.getAuthorID()).getSurname();
+			try { 
+				strMeta += " by " + EsmUsersTable.getRow(pRow.getAuthorID()).getForename() + " " + EsmUsersTable.getRow(pRow.getAuthorID()).getSurname();
 			} catch (SQLException e2) {
 				LogController.logEvent(me, C.WARNING, e2);
 			}
 			imgMeta.setText(strMeta);
 
 			final Label imgPic = new Label(imgHolder, SWT.BORDER | SWT.CENTER);
-			imgPic.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, true, true,
-					3, 1));
-			GridData gd_imgPic = new GridData(SWT.CENTER, SWT.TOP, true, true,
-					3, 1);
+			imgPic.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, true, true, 3, 1));
+			GridData gd_imgPic = new GridData(SWT.CENTER, SWT.TOP, true, true, 3, 1);
 			gd_imgPic.verticalIndent = 5;
 			imgPic.setLayoutData(gd_imgPic);
 			imgPic.setBackground(SWTResourceManager.getColor(SWT.COLOR_CYAN));
 			imgPic.setImage(C.getExtImage(fullPath));
 
-			final Label imgComment = new Label(imgHolder, SWT.BORDER | SWT.WRAP
-					| SWT.CENTER);
-			GridData gd_imgComment = new GridData(SWT.FILL, SWT.FILL, true,
-					false, 3, 1);
+			final Label imgComment = new Label(imgHolder, SWT.BORDER | SWT.WRAP | SWT.CENTER);
+			GridData gd_imgComment = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
 			gd_imgComment.verticalIndent = 10;
 			imgComment.setLayoutData(gd_imgComment);
 			imgComment.setFont(C.FONT_11);
 			imgComment.setText(pRow.getComment());
 
 			EsmUsersTable.Row user = WindowController.user;
-			if (user.getAccessLevel() == 9
-					|| user.getID() == pRow.getAuthorID()) {
+			if (user.getAccessLevel() == 9 || user.getID() == pRow.getAuthorID()) {
 
 				Button btnEditComment = new Button(imgHolder, SWT.NONE);
-				GridData gd_btnEditComment = new GridData(SWT.RIGHT, SWT.TOP,
-						false, false, 1, 1);
+				GridData gd_btnEditComment = new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1);
 				gd_btnEditComment.verticalIndent = 5;
 				gd_btnEditComment.horizontalIndent = 5;
 				btnEditComment.setLayoutData(gd_btnEditComment);
@@ -140,9 +127,9 @@ public class PhotoViewer {
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {
 						int _id = pRow.getID();
-						EditPhotoMetadataForm epcf = new EditPhotoMetadataForm(
-								_id);
+						EditPhotoMetadataForm epcf = new EditPhotoMetadataForm(_id);
 						if (epcf.complete()) {
+							WindowController.showSpaceDetail(spaceID);
 							try {
 								pRow = PhotoMetadataTable.getRow(_id);
 								imgTitle.setText(pRow.getTitle());
@@ -152,33 +139,27 @@ public class PhotoViewer {
 								shell.pack();
 								Rectangle bounds = appwin.getBounds();
 								Rectangle rect = shell.getBounds();
-								int x = bounds.x
-										+ ((bounds.width / 2) - (rect.width / 2));
-								int y = bounds.y
-										+ ((bounds.height / 2) - (rect.height / 2));
-								System.out.println(bounds);
-								System.out.println(rect);
-								System.out.println(x + "," + y);
+								int x = bounds.x + ((bounds.width / 2) - (rect.width / 2));
+								int y = bounds.y + ((bounds.height / 2) - (rect.height / 2));
+								//System.out.println(bounds);
+								//System.out.println(rect);
+								//System.out.println(x + "," + y);
 								shell.setLocation(x, y);
-							} catch (SQLException e) {
-							}
+							} catch (SQLException e) {}
 						}
 					}
 				});
 
 				Label foo = new Label(imgHolder, SWT.NONE);
-				foo.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false,
-						false, 1, 1));
+				foo.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1));
 
 				Button btnDeletePhoto = new Button(imgHolder, SWT.NONE);
 				btnDeletePhoto.setText("Delete Photo");
-				GridData gd_btnDeleteComment = new GridData(SWT.LEFT, SWT.TOP,
-						true, false, 1, 1);
+				GridData gd_btnDeleteComment = new GridData(SWT.LEFT, SWT.TOP, true, false, 1, 1);
 				gd_btnDeleteComment.verticalIndent = 5;
 				gd_btnDeleteComment.horizontalIndent = 5;
 				btnDeletePhoto.setLayoutData(gd_btnDeleteComment);
-				btnDeletePhoto
-						.setToolTipText("Delete this photo and attached comments");
+				btnDeletePhoto.setToolTipText("Delete this photo and attached comments");
 				btnDeletePhoto.setFont(C.FONT_9);
 				btnDeletePhoto.setImage(C.getImage("16_delete.png"));
 				btnDeletePhoto.addSelectionListener(new SelectionAdapter() {
@@ -189,8 +170,7 @@ public class PhotoViewer {
 							LogController.log("Files & Metadata deleted");
 							try {
 								Thread.sleep(100);
-							} catch (InterruptedException e1) {
-							}
+							} catch (InterruptedException e1) {}
 							WindowController.showSpaceDetail(spaceID);
 							shell.dispose();
 						} else {
