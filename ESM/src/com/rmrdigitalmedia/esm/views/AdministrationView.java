@@ -178,9 +178,9 @@ public class AdministrationView {
 					LogController.log("User " + selectedUser + " marked as deleted in database");
 					EsmApplication.alert("The user record was deleted!");
 					refreshCombo(comboUsers);
+					btnViewUser.setEnabled(false);
 					btnEditUser.setEnabled(false);
 					btnDelUser.setEnabled(false);
-					btnViewUser.setEnabled(false);
 				} else {
 					LogController.log("User " + selectedUser + " not deleted");
 				}
@@ -199,7 +199,7 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				selectedUser = (Integer) comboUsers.getData(comboUsers.getText());
 				LogController.log("Selected user ID: "+selectedUser);
-				btnViewUser.setEnabled(selectedUser > 0);
+				//btnViewUser.setEnabled(selectedUser > 0);
 				btnEditUser.setEnabled(selectedUser > 0);
 				btnDelUser.setEnabled(selectedUser > 0);
 			}
@@ -253,6 +253,7 @@ public class AdministrationView {
 		});
 
 
+		//===================================================================================================================
 
 
 		// final layout settings

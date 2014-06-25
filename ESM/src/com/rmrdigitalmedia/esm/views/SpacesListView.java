@@ -68,10 +68,13 @@ public class SpacesListView {
 
 	public static void buildTable(Composite parent) {
 		LogController.log("Building Space List page");
-
+		// clean up
 		for (Control c:parent.getChildren()) {
 			c.dispose();
 		}
+		tableRows.clear();
+		selectedRow = 0;
+		
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 
 		// scrolling frame to hold the grid panel
