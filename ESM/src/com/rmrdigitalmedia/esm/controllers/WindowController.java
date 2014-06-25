@@ -3,6 +3,7 @@ package com.rmrdigitalmedia.esm.controllers;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;

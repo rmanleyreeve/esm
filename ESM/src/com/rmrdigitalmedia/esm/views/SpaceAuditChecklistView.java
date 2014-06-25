@@ -672,6 +672,7 @@ public class SpaceAuditChecklistView {
 			}
 		});
 		q9_col4 = MakeColumn4(tbl, !q7_radio1.getSelection());
+		if(!empty) { q9_col4.setText( C.notNull(aRow.getQ9Comments()) ); }
 		final Label q9_sep = Separator(tbl, !q7_radio1.getSelection());
 		if(q9_radio1.getSelection()) q9_col1.setText(q9_txt+q8_txt_2);
 		//-------------------------------------------------------------------------------------------------------
@@ -725,6 +726,7 @@ public class SpaceAuditChecklistView {
 			}
 		});
 		q10_col4 = MakeColumn4(tbl, !q7_radio1.getSelection());
+		if(!empty) { q10_col4.setText( C.notNull(aRow.getQ10Comments()) ); }
 		final Label q10_sep = Separator(tbl, !q7_radio1.getSelection());
 		if(q10_radio1.getSelection()) q10_col1.setText(q10_txt+q8_txt_2);
 		//-------------------------------------------------------------------------------------------------------		
@@ -1003,7 +1005,7 @@ public class SpaceAuditChecklistView {
 						aRow.setQ8Rating(0);
 					}	
 				} else { 
-					aRow.setQ8Boolean(null); 
+					aRow.setQ8Boolean(null); aRow.setQ8Rating(0);
 				}
 				if(q8_col4.getText()!=null) aRow.setQ8Comments(q8_col4.getText());
 				//9
@@ -1017,7 +1019,7 @@ public class SpaceAuditChecklistView {
 						aRow.setQ9Rating(0);
 					}	
 				} else { 
-					aRow.setQ9Boolean(null); 
+					aRow.setQ9Boolean(null); aRow.setQ9Rating(0);
 				}
 				if(q9_col4.getText()!=null) aRow.setQ9Comments(q9_col4.getText());
 				//10
@@ -1028,10 +1030,10 @@ public class SpaceAuditChecklistView {
 						else if(q10_rate_radio2.getSelection()) { aRow.setQ10Rating(2); }
 						else if(q10_rate_radio3.getSelection()) { aRow.setQ10Rating(3); }						
 					} else {
-						aRow.setQ10Rating(0);
+						aRow.setQ10Rating(0); 
 					}	
 				} else { 
-					aRow.setQ10Boolean(null); 
+					aRow.setQ10Boolean(null); aRow.setQ10Rating(0);
 				}
 				if(q10_col4.getText()!=null) aRow.setQ10Comments(q10_col4.getText());
 				//11
