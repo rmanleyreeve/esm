@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
@@ -40,6 +41,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
@@ -50,7 +52,9 @@ import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.AddEntrypointForm;
 import com.rmrdigitalmedia.esm.forms.AddSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.AddSpacePhotoForm;
+import com.rmrdigitalmedia.esm.forms.DeleteEntrypointDialog;
 import com.rmrdigitalmedia.esm.forms.DeleteSpaceCommentDialog;
+import com.rmrdigitalmedia.esm.forms.EditEntrypointForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceForm;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
@@ -384,7 +388,7 @@ public class SpaceDetailView {
 		lblUpdated.setFont(C.FONT_10B);
 		lblUpdated.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		lblUpdated.setBackground(C.APP_BGCOLOR);
-		lblUpdated.setText("Created:");		
+		lblUpdated.setText("Updated:");		
 
 		Label lblUpdatedDate = new Label(rowRight1, SWT.WRAP);
 		lblUpdatedDate.setFont(C.FONT_10);
@@ -402,20 +406,20 @@ public class SpaceDetailView {
 		// work out completion status based on id
 		int cs = AuditController.calculateOverallCompletionStatus(spaceID);
 		lblOverallCompletionImg.setImage(C.getImage("Percent_"+ cs +".png"));
-		lblOverallCompletionImg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		lblOverallCompletionImg.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
 		lblOverallCompletionImg.setBackground(C.APP_BGCOLOR);		
 
-		// row 2 - audit header & button bar		
+		// row 2 - audit header & button bar	==========================================================================	
 		Group rowRight2 = new Group(compR, SWT.NONE);
 		rowRight2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		GridLayout gl_rowRight2 = new GridLayout(5, false);
+		GridLayout gl_rowRight2 = new GridLayout(6, false); // 6 column grid layout
 		gl_rowRight2.marginBottom = 5;
 		gl_rowRight2.marginHeight = 0;
 		rowRight2.setLayout(gl_rowRight2);
 		rowRight2.setBackground(C.APP_BGCOLOR);
 
 		Label lblAudits = new Label(rowRight2, SWT.NONE);
-		GridData gd_lblAudits = new GridData(SWT.LEFT, SWT.CENTER, false, false, 5, 1);
+		GridData gd_lblAudits = new GridData(SWT.LEFT, SWT.CENTER, false, false, 6, 1);
 		gd_lblAudits.widthHint = 300;
 		lblAudits.setLayoutData(gd_lblAudits);
 		lblAudits.setFont(C.FONT_12B);
@@ -447,7 +451,7 @@ public class SpaceDetailView {
 
 		Button btnShowSpaceAudit = new Button(rowRight2, SWT.NONE);
 		btnShowSpaceAudit.setToolTipText("Launch the Internal Space Audit for " + sRow.getName());
-		GridData gd_btnShowSpaceAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		GridData gd_btnShowSpaceAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
 		gd_btnShowSpaceAudit.verticalIndent = 3;
 		btnShowSpaceAudit.setLayoutData(gd_btnShowSpaceAudit);
 		btnShowSpaceAudit.setImage(C.getImage("16_edit.png"));
@@ -459,17 +463,17 @@ public class SpaceDetailView {
 			}
 		});
 		sep = new Label(rowRight2, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));		
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));		
 
 		CLabel lblEntryPoint;
 		Label lblEntryPointAuditImg, lblEntryPointAuditLight;
-		GridData gd_lblEntryPointAuditImg, gd_lblEntryPointAuditLight, gd_btnShowEntryAudit, gd_lblEntryPoint, gd_btnEditEntry;
-		Button btnShowEntryAudit, btnEditEntry;
+		GridData gd_lblEntryPointAuditImg, gd_lblEntryPointAuditLight, gd_btnShowEntryAudit, gd_lblEntryPoint, gd_btnEditEntry, gd_btnDeleteEntry;
+		Button btnShowEntryAudit, btnEditEntry, btnDeleteEntry;
 		EntrypointsTable.Row[] epRows = null;
 		int rh = 20;
 
 		try {
-			epRows = EntrypointsTable.getRows("SPACE_ID=" + spaceID);
+			epRows = EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID=" + spaceID);
 		} catch (SQLException e1) {
 			LogController.logEvent(me, C.ERROR, e1);
 		}
@@ -487,7 +491,6 @@ public class SpaceDetailView {
 			lblEntryPoint.setBackground(C.APP_BGCOLOR);
 			lblEntryPoint.setImage(C.getImage("16_door.png"));
 			lblEntryPoint.setText(epName);
-
 			// work out completion status based on id
 			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
 			AuditController.calculateEntryChecklistCompletion(epID);
@@ -501,7 +504,7 @@ public class SpaceDetailView {
 			gd_lblEntryPointAuditImg.heightHint = rh;
 			lblEntryPointAuditImg.setLayoutData(gd_lblEntryPointAuditImg);
 			lblEntryPointAuditImg.setBackground(C.APP_BGCOLOR);
-
+			// status light
 			lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
 			AuditController.calculateEntryClassificationCompletion(epID);
 			String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+epID);
@@ -512,13 +515,13 @@ public class SpaceDetailView {
 			gd_lblEntryPointAuditLight.heightHint = rh;
 			lblEntryPointAuditLight.setLayoutData(gd_lblEntryPointAuditLight);
 			lblEntryPointAuditLight.setBackground(C.APP_BGCOLOR);
-
+			// audit button
 			btnShowEntryAudit = new Button(rowRight2, SWT.NONE);
 			btnShowEntryAudit.setToolTipText("Launch the Entry Point Audit for " + epName);
 			gd_btnShowEntryAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 			//gd_btnEditAudit.verticalIndent = 3;
 			gd_btnShowEntryAudit.heightHint = rh;
-			gd_btnShowEntryAudit.widthHint = 70;
+			//gd_btnShowEntryAudit.widthHint = 70;
 			btnShowEntryAudit.setLayoutData(gd_btnShowEntryAudit);
 			btnShowEntryAudit.setFont(C.FONT_9);
 			btnShowEntryAudit.setText("Audit");
@@ -528,31 +531,57 @@ public class SpaceDetailView {
 					WindowController.showEntryAuditChecklist(epID);
 				}
 			});
-
+			// edit button
 			btnEditEntry = new Button(rowRight2, SWT.NONE);
 			btnEditEntry.setToolTipText("Edit details of the Entry Point");
-			gd_btnEditEntry = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+			gd_btnEditEntry = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
 			//gd_btnEditEntry.verticalIndent = 3;
 			gd_btnEditEntry.heightHint = rh;
-			gd_btnEditEntry.widthHint = 60;
+			//gd_btnEditEntry.widthHint = 60;
 			btnEditEntry.setLayoutData(gd_btnEditEntry);
 			btnEditEntry.setFont(C.FONT_9);
 			btnEditEntry.setText("Edit");
 			btnEditEntry.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent arg0) {
-					//WindowController.showEntryAuditChecklist(epID);
-					EsmApplication.alert("EDIT");				}
+					EditEntrypointForm eef = new EditEntrypointForm(epID);					
+					if(eef.complete()) {
+						WindowController.showSpaceDetail(spaceID);									
+					}
+				}
+			});
+			// delete button
+			btnDeleteEntry = new Button(rowRight2, SWT.NONE);
+			btnDeleteEntry.setToolTipText("Delete this Entry Point");
+			gd_btnDeleteEntry = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+			//gd_btnDeleteEntry.verticalIndent = 3;
+			gd_btnDeleteEntry.heightHint = rh;
+			//gd_btnDeleteEntry.widthHint = 60;
+			btnDeleteEntry.setLayoutData(gd_btnDeleteEntry);
+			btnDeleteEntry.setFont(C.FONT_9);
+			btnDeleteEntry.setText("Delete");
+			btnDeleteEntry.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent arg0) {
+					DeleteEntrypointDialog ded = new DeleteEntrypointDialog();					
+					if(ded.deleteOK(epID)) {
+						LogController.log("Entry point " + epID + " marked as deleted in database");
+						EsmApplication.alert("The entry point was deleted!");
+						WindowController.showSpaceDetail(spaceID);									
+					} else {
+						LogController.log("User " + epID + " not deleted");
+					}
+				}
 			});
 
 		} // end for
 
 		sep = new Label(rowRight2, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));		
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));		
 
 		Button btnAddEntry = new Button(rowRight2, SWT.NONE);
 		btnAddEntry.setToolTipText("Add a new Entry Point to this Space");
-		GridData gd_btnAddAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 5, 1);
+		GridData gd_btnAddAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 6, 1);
 		gd_btnAddAudit.verticalIndent = 3;
 		btnAddEntry.setLayoutData(gd_btnAddAudit);
 		btnAddEntry.setImage(C.getImage("16_add.png"));
@@ -568,12 +597,7 @@ public class SpaceDetailView {
 			}
 		});
 
-
-
-
-
-
-		// row 3 - photos header & button bar		
+		// row 3 - photos header & button bar	=================================
 		Group rowRight3 = new Group(compR, SWT.NONE);
 		rowRight3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowRight3 = new GridLayout(3, false);
@@ -854,7 +878,7 @@ public class SpaceDetailView {
 
 
 		// final layout settings	
-		panels.setWeights(new int[] {5, 3});				
+		panels.setWeights(new int[] {12, 8});				
 		parent.layout();
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 	}

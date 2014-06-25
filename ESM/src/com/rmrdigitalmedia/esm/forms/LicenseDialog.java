@@ -117,8 +117,11 @@ public class LicenseDialog {
 		data.bottom = new FormAttachment (cancel, 0, SWT.DEFAULT);
 		text.setLayoutData (data);
 		text.setText("");
-		text.setFocus();
+		
+		// TODO for development
+		text.setText("22356-81122-26817");
 
+		text.setFocus();
 		Button ok = new Button (dialog, SWT.PUSH);
 		ok.setFont(C.FONT_10);
 		ok.setText ("OK");
