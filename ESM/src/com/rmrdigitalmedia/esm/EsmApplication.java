@@ -29,8 +29,8 @@ public class EsmApplication {
 		FilesystemController fs = new FilesystemController();
 		fs.createLogDir();
 		System.out.println("LOGFILE: " + LogController.logfile);
+		LogController.log("STARTING " + C.APP_NAME + "...");
 		LogController.log("Running class " + me.getClass().getName());
-		LogController.log("Starting ESM Application...");
 		appData = new AppData();
 
 		loader = new AppLoader(display);

@@ -206,7 +206,7 @@ public class AddSpacePhotoForm {
 							pRow.insert();
 							LogController.log("Photo comment added to database.");		        
 						} catch (Exception e1) {
-							LogController.logEvent("Photo Comment upload", C.NOTICE, e1);
+							LogController.logEvent(this, C.NOTICE, "Photo Comment upload", e1);
 						}		
 						formOK = true;
 					}

@@ -358,7 +358,7 @@ public class SpaceDetailView {
 		try {
 			author = EsmUsersTable.getRow(sRow.getAuthorID());
 		} catch (SQLException e1) {
-			LogController.logEvent(SpaceDetailView.class, C.ERROR, e1);
+			LogController.logEvent(me, C.ERROR, e1);
 		}
 		Label lblCreatedBy = new Label(rowRight1, SWT.NONE);
 		lblCreatedBy.setFont(C.FONT_10B);
@@ -853,7 +853,7 @@ public class SpaceDetailView {
 					lblAuthName.setText(user.getForename() + " " + user.getSurname());
 					btnSignOff.setEnabled(false);
 				} catch (SQLException e) {
-					LogController.logEvent(this.getClass(), C.ERROR, "Error saving Space "+spaceID+" signoff data", e);
+					LogController.logEvent(me, C.ERROR, "Error saving Space "+spaceID+" signoff data", e);
 				}				
 			}
 		});
