@@ -491,6 +491,7 @@ public class SpaceDetailView {
 			lblEntryPoint.setBackground(C.APP_BGCOLOR);
 			lblEntryPoint.setImage(C.getImage("16_door.png"));
 			lblEntryPoint.setText(epName);
+			lblEntryPoint.setToolTipText(epRow.getDescription());
 			// work out completion status based on id
 			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
 			AuditController.calculateEntryChecklistCompletion(epID);
