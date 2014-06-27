@@ -145,7 +145,7 @@ public class SpaceAuditClassificationView {
 		optionsCell.setLayout(gl_optionsCell);
 		GridData gd = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd.exclude = hide;
-		gd.widthHint = 450;
+		gd.widthHint = 350;
 		optionsCell.setLayoutData(gd);		
 		optionsCell.setBackground(C.APP_BGCOLOR);
 		return optionsCell;
