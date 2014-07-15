@@ -96,9 +96,9 @@ public class AppLoader {
 		msg.setForeground(C.TITLEBAR_BGCOLOR);
 		AppLoader.pmsg = msg;
 		msg.setFont(C.FONT_8);
-		msg.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		//msg.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		FormData msgData = new FormData();
-		msgData.width = 220;
+		msgData.width = 200;
 		msgData.right = new FormAttachment(100, -10);
 		msgData.top = new FormAttachment(100, -50);
 		msgData.bottom = new FormAttachment(100, -25);
