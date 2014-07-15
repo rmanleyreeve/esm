@@ -79,9 +79,9 @@ public class AppLoader {
 
 		final Shell splash = new Shell(SWT.ON_TOP);
 		AppLoader.myshell = splash;
-		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		FormLayout layout = new FormLayout();
 		splash.setLayout(layout);
+		splash.setBackgroundMode(SWT.INHERIT_FORCE);
 
 		ProgressBar bar = new ProgressBar(splash, SWT.NONE);
 		AppLoader.pbar = bar;
@@ -92,16 +92,16 @@ public class AppLoader {
 		progressData.bottom = new FormAttachment(100, 0);
 		bar.setLayoutData(progressData);
 
-		Label msg = new Label(splash, SWT.RIGHT);
+		Label msg = new Label(splash, SWT.WRAP | SWT.RIGHT);
 		msg.setForeground(C.TITLEBAR_BGCOLOR);
 		AppLoader.pmsg = msg;
 		msg.setFont(C.FONT_8);
-		//msg.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		msg.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		FormData msgData = new FormData();
 		msgData.width = 200;
-		msgData.right = new FormAttachment(100, -10);
-		msgData.top = new FormAttachment(100, -50);
-		msgData.bottom = new FormAttachment(100, -25);
+		msgData.right = new FormAttachment(100, -5);
+		msgData.top = new FormAttachment(100, -55);
+		msgData.bottom = new FormAttachment(100, -20);
 		msg.setLayoutData(msgData);
 
 		Label label = new Label(splash, SWT.NONE);
