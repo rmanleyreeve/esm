@@ -53,7 +53,7 @@ public class SpacesListView {
 			Shell shell = new Shell();
 			shell.setSize(1380, 750);
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
-			Composite comp = new Composite(shell, SWT.BORDER);
+			Composite comp = new Composite(shell, SWT.NONE);
 			shell.open();
 			SpacesListView.buildTable(comp);
 			while (!shell.isDisposed()) {
@@ -88,7 +88,7 @@ public class SpacesListView {
 		comp.setBackground(C.APP_BGCOLOR);
 
 		//table layout
-		final Composite tbl = new Composite(comp, SWT.BORDER);
+		final Composite tbl = new Composite(comp, SWT.NONE);
 		tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout gl_tbl = new GridLayout(6, false);
 		gl_tbl.marginTop = 0;
@@ -103,7 +103,7 @@ public class SpacesListView {
 		// final String[] titles = { "ID", "Name", "Completion Status","Internal Classification","Entry Points Classification", "S/O" };
 
 		// ID HEADER
-		CLabel lblHeaderID = new CLabel(tbl, SWT.BORDER);
+		CLabel lblHeaderID = new CLabel(tbl, SWT.NONE);
 		GridData gd_lblHeaderID = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		lblHeaderID.setLeftMargin(5);
 		gd_lblHeaderID.widthHint = 75;
@@ -113,7 +113,7 @@ public class SpacesListView {
 		lblHeaderID.setFont(C.FONT_12B);
 		lblHeaderID.setText("ID");
 		// NAME
-		CLabel lblHeaderName = new CLabel(tbl, SWT.BORDER);
+		CLabel lblHeaderName = new CLabel(tbl, SWT.NONE);
 		lblHeaderName.setLeftMargin(5);
 		GridData gd_lblHeaderName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		gd_lblHeaderName.minimumWidth = 200;
@@ -124,7 +124,7 @@ public class SpacesListView {
 		lblHeaderName.setFont(C.FONT_12B);
 		lblHeaderName.setText("Name");
 		// COMPLETION STATUS
-		CLabel lblHeaderCS = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
+		CLabel lblHeaderCS = new CLabel(tbl, SWT.NONE | SWT.CENTER);
 		lblHeaderCS.setLeftMargin(5);
 		GridData gd_lblHeaderCS = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblHeaderCS.widthHint = 160;
@@ -134,7 +134,7 @@ public class SpacesListView {
 		lblHeaderCS.setFont(C.FONT_12B);
 		lblHeaderCS.setText("Completion Status");
 		// INTERNAL CLASSIFICATION
-		CLabel lblHeaderIC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
+		CLabel lblHeaderIC = new CLabel(tbl, SWT.NONE | SWT.CENTER);
 		lblHeaderIC.setLeftMargin(5);
 		GridData gd_lblHeaderIC = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_lblHeaderIC.widthHint = 220;
@@ -144,7 +144,7 @@ public class SpacesListView {
 		lblHeaderIC.setText("Internal Classification");
 		lblHeaderIC.setFont(C.FONT_12B);
 		// ENTRY POINTS CLASSIFICATION
-		CLabel lblHeaderEPC = new CLabel(tbl, SWT.BORDER);
+		CLabel lblHeaderEPC = new CLabel(tbl, SWT.NONE);
 		lblHeaderEPC.setLeftMargin(5);
 		lblHeaderEPC.setAlignment(SWT.CENTER);
 		GridData gd_lblHeaderEPC = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
@@ -155,7 +155,7 @@ public class SpacesListView {
 		lblHeaderEPC.setText("Entry Points Classification");
 		lblHeaderEPC.setFont(C.FONT_12B);
 		// SIGNED OFF
-		CLabel lblHeaderSO = new CLabel(tbl, SWT.BORDER);
+		CLabel lblHeaderSO = new CLabel(tbl, SWT.NONE);
 		lblHeaderSO.setRightMargin(5);
 		lblHeaderSO.setAlignment(SWT.CENTER);
 		GridData gd_lblHeaderSO = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
@@ -176,7 +176,7 @@ public class SpacesListView {
 		for (SpacesTable.Row sRow : sRows) {
 			final int spaceID = sRow.getID();
 			// ID
-			final CLabel lblLoopID = new CLabel(tbl, SWT.BORDER);
+			final CLabel lblLoopID = new CLabel(tbl, SWT.NONE);
 			lblLoopID.setLeftMargin(5);
 			GridData gd_lblLoopID = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 			gd_lblLoopID.widthHint = 75;
@@ -186,7 +186,7 @@ public class SpacesListView {
 			lblLoopID.setFont(C.FONT_11B);
 			lblLoopID.setText(""+spaceID);
 			// NAME
-			final CLabel lblLoopName = new CLabel(tbl, SWT.BORDER);
+			final CLabel lblLoopName = new CLabel(tbl, SWT.NONE);
 			lblLoopName.setLeftMargin(5);
 			GridData gd_lblLoopName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 			gd_lblLoopName.minimumWidth = 200;
@@ -198,7 +198,7 @@ public class SpacesListView {
 			//lblLoopName.setToolTipText("Double-click to view details of this enclosed space");
 			lblLoopName.setText(sRow.getName());
 			// COMPLETION STATUS
-			final CLabel lblLoopCS = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
+			final CLabel lblLoopCS = new CLabel(tbl, SWT.NONE | SWT.CENTER);
 			lblLoopCS.setLeftMargin(5);
 			GridData gd_lblLoopCS = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 			gd_lblLoopCS.widthHint = 160;
@@ -208,7 +208,7 @@ public class SpacesListView {
 			int cs = AuditController.calculateOverallCompletionStatus(spaceID);
 			lblLoopCS.setImage(C.getImage("Percent_"+ cs +".png"));
 			// INTERNAL CLASSIFICATION
-			final CLabel lblLoopIC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
+			final CLabel lblLoopIC = new CLabel(tbl, SWT.NONE | SWT.CENTER);
 			lblLoopIC.setLeftMargin(5);
 			GridData gd_lblLoopIC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 			gd_lblLoopIC.widthHint = 220;
@@ -219,7 +219,7 @@ public class SpacesListView {
 			if(light.equals("")) { light = "red"; }
 			lblLoopIC.setImage(C.getImage(light+".png"));
 			// ENTRY POINTS CLASSIFICATION
-			final CLabel lblLoopEPC = new CLabel(tbl, SWT.BORDER | SWT.CENTER);
+			final CLabel lblLoopEPC = new CLabel(tbl, SWT.NONE | SWT.CENTER);
 			lblLoopEPC.setLeftMargin(5);
 			GridData gd_lblLoopEPC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 			gd_lblLoopEPC.widthHint = 220;
@@ -269,7 +269,7 @@ public class SpacesListView {
 			}
 			lblLoopEPC.setImage(img);	
 			// SIGNED OFF
-			final CLabel lblLoopSO = new CLabel(tbl, SWT.BORDER);
+			final CLabel lblLoopSO = new CLabel(tbl, SWT.NONE);
 			lblLoopSO.setRightMargin(5);
 			lblLoopSO.setAlignment(SWT.CENTER);
 			GridData gd_lblLoopSO = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);

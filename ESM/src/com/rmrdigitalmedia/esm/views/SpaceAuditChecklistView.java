@@ -143,12 +143,12 @@ public class SpaceAuditChecklistView {
 	// checklist text column
 	private static Label MakeColumn1(Composite comp, String text, boolean hide) {		
 		Label question = new Label(comp, SWT.WRAP);
-		GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1);
+		GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd.horizontalIndent = 5;
 		gd.exclude = hide;
 		question.setLayoutData(gd);
 		question.setBackground(C.APP_BGCOLOR);
-		question.setFont(C.FONT_11);
+		question.setFont(C.FONT_10);
 		question.setText(text);
 		return question;
 	}	
@@ -156,7 +156,7 @@ public class SpaceAuditChecklistView {
 	private static Label makeColumn2(Composite comp, final String text, boolean hide) {
 		Label hint = new Label(comp, SWT.NONE);
 		hint.setToolTipText("Click for Hint Text");
-		GridData gd = new GridData(SWT.CENTER, SWT.TOP, true, false, 1, 1);
+		GridData gd = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
 		gd.exclude = hide;
 		hint.setLayoutData(gd);		
 		hint.setBackground(C.APP_BGCOLOR);
@@ -176,7 +176,7 @@ public class SpaceAuditChecklistView {
 		gl_optionsCell.marginHeight = 1;
 		gl_optionsCell.verticalSpacing = 1;
 		optionsCell.setLayout(gl_optionsCell);
-		GridData gd = new GridData(SWT.CENTER, SWT.TOP, true, false, 1, 1);
+		GridData gd = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
 		gd.exclude = hide;
 		optionsCell.setLayoutData(gd);		
 		optionsCell.setBackground(C.APP_BGCOLOR);
@@ -184,7 +184,7 @@ public class SpaceAuditChecklistView {
 	}
 	// comments field
 	private static Text MakeColumn4(Composite comp, boolean hide) {
-		Text comments = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		Text comments = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.MULTI | SWT.V_SCROLL);
 		comments.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		comments.setEditable(true);
 		comments.setFont(C.FONT_10);

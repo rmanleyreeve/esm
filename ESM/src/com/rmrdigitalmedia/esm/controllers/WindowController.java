@@ -50,7 +50,7 @@ public class WindowController {
 		return shell;
 	}
 	static Display display;
-	int appHeight, appWidth,headerH = 100,titleH = 40,footerH = 15;
+	int appHeight, appWidth,headerH = 120,titleH = 40,footerH = 15;
 	Composite container, header, titleBar;
 	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration, pageSpaceAudit, pageEntryAudit;
 	static Label pageTitle, onlineStatus;
@@ -62,6 +62,7 @@ public class WindowController {
 	public static EsmUsersTable.Row user;
 	SpacesTable.Row[] rows;
 	private Label lblVtLogo;
+	private Label lblMrmLogo;
 
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
@@ -168,9 +169,9 @@ public class WindowController {
 
 		// set up row element positions =======================
 		FormData fd_header = new FormData();
+		fd_header.bottom = new FormAttachment(container, 115);
 		fd_header.top = new FormAttachment(container,0);
 		fd_header.right = new FormAttachment(100,0);
-		fd_header.bottom = new FormAttachment(container,headerH);
 		fd_header.left = new FormAttachment(0,0);
 		header.setLayoutData(fd_header);		
 
@@ -311,26 +312,38 @@ public class WindowController {
 		logo.setImage(C.getImage("esm-logo-horiz.png"));
 		logo.setBackground(C.APP_BGCOLOR);
 		FormData fd = new FormData();
+		fd.top = new FormAttachment(0);
+		fd.height = 110;
 		fd.width = 250;
 		fd.left = new FormAttachment(0, 5);
-		fd.bottom = new FormAttachment(95);
+		fd.bottom = new FormAttachment(100);
 		logo.setLayoutData (fd);
 
 		String txt = "";
+		int offset = 25;
 		try {
-			txt = "Vessel: " +(String)EsmApplication.appData.getField("VESSEL") + "       ";
+			txt = "Vessel: " +(String)EsmApplication.appData.getField("VESSEL") + "\n\n";
+			offset += 10;
 		} catch (Exception e1) { }
 		txt += "Current User: " + displayName;
 		Label lblH = new Label(header,SWT.WRAP);
 		lblH.setForeground(C.TITLEBAR_BGCOLOR);
 		FormData fd_lblH = new FormData();
 		fd_lblH.left = new FormAttachment(logo, 10);
-		fd_lblH.top = new FormAttachment((headerH/2)-10);
+		fd_lblH.top = new FormAttachment((headerH/2)-offset);
 		lblH.setLayoutData(fd_lblH);
 		lblH.setFont(C.HEADER_FONT);
 		lblH.setAlignment(SWT.LEFT);
 		lblH.setBackground(C.APP_BGCOLOR);
 		lblH.setText(txt);
+		
+		lblMrmLogo = new Label(header, SWT.NONE);
+		lblMrmLogo.setImage(C.getImage("mrm_logo.png"));
+		lblMrmLogo.setBackground(C.APP_BGCOLOR);
+		FormData fd_lblmrmLogo = new FormData();
+		fd_lblmrmLogo.top = new FormAttachment(25);
+		fd_lblmrmLogo.right = new FormAttachment(100, -275);
+		lblMrmLogo.setLayoutData(fd_lblmrmLogo);
 
 		lblVtLogo = new Label(header, SWT.NONE);
 		lblVtLogo.setImage(C.getImage("vt_web_logo.png"));
