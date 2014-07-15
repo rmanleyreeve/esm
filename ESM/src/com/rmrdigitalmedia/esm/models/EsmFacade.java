@@ -1,11 +1,10 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Map;
-import com.javaranch.db.DBFacade;
-import com.javaranch.db.DBQuery;
-import com.javaranch.db.DBResults;
+import com.javaranch.db.* ;
+import com.rmrdigitalmedia.esm.C;
+
+import java.sql.* ;
+import java.util.Map ;
 
 public class EsmFacade
 {
@@ -17,7 +16,7 @@ public class EsmFacade
 
         Implementation()
         {
-        	super("org.h2.Driver" , com.rmrdigitalmedia.esm.C.DB_CONN_STR , "sa" , "");
+        	super("org.h2.Driver" , C.DB_CONN_STR , "sa" , "");
         }
 
     }

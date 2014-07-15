@@ -31,7 +31,7 @@ public class EditUserForm {
 
 	Shell myshell;
 	boolean formOK = false;
-	Text username,password,forename,surname,rank,jobtitle,workid;
+	Text username,password,forename,surname,rank,workid;
 	int accesslevel,month;
 	Combo dd,mm,yyyy,accessLevels;
 	Label sep;	
@@ -60,7 +60,7 @@ public class EditUserForm {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.myshell = shell;
-		shell.setSize(450, 420);
+		shell.setSize(460, 400);
 		shell.setText("ESM Setup");
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
@@ -152,21 +152,12 @@ public class EditUserForm {
 
 		Label lblRank = new Label(form, SWT.NONE);
 		lblRank.setBackground(C.APP_BGCOLOR);
-		lblRank.setText("Rank:");		
+		lblRank.setText("Rank/Job Title:");		
 		rank = new Text(form, SWT.BORDER);
 		GridData gd_rank = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_rank.widthHint = 250;
 		rank.setLayoutData(gd_rank);
 		rank.setText(uRow.getRank());
-
-		Label lblJobTitle = new Label(form, SWT.NONE);
-		lblJobTitle.setBackground(C.APP_BGCOLOR);
-		lblJobTitle.setText("Job Title:");		
-		jobtitle = new Text(form, SWT.BORDER);
-		GridData gd_jobtitle = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
-		gd_jobtitle.widthHint = 250;
-		jobtitle.setLayoutData(gd_jobtitle);
-		jobtitle.setText(uRow.getJobTitle());
 
 		Label lblWorkID = new Label(form, SWT.NONE);
 		lblWorkID.setBackground(C.APP_BGCOLOR);
@@ -234,7 +225,7 @@ public class EditUserForm {
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				Text[] fields = {username,forename,surname,rank,jobtitle,workid}; Validation.validateFields(fields);
+				Text[] fields = {username,forename,surname,rank,workid}; Validation.validateFields(fields);
 				Combo[] dates = {dd,mm,yyyy}; Validation.validateDates(dates);			
 				accesslevel = (Integer)accessLevels.getData(accessLevels.getText());
 				month = (Integer)mm.getData(mm.getText());
@@ -244,7 +235,6 @@ public class EditUserForm {
 						uRow.setForename(forename.getText());
 						uRow.setSurname(surname.getText());
 						uRow.setRank(rank.getText());
-						uRow.setJobTitle(jobtitle.getText());
 						uRow.setWorkIdentifier(workid.getText());
 						uRow.setAccessLevel(accesslevel);
 						uRow.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());

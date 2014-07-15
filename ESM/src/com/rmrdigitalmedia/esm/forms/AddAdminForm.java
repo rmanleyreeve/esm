@@ -152,19 +152,11 @@ public class AddAdminForm {
 
 		Label lblRank = new Label(form, SWT.NONE);
 		lblRank.setBackground(C.APP_BGCOLOR);
-		lblRank.setText("Rank:");		
+		lblRank.setText("Rank/Job Title:");		
 		rank = new Text(form, SWT.BORDER);
 		GridData gd_rank = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_rank.widthHint = 250;
 		rank.setLayoutData(gd_rank);
-
-		Label lblJobTitle = new Label(form, SWT.NONE);
-		lblJobTitle.setBackground(C.APP_BGCOLOR);
-		lblJobTitle.setText("Job Title:");		
-		jobtitle = new Text(form, SWT.BORDER);
-		GridData gd_jobtitle = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
-		gd_jobtitle.widthHint = 250;
-		jobtitle.setLayoutData(gd_jobtitle);
 
 		Label lblWorkID = new Label(form, SWT.NONE);
 		lblWorkID.setBackground(C.APP_BGCOLOR);
@@ -222,7 +214,6 @@ public class AddAdminForm {
 						row.setForename(forename.getText());
 						row.setSurname(surname.getText());
 						row.setRank(rank.getText());
-						row.setJobTitle(jobtitle.getText());
 						row.setWorkIdentifier(workid.getText());
 						row.setAccessLevel(accesslevel);
 						row.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());

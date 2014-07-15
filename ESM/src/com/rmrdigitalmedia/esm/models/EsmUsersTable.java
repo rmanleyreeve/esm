@@ -1,13 +1,13 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import java.sql.Timestamp ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "ESM_USERS".
  *
@@ -53,7 +53,6 @@ public class EsmUsersTable
     public static final String forenameColumnName = "FORENAME";
     public static final String surnameColumnName = "SURNAME";
     public static final String rankColumnName = "RANK";
-    public static final String jobTitleColumnName = "JOB_TITLE";
     public static final String workIdentifierColumnName = "WORK_IDENTIFIER";
     public static final String accessLevelColumnName = "ACCESS_LEVEL";
     public static final String dobColumnName = "DOB";
@@ -64,7 +63,7 @@ public class EsmUsersTable
 
     private static String[] allColumns =
     {
-        idColumnName , usernameColumnName , passwordColumnName , forenameColumnName , surnameColumnName , rankColumnName , jobTitleColumnName , workIdentifierColumnName , accessLevelColumnName , dobColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , 
+        idColumnName , usernameColumnName , passwordColumnName , forenameColumnName , surnameColumnName , rankColumnName , workIdentifierColumnName , accessLevelColumnName , dobColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -250,7 +249,6 @@ public class EsmUsersTable
         private String forename ;
         private String surname ;
         private String rank ;
-        private String jobTitle ;
         private String workIdentifier ;
         private int accessLevel ;
         private boolean accessLevelNull = true ;
@@ -275,15 +273,14 @@ public class EsmUsersTable
                 this.forename = data[3];
                 this.surname = data[4];
                 this.rank = data[5];
-                this.jobTitle = data[6];
-                this.workIdentifier = data[7];
-                this.accessLevelNull = ( data[8] == null );
-                this.accessLevel = accessLevelNull ? 0 : Str.toInt( data[8] );
-                this.dob = data[9];
-                this.comment = data[10];
-                this.createdDate = Str.toTimestamp( data[11] );
-                this.updateDate = Str.toTimestamp( data[12] );
-                this.deleted = data[13];
+                this.workIdentifier = data[6];
+                this.accessLevelNull = ( data[7] == null );
+                this.accessLevel = accessLevelNull ? 0 : Str.toInt( data[7] );
+                this.dob = data[8];
+                this.comment = data[9];
+                this.createdDate = Str.toTimestamp( data[10] );
+                this.updateDate = Str.toTimestamp( data[11] );
+                this.deleted = data[12];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -356,17 +353,6 @@ public class EsmUsersTable
         public void setRank( String rank )
         {
             this.rank = rank ;
-        }
-
-
-        public String getJobTitle()
-        {
-            return jobTitle ;
-        }
-
-        public void setJobTitle( String jobTitle )
-        {
-            this.jobTitle = jobTitle ;
         }
 
 
@@ -491,7 +477,6 @@ public class EsmUsersTable
             data.put( forenameColumnName , this.forename );
             data.put( surnameColumnName , this.surname );
             data.put( rankColumnName , this.rank );
-            data.put( jobTitleColumnName , this.jobTitle );
             data.put( workIdentifierColumnName , this.workIdentifier );
             data.put( accessLevelColumnName , this.accessLevelNull ? null : String.valueOf( this.accessLevel ) );
             data.put( dobColumnName , this.dob );
