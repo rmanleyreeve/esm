@@ -16,8 +16,10 @@ public class LogController {
 
 	private static String logfilename = "ESM_LOG_" + today + ".txt";
 
-	public static String logfile = C.USER_DOCS_DIR + C.SEP + C.INSTALL_DIR
-			+ C.SEP + C.DATA_DIR_NAME + C.SEP + C.LOG_DIR_NAME + C.SEP
+	public static String logfile = C.USER_DOCS_DIR + C.SEP
+			+ C.INSTALL_DIR + C.SEP
+			+ C.DATA_DIR_NAME + C.SEP
+			+ C.LOG_DIR_NAME + C.SEP
 			+ logfilename;
 
 	public static void log(Object o) {
@@ -38,8 +40,7 @@ public class LogController {
 			@SuppressWarnings("deprecation")
 			String t = new java.util.Date().toGMTString();
 			String e = errNames[severity];
-			String msg = "[" + t + "]\t" + e + "\t" + classname + "\t"
-					+ o.toString();
+			String msg = "[" + t + "]\t" + e + "\t" + classname + "\t" + o.toString();
 			try {
 				write(msg);
 			} catch (IOException ex) {
@@ -55,8 +56,7 @@ public class LogController {
 			@SuppressWarnings("deprecation")
 			String t = new java.util.Date().toGMTString();
 			String e = errNames[severity];
-			String msg = "\n[" + t + "]\t" + e + "\t" + classname + "\t"
-					+ ex.getMessage() + "\n";
+			String msg = "\n[" + t + "]\t" + e + "\t" + classname + "\t" + ex.getMessage() + "\n";
 			try {
 				write(msg);
 				if (severity > 3) {
@@ -76,8 +76,7 @@ public class LogController {
 			@SuppressWarnings("deprecation")
 			String t = new java.util.Date().toGMTString();
 			String e = errNames[severity];
-			String msg = "\n[" + t + "]\t" + e + "\t" + classname + "\t" + _msg
-					+ "\t" + ex.getMessage() + "\n";
+			String msg = "\n[" + t + "]\t" + e + "\t" + classname + "\t" + _msg + "\t" + ex.getMessage() + "\n";
 			try {
 				write(msg);
 				if (severity > 3) {
