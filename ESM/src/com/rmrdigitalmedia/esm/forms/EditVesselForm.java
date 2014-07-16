@@ -32,7 +32,7 @@ import com.rmrdigitalmedia.esm.models.VesselCategoriesTable;
 import com.rmrdigitalmedia.esm.models.VesselTable;
 import com.rmrdigitalmedia.esm.models.VesselTypesTable;
 
-public class AddVesselForm {
+public class EditVesselForm {
 
 	Shell myshell;
 	boolean formOK = false;
@@ -41,19 +41,20 @@ public class AddVesselForm {
 	Label sep;	
 	// form layout  guides
 	int headerH = 40;
-	static Object me;
+	VesselTable.Row vRow;
+	private static Object me;
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			AddVesselForm nvf = new AddVesselForm();
+			EditVesselForm nvf = new EditVesselForm();
 			nvf.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public AddVesselForm() {
+	public EditVesselForm() {
 		me = this;
 		LogController.log("Running class " + this.getClass().getName());
 	}	
@@ -119,6 +120,12 @@ public class AddVesselForm {
 		gridLayout.verticalSpacing = 10;
 		form.setLayout(gridLayout);
 
+		try {
+			vRow = VesselTable.getRow(1);
+		} catch (SQLException e2) {
+			LogController.logEvent(me, C.ERROR, e2);
+		}
+		
 		//FORM LABELS & FIELDS ==================================================================	
 		Label lblName = new Label(form, SWT.NONE);
 		lblName.setBackground(C.APP_BGCOLOR);
@@ -127,7 +134,7 @@ public class AddVesselForm {
 		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_name.widthHint = 200;
 		name.setLayoutData(gd_name);
-		name.setFocus();
+		name.setText(vRow.getName());
 
 		Label lblIMO = new Label(form, SWT.NONE);
 		lblIMO.setBackground(C.APP_BGCOLOR);
@@ -136,6 +143,7 @@ public class AddVesselForm {
 		GridData gd_imo = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_imo.widthHint = 200;
 		imo.setLayoutData(gd_imo);
+		imo.setText(vRow.getImoNumber());
 
 		Label lblCategory = new Label(form, SWT.NONE);
 		lblCategory.setBackground(C.APP_BGCOLOR);
@@ -145,16 +153,28 @@ public class AddVesselForm {
 		category.setData("Select...", 0);
 		GridData gd_category = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_category.widthHint = 200;
-		category.setLayoutData(gd_category);			
+		category.setLayoutData(gd_category);
+		int cat_id = 0;
+		try {
+			cat_id = VesselTypesTable.getRow(vRow.getTypeID()).getCategoryID();
+		} catch (SQLException ex1) {
+			// TODO Auto-generated catch block
+			ex1.printStackTrace();
+		}
+		int c = 0; int s = 0;
 		try {
 			for (VesselCategoriesTable.Row cRow : VesselCategoriesTable.getRows("DELETED=FALSE ORDER BY NAME ASC")) {
+				c++;
 				category.add(cRow.getName());
-				category.setData(cRow.getName(),cRow.getID());
+				category.setData(cRow.getName(),cRow.getID());				
+				if(cRow.getID() ==  cat_id) {
+					s = c;
+				}
 			}
 		} catch (SQLException ex) {
-			LogController.logEvent(me, C.ERROR, "getting Vessel Categories", ex);
+			LogController.logEvent(EditVesselForm.class, C.ERROR, "getting Vessel Categories", ex);
 		}
-		category.select(0);
+		category.select(s);
 
 		Label lblSubType = new Label(form, SWT.NONE);
 		lblSubType.setBackground(C.APP_BGCOLOR);
@@ -163,7 +183,22 @@ public class AddVesselForm {
 		GridData gd_type = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_type.widthHint = 200;
 		type.setLayoutData(gd_type);
-		type.setEnabled(false);
+		type.add("Select...");
+		type.setData("Select...", 0);				
+		c = 0; s = 0;
+		try {
+			for (VesselTypesTable.Row tRow : VesselTypesTable.getRows("DELETED=FALSE AND CATEGORY_ID="+ cat_id + " ORDER BY NAME ASC" )) {
+				c++;
+				type.add(tRow.getName());
+				type.setData(tRow.getName(),tRow.getID());
+				if(tRow.getID() == vRow.getTypeID()) {
+					s = c;
+				}
+			}
+		} catch (SQLException ex) {
+			LogController.logEvent(EditVesselForm.class, C.ERROR, "getting Vessel Categories", ex);
+		}
+		type.select(s);
 
 
 		category.addSelectionListener(new SelectionAdapter() {
@@ -182,7 +217,7 @@ public class AddVesselForm {
 						type.setEnabled(true);
 						type.select(0);
 					} catch (SQLException ex) {
-						LogController.logEvent(me, C.ERROR, "getting Vessel Types", ex);
+						LogController.logEvent(EditVesselForm.class, C.ERROR, "Setting Vessel Types", ex);
 					}					
 				} else {
 					type.setEnabled(false);
@@ -197,7 +232,8 @@ public class AddVesselForm {
 		GridData gd_owner = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_owner.heightHint = 60;
 		gd_owner.widthHint = 200;
-		owner.setLayoutData(gd_owner);		
+		owner.setLayoutData(gd_owner);	
+		owner.setText(vRow.getOwner());
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
@@ -215,20 +251,18 @@ public class AddVesselForm {
 				Combo[] combos = {category,type}; Validation.validateDropdowns(combos);
 				if( Validation.validateFields(fields) && Validation.validateDropdowns(combos) ) {
 					try {
-						VesselTable.Row row = VesselTable.getRow();
-						row.setID(1);
-						row.setName(name.getText());
-						row.setImoNumber(imo.getText());
-						row.setTypeID((Integer) type.getData(type.getText()));
-						row.setOwner(owner.getText());
-						row.setCreatedDate(new Timestamp(new Date().getTime()));
-						row.setUpdateDate(new Timestamp(new Date().getTime()));
-						row.insert();						
+						vRow.setName(name.getText());
+						vRow.setImoNumber(imo.getText());
+						vRow.setTypeID((Integer) type.getData(type.getText()));
+						vRow.setOwner(owner.getText());
+						vRow.setUpdateDate(new Timestamp(new Date().getTime()));
+						vRow.update();
 						formOK = true;
-						LogController.log("Vessel added to database");
+						LogController.log("Vessel updated in database");
 						EsmApplication.appData.setField("VESSEL",name.getText());
 					} catch (Exception e1) {
 						LogController.logEvent(this, C.ERROR, e1);
+						//e1.printStackTrace();
 					}					
 					try {
 						Thread.sleep(1000);
@@ -256,7 +290,7 @@ public class AddVesselForm {
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("Add vessel form closed");	
+		LogController.log("Edit vessel form closed");	
 		return formOK;
 	}
 }

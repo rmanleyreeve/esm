@@ -35,6 +35,18 @@ public class Validation {
 		return ok;
 	}
 
+	public static boolean validateDropdowns(Combo[] req) {
+		boolean ok = true;
+		for (Combo c : req) {
+			c.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+			if (c.getText().equals("") || c.getText().equals("Select...")) {
+				ok = false;
+				c.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
+			}
+		}
+		return ok;
+	}
+
 	public static void validateError(Shell sh) {
 		MessageBox mb = new MessageBox(sh, SWT.OK);
 		mb.setText("Alert");

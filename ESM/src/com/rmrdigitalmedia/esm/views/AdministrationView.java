@@ -1,6 +1,7 @@
 package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
@@ -22,6 +23,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -29,6 +31,7 @@ import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.AddUserForm;
 import com.rmrdigitalmedia.esm.forms.DeleteUserDialog;
 import com.rmrdigitalmedia.esm.forms.EditUserForm;
+import com.rmrdigitalmedia.esm.forms.EditVesselForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
 public class AdministrationView {
@@ -96,17 +99,57 @@ public class AdministrationView {
 		compL.setBackground(C.APP_BGCOLOR);
 
 
+		// row 1 - vessel management		
+		Group rowVessel = new Group(compL, SWT.NONE);
+		rowVessel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		GridLayout gl_rowVessel = new GridLayout(3, true);
+		gl_rowVessel.marginBottom = 5;
+		gl_rowVessel.marginHeight = 0;
+		rowVessel.setLayout(gl_rowVessel);
+		rowVessel.setBackground(C.APP_BGCOLOR);
 
-		// row 1 - photos header & button bar		
-		Group rowLeft1 = new Group(compL, SWT.NONE);
-		rowLeft1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		GridLayout gl_rowRight3 = new GridLayout(3, true);
-		gl_rowRight3.marginBottom = 5;
-		gl_rowRight3.marginHeight = 0;
-		rowLeft1.setLayout(gl_rowRight3);
-		rowLeft1.setBackground(C.APP_BGCOLOR);
+		CLabel lblVessel = new CLabel(rowVessel, SWT.NONE);
+		GridData gd_lblVessel = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
+		gd_lblVessel.widthHint = 120;
+		lblVessel.setLayoutData(gd_lblVessel);
+		lblVessel.setFont(C.FONT_12B);
+		lblVessel.setBackground(C.APP_BGCOLOR);
+		lblVessel.setImage(C.getImage("vessel.png"));
+		lblVessel.setText("Manage Vessel Info");	
+		
+		Button btnAddVessel = new Button(rowVessel, SWT.NONE);
+		btnAddVessel.setToolTipText("Edit Vessel Information");
+		GridData gd_btnAddVessel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
+		gd_btnAddVessel.verticalIndent = 3;
+		btnAddVessel.setLayoutData(gd_btnAddVessel);
+		btnAddVessel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				EditVesselForm evf = new EditVesselForm();					
+				if(evf.complete()) {
+					LogController.log("Vessel edited in database");
+					WindowController.showAdministration();				
+				}
+			}
+		});
+		btnAddVessel.setImage(C.getImage("16_edit.png"));
+		btnAddVessel.setText("Edit Vessel Info");
 
-		CLabel lblUsers = new CLabel(rowLeft1, SWT.NONE);
+		sep = new Label(rowVessel, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));	
+		
+		
+
+		// row 2 - user management		
+		Group rowUsers = new Group(compL, SWT.NONE);
+		rowUsers.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		GridLayout gl_rowUsers = new GridLayout(3, true);
+		gl_rowUsers.marginBottom = 5;
+		gl_rowUsers.marginHeight = 0;
+		rowUsers.setLayout(gl_rowUsers);
+		rowUsers.setBackground(C.APP_BGCOLOR);
+
+		CLabel lblUsers = new CLabel(rowUsers, SWT.NONE);
 		GridData gd_lblUsers = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
 		gd_lblUsers.widthHint = 120;
 		lblUsers.setLayoutData(gd_lblUsers);
@@ -115,7 +158,7 @@ public class AdministrationView {
 		lblUsers.setImage(C.getImage("users.png"));
 		lblUsers.setText("Manage Users");	
 
-		Button btnAddUser = new Button(rowLeft1, SWT.NONE);
+		Button btnAddUser = new Button(rowUsers, SWT.NONE);
 		btnAddUser.setToolTipText("Add a new user to the system");
 		GridData gd_btnAddUser = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
 		gd_btnAddUser.verticalIndent = 3;
@@ -133,24 +176,24 @@ public class AdministrationView {
 		btnAddUser.setImage(C.getImage("16_add.png"));
 		btnAddUser.setText("Add User");
 
-		sep = new Label(rowLeft1, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep = new Label(rowUsers, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));	
 
-		Label lblSelect = new Label(rowLeft1, SWT.NONE);
+		Label lblSelect = new Label(rowUsers, SWT.NONE);
 		lblSelect.setText("Manage Existing User:");
 		lblSelect.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 
-		final Combo comboUsers = new Combo(rowLeft1, SWT.DROP_DOWN | SWT.READ_ONLY);
+		final Combo comboUsers = new Combo(rowUsers, SWT.DROP_DOWN | SWT.READ_ONLY);
 		comboUsers.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
 		refreshCombo(comboUsers);
 
-		final Button btnViewUser = new Button(rowLeft1, SWT.NONE);
+		final Button btnViewUser = new Button(rowUsers, SWT.NONE);
 		btnViewUser.setEnabled(false);
 		btnViewUser.setText("View");
-		final Button btnEditUser = new Button(rowLeft1, SWT.NONE);
+		final Button btnEditUser = new Button(rowUsers, SWT.NONE);
 		btnEditUser.setEnabled(false);
 		btnEditUser.setText("Edit");
-		final Button btnDelUser = new Button(rowLeft1, SWT.NONE);
+		final Button btnDelUser = new Button(rowUsers, SWT.NONE);
 		btnDelUser.setEnabled(false);
 		btnDelUser.setText("Delete");
 
@@ -190,7 +233,7 @@ public class AdministrationView {
 
 
 
-		sep = new Label(rowLeft1, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep = new Label(rowUsers, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));	
 
 
