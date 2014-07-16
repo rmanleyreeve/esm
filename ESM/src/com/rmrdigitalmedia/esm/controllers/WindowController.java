@@ -226,6 +226,7 @@ public class WindowController {
 		});
 		btnAdmin.setText("Administration");
 		btnAdmin.setFont(C.BUTTON_FONT);
+		btnAdmin.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnAdmin = new FormData();
 		fd_btnAdmin.right = new FormAttachment(onlineStatus, -15);
 		fd_btnAdmin.top = new FormAttachment(titleBar,titleH/5);
@@ -247,6 +248,7 @@ public class WindowController {
 		});
 		btnAddSpace.setText("Add");
 		btnAddSpace.setFont(C.BUTTON_FONT);
+		btnAddSpace.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnAddSpace = new FormData();
 		fd_btnAddSpace.top = new FormAttachment(titleBar,titleH/5);
 		fd_btnAddSpace.right = new FormAttachment(btnAdmin,-25);
@@ -264,6 +266,7 @@ public class WindowController {
 		});
 		btnViewSpaceDetails.setText("Details");
 		btnViewSpaceDetails.setFont(C.BUTTON_FONT);
+		btnViewSpaceDetails.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnEditSpace = new FormData();
 		fd_btnEditSpace.top = new FormAttachment(titleBar,titleH/5);
 		fd_btnEditSpace.right = new FormAttachment(btnAddSpace,-5);
@@ -288,6 +291,7 @@ public class WindowController {
 		});
 		btnDeleteSpace.setText("Delete");
 		btnDeleteSpace.setFont(C.BUTTON_FONT);
+		btnDeleteSpace.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnDeleteSpace = new FormData();
 		fd_btnDeleteSpace.top = new FormAttachment(titleBar,titleH/5);
 		fd_btnDeleteSpace.right = new FormAttachment(btnViewSpaceDetails,-5);
@@ -305,6 +309,7 @@ public class WindowController {
 		});
 		btnSpacesList.setText("Spaces List");
 		btnSpacesList.setFont(C.BUTTON_FONT);
+		btnSpacesList.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnSpacesList = new FormData();
 		fd_btnSpacesList.top = new FormAttachment(titleBar,titleH/5);
 		fd_btnSpacesList.right = new FormAttachment(btnAdmin,-25);
