@@ -1,10 +1,13 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import com.javaranch.db.* ;
-import com.rmrdigitalmedia.esm.C;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Map;
 
-import java.sql.* ;
-import java.util.Map ;
+import com.javaranch.db.DBFacade;
+import com.javaranch.db.DBQuery;
+import com.javaranch.db.DBResults;
+import com.rmrdigitalmedia.esm.C;
 
 public class EsmFacade
 {
