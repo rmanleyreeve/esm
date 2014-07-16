@@ -128,16 +128,13 @@ public class AdministrationView {
 				EditVesselForm evf = new EditVesselForm();					
 				if(evf.complete()) {
 					LogController.log("Vessel edited in database");
+					WindowController.setHeaderLabelText();
 					WindowController.showAdministration();				
 				}
 			}
 		});
 		btnAddVessel.setImage(C.getImage("16_edit.png"));
 		btnAddVessel.setText("Edit Vessel Info");
-
-		sep = new Label(rowVessel, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));	
-		
 		
 
 		// row 2 - user management		
