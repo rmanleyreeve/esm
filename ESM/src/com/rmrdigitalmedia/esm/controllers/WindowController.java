@@ -336,7 +336,7 @@ public class WindowController {
 		lblH.setAlignment(SWT.LEFT);
 		lblH.setBackground(C.APP_BGCOLOR);
 		lblH.setText(txt);
-		
+
 		lblMrmLogo = new Label(header, SWT.NONE);
 		lblMrmLogo.setImage(C.getImage("mrm_logo.png"));
 		lblMrmLogo.setBackground(C.APP_BGCOLOR);

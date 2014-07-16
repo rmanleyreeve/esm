@@ -64,7 +64,7 @@ import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class SpaceDetailView {
-	private static Object me = new SpaceDetailView();
+	static Object me = new SpaceDetailView();
 	static EsmUsersTable.Row user = WindowController.user;
 
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");

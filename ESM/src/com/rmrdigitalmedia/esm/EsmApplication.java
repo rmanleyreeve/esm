@@ -1,11 +1,13 @@
 package com.rmrdigitalmedia.esm;
 
 import java.io.IOException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
