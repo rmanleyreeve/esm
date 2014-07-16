@@ -390,7 +390,7 @@ public class SpaceAuditChecklistView {
 		sep = Separator(tbl, false);
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 2;
-		Label q2_col1 = MakeColumn1(tbl,"Is the enclosed space Compartmentalised?\n(If so, describe internal layout)", false);
+		Label q2_col1 = MakeColumn1(tbl,"Is the enclosed space Compartmentalised?\n(If so, describe internal layout in the Comments field)", false);
 		Label q2_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
 		Composite q2_col3 = makeColumn3(tbl,2, false);
 		q2_radio1 = new Button(q2_col3, SWT.RADIO);
@@ -405,7 +405,8 @@ public class SpaceAuditChecklistView {
 		if(!empty) { q2_col4.setText( C.notNull(aRow.getQ2Desc()) ); }
 		sep = Separator(tbl, false);
 		if(q2_radio1.getSelection() && q2_col4.getText().equals("")) {
-			q2_col4.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
+			//q2_col4.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
+			q2_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 3;
