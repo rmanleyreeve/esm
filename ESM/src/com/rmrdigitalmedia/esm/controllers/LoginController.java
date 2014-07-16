@@ -125,11 +125,11 @@ public class LoginController {
 		clbl_UserLogin.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		final RowData rowData = new RowData();
 		rowData.height = 42;
-		rowData.width = 180;
+		rowData.width = 195;
 		clbl_UserLogin.setLayoutData(rowData);
 		String txt = "";
 		try {
-			txt += (String) EsmApplication.appData.getField("VESSEL") + ": ";
+			txt += (String) EsmApplication.appData.getField("VESSEL") + "\n";
 		} catch (Exception e1) {
 		}
 		clbl_UserLogin.setText(txt + "User Login");

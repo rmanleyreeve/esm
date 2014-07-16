@@ -50,11 +50,14 @@ public class WindowController {
 		return shell;
 	}
 	static Display display;
-	int appHeight, appWidth,headerH = 120,titleH = 40,footerH = 15;
+	int appHeight, appWidth;
+	static int headerH = 120;
+	int titleH = 40;
+	int footerH = 15;
 	Composite container, header, titleBar;
 	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration, pageSpaceAudit, pageEntryAudit;
-	static Label pageTitle, onlineStatus;
-	String displayName;
+	static Label pageTitle, onlineStatus, logo, lblH;
+	static String displayName;
 	public static Button btnAddSpace, btnDeleteSpace, btnAdmin, btnViewSpaceDetails;
 	static Button btnSpacesList, btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
@@ -114,6 +117,21 @@ public class WindowController {
 		LogController.log(C.EXIT_MSG);
 	}
 
+	public static void setHeaderLabelText() {
+		String txt = "";
+		int offset = 25;
+		try {
+			txt = "Vessel: " + (String)EsmApplication.appData.getField("VESSEL") + "\n\n";
+			offset += 10;
+		} catch (Exception e1) { }
+		txt += "Current User: " + displayName;
+		lblH.setText(txt);
+		FormData fd_lblH = new FormData();
+		fd_lblH.left = new FormAttachment(logo, 10);
+		fd_lblH.top = new FormAttachment((headerH/2)-offset);
+		lblH.setLayoutData(fd_lblH);
+	}
+	
 	protected void createContents() {
 
 		// set up container layout
@@ -307,7 +325,7 @@ public class WindowController {
 		footer.setLayoutData(fd_footer);				
 
 		// graphic elements etc
-		Label logo = new Label(header, SWT.TRANSPARENT);
+		logo = new Label(header, SWT.TRANSPARENT);
 		logo.setAlignment(SWT.LEFT);
 		logo.setImage(C.getImage("esm-logo-horiz.png"));
 		logo.setBackground(C.APP_BGCOLOR);
@@ -319,23 +337,12 @@ public class WindowController {
 		fd.bottom = new FormAttachment(100);
 		logo.setLayoutData (fd);
 
-		String txt = "";
-		int offset = 25;
-		try {
-			txt = "Vessel: " +(String)EsmApplication.appData.getField("VESSEL") + "\n\n";
-			offset += 10;
-		} catch (Exception e1) { }
-		txt += "Current User: " + displayName;
-		Label lblH = new Label(header,SWT.WRAP);
+		lblH = new Label(header,SWT.WRAP);
 		lblH.setForeground(C.TITLEBAR_BGCOLOR);
-		FormData fd_lblH = new FormData();
-		fd_lblH.left = new FormAttachment(logo, 10);
-		fd_lblH.top = new FormAttachment((headerH/2)-offset);
-		lblH.setLayoutData(fd_lblH);
 		lblH.setFont(C.HEADER_FONT);
 		lblH.setAlignment(SWT.LEFT);
 		lblH.setBackground(C.APP_BGCOLOR);
-		lblH.setText(txt);
+		setHeaderLabelText();
 
 		lblMrmLogo = new Label(header, SWT.NONE);
 		lblMrmLogo.setImage(C.getImage("mrm_logo.png"));
@@ -354,7 +361,7 @@ public class WindowController {
 		lblVtLogo.setLayoutData(fd_lblVtLogo);
 
 		// read text from disk
-		txt = C.APP_NAME;
+		String txt = C.APP_NAME;
 		try {
 			txt += "\tVersion " + CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));
 		} catch (IOException e) {
