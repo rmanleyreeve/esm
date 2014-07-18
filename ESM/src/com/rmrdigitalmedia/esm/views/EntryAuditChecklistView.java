@@ -345,6 +345,9 @@ public class EntryAuditChecklistView {
 		q1_col4 = MakeColumn4(tbl,false);
 		if(!empty) { q1_col4.setText( C.notNull(aRow.getQ1Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ1Value())) {
+			q1_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 2;
 		final Label q2_col1 = MakeColumn1(tbl,"\t> "+qText.elementAt(qNum), !q1_radio2.getSelection());
@@ -361,6 +364,9 @@ public class EntryAuditChecklistView {
 		q2_col4 = MakeColumn4(tbl, !q1_radio2.getSelection());
 		if(!empty) { q2_col4.setText( C.notNull(aRow.getQ2Comments()) ); }
 		final Label q2_sep = Separator(tbl, !q1_radio2.getSelection());
+		if(!empty && q1_radio2.getSelection() && C.isNullOrEmpty(aRow.getQ2Boolean())) {
+			q2_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 3;
 		Label q3_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -377,6 +383,9 @@ public class EntryAuditChecklistView {
 		q3_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q3_col4.setText( C.notNull(aRow.getQ3Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ3Boolean())) {
+			q3_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 4;
 		Label q4_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -400,6 +409,9 @@ public class EntryAuditChecklistView {
 		q4_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q4_col4.setText( C.notNull(aRow.getQ4Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ4Value())) {
+			q4_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 5;
 		Label q5_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -432,6 +444,9 @@ public class EntryAuditChecklistView {
 		q5_col4 = MakeColumn4(tbl,false);
 		if(!empty) { q5_col4.setText( C.notNull(aRow.getQ5Comments()) ); }
 		sep = Separator(tbl, false);
+		if( !empty && ( C.isNullOrEmpty(aRow.getQ5DimsW()) || C.isNullOrEmpty(aRow.getQ5DimsH()) ) ) {
+			q5_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 6;
 		Label q6_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -448,6 +463,9 @@ public class EntryAuditChecklistView {
 		q6_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q6_col4.setText( C.notNull(aRow.getQ6Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ6Boolean())) {
+			q6_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 7;
 		Label q7_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -466,6 +484,9 @@ public class EntryAuditChecklistView {
 		q7_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q7_col4.setText( C.notNull(aRow.getQ7Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ7Value())) {
+			q7_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 8;
 		final Label q8_col1 = MakeColumn1(tbl,"\t> "+qText.elementAt(qNum), !q7_radio1.getSelection());
@@ -482,6 +503,9 @@ public class EntryAuditChecklistView {
 		q8_col4 = MakeColumn4(tbl, !q7_radio1.getSelection());
 		if(!empty) { q8_col4.setText( C.notNull(aRow.getQ8Comments()) ); }
 		final Label q8_sep = Separator(tbl, !q7_radio1.getSelection());
+		if(!empty && q7_radio1.getSelection() && C.isNullOrEmpty(aRow.getQ8Boolean()) ) {
+			q8_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}		
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 9;
 		final Label q9_col1 = MakeColumn1(tbl,"\t> "+qText.elementAt(qNum), !q7_radio1.getSelection());
@@ -498,6 +522,9 @@ public class EntryAuditChecklistView {
 		q9_col4 = MakeColumn4(tbl, !q7_radio1.getSelection());
 		if(!empty) { q9_col4.setText( C.notNull(aRow.getQ9Comments()) ); }
 		final Label q9_sep = Separator(tbl, !q7_radio1.getSelection());
+		if(!empty && q7_radio1.getSelection() && C.isNullOrEmpty(aRow.getQ9Boolean()) ) {
+			q9_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}		
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 10;
 		Label q10_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -514,6 +541,9 @@ public class EntryAuditChecklistView {
 		q10_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q10_col4.setText( C.notNull(aRow.getQ10Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ10Boolean())) {
+			q10_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 11;
 		Label q11_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -530,6 +560,9 @@ public class EntryAuditChecklistView {
 		q11_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q11_col4.setText( C.notNull(aRow.getQ11Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ11Boolean())) {
+			q11_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 12;
 		Label q12_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -546,6 +579,9 @@ public class EntryAuditChecklistView {
 		q12_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q12_col4.setText( C.notNull(aRow.getQ12Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ12Boolean())) {
+			q12_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 13;
 		Label q13_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -562,6 +598,9 @@ public class EntryAuditChecklistView {
 		q13_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q13_col4.setText( C.notNull(aRow.getQ13Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ13Boolean())) {
+			q13_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 14;
 		Label q14_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -578,6 +617,9 @@ public class EntryAuditChecklistView {
 		q14_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q14_col4.setText( C.notNull(aRow.getQ14Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ14Boolean())) {
+			q14_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 15;
 		Label q15_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -594,6 +636,9 @@ public class EntryAuditChecklistView {
 		q15_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q15_col4.setText( C.notNull(aRow.getQ15Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ15Boolean())) {
+			q15_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------		
 		qNum = 16;
 		Label q16_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -610,6 +655,9 @@ public class EntryAuditChecklistView {
 		q16_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q16_col4.setText( C.notNull(aRow.getQ16Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ16Boolean())) {
+			q16_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------				
 		// end loop
 

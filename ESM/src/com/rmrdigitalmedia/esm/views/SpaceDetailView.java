@@ -492,13 +492,9 @@ public class SpaceDetailView {
 			lblEntryPoint.setImage(C.getImage("16_door.png"));
 			lblEntryPoint.setText(epName);
 			lblEntryPoint.setToolTipText(epRow.getDescription());
-			// work out completion status based on id
 			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
-			AuditController.calculateEntryChecklistCompletion(epID);
-			int epcs = 0;
-			try {
-				epcs = (Integer) EsmApplication.appData.getField("ENTRY_CHK_"+epID);
-			} catch (Exception ex) {}
+			// work out completion status based on id
+			int epcs = AuditController.calculateEntryCompletionStatus(epID);
 			lblEntryPointAuditImg.setImage(C.getImage("Percent_"+ epcs +".png"));
 			gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 			gd_lblEntryPointAuditImg.widthHint = 160;

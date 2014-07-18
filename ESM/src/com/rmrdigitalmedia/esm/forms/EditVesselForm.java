@@ -125,7 +125,7 @@ public class EditVesselForm {
 		} catch (SQLException e2) {
 			LogController.logEvent(me, C.ERROR, e2);
 		}
-		
+
 		//FORM LABELS & FIELDS ==================================================================	
 		Label lblName = new Label(form, SWT.NONE);
 		lblName.setBackground(C.APP_BGCOLOR);
@@ -158,8 +158,7 @@ public class EditVesselForm {
 		try {
 			cat_id = VesselTypesTable.getRow(vRow.getTypeID()).getCategoryID();
 		} catch (SQLException ex1) {
-			// TODO Auto-generated catch block
-			ex1.printStackTrace();
+			LogController.logEvent(me, C.ERROR, ex1);		
 		}
 		int c = 0; int s = 0;
 		try {

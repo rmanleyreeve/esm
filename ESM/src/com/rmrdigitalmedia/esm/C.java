@@ -157,6 +157,10 @@ public final class C {
 	public static boolean notNullOrEmpty(String s) {
 		return (s != null && !s.equals(""));
 	}
+	
+	public static boolean isNullOrEmpty(String s) {
+		return (s == null || s.equals(""));
+	}
 
 	public static String getRB(Button yes, Button no) {
 		if (yes.getSelection()) {
