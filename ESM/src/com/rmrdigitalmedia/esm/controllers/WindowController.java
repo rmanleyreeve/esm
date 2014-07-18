@@ -77,6 +77,7 @@ public class WindowController {
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	public WindowController(EsmUsersTable.Row user) {
 		me = this;
 		WindowController.user = user;

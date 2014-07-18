@@ -388,6 +388,9 @@ public class SpaceAuditChecklistView {
 		q1_col4 = MakeColumn4(tbl,false);
 		if(!empty) { q1_col4.setText( C.notNull(aRow.getQ1Comments()) ); }
 		sep = Separator(tbl, false);
+		if( !empty && ( C.isNullOrEmpty(aRow.getQ1DimsW()) || C.isNullOrEmpty(aRow.getQ1DimsH()) || C.isNullOrEmpty(aRow.getQ1DimsL()) ) ) {
+			q1_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 2;
 		Label q2_col1 = MakeColumn1(tbl,"Is the enclosed space Compartmentalised?\n(If so, describe internal layout in the Comments field)", false);
@@ -404,8 +407,7 @@ public class SpaceAuditChecklistView {
 		q2_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q2_col4.setText( C.notNull(aRow.getQ2Desc()) ); }
 		sep = Separator(tbl, false);
-		if(q2_radio1.getSelection() && q2_col4.getText().equals("")) {
-			//q2_col4.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
+		if(	(!empty && C.isNullOrEmpty(aRow.getQ2Boolean())) ||	(q2_radio1.getSelection() && q2_col4.getText().equals("")) ){
 			q2_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		}
 		//-------------------------------------------------------------------------------------------------------
@@ -424,6 +426,9 @@ public class SpaceAuditChecklistView {
 		q3_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q3_col4.setText( C.notNull(aRow.getQ3Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ3Boolean())) {
+			q3_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 4;
 		final String q4_txt = "Are there any restrictive crawl through holes - i.e. lightening holes etc?\n";
@@ -484,6 +489,12 @@ public class SpaceAuditChecklistView {
 		q4_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q4_col4.setText( C.notNull(aRow.getQ4Comments()) ); }
 		sep = Separator(tbl, false);
+		if(q4_radio1.getSelection()) {
+			q4_col1.setText(q4_txt+" * Please state the dimensions of the holes (H,W)");
+		}
+		if( (!empty && C.isNullOrEmpty(aRow.getQ4Boolean())) ||	(q4_radio1.getSelection() && (C.isNullOrEmpty(aRow.getQ4DimsH()) || C.isNullOrEmpty(aRow.getQ4DimsW()))) ){
+			q4_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 5;
 		Label q5_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -500,6 +511,9 @@ public class SpaceAuditChecklistView {
 		q5_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q5_col4.setText( C.notNull(aRow.getQ5Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ5Boolean())) {
+			q5_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 6;
 		Label q6_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -516,6 +530,9 @@ public class SpaceAuditChecklistView {
 		q6_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q6_col4.setText( C.notNull(aRow.getQ6Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ6Boolean())) {
+			q6_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 7;
 		final String q7_txt = "Are there internal vertical ladders present?\n";
@@ -570,6 +587,9 @@ public class SpaceAuditChecklistView {
 		if(!empty) { q7_col4.setText( C.notNull(aRow.getQ7Comments()) ); }
 		sep = Separator(tbl, false);
 		if(q7_radio1.getSelection()) q7_col1.setText(q7_txt+q7_txt_2);
+		if(!empty && ( C.isNullOrEmpty(aRow.getQ7Boolean()) || (q7_radio1.getSelection() && aRow.getQ7Rating()==0)) ) {
+			q7_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 
 		qNum = 8;
@@ -625,6 +645,9 @@ public class SpaceAuditChecklistView {
 		if(!empty) { q8_col4.setText( C.notNull(aRow.getQ8Comments()) ); }
 		final Label q8_sep = Separator(tbl, !q7_radio1.getSelection());
 		if(q8_radio1.getSelection()) q8_col1.setText(q8_txt+q8_txt_2);
+		if(!empty && q7_radio1.getSelection() && (C.isNullOrEmpty(aRow.getQ8Boolean()) || (q8_radio1.getSelection() && aRow.getQ8Rating()==0)) ) {
+			q8_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}		
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 9;
 		final String q9_txt = "\t> Do they have safety hoops?\n";
@@ -678,6 +701,9 @@ public class SpaceAuditChecklistView {
 		if(!empty) { q9_col4.setText( C.notNull(aRow.getQ9Comments()) ); }
 		final Label q9_sep = Separator(tbl, !q7_radio1.getSelection());
 		if(q9_radio1.getSelection()) q9_col1.setText(q9_txt+q8_txt_2);
+		if(!empty && q7_radio1.getSelection() && (C.isNullOrEmpty(aRow.getQ9Boolean()) || (q9_radio1.getSelection() && aRow.getQ9Rating()==0)) ) {
+			q9_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}		
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 10;
 		final String q10_txt = "\t> Do they have handrails at landing points?\n";
@@ -732,6 +758,9 @@ public class SpaceAuditChecklistView {
 		if(!empty) { q10_col4.setText( C.notNull(aRow.getQ10Comments()) ); }
 		final Label q10_sep = Separator(tbl, !q7_radio1.getSelection());
 		if(q10_radio1.getSelection()) q10_col1.setText(q10_txt+q8_txt_2);
+		if(!empty && q7_radio1.getSelection() && (C.isNullOrEmpty(aRow.getQ10Boolean()) || (q10_radio1.getSelection() && aRow.getQ10Rating()==0)) ) {
+			q10_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}		
 		//-------------------------------------------------------------------------------------------------------		
 		qNum = 11;
 		Label q11_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -748,6 +777,9 @@ public class SpaceAuditChecklistView {
 		q11_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q11_col4.setText( C.notNull(aRow.getQ11Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ11Boolean())) {
+			q11_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 12;
 		Label q12_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -764,6 +796,9 @@ public class SpaceAuditChecklistView {
 		q12_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q12_col4.setText( C.notNull(aRow.getQ12Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ12Boolean())) {
+			q12_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 13;
 		Label q13_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -780,6 +815,9 @@ public class SpaceAuditChecklistView {
 		q13_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q13_col4.setText( C.notNull(aRow.getQ13Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ13Boolean())) {
+			q13_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 14;
 		Label q14_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -796,6 +834,9 @@ public class SpaceAuditChecklistView {
 		q14_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q14_col4.setText( C.notNull(aRow.getQ14Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ14Boolean())) {
+			q14_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 15;
 		Label q15_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -812,6 +853,9 @@ public class SpaceAuditChecklistView {
 		q15_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q15_col4.setText( C.notNull(aRow.getQ15Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ15Boolean())) {
+			q15_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------		
 		qNum = 16;
 		Label q16_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -828,6 +872,9 @@ public class SpaceAuditChecklistView {
 		q16_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q16_col4.setText( C.notNull(aRow.getQ16Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ16Boolean())) {
+			q16_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------		
 		qNum = 17;
 		Label q17_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -844,6 +891,9 @@ public class SpaceAuditChecklistView {
 		q17_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q17_col4.setText( C.notNull(aRow.getQ17Comments()) ); }
 		sep = Separator(tbl, false);
+		if(!empty && C.isNullOrEmpty(aRow.getQ17Boolean())) {
+			q17_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------		
 		// end loop
 

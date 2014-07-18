@@ -35,8 +35,7 @@ public class AuditController {
 			}
 			LogController.log("Entry audits calculation completed in " + (System.currentTimeMillis() - startTime) + "ms");
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LogController.logEvent(AuditController.class, C.FATAL, "Initial Space audits calculation", e1);
 		}
 		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
@@ -232,8 +231,7 @@ public class AuditController {
 		int score = 0;
 		EntrypointChecklistAuditTable.Row row = null;
 		try {
-			row = EntrypointChecklistAuditTable.getRow("ENTRYPOINT_ID", ""
-					+ entryID);
+			row = EntrypointChecklistAuditTable.getRow("ENTRYPOINT_ID", "" + entryID);
 		} catch (SQLException ex) {
 			LogController.logEvent(AuditController.class, C.FATAL, ex);
 		}
@@ -410,6 +408,16 @@ public class AuditController {
 		try {
 			progress += (Integer) EsmApplication.appData.getField("SPACE_CHK_" + spaceID);
 			progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID);
+		} catch (Exception ex) {}
+		return (int) Math.floor((progress / 2) / 10) * 10;
+	}
+
+	public static int calculateEntryCompletionStatus(int epID) {
+		int progress = 0;
+		//System.out.println("Calculating for " + epID);
+		try {
+			progress += (Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID);
+			progress += (Integer) EsmApplication.appData.getField("ENTRY_CLASS_" + epID);
 		} catch (Exception ex) {}
 		return (int) Math.floor((progress / 2) / 10) * 10;
 	}

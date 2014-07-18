@@ -333,6 +333,9 @@ public class EntryAuditClassificationView {
 		q1_col5 = MakeColumn5(tbl, false);
 		if(!empty) q1_col5.setText( C.notNull(aRow.getQ1Comments()) );
 		sep = Separator(tbl, false);
+		if(!empty && aRow.getQ1Value()==0) {
+			q1_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 2;
 		Label q2_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -356,6 +359,9 @@ public class EntryAuditClassificationView {
 		q2_col5 = MakeColumn5(tbl, false);
 		if(!empty) q2_col5.setText( C.notNull(aRow.getQ2Comments()) );
 		sep = Separator(tbl, false);
+		if(!empty && aRow.getQ2Value()==0) {
+			q2_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 3;
 		Label q3_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -374,6 +380,9 @@ public class EntryAuditClassificationView {
 		q3_col5 = MakeColumn5(tbl, false);
 		if(!empty) q3_col5.setText( C.notNull(aRow.getQ3Comments()) );
 		sep = Separator(tbl, false);	
+		if(!empty && C.isNullOrEmpty(aRow.getQ3Boolean())) {
+			q3_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 4;
 		Label q4_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -405,6 +414,9 @@ public class EntryAuditClassificationView {
 		q4_col5 = MakeColumn5(tbl, false);
 		if(!empty) q4_col5.setText( C.notNull(aRow.getQ4Comments()) );
 		sep = Separator(tbl, false);
+		if(!empty && aRow.getQ4Value()==0) {
+			q4_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 5;
 		Label q5_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -423,6 +435,9 @@ public class EntryAuditClassificationView {
 		q5_col5 = MakeColumn5(tbl, false);
 		if(!empty) q5_col5.setText( C.notNull(aRow.getQ5Comments()) );
 		sep = Separator(tbl, false);	
+		if(!empty && C.isNullOrEmpty(aRow.getQ5Boolean())) {
+			q5_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 6;
 		Label q6_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -441,6 +456,9 @@ public class EntryAuditClassificationView {
 		q6_col5 = MakeColumn5(tbl, false);
 		if(!empty) q6_col5.setText( C.notNull(aRow.getQ6Comments()) );
 		sep = Separator(tbl, false);	
+		if(!empty && C.isNullOrEmpty(aRow.getQ6Boolean())) {
+			q6_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 7;
 		Label q7_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -464,6 +482,10 @@ public class EntryAuditClassificationView {
 		q7_col5 = MakeColumn5(tbl, false);
 		if(!empty) q7_col5.setText( C.notNull(aRow.getQ5Comments()) );
 		sep = Separator(tbl, false);
+		if(!empty && aRow.getQ7Value()==0) {
+			q7_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
+		//-------------------------------------------------------------------------------------------------------
 
 		// footer row
 		Group footerRow = new Group(comp, SWT.NONE);
