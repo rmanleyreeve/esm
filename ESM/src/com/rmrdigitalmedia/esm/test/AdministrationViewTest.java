@@ -1,5 +1,6 @@
 package com.rmrdigitalmedia.esm.test;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import org.eclipse.swt.SWT;
@@ -15,6 +16,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
