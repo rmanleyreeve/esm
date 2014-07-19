@@ -869,17 +869,14 @@ public class SpaceDetailView {
 		rowRight6.setBackground(C.APP_BGCOLOR);
 
 		CLabel lblPrintDocs = new CLabel(rowRight6, SWT.NONE);
-		GridData gd_lblPrintDocs = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblPrintDocs.widthHint = 200;
-		lblPrintDocs.setLayoutData(gd_lblPrintDocs);
 		lblPrintDocs.setImage(C.getImage("16_new_edit.png"));
 		lblPrintDocs.setFont(C.FONT_12B);
 		lblPrintDocs.setBackground(C.APP_BGCOLOR);
 		lblPrintDocs.setText("Print Audit Forms");	
 
 		final Button btnPrintSpaceDoc = new Button(rowRight6, SWT.NONE);
-		btnPrintSpaceDoc.setToolTipText("Print a blank Enclosed Space Audit");
-		GridData gd_btnPrintSpaceDoc = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
+		btnPrintSpaceDoc.setToolTipText("Print a blank Enclosed Space Audit form");
+		GridData gd_btnPrintSpaceDoc = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
 		gd_btnPrintSpaceDoc.widthHint = 110;
 		gd_btnPrintSpaceDoc.verticalIndent = 3;
 		btnPrintSpaceDoc.setLayoutData(gd_btnPrintSpaceDoc);
@@ -887,7 +884,7 @@ public class SpaceDetailView {
 		btnPrintSpaceDoc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				File pdf =  new File("rsc/txt/blank_space_form.pdf");
+				File pdf =  new File("rsc/pdf/blank_space_form.pdf");
 				if( pdf.exists() && Program.launch(pdf.getPath()) ) {
 					LogController.log("Opening blank Space Audit Form");
 				} else {
@@ -897,7 +894,7 @@ public class SpaceDetailView {
 		});
 		
 		final Button btnPrintEntryDoc = new Button(rowRight6, SWT.NONE);
-		btnPrintEntryDoc.setToolTipText("Print a blank Entry Point Audit");
+		btnPrintEntryDoc.setToolTipText("Print a blank Entry Point Audit form");
 		GridData gd_btnPrintEntryDoc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_btnPrintEntryDoc.verticalIndent = 3;
 		btnPrintEntryDoc.setLayoutData(gd_btnPrintEntryDoc);
@@ -905,7 +902,7 @@ public class SpaceDetailView {
 		btnPrintEntryDoc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				File pdf =  new File("rsc/txt/blank_entry_form.pdf");
+				File pdf =  new File("rsc/pdf/blank_entry_form.pdf");
 				if( pdf.exists() && Program.launch(pdf.getPath()) ) {
 					LogController.log("Opening blank Entry Audit Form");
 				} else {
@@ -913,15 +910,16 @@ public class SpaceDetailView {
 				}
 			}
 		});
-		
-		
+				
 		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
 
 
 		
 		
-
+		
+		//===============================================================================================
+		
 		scrollPanelRight.setContent(compR);
 		scrollPanelRight.setExpandVertical(true);
 		scrollPanelRight.setExpandHorizontal(true);
