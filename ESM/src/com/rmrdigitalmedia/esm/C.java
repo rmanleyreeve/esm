@@ -44,6 +44,10 @@ public final class C {
 	public static int IMG_HEIGHT = 600;
 	public static int THUMB_WIDTH = 150;
 	public static int THUMB_HEIGHT = 150;
+	
+	// pdf properties
+	public static String BLANK_SPACE_FORM = "blank_space_form.pdf";
+	public static String BLANK_ENTRY_FORM = "blank_entry_form.pdf";
 
 	// UI images
 	public static String SPLASH_IMAGE = "splash.jpg";

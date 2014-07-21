@@ -46,6 +46,7 @@ import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
+import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
@@ -856,7 +857,7 @@ public class SpaceDetailView {
 			}
 		});
 
-		// row 6 - print docs header 		
+		// row 6 - print blank forms header 		
 		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
 
@@ -884,14 +885,17 @@ public class SpaceDetailView {
 		btnPrintSpaceDoc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				File pdf =  new File("rsc/pdf/blank_space_form.pdf");
-				if( pdf.exists() && Program.launch(pdf.getPath()) ) {
+				File pdf =  new File(C.DOC_DIR + C.SEP + "blank_space_form.pdf");
+				if(!pdf.exists()) {
+					FilesystemController.createBlankSpaceForm();
+				}
+				if( Program.launch(pdf.getPath()) ) {
 					LogController.log("Opening blank Space Audit Form");
 				} else {
 					LogController.logEvent(me, C.ERROR, "Cannot open blank Space Audit Form!");
 				}
 			}
-		});
+		});		
 		
 		final Button btnPrintEntryDoc = new Button(rowRight6, SWT.NONE);
 		btnPrintEntryDoc.setToolTipText("Print a blank Entry Point Audit form");
@@ -902,8 +906,11 @@ public class SpaceDetailView {
 		btnPrintEntryDoc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				File pdf =  new File("rsc/pdf/blank_entry_form.pdf");
-				if( pdf.exists() && Program.launch(pdf.getPath()) ) {
+				File pdf =  new File(C.DOC_DIR + C.SEP + "blank_entry_form.pdf");
+				if(!pdf.exists()) {
+					FilesystemController.createBlankEntryForm();
+				}
+				if( Program.launch(pdf.getPath()) ) {
 					LogController.log("Opening blank Entry Audit Form");
 				} else {
 					LogController.logEvent(me, C.ERROR, "Cannot open blank Entry Audit Form!");

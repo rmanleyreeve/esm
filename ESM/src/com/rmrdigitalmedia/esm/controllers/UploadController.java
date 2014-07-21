@@ -27,18 +27,15 @@ public class UploadController {
 	private static String uploadPath = "";
 
 	public static String[] uploadSpaceImageDialog() {
-		final FileDialog dialog = new FileDialog(new Shell(), SWT.OPEN
-				| SWT.ON_TOP);
+		final FileDialog dialog = new FileDialog(new Shell(), SWT.OPEN | SWT.ON_TOP);
 		dialog.setText("Choose an image");
 		String platform = SWT.getPlatform();
 		String[] filterNames = new String[] { "Image Files", "All Files (*)" };
-		String[] filterExtensions = new String[] {
-				"*.gif;*.png;*.xpm;*.jpg;*.jpeg;*.tiff", "*" };
+		String[] filterExtensions = new String[] { "*.gif;*.png;*.xpm;*.jpg;*.jpeg;*.tiff", "*" };
 		String filterPath = C.HOME_DIR + C.SEP + "Documents";
 		if (platform.equals("win32") || platform.equals("wpf")) {
 			filterNames = new String[] { "Image Files", "All Files (*.*)" };
-			filterExtensions = new String[] {
-					"*.gif;*.png;*.bmp;*.jpg;*.jpeg;*.tiff", "*.*" };
+			filterExtensions = new String[] { "*.gif;*.png;*.bmp;*.jpg;*.jpeg;*.tiff", "*.*" };
 		}
 		dialog.setFilterNames(filterNames);
 		dialog.setFilterExtensions(filterExtensions);
@@ -56,8 +53,7 @@ public class UploadController {
 		dialog.setText("Choose a document");
 		String platform = SWT.getPlatform();
 		String[] filterNames = new String[] { "Document Files", "All Files (*)" };
-		String[] filterExtensions = new String[] {
-				"*.doc;*.docx;*.pdf;*.xls;*.xlsx;*.txt", "*" };
+		String[] filterExtensions = new String[] { "*.doc;*.docx;*.pdf;*.xls;*.xlsx;*.txt", "*" };
 		String filterPath = C.HOME_DIR + C.SEP + "Documents";
 		if (platform.equals("win32") || platform.equals("wpf")) {
 			filterNames = new String[] { "Document Files", "All Files (*.*)" };
@@ -67,8 +63,7 @@ public class UploadController {
 		dialog.setFilterPath(filterPath);
 		dialog.open();
 		if (!dialog.getFileName().equals("")) {
-			String fullPath = dialog.getFilterPath() + C.SEP
-					+ dialog.getFileName();
+			String fullPath = dialog.getFilterPath() + C.SEP + dialog.getFileName();
 			return new String[] { fullPath, dialog.getFileName() };
 		}
 		return null;
@@ -89,15 +84,12 @@ public class UploadController {
 				final int srcW = bimg.getWidth();
 				final int srcH = bimg.getHeight();
 				imgToUploadName = ts + "." + ext;
-				String savePathFull = C.IMG_DIR + C.SEP + spaceID + C.SEP
-						+ "full" + C.SEP + imgToUploadName;
-				String savePathThumb = C.IMG_DIR + C.SEP + spaceID + C.SEP
-						+ "thumb" + C.SEP + imgToUploadName;
+				String savePathFull = C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP + imgToUploadName;
+				String savePathThumb = C.IMG_DIR + C.SEP + spaceID + C.SEP + "thumb" + C.SEP + imgToUploadName;
 				uploadPath = savePathThumb;
 				final File destFull = new File(savePathFull);
 				final File destThumb = new File(savePathThumb);
-				LogController.log("File to upload: " + src + " -> "
-						+ src.length() + " bytes");
+				LogController.log("File to upload: " + src + " -> " + src.length() + " bytes");
 				Runnable job = new Runnable() {
 					@Override
 					public void run() {
@@ -105,18 +97,16 @@ public class UploadController {
 							// larger image, resize
 							try {
 								Thumbnails.of(src)
-										.size(C.IMG_WIDTH, C.IMG_HEIGHT)
-										.toFile(destFull);
+								.size(C.IMG_WIDTH, C.IMG_HEIGHT)
+								.toFile(destFull);
 							} catch (IOException ex) {
 								LogController.logEvent(this, C.WARNING, ex);
 							}
 						} else {
 							// image smaller, just copy
 							try {
-								final FileInputStream is = new FileInputStream(
-										src);
-								final FileOutputStream os = new FileOutputStream(
-										destFull);
+								final FileInputStream is = new FileInputStream(src);
+								final FileOutputStream os = new FileOutputStream(destFull);
 								int currentbyte = is.read();
 								while (currentbyte != -1) {
 									os.write(currentbyte);
@@ -126,16 +116,14 @@ public class UploadController {
 								os.close();
 							} catch (IOException ex) {
 								LogController.logEvent(this, C.WARNING, ex);
-								;
 							}
 						}
-						LogController.log("File uploaded: " + destFull + " -> "
-								+ destFull.length() + " bytes");
+						LogController.log("File uploaded: " + destFull + " -> " + destFull.length() + " bytes");
 						// thumbnail
 						try {
 							Thumbnails.of(destFull)
-									.size(C.THUMB_WIDTH, C.THUMB_HEIGHT)
-									.toFile(destThumb);
+							.size(C.THUMB_WIDTH, C.THUMB_HEIGHT)
+							.toFile(destThumb);
 						} catch (IOException ex) {
 							LogController.logEvent(this, C.WARNING, ex);
 						}
@@ -168,13 +156,11 @@ public class UploadController {
 		if (docDetails != null) {
 			try {
 				File src = new File(docDetails[0]);
-				String savePath = C.DOC_DIR + C.SEP + spaceID + C.SEP
-						+ docDetails[1];
+				String savePath = C.DOC_DIR + C.SEP + spaceID + C.SEP + docDetails[1];
 				final File dest = new File(savePath);
 				final FileInputStream is = new FileInputStream(src);
 				final FileOutputStream os = new FileOutputStream(dest);
-				LogController.log("File to upload: " + src + " -> "
-						+ src.length() + " bytes");
+				LogController.log("File to upload: " + src + " -> " + src.length() + " bytes");
 				Runnable job = new Runnable() {
 					@Override
 					public void run() {
@@ -186,10 +172,8 @@ public class UploadController {
 							}
 						} catch (IOException ex) {
 							LogController.logEvent(this, C.ERROR, ex);
-							;
 						}
-						LogController.log("File uploaded: " + dest + " -> "
-								+ dest.length() + " bytes");
+						LogController.log("File uploaded: " + dest + " -> " + dest.length() + " bytes");
 						try {
 							is.close();
 							os.close();
@@ -197,7 +181,6 @@ public class UploadController {
 							LogController.logEvent(this, C.ERROR, e);
 						}
 					}
-
 				};
 				BusyIndicator.showWhile(display, job);
 				EsmApplication.alert("The document was uploaded!");
