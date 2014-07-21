@@ -25,8 +25,7 @@ public class EsmApplication {
 	public EsmApplication() {
 		me = this;
 		final Display display = new Display();
-
-
+		
 		// create log dir first
 		FilesystemController fs = new FilesystemController();
 		fs.createLogDir();
@@ -36,8 +35,7 @@ public class EsmApplication {
 		appData = new AppData();
 
 		loader = new AppLoader(display);
-		while (!display.isDisposed() && display.getShells().length != 0
-				&& !Display.getCurrent().getShells()[0].isDisposed()) {
+		while (!display.isDisposed() && display.getShells().length != 0 && !Display.getCurrent().getShells()[0].isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -89,7 +87,6 @@ public class EsmApplication {
 		MessageBox mb = new MessageBox(sh, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 		mb.setText("Attention");
 		mb.setMessage(msg);
-
 		int returnCode = mb.open();
 		return (returnCode == 32);
 	}

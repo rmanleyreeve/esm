@@ -1,6 +1,9 @@
 package com.rmrdigitalmedia.esm.controllers;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import com.rmrdigitalmedia.esm.AppLoader;
 import com.rmrdigitalmedia.esm.C;
@@ -32,7 +35,6 @@ public class FilesystemController {
 
 		// create sub-dirs====================================
 		AppLoader.message("Creating System Directories");
-
 		imgdir = new File(C.IMG_DIR);
 		LogController.log("Images folder: " + imgdir);
 		if (imgdir.mkdir()) {
@@ -51,7 +53,42 @@ public class FilesystemController {
 		EsmApplication.appData.setField("DOCDIR", docdir);
 
 		LogController.log("File system integrity check complete");
+	}
 
+	public static void createBlankSpaceForm() {
+		try {
+			InputStream is = EsmApplication.class.getResourceAsStream("/pdf/" + C.BLANK_SPACE_FORM);
+			File dest = new File(docdir + C.SEP + C.BLANK_SPACE_FORM);
+			FileOutputStream os = new FileOutputStream(dest);
+			int currentbyte = is.read();
+			while (currentbyte != -1) {
+				os.write(currentbyte);
+				currentbyte = is.read();
+			}
+			is.close();
+			os.close();
+			LogController.log("Created blank space form");
+		} catch (IOException ex) {
+			LogController.logEvent(FilesystemController.class, C.ERROR, "Error creating blank space form from rsc file",ex);
+		}
+	}
+
+	public static void createBlankEntryForm() {
+		try {
+			InputStream is = EsmApplication.class.getResourceAsStream("/pdf/" + C.BLANK_ENTRY_FORM);
+			File dest = new File(docdir + C.SEP + C.BLANK_ENTRY_FORM);
+			FileOutputStream os = new FileOutputStream(dest);
+			int currentbyte = is.read();
+			while (currentbyte != -1) {
+				os.write(currentbyte);
+				currentbyte = is.read();
+			}
+			is.close();
+			os.close();
+			LogController.log("Created blank entry form");
+		} catch (IOException ex) {
+			LogController.logEvent(FilesystemController.class, C.ERROR, "Error creating blank entry form from rsc file", ex);
+		}
 	}
 
 	public static boolean deleteDirRecursive(File dir) {
