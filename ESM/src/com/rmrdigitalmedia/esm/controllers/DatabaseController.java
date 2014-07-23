@@ -79,7 +79,7 @@ public class DatabaseController {
 
 			// TODO for development ONLY
 			loadRunSqlFile("DEMO.sql");
-			
+
 		} catch (SQLException e) {
 			LogController.logEvent(me, C.FATAL, "DB SETUP FAILED", e);
 			// e.printStackTrace();
@@ -92,9 +92,7 @@ public class DatabaseController {
 		LogController.log("Loading SQL file '" + fName + "'... ");
 		String sql = "";
 		try {
-			sql = CharStreams.toString(new InputStreamReader(
-					DatabaseController.class.getResourceAsStream("/sql/"
-							+ fName), Charsets.UTF_8));
+			sql = CharStreams.toString(new InputStreamReader(DatabaseController.class.getResourceAsStream("/sql/" + fName), Charsets.UTF_8));
 		} catch (IOException e) {
 			LogController.logEvent(me, C.ERROR, e);
 		}
@@ -114,8 +112,7 @@ public class DatabaseController {
 		boolean ok = false;
 		Connection conn = createConnection();
 		try {
-			String sql = "SELECT ID FROM ESM_USERS WHERE (USERNAME='"
-					+ username + "' AND PASSWORD='" + password + "');";
+			String sql = "SELECT ID FROM ESM_USERS WHERE (USERNAME='" + username + "' AND PASSWORD='" + password + "');";
 			ResultSet rs = getResultSet(conn, sql);
 			while (rs.next()) {
 				ok = true;
@@ -134,8 +131,7 @@ public class DatabaseController {
 		boolean ok = false;
 		LogController.log("Checking Admin User...");
 		try {
-			EsmUsersTable.Row[] rows = EsmUsersTable
-					.getRows("ACCESS_LEVEL=9 AND DELETED=FALSE");
+			EsmUsersTable.Row[] rows = EsmUsersTable.getRows("ACCESS_LEVEL=9 AND DELETED=FALSE");
 			LogController.log("checkAdmin Row Count: " + rows.length);
 			if (rows.length == 1) {
 				EsmUsersTable.Row row = rows[0];

@@ -172,6 +172,7 @@ public class AddSpaceForm {
 				Text[] fields = {s_name,s_description,ep_name,ep_description}; Validation.validateFields(fields);				
 				if( Validation.validateFields(fields) ) {
 					try {
+						// create space DB record
 						SpacesTable.Row sRow = SpacesTable.getRow();
 						sRow.setName(s_name.getText());
 						sRow.setDescription(s_description.getText());
@@ -181,13 +182,17 @@ public class AddSpaceForm {
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						sRow.setDeleted("FALSE");
 						int spaceID = (int) sRow.insert();
-						EsmApplication.appData.setField("SPACE_CHK_" + spaceID,0);
-						EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, "");
 						LogController.log("Space "+spaceID+" added to database.");
+						// create empty space audit records
+						EsmApplication.appData.setField("SPACE_CHK_" + spaceID,0);
+						EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, 0);
+						EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, "red");
+						// create media directories
 						new File( C.DOC_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // docs						
 						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // image base dir
 						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP ).mkdir(); // full
 						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "thumb" + C.SEP).mkdir(); // thumbs
+						// create entry DB record
 						EntrypointsTable.Row epRow = EntrypointsTable.getRow();
 						epRow.setName(ep_name.getText());
 						epRow.setDescription(ep_description.getText());
@@ -197,9 +202,11 @@ public class AddSpaceForm {
 						epRow.setAuthorID(authorID);
 						epRow.setDeleted("FALSE");
 						int epID = (int) epRow.insert();
-						EsmApplication.appData.setField("ENTRY_CHK_" + epID, 0);						
-						EsmApplication.appData.setField("ENTRY_CLASS_" + epID, "");
 						LogController.log("Entry Point "+epID+" added to database.");				        
+						// create empty entry audit records
+						EsmApplication.appData.setField("ENTRY_CHK_" + epID, 0);						
+						EsmApplication.appData.setField("ENTRY_CLASS_" + epID, 0);
+						EsmApplication.appData.setField("ENTRY_STATUS_" + epID, "red");
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
