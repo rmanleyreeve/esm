@@ -33,7 +33,6 @@ import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
-import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
 
 public class LoginController {
 
@@ -58,9 +57,8 @@ public class LoginController {
 		if (un != "" && pw != "") {
 			LogController.log("LoginController: " + un + "/" + pw);
 			if (DatabaseController.verifyLogin(un, pw)) {
-				LogController.log("OK");
-				// User user = null;
-				Row user = null;
+				LogController.log("LoginController: Login OK");
+				EsmUsersTable.Row user = null;
 				try {
 					user = EsmUsersTable.getRow("USERNAME", un);
 					EsmApplication.appData.setField("ACCESS", user.getAccessLevel());
@@ -70,7 +68,7 @@ public class LoginController {
 				EsmApplication.appPreLoad(user, shell);
 				// LoginController will be disposed from now
 			} else {
-				LogController.log("FAIL");
+				LogController.log("LoginController: Login FAILED");
 				alertTxt.setText(C.LOGIN_FAIL_MSG);
 				txt_Username.setText("");
 				txt_Password.setText("");
@@ -170,12 +168,12 @@ public class LoginController {
 		rowData_4.width = 170;
 		txt_Password.setLayoutData(rowData_4);
 		txt_Password.setEchoChar('*');
-		
+
 		//TODO for development
 		txt_Username.setText("admin");
 		txt_Password.setText("pass");
 
-		// Composite to hold button as I want the button to be positioned to my choice.
+		// Composite to hold button
 		final Composite cmp_ButtonBar = new Composite(cmp_Login, SWT.NONE);
 		cmp_ButtonBar.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		final RowData rowData_5 = new RowData();
@@ -219,15 +217,14 @@ public class LoginController {
 			}
 		});
 
-		// Label for copyright info
+		// Label for copyright info etc
 		final CLabel clbl_Message = new CLabel(cmp_Login, SWT.NONE);
 		clbl_Message.setFont(C.FONT_8);
-		clbl_Message
-				.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		clbl_Message.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		clbl_Message.setAlignment(SWT.RIGHT);
-		final RowData rowData_7 = new RowData();
-		rowData_7.width = 188;
-		clbl_Message.setLayoutData(rowData_7);
+		final RowData rd_clbl_Message = new RowData();
+		rd_clbl_Message.width = 188;
+		clbl_Message.setLayoutData(rd_clbl_Message);
 		String vtxt = "";
 		try {
 			vtxt = "Version " + CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));

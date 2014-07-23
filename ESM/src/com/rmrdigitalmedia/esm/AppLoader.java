@@ -68,8 +68,7 @@ public class AppLoader {
 
 		String vtxt = "0.0.0";
 		try {
-			vtxt = CharStreams.toString(new InputStreamReader(this.getClass()
-					.getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));
+			vtxt = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -117,8 +116,7 @@ public class AppLoader {
 		Monitor primary = display.getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
 		Rectangle rect = splash.getBounds();
-		LogController.log("Splash Screen Size: " + rect.width + ":"
-				+ rect.height);
+		LogController.log("Splash Screen Size: " + rect.width + ":" + rect.height);
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		splash.setLocation(x, y);
@@ -172,8 +170,7 @@ public class AppLoader {
 					if (nld.complete()) {
 						LogController.log("License saved in database");
 					} else {
-						EsmApplication
-								.alert("License Key required. Exiting program...");
+						EsmApplication.alert("License Key required. Exiting program...");
 						LogController.log(C.EXIT_MSG);
 						System.exit(0);
 					}
@@ -181,18 +178,15 @@ public class AppLoader {
 				update(); // 60%
 
 				// check/set up new admin user
-				message("Checking System Administration Access");
+				message("Checking for System Administrator account");
 				if (!DatabaseController.checkAdmin()) {
 					// open admin user dialog
-					EsmApplication.alert(myshell,
-							"System Administrator not found!");
+					EsmApplication.alert(myshell, "System Administrator not found!");
 					AddAdminForm naf = new AddAdminForm();
 					if (naf.complete()) {
-						LogController
-								.log("System Administrator saved in database");
+						LogController.log("System Administrator saved in database");
 					} else {
-						EsmApplication
-								.alert("System Administrator required. Exiting program...");
+						EsmApplication.alert("System Administrator account required. Exiting program...");
 						LogController.log(C.EXIT_MSG);
 						System.exit(0);
 					}
@@ -208,8 +202,7 @@ public class AppLoader {
 					if (nvf.complete()) {
 						LogController.log("Vessel saved in database");
 					} else {
-						EsmApplication
-								.alert("Vessel Info required. Exiting program...");
+						EsmApplication.alert("Vessel Info required. Exiting program...");
 						LogController.log(C.EXIT_MSG);
 						System.exit(0);
 					}
