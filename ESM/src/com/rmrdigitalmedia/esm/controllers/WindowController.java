@@ -207,7 +207,7 @@ public class WindowController {
 		Button foo = new Button(titleBar, SWT.NONE); // dummy button to take default
 
 		onlineStatus = new Label(titleBar, SWT.NONE);
-		onlineStatus.setImage(C.getImage("16_globe.png"));
+		//onlineStatus.setImage(C.getImage("16_globe.png"));
 		onlineStatus.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_onlineStatus = new FormData();
 		fd_onlineStatus.top = new FormAttachment(titleBar,(titleH/5)+5);
@@ -218,7 +218,7 @@ public class WindowController {
 
 		btnAdmin = new Button(titleBar, SWT.PUSH);
 		btnAdmin.setToolTipText("Administration Menu (authorized users only)");
-		btnAdmin.setImage(C.getImage("16_padlock.png"));
+		btnAdmin.setImage(C.getImage("locked.png"));
 		btnAdmin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -236,7 +236,7 @@ public class WindowController {
 
 		btnAddSpace = new Button(titleBar, SWT.PUSH);
 		btnAddSpace.setToolTipText("Add a new Enclosed Space");
-		btnAddSpace.setImage(C.getImage("16_add.png"));
+		btnAddSpace.setImage(C.getImage("add.png"));
 		btnAddSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -257,7 +257,7 @@ public class WindowController {
 
 		btnViewSpaceDetails = new Button(titleBar, SWT.PUSH);
 		btnViewSpaceDetails.setToolTipText("View details for the selected Enclosed Space");
-		btnViewSpaceDetails.setImage(C.getImage("16_edit.png"));
+		btnViewSpaceDetails.setImage(C.getImage("edit.png"));
 		btnViewSpaceDetails.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -276,7 +276,7 @@ public class WindowController {
 
 		btnDeleteSpace = new Button(titleBar, SWT.PUSH);
 		btnDeleteSpace.setToolTipText("Delete the selected Enclosed Space");
-		btnDeleteSpace.setImage(C.getImage("16_delete.png"));
+		btnDeleteSpace.setImage(C.getImage("delete.png"));
 		btnDeleteSpace.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -301,7 +301,7 @@ public class WindowController {
 
 		btnSpacesList = new Button(titleBar, SWT.PUSH);
 		btnSpacesList.setToolTipText("View the list of Enclosed Spaces");
-		btnSpacesList.setImage(C.getImage("16c_list.png"));
+		btnSpacesList.setImage(C.getImage("list.png"));
 		btnSpacesList.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
