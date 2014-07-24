@@ -153,7 +153,7 @@ public class EntryAuditClassificationView {
 		gd.exclude = hide;
 		classification.setLayoutData(gd);		
 		classification.setBackground(C.APP_BGCOLOR);
-		classification.setImage(C.getImage("red.png"));
+		classification.setImage(C.getImage("null.png"));
 		return classification;
 	}	
 	// comments field
@@ -328,6 +328,7 @@ public class EntryAuditClassificationView {
 		q1_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q1_radio3.setSelection(aRow.getQ1Value()==3); 
 		Label q1_col4 = makeColumn4(tbl, false);	
+		if(q1_radio1.getSelection()) { q1_col4.setImage(C.getImage("red.png")); }
 		if(q1_radio2.getSelection()) { q1_col4.setImage(C.getImage("amber.png")); }
 		if(q1_radio3.getSelection()) { q1_col4.setImage(C.getImage("green.png")); }
 		q1_col5 = MakeColumn5(tbl, false);
@@ -354,6 +355,7 @@ public class EntryAuditClassificationView {
 		q2_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q2_radio3.setSelection(aRow.getQ2Value()==3); 
 		Label q2_col4 = makeColumn4(tbl, false);	
+		if(q2_radio1.getSelection()) { q2_col4.setImage(C.getImage("red.png")); }
 		if(q2_radio2.getSelection()) { q2_col4.setImage(C.getImage("amber.png")); }
 		if(q2_radio3.getSelection()) { q2_col4.setImage(C.getImage("green.png")); }
 		q2_col5 = MakeColumn5(tbl, false);
@@ -377,6 +379,7 @@ public class EntryAuditClassificationView {
 		if(!empty) q3_radio2.setSelection(aRow.getQ3Boolean()!=null && aRow.getQ3Boolean().equals("N")); 
 		Label q3_col4 = makeColumn4(tbl, false);	
 		if(q3_radio1.getSelection()) { q3_col4.setImage(C.getImage("green.png")); }
+		if(q3_radio2.getSelection()) { q3_col4.setImage(C.getImage("red.png")); }
 		q3_col5 = MakeColumn5(tbl, false);
 		if(!empty) q3_col5.setText( C.notNull(aRow.getQ3Comments()) );
 		sep = Separator(tbl, false);	
@@ -409,6 +412,7 @@ public class EntryAuditClassificationView {
 		q4_radio5.setBackground(C.APP_BGCOLOR);
 		if(!empty) q4_radio5.setSelection(aRow.getQ4Value()==5); 
 		Label q4_col4 = makeColumn4(tbl, false);	
+		if(q4_radio1.getSelection()) { q4_col4.setImage(C.getImage("red.png")); }
 		if(q4_radio2.getSelection() || q4_radio3.getSelection() || q4_radio4.getSelection()) { q4_col4.setImage(C.getImage("amber.png")); }
 		if(q4_radio5.getSelection()) { q4_col4.setImage(C.getImage("green.png")); }
 		q4_col5 = MakeColumn5(tbl, false);
@@ -432,6 +436,7 @@ public class EntryAuditClassificationView {
 		if(!empty) q5_radio2.setSelection(aRow.getQ5Boolean()!=null && aRow.getQ5Boolean().equals("N")); 
 		Label q5_col4 = makeColumn4(tbl, false);	
 		if(q5_radio1.getSelection()) { q5_col4.setImage(C.getImage("green.png")); }
+		if(q5_radio2.getSelection()) { q5_col4.setImage(C.getImage("red.png")); }
 		q5_col5 = MakeColumn5(tbl, false);
 		if(!empty) q5_col5.setText( C.notNull(aRow.getQ5Comments()) );
 		sep = Separator(tbl, false);	
@@ -453,6 +458,7 @@ public class EntryAuditClassificationView {
 		if(!empty) q6_radio2.setSelection(aRow.getQ6Boolean()!=null && aRow.getQ6Boolean().equals("N")); 
 		Label q6_col4 = makeColumn4(tbl, false);	
 		if(q6_radio1.getSelection()) { q6_col4.setImage(C.getImage("green.png")); }
+		if(q6_radio2.getSelection()) { q6_col4.setImage(C.getImage("red.png")); }
 		q6_col5 = MakeColumn5(tbl, false);
 		if(!empty) q6_col5.setText( C.notNull(aRow.getQ6Comments()) );
 		sep = Separator(tbl, false);	
@@ -477,6 +483,7 @@ public class EntryAuditClassificationView {
 		q7_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q7_radio3.setSelection(aRow.getQ7Value()==3); 
 		Label q7_col4 = makeColumn4(tbl, false);	
+		if(q7_radio1.getSelection()) { q7_col4.setImage(C.getImage("red.png")); }
 		if(q7_radio2.getSelection()) { q7_col4.setImage(C.getImage("amber.png")); }
 		if(q7_radio3.getSelection()) { q7_col4.setImage(C.getImage("green.png")); }
 		q7_col5 = MakeColumn5(tbl, false);

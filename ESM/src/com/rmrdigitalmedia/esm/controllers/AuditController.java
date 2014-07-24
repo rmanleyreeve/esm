@@ -135,7 +135,7 @@ public class AuditController {
 		int max = 0;
 		int score = 0;
 		ArrayList<Integer> status = new ArrayList<Integer>();
-		String light = "red";
+		String light = "null";
 		SpaceClassificationAuditTable.Row row = null;
 		try {
 			row = SpaceClassificationAuditTable.getRow("SPACE_ID", "" + spaceID);
@@ -207,11 +207,14 @@ public class AuditController {
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
 		}
-		if (status.contains(3) && !status.contains(1) && !status.contains(2)) {
-			light = "green";
+		if(status.contains(1)) {
+			light = "red";
 		}
 		if (status.contains(2) && !status.contains(1)) {
 			light = "amber";
+		}
+		if (status.contains(3) && !status.contains(1) && !status.contains(2)) {
+			light = "green";
 		}
 		EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, progress);
 		EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, light);
@@ -314,7 +317,7 @@ public class AuditController {
 		int max = 0;
 		int score = 0;
 		ArrayList<Integer> status = new ArrayList<Integer>();
-		String light = "red";
+		String light = "null";
 		EntrypointClassificationAuditTable.Row row = null;
 		try {
 			row = EntrypointClassificationAuditTable.getRow("ENTRYPOINT_ID", ""
@@ -380,11 +383,14 @@ public class AuditController {
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
 		}
-		if (status.contains(3) && !status.contains(1) && !status.contains(2)) {
-			light = "green";
+		if(status.contains(1)) {
+			light = "red";
 		}
 		if (status.contains(2) && !status.contains(1)) {
 			light = "amber";
+		}
+		if (status.contains(3) && !status.contains(1) && !status.contains(2)) {
+			light = "green";
 		}
 		EsmApplication.appData.setField("ENTRY_CLASS_" + entryID, progress);
 		EsmApplication.appData.setField("ENTRY_STATUS_" + entryID, light);

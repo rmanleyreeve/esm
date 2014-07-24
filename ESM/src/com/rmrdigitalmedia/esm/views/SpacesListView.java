@@ -218,7 +218,7 @@ public class SpacesListView {
 			lblLoopIC.setLayoutData(gd_lblLoopIC);
 			lblLoopIC.setBackground(C.FIELD_BGCOLOR);
 			String light = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);
-			if(light.equals("")) { light = "red"; }
+			if(light.equals("")) { light = "null"; }
 			lblLoopIC.setImage(C.getImage(light+".png"));
 			// ENTRY POINTS CLASSIFICATION
 			final CLabel lblLoopEPC = new CLabel(tbl, SWT.NONE | SWT.CENTER);
