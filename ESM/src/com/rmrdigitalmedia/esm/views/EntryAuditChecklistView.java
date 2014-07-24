@@ -63,6 +63,7 @@ public class EntryAuditChecklistView {
 	private static Button q4_radio1;
 	private static Button q4_radio2;
 	private static Button q4_radio3;
+	private static Button q4_radio4;
 	private static Text q4_col4;
 	private static Text q5_txtH;
 	private static Text q5_txtW;
@@ -390,7 +391,7 @@ public class EntryAuditChecklistView {
 		qNum = 4;
 		Label q4_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
 		Label q4_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q4_col3 = makeColumn3(tbl,3, false);
+		Composite q4_col3 = makeColumn3(tbl,4, false);
 		q4_radio1 = new Button(q4_col3, SWT.RADIO);
 		q4_radio1.setText("Hatch");
 		q4_radio1.setData(new String("HATCH"));
@@ -406,6 +407,11 @@ public class EntryAuditChecklistView {
 		q4_radio3.setData(new String("MANHOLE"));
 		q4_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q4_radio3.setSelection(aRow.getQ4Value()!=null && aRow.getQ4Value().equals("MANHOLE")); 
+		q4_radio4 = new Button(q4_col3, SWT.RADIO);
+		q4_radio4.setText("Other");
+		q4_radio4.setData(new String("OTHER"));
+		q4_radio4.setBackground(C.APP_BGCOLOR);
+		if(!empty) q4_radio4.setSelection(aRow.getQ4Value()!=null && aRow.getQ4Value().equals("OTHER")); 
 		q4_col4 = MakeColumn4(tbl, false);
 		if(!empty) { q4_col4.setText( C.notNull(aRow.getQ4Comments()) ); }
 		sep = Separator(tbl, false);
@@ -420,7 +426,7 @@ public class EntryAuditChecklistView {
 		Label q5_lblH = new Label(q5_col3, SWT.NONE);
 		q5_lblH.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		q5_lblH.setBackground(C.APP_BGCOLOR);
-		q5_lblH.setFont(C.FONT_9);		
+		//q5_lblH.setFont(C.FONT_9);		
 		q5_lblH.setText("Height:");		
 		q5_txtH = new Text(q5_col3, SWT.BORDER);
 		GridData gd_q5_txtH = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
@@ -432,7 +438,7 @@ public class EntryAuditChecklistView {
 		Label q5_lblW = new Label(q5_col3, SWT.NONE);
 		q5_lblW.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		q5_lblW.setBackground(C.APP_BGCOLOR);
-		q5_lblW.setFont(C.FONT_9);		
+		//q5_lblW.setFont(C.FONT_9);		
 		q5_lblW.setText("Width:");		
 		q5_txtW = new Text(q5_col3, SWT.BORDER);
 		GridData gd_q5_txtW = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
