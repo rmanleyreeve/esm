@@ -1,6 +1,7 @@
 package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -29,16 +30,25 @@ import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.AddUserForm;
+import com.rmrdigitalmedia.esm.forms.ApproveEntrypointCommentForm;
+import com.rmrdigitalmedia.esm.forms.ApprovePhotoCommentForm;
+import com.rmrdigitalmedia.esm.forms.ApproveSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.DeleteUserDialog;
 import com.rmrdigitalmedia.esm.forms.EditUserForm;
 import com.rmrdigitalmedia.esm.forms.EditVesselForm;
+import com.rmrdigitalmedia.esm.models.EntrypointCommentsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
+import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
+import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
+
+import org.eclipse.swt.widgets.List;
 
 public class AdministrationView {
 
 	private static Label sep;
 	static EsmUsersTable.Row user = WindowController.user;
 	static int selectedUser = 0;
+	static SpaceCommentsTable.Row[] _rows;
 
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
@@ -74,6 +84,87 @@ public class AdministrationView {
 			combo.setData(un, uRow.getID());
 		}
 		combo.select(0);
+	}
+
+	static void refreshSpaceCommentsList(List list){
+		list.setVisible(false);
+		list.removeAll();
+		SpaceCommentsTable.Row[] cRows = null;
+		try {
+			cRows = SpaceCommentsTable.getRows("DELETED=FALSE AND APPROVED=FALSE");
+		} catch (SQLException ex) {
+			LogController.logEvent(AdministrationView.class, C.ERROR, ex);
+		}
+		if(cRows != null && cRows.length>0) {
+			int c = 0;
+			for(SpaceCommentsTable.Row cRow:cRows) {
+				int cID = cRow.getID();
+				String author = "";
+				try {
+					author = EsmUsersTable.getRow(cRow.getAuthorID()).getSurname().toUpperCase() + ", " + EsmUsersTable.getRow(cRow.getAuthorID()).getForename();
+				} catch (SQLException ex) {	}
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
+				list.add("#" + cID + ": Posted " + sdf.format(cRow.getUpdateDate()) + " by " + author );
+				list.setData(""+c, cID);
+				c++;
+			}
+			list.setVisible(true);
+			list.redraw();
+		}
+	}
+
+	static void refreshEntrypointCommentsList(List list){
+		list.setVisible(false);
+		list.removeAll();
+		EntrypointCommentsTable.Row[] cRows = null;
+		try {
+			cRows = EntrypointCommentsTable.getRows("DELETED=FALSE AND APPROVED=FALSE");
+		} catch (SQLException ex) {
+			LogController.logEvent(AdministrationView.class, C.ERROR, ex);
+		}
+		if(cRows != null && cRows.length>0) {
+			int c = 0;
+			for(EntrypointCommentsTable.Row cRow:cRows) {
+				int cID = cRow.getID();
+				String author = "";
+				try {
+					author = EsmUsersTable.getRow(cRow.getAuthorID()).getSurname().toUpperCase() + ", " + EsmUsersTable.getRow(cRow.getAuthorID()).getForename();
+				} catch (SQLException ex) {	}
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
+				list.add("#" + cID + ": Posted " + sdf.format(cRow.getUpdateDate()) + " by " + author );
+				list.setData(""+c, cID);
+				c++;
+			}
+			list.setVisible(true);
+			list.redraw();
+		}
+	}
+
+	static void refreshPhotoCommentsList(List list){
+		list.setVisible(false);
+		list.removeAll();
+		PhotoMetadataTable.Row[] cRows = null;
+		try {
+			cRows = PhotoMetadataTable.getRows("DELETED=FALSE AND APPROVED=FALSE");
+		} catch (SQLException ex) {
+			LogController.logEvent(AdministrationView.class, C.ERROR, ex);
+		}
+		if(cRows != null && cRows.length>0) {
+			int c = 0;
+			for(PhotoMetadataTable.Row cRow:cRows) {
+				int cID = cRow.getID();
+				String author = "";
+				try {
+					author = EsmUsersTable.getRow(cRow.getAuthorID()).getSurname().toUpperCase() + ", " + EsmUsersTable.getRow(cRow.getAuthorID()).getForename();
+				} catch (SQLException ex) {	}
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
+				list.add("#" + cID + ": Posted " + sdf.format(cRow.getUpdateDate()) + " by " + author );
+				list.setData(""+c, cID);
+				c++;
+			}
+			list.setVisible(true);
+			list.redraw();
+		}
 	}
 
 	public static void buildPage(Composite parent) {
@@ -116,7 +207,7 @@ public class AdministrationView {
 		lblVessel.setBackground(C.APP_BGCOLOR);
 		lblVessel.setImage(C.getImage("vessel.png"));
 		lblVessel.setText("Manage Vessel Info");	
-		
+
 		Button btnAddVessel = new Button(rowVessel, SWT.NONE);
 		btnAddVessel.setToolTipText("Edit Vessel Information");
 		GridData gd_btnAddVessel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
@@ -135,7 +226,7 @@ public class AdministrationView {
 		});
 		btnAddVessel.setImage(C.getImage("16_edit.png"));
 		btnAddVessel.setText("Edit Vessel Info");
-		
+
 
 		// row 2 - user management		
 		Group rowUsers = new Group(compL, SWT.NONE);
@@ -183,14 +274,12 @@ public class AdministrationView {
 		final Combo comboUsers = new Combo(rowUsers, SWT.DROP_DOWN | SWT.READ_ONLY);
 		comboUsers.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
 		refreshCombo(comboUsers);
-
-		final Button btnViewUser = new Button(rowUsers, SWT.NONE);
-		btnViewUser.setEnabled(false);
-		btnViewUser.setText("View");
 		final Button btnEditUser = new Button(rowUsers, SWT.NONE);
 		btnEditUser.setEnabled(false);
 		btnEditUser.setText("Edit");
+
 		final Button btnDelUser = new Button(rowUsers, SWT.NONE);
+		btnDelUser.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnDelUser.setEnabled(false);
 		btnDelUser.setText("Delete");
 
@@ -204,11 +293,9 @@ public class AdministrationView {
 					refreshCombo(comboUsers);
 					btnEditUser.setEnabled(false);
 					btnDelUser.setEnabled(false);
-					btnViewUser.setEnabled(false);
 				}
 			}
 		});
-		
 		// delete button behaviour
 		btnDelUser.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -218,7 +305,6 @@ public class AdministrationView {
 					LogController.log("User " + selectedUser + " marked as deleted in database");
 					EsmApplication.alert("The user record was deleted!");
 					refreshCombo(comboUsers);
-					btnViewUser.setEnabled(false);
 					btnEditUser.setEnabled(false);
 					btnDelUser.setEnabled(false);
 				} else {
@@ -227,12 +313,8 @@ public class AdministrationView {
 			}			
 		});
 
-
-
-
 		sep = new Label(rowUsers, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));	
-
 
 		comboUsers.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -244,6 +326,92 @@ public class AdministrationView {
 				btnDelUser.setEnabled(selectedUser > 0);
 			}
 		});
+
+
+		// row 3 - comment management		
+		Group rowComments = new Group(compL, SWT.NONE);
+		rowComments.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		GridLayout gl_rowComments = new GridLayout(3, true);
+		gl_rowComments.marginBottom = 5;
+		gl_rowComments.marginHeight = 0;
+		rowComments.setLayout(gl_rowComments);
+		rowComments.setBackground(C.APP_BGCOLOR);
+
+		CLabel lblComments = new CLabel(rowComments, SWT.NONE);
+		lblComments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		lblComments.setFont(C.FONT_12B);
+		lblComments.setBackground(C.APP_BGCOLOR);
+		lblComments.setImage(C.getImage("space_icon.png"));
+		lblComments.setText("Manage Comments");	
+
+		Label lblSpaceComments = new Label(rowComments, SWT.NONE);
+		lblSpaceComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+		lblSpaceComments.setText("Space Comments Requiring Approval");
+		final List listSpaceComments = new List(rowComments, SWT.BORDER | SWT.V_SCROLL);
+		listSpaceComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+		listSpaceComments.setVisible(false);
+		refreshSpaceCommentsList(listSpaceComments);
+		listSpaceComments.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				int sel = listSpaceComments.getSelectionIndex();
+				int id = (Integer) listSpaceComments.getData(""+sel);
+				ApproveSpaceCommentForm ascf = new ApproveSpaceCommentForm(id);
+				if(ascf.complete()) {
+					EsmApplication.alert("The comment was approved!");
+					refreshSpaceCommentsList(listSpaceComments);
+				}
+			}
+		});
+
+		Label lblEntrypointComments = new Label(rowComments, SWT.NONE);
+		lblEntrypointComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+		lblEntrypointComments.setText("Entrypoint Comments Requiring Approval");
+		final List listEntrypointComments = new List(rowComments, SWT.BORDER | SWT.V_SCROLL);
+		listEntrypointComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+		listEntrypointComments.setVisible(false);
+		refreshEntrypointCommentsList(listEntrypointComments);
+		listEntrypointComments.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				int sel = listEntrypointComments.getSelectionIndex();
+				int id = (Integer) listEntrypointComments.getData(""+sel);
+				ApproveEntrypointCommentForm aecf = new ApproveEntrypointCommentForm(id);
+				if(aecf.complete()) {
+					EsmApplication.alert("The comment was approved!");
+					refreshEntrypointCommentsList(listEntrypointComments);
+				}
+			}
+		});
+
+		Label lblPhotoComments = new Label(rowComments, SWT.NONE);
+		lblPhotoComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+		lblPhotoComments.setText("Photo Comments Requiring Approval");
+		final List listPhotoComments = new List(rowComments, SWT.BORDER | SWT.V_SCROLL);
+		listPhotoComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+		listPhotoComments.setVisible(false);
+		refreshPhotoCommentsList(listPhotoComments);
+		listPhotoComments.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				int sel = listEntrypointComments.getSelectionIndex();
+				int id = (Integer) listEntrypointComments.getData(""+sel);
+				ApprovePhotoCommentForm apcf = new ApprovePhotoCommentForm(id);
+				if(apcf.complete()) {
+					EsmApplication.alert("The comment was approved!");
+					refreshPhotoCommentsList(listPhotoComments);
+				}
+			}
+		});
+
+
+
+
+
+
+
+
+
 
 
 
