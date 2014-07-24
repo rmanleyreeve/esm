@@ -544,8 +544,8 @@ public class SpaceAuditClassificationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(q7_radio1.getSelection()) {
-					//EsmApplication.alert("Be aware to check");
-					new SpaceAlert(WindowController.getShell());	
+					EsmApplication.alert("Be aware to check");
+					//new SpaceAlert(WindowController.getShell());	
 				}
 			}
 		});		
@@ -554,8 +554,8 @@ public class SpaceAuditClassificationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(q8_radio1.getSelection()) {
-					//EsmApplication.alert("Be aware to check");
-					new SpaceAlert(WindowController.getShell());
+					EsmApplication.alert("Be aware to check");
+					//new SpaceAlert(WindowController.getShell());
 				}
 			}
 		});		
