@@ -224,7 +224,7 @@ public class AdministrationView {
 				}
 			}
 		});
-		btnAddVessel.setImage(C.getImage("16_edit.png"));
+		btnAddVessel.setImage(C.getImage("edit.png"));
 		btnAddVessel.setText("Edit Vessel Info");
 
 
@@ -261,7 +261,7 @@ public class AdministrationView {
 				}
 			}
 		});
-		btnAddUser.setImage(C.getImage("16_add.png"));
+		btnAddUser.setImage(C.getImage("add.png"));
 		btnAddUser.setText("Add User");
 
 		sep = new Label(rowUsers, SWT.SEPARATOR | SWT.HORIZONTAL);

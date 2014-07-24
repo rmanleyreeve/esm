@@ -184,7 +184,7 @@ public class SpaceDetailView {
 			btnEditSpace.setText("Edit");
 			btnEditSpace.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
 			btnEditSpace.setToolTipText("Edit details for this Enclosed Space");
-			btnEditSpace.setImage(C.getImage("16_edit.png"));
+			btnEditSpace.setImage(C.getImage("edit.png"));
 			btnEditSpace.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent arg0) {
@@ -208,7 +208,7 @@ public class SpaceDetailView {
 		row2.setBackground(C.APP_BGCOLOR);		
 
 		CLabel lblComments = new CLabel(row2, SWT.NONE);
-		lblComments.setImage(C.getImage("16_comment.png"));
+		lblComments.setImage(C.getImage("comment.png"));
 		lblComments.setFont(C.FONT_12B);
 		lblComments.setBackground(C.APP_BGCOLOR);
 		lblComments.setText("Comments");		
@@ -228,7 +228,7 @@ public class SpaceDetailView {
 				}
 			}
 		});
-		btnAddComment.setImage(C.getImage("16_comment_add.png"));
+		btnAddComment.setImage(C.getImage("comment-add.png"));
 		btnAddComment.setText("Add");
 		new Label(row2, SWT.NONE);
 		new Label(row2, SWT.NONE);
@@ -455,7 +455,7 @@ public class SpaceDetailView {
 		GridData gd_btnShowSpaceAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
 		gd_btnShowSpaceAudit.verticalIndent = 3;
 		btnShowSpaceAudit.setLayoutData(gd_btnShowSpaceAudit);
-		btnShowSpaceAudit.setImage(C.getImage("16_edit.png"));
+		btnShowSpaceAudit.setImage(C.getImage("edit.png"));
 		btnShowSpaceAudit.setText("Audit");
 		btnShowSpaceAudit.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -490,7 +490,7 @@ public class SpaceDetailView {
 			gd_lblEntryPoint.heightHint = rh;
 			lblEntryPoint.setLayoutData(gd_lblEntryPoint);
 			lblEntryPoint.setBackground(C.APP_BGCOLOR);
-			lblEntryPoint.setImage(C.getImage("16_door.png"));
+			lblEntryPoint.setImage(C.getImage("entry.png"));
 			lblEntryPoint.setText(epName);
 			lblEntryPoint.setToolTipText(epRow.getDescription());
 			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
@@ -582,7 +582,7 @@ public class SpaceDetailView {
 		GridData gd_btnAddAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 6, 1);
 		gd_btnAddAudit.verticalIndent = 3;
 		btnAddEntry.setLayoutData(gd_btnAddAudit);
-		btnAddEntry.setImage(C.getImage("16_add.png"));
+		btnAddEntry.setImage(C.getImage("add.png"));
 		btnAddEntry.setText("Add Entry Point");
 		btnAddEntry.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -610,7 +610,7 @@ public class SpaceDetailView {
 		lblPhotos.setLayoutData(gd_lblPhotos);
 		lblPhotos.setFont(C.FONT_12B);
 		lblPhotos.setBackground(C.APP_BGCOLOR);
-		lblPhotos.setImage(C.getImage("16_photo.png"));
+		lblPhotos.setImage(C.getImage("photo.png"));
 		lblPhotos.setText("Photos");	
 
 		Button btnAddPhoto = new Button(rowRight3, SWT.NONE);
@@ -628,7 +628,7 @@ public class SpaceDetailView {
 				}
 			}
 		});
-		btnAddPhoto.setImage(C.getImage("16_photo_add.png"));
+		btnAddPhoto.setImage(C.getImage("photo-add.png"));
 		btnAddPhoto.setText("Add");
 
 		// PHOTOS ===============================
@@ -724,7 +724,7 @@ public class SpaceDetailView {
 		lblDocs.setLayoutData(gd_lblDocs);
 		lblDocs.setFont(C.FONT_12B);
 		lblDocs.setBackground(C.APP_BGCOLOR);
-		lblDocs.setImage(C.getImage("16_document_text.png"));
+		lblDocs.setImage(C.getImage("document.png"));
 		lblDocs.setText("Documents");	
 
 		Button btnAddDoc = new Button(rowRight4, SWT.NONE);
@@ -740,7 +740,7 @@ public class SpaceDetailView {
 				}
 			}
 		});
-		btnAddDoc.setImage(C.getImage("16_document_text_add.png"));
+		btnAddDoc.setImage(C.getImage("document-add.png"));
 		btnAddDoc.setText("Add");		
 
 		// DOCS ===============================
@@ -802,7 +802,7 @@ public class SpaceDetailView {
 		rowRight5.setBackground(C.APP_BGCOLOR);
 
 		CLabel lblSignoff = new CLabel(rowRight5, SWT.NONE);
-		lblSignoff.setImage(C.getImage("16_new_edit.png"));
+		lblSignoff.setImage(C.getImage("signoff.png"));
 		GridData gd_lblSignoff = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblSignoff.widthHint = 120;
 		lblSignoff.setLayoutData(gd_lblSignoff);
@@ -870,7 +870,7 @@ public class SpaceDetailView {
 		rowRight6.setBackground(C.APP_BGCOLOR);
 
 		CLabel lblPrintDocs = new CLabel(rowRight6, SWT.NONE);
-		lblPrintDocs.setImage(C.getImage("16_new_edit.png"));
+		lblPrintDocs.setImage(C.getImage("print.png"));
 		lblPrintDocs.setFont(C.FONT_12B);
 		lblPrintDocs.setBackground(C.APP_BGCOLOR);
 		lblPrintDocs.setText("Print Audit Forms");	

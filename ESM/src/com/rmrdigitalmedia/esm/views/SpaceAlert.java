@@ -34,7 +34,7 @@ public class SpaceAlert {
 		final Shell shell = new Shell(SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		shell.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		shell.setSize(400, 250);
+		shell.setSize(400, 200);
 		Rectangle bounds = appwin.getBounds();
 		Rectangle rect = shell.getBounds();
 		int x = bounds.x + (bounds.width - rect.width) / 2;
