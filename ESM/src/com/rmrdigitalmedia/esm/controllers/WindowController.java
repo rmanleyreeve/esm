@@ -128,7 +128,7 @@ public class WindowController {
 		txt += "Current User: " + displayName;
 		lblH.setText(txt);
 		FormData fd_lblH = new FormData();
-		fd_lblH.left = new FormAttachment(logo, 10);
+		fd_lblH.left = new FormAttachment(logo, 20);
 		fd_lblH.top = new FormAttachment((headerH/2)-offset);
 		lblH.setLayoutData(fd_lblH);
 	}
@@ -188,7 +188,7 @@ public class WindowController {
 
 		// set up row element positions =======================
 		FormData fd_header = new FormData();
-		fd_header.bottom = new FormAttachment(container, 115);
+		fd_header.bottom = new FormAttachment(container, 100);
 		fd_header.top = new FormAttachment(container,0);
 		fd_header.right = new FormAttachment(100,0);
 		fd_header.left = new FormAttachment(0,0);
@@ -332,13 +332,12 @@ public class WindowController {
 
 		// graphic elements etc
 		logo = new Label(header, SWT.TRANSPARENT);
-		logo.setAlignment(SWT.LEFT);
 		logo.setImage(C.getImage("esm-logo-horiz.png"));
 		logo.setBackground(C.APP_BGCOLOR);
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0);
-		fd.height = 110;
-		fd.width = 250;
+		fd.height = 100;
+		fd.width = 200;
 		fd.left = new FormAttachment(0, 5);
 		fd.bottom = new FormAttachment(100);
 		logo.setLayoutData (fd);
