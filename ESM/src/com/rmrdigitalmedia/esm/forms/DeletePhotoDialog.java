@@ -45,7 +45,7 @@ public class DeletePhotoDialog {
 	public boolean deleteOK(final String thumbPath, final String fullPath) {		
 
 		Display display = Display.getDefault();
-		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
+		final Shell dialog = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		dialog.setSize(250, 130);
 		dialog.setText("ESM Alert");
 		dialog.setImage(C.getImage(C.APP_ICON_16));

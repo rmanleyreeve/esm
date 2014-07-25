@@ -14,6 +14,7 @@ import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.LoginController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
+import com.rmrdigitalmedia.esm.views.HintAlert;
 
 public class EsmApplication {
 
@@ -25,7 +26,7 @@ public class EsmApplication {
 	public EsmApplication() {
 		me = this;
 		final Display display = new Display();
-		
+
 		// create log dir first
 		FilesystemController fs = new FilesystemController();
 		fs.createLogDir();
@@ -89,6 +90,11 @@ public class EsmApplication {
 		mb.setMessage(msg);
 		int returnCode = mb.open();
 		return (returnCode == 32);
+	}
+
+	public static void hint(String text) {
+		Shell sh = Display.getCurrent().getActiveShell();
+		new HintAlert(sh, text);
 	}
 
 	public static void appLogin(Shell loader) {

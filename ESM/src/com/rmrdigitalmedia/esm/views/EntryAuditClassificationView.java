@@ -127,7 +127,7 @@ public class EntryAuditClassificationView {
 		hint.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent arg0) {
-				EsmApplication.alert(text, C.HINT_TITLE);
+				EsmApplication.hint(text);
 			}
 		});
 		return hint;
