@@ -219,7 +219,7 @@ public class EntryAuditClassificationView {
 		lblStatus.setFont(C.FONT_12B);
 		lblStatus.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		lblStatus.setBackground(C.APP_BGCOLOR);
-		lblStatus.setText("Overall Classification");		
+		lblStatus.setText("Classification Progress");		
 
 		Label lblStatusImg = new Label(headerRow,SWT.NONE);
 		GridData gd_lblStatusImg = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
