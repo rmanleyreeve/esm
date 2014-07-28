@@ -262,7 +262,7 @@ public class SpaceAuditChecklistView {
 		lblStatus.setFont(C.FONT_12B);
 		lblStatus.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		lblStatus.setBackground(C.APP_BGCOLOR);
-		lblStatus.setText("Internal Space Completion");		
+		lblStatus.setText("Checklist Progress");		
 
 		Label lblStatusImg = new Label(headerRow,SWT.NONE);
 		GridData gd_lblStatusImg = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
@@ -270,6 +270,7 @@ public class SpaceAuditChecklistView {
 		lblStatusImg.setLayoutData(gd_lblStatusImg);
 		// progress image
 		final int progress = (Integer) EsmApplication.appData.getField("SPACE_CHK_"+spaceID);
+		//final int complete = AuditController.calculateSpaceCompletionStatus(spaceID);
 		lblStatusImg.setImage(C.getImage("Percent_"+progress+".png"));
 	
 		//table layout
@@ -968,10 +969,12 @@ public class SpaceAuditChecklistView {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				// save to DB
 				saveAudit(spaceID);
+				int _progress = (Integer) EsmApplication.appData.getField("SPACE_CHK_"+spaceID);
 				// next screen
-				if(progress<100) {
+				if(_progress<100) {
 					EsmApplication.alert("Checklist not completed!");
 					parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
+					WindowController.showSpaceAuditChecklist(spaceID);
 				} else {
 					WindowController.showSpaceAuditClassification(spaceID);
 				}
