@@ -509,7 +509,8 @@ public class EntryAuditClassificationView {
 		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnReturn.setBackground(C.APP_BGCOLOR);
 		btnReturn.setFont(C.FONT_11B);
-		btnReturn.setText("<< Back to Details");
+		btnReturn.setText("Back to Details");
+		btnReturn.setImage(C.getImage("back.png"));		
 		btnReturn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {

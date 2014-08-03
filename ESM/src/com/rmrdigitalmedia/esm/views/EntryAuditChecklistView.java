@@ -706,7 +706,8 @@ public class EntryAuditChecklistView {
 		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnReturn.setBackground(C.APP_BGCOLOR);
 		btnReturn.setFont(C.FONT_11B);
-		btnReturn.setText("<< Back to Details");
+		btnReturn.setText("Back to Details");
+		btnReturn.setImage(C.getImage("back.png"));		
 		btnReturn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -743,7 +744,7 @@ public class EntryAuditChecklistView {
 		btnProceed.setToolTipText("Save Checklist and go to Classification");
 		btnProceed.setBackground(C.APP_BGCOLOR);
 		btnProceed.setFont(C.FONT_11B);
-		btnProceed.setText("Entry Classification >>");
+		btnProceed.setText("Entry Classification");
 		btnProceed.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -811,6 +812,7 @@ public class EntryAuditChecklistView {
 				if(q4_radio1.getSelection()) { aRow.setQ4Value((String)q4_radio1.getData()); }
 				else if(q4_radio2.getSelection()) { aRow.setQ4Value((String)q4_radio2.getData()); }
 				else if(q4_radio3.getSelection()) { aRow.setQ4Value((String)q4_radio3.getData()); }
+				else if(q4_radio4.getSelection()) { aRow.setQ4Value((String)q4_radio4.getData()); }
 				else { aRow.setQ4Value(null); }
 				if(q4_col4.getText()!=null) aRow.setQ4Comments(q4_col4.getText());
 				//5

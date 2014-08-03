@@ -410,6 +410,67 @@ public class SpaceDetailView {
 		lblOverallCompletionImg.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
 		lblOverallCompletionImg.setBackground(C.APP_BGCOLOR);		
 
+		
+		// row 6 - print blank forms header ===============================================================
+		Group rowRight6 = new Group(compR, SWT.NONE);
+		rowRight6.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		GridLayout gl_rowRight6 = new GridLayout(3, false);
+		gl_rowRight6.marginBottom = 5;
+		gl_rowRight6.marginHeight = 0;
+		rowRight6.setLayout(gl_rowRight6);
+		rowRight6.setBackground(C.APP_BGCOLOR);
+
+		CLabel lblPrintDocs = new CLabel(rowRight6, SWT.NONE);
+		lblPrintDocs.setImage(C.getImage("print.png"));
+		lblPrintDocs.setFont(C.FONT_12B);
+		lblPrintDocs.setBackground(C.APP_BGCOLOR);
+		lblPrintDocs.setText("Print Audit Forms");	
+
+		final Button btnPrintSpaceDoc = new Button(rowRight6, SWT.NONE);
+		btnPrintSpaceDoc.setToolTipText("Print a blank Enclosed Space Audit form");
+		GridData gd_btnPrintSpaceDoc = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+		gd_btnPrintSpaceDoc.widthHint = 110;
+		gd_btnPrintSpaceDoc.verticalIndent = 3;
+		btnPrintSpaceDoc.setLayoutData(gd_btnPrintSpaceDoc);
+		btnPrintSpaceDoc.setText("Space Audit");
+		btnPrintSpaceDoc.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				File pdf =  new File(C.DOC_DIR + C.SEP + "blank_space_form.pdf");
+				if(!pdf.exists()) {
+					FilesystemController.createBlankSpaceForm();
+				}
+				if( Program.launch(pdf.getPath()) ) {
+					LogController.log("Opening blank Space Audit Form");
+				} else {
+					LogController.logEvent(me, C.ERROR, "Cannot open blank Space Audit Form!");
+				}
+			}
+		});		
+		
+		final Button btnPrintEntryDoc = new Button(rowRight6, SWT.NONE);
+		btnPrintEntryDoc.setToolTipText("Print a blank Entry Point Audit form");
+		GridData gd_btnPrintEntryDoc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_btnPrintEntryDoc.verticalIndent = 3;
+		btnPrintEntryDoc.setLayoutData(gd_btnPrintEntryDoc);
+		btnPrintEntryDoc.setText("Entry Point Audit");
+		btnPrintEntryDoc.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				File pdf =  new File(C.DOC_DIR + C.SEP + "blank_entry_form.pdf");
+				if(!pdf.exists()) {
+					FilesystemController.createBlankEntryForm();
+				}
+				if( Program.launch(pdf.getPath()) ) {
+					LogController.log("Opening blank Entry Audit Form");
+				} else {
+					LogController.logEvent(me, C.ERROR, "Cannot open blank Entry Audit Form!");
+				}
+			}
+		});
+
+		
+		
 		// row 2 - audit header & button bar	==========================================================================	
 		Group rowRight2 = new Group(compR, SWT.NONE);
 		rowRight2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -630,6 +691,7 @@ public class SpaceDetailView {
 		});
 		btnAddPhoto.setImage(C.getImage("photo-add.png"));
 		btnAddPhoto.setText("Add");
+		btnAddPhoto.setEnabled(user.getAccessLevel() >= 2);
 
 		// PHOTOS ===============================
 		String imgDir = C.IMG_DIR + C.SEP + spaceID + C.SEP;
@@ -707,8 +769,6 @@ public class SpaceDetailView {
 
 
 		// row 4 - docs header & button bar		
-		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
 
 		Group rowRight4 = new Group(compR, SWT.NONE);
 		rowRight4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -741,7 +801,8 @@ public class SpaceDetailView {
 			}
 		});
 		btnAddDoc.setImage(C.getImage("document-add.png"));
-		btnAddDoc.setText("Add");		
+		btnAddDoc.setText("Add");
+		btnAddDoc.setEnabled(user.getAccessLevel() >= 2);
 
 		// DOCS ===============================
 		final String docDir = C.DOC_DIR + C.SEP + spaceID + C.SEP;
@@ -790,8 +851,6 @@ public class SpaceDetailView {
 		} // endif files > 0	
 
 		// row 5 - signoff header 		
-		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
 
 		Group rowRight5 = new Group(compR, SWT.NONE);
 		rowRight5.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -857,66 +916,6 @@ public class SpaceDetailView {
 			}
 		});
 
-		// row 6 - print blank forms header 		
-		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
-
-		Group rowRight6 = new Group(compR, SWT.NONE);
-		rowRight6.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		GridLayout gl_rowRight6 = new GridLayout(3, false);
-		gl_rowRight6.marginBottom = 5;
-		gl_rowRight6.marginHeight = 0;
-		rowRight6.setLayout(gl_rowRight6);
-		rowRight6.setBackground(C.APP_BGCOLOR);
-
-		CLabel lblPrintDocs = new CLabel(rowRight6, SWT.NONE);
-		lblPrintDocs.setImage(C.getImage("print.png"));
-		lblPrintDocs.setFont(C.FONT_12B);
-		lblPrintDocs.setBackground(C.APP_BGCOLOR);
-		lblPrintDocs.setText("Print Audit Forms");	
-
-		final Button btnPrintSpaceDoc = new Button(rowRight6, SWT.NONE);
-		btnPrintSpaceDoc.setToolTipText("Print a blank Enclosed Space Audit form");
-		GridData gd_btnPrintSpaceDoc = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
-		gd_btnPrintSpaceDoc.widthHint = 110;
-		gd_btnPrintSpaceDoc.verticalIndent = 3;
-		btnPrintSpaceDoc.setLayoutData(gd_btnPrintSpaceDoc);
-		btnPrintSpaceDoc.setText("Space Audit");
-		btnPrintSpaceDoc.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				File pdf =  new File(C.DOC_DIR + C.SEP + "blank_space_form.pdf");
-				if(!pdf.exists()) {
-					FilesystemController.createBlankSpaceForm();
-				}
-				if( Program.launch(pdf.getPath()) ) {
-					LogController.log("Opening blank Space Audit Form");
-				} else {
-					LogController.logEvent(me, C.ERROR, "Cannot open blank Space Audit Form!");
-				}
-			}
-		});		
-		
-		final Button btnPrintEntryDoc = new Button(rowRight6, SWT.NONE);
-		btnPrintEntryDoc.setToolTipText("Print a blank Entry Point Audit form");
-		GridData gd_btnPrintEntryDoc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_btnPrintEntryDoc.verticalIndent = 3;
-		btnPrintEntryDoc.setLayoutData(gd_btnPrintEntryDoc);
-		btnPrintEntryDoc.setText("Entry Point Audit");
-		btnPrintEntryDoc.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				File pdf =  new File(C.DOC_DIR + C.SEP + "blank_entry_form.pdf");
-				if(!pdf.exists()) {
-					FilesystemController.createBlankEntryForm();
-				}
-				if( Program.launch(pdf.getPath()) ) {
-					LogController.log("Opening blank Entry Audit Form");
-				} else {
-					LogController.logEvent(me, C.ERROR, "Cannot open blank Entry Audit Form!");
-				}
-			}
-		});
 				
 		sep = new Label(compR, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		

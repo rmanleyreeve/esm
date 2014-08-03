@@ -124,7 +124,7 @@ public class PhotoViewer {
 				btnEditComment.setText("Edit Details");
 				btnEditComment.setToolTipText("Edit this comment");
 				btnEditComment.setFont(C.FONT_9);
-				btnEditComment.setImage(C.getImage("16_edit.png"));
+				btnEditComment.setImage(C.getImage("edit.png"));
 				btnEditComment.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {
@@ -163,7 +163,7 @@ public class PhotoViewer {
 				btnDeletePhoto.setLayoutData(gd_btnDeleteComment);
 				btnDeletePhoto.setToolTipText("Delete this photo and attached comments");
 				btnDeletePhoto.setFont(C.FONT_9);
-				btnDeletePhoto.setImage(C.getImage("16_delete.png"));
+				btnDeletePhoto.setImage(C.getImage("delete.png"));
 				btnDeletePhoto.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {

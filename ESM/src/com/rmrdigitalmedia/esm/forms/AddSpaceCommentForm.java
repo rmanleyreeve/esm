@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
@@ -149,7 +150,8 @@ public class AddSpaceCommentForm {
 						sRow.setAuthorID(authorID);
 						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
-						if( EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2 ) {
+						boolean unmod = (EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2);
+						if(unmod) {
 							sRow.setApproved("TRUE");
 						} else {
 							sRow.setApproved("FALSE");
@@ -158,6 +160,9 @@ public class AddSpaceCommentForm {
 						sRow.insert();
 						LogController.log("Space comment added to database.");		        
 						formOK = true;
+						if(!unmod) {
+							EsmApplication.alert("Your comment has been added and will be published when approved.");
+						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}					
