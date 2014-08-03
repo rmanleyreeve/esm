@@ -544,7 +544,7 @@ public class SpaceAuditClassificationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(q7_radio1.getSelection()) {
-					EsmApplication.alert("Be aware to check");
+					EsmApplication.alert("Be aware to check moving contents");
 					//new SpaceAlert(WindowController.getShell());	
 				}
 			}
@@ -554,7 +554,7 @@ public class SpaceAuditClassificationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(q8_radio1.getSelection()) {
-					EsmApplication.alert("Be aware to check");
+					EsmApplication.alert("Be aware to check rusty materials");
 					//new SpaceAlert(WindowController.getShell());
 				}
 			}
@@ -576,7 +576,8 @@ public class SpaceAuditClassificationView {
 		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnReturn.setBackground(C.APP_BGCOLOR);
 		btnReturn.setFont(C.FONT_11B);
-		btnReturn.setText("<< Back to Details");
+		btnReturn.setText("Back to Details");
+		btnReturn.setImage(C.getImage("back.png"));		
 		btnReturn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {

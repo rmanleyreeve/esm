@@ -929,7 +929,8 @@ public class SpaceAuditChecklistView {
 		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
 		btnReturn.setBackground(C.APP_BGCOLOR);
 		btnReturn.setFont(C.FONT_11B);
-		btnReturn.setText("<< Back to Details");
+		btnReturn.setImage(C.getImage("back.png"));		
+		btnReturn.setText("Back to Details");
 		btnReturn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -962,7 +963,7 @@ public class SpaceAuditChecklistView {
 		btnProceed.setToolTipText("Save Checklist and go to Classification");
 		btnProceed.setBackground(C.APP_BGCOLOR);
 		btnProceed.setFont(C.FONT_11B);
-		btnProceed.setText("Space Classification >>");
+		btnProceed.setText("Space Classification");
 		btnProceed.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {

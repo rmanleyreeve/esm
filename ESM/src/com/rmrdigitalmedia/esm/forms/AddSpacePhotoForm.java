@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
@@ -199,14 +200,18 @@ public class AddSpacePhotoForm {
 							pRow.setPath(path);
 							pRow.setCreatedDate(new Timestamp(new Date().getTime()));
 							pRow.setUpdateDate(new Timestamp(new Date().getTime()));
-							if( EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2 ) {
+							boolean unmod = (EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2);
+							if(unmod) {
 								pRow.setApproved("TRUE");
 							} else {
 								pRow.setApproved("FALSE");
 							}
 							pRow.setDeleted("FALSE");
 							pRow.insert();
-							LogController.log("Photo comment added to database.");		        
+							LogController.log("Photo comment added to database.");
+							if(!unmod) {
+								EsmApplication.alert("Your comment has been added and will be published when approved.");
+							}
 						} catch (Exception e1) {
 							LogController.logEvent(this, C.NOTICE, "Photo Comment upload", e1);
 						}		
