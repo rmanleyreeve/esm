@@ -230,8 +230,6 @@ public class SpaceDetailView {
 		});
 		btnAddComment.setImage(C.getImage("comment-add.png"));
 		btnAddComment.setText("Add");
-		new Label(row2, SWT.NONE);
-		new Label(row2, SWT.NONE);
 
 		// loop through and display comments in descending order	
 		try {
