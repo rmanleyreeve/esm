@@ -16,6 +16,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.AddUserForm;
@@ -162,6 +164,7 @@ public class AdministrationView {
 
 
 		// row 1 - vessel management		
+		String type = (String) EsmApplication.appData.getField("LOCATION_TYPE");
 		Group rowVessel = new Group(compL, SWT.NONE);
 		rowVessel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowVessel = new GridLayout(3, true);
@@ -177,10 +180,10 @@ public class AdministrationView {
 		lblVessel.setFont(C.FONT_12B);
 		lblVessel.setBackground(C.APP_BGCOLOR);
 		lblVessel.setImage(C.getImage("vessel.png"));
-		lblVessel.setText("Manage Vessel Info");	
+		lblVessel.setText("Manage " + type + " Info");	
 
 		Button btnAddVessel = new Button(rowVessel, SWT.NONE);
-		btnAddVessel.setToolTipText("Edit Vessel Information");
+		btnAddVessel.setToolTipText("Edit " + type + " Information");
 		GridData gd_btnAddVessel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
 		gd_btnAddVessel.verticalIndent = 3;
 		btnAddVessel.setLayoutData(gd_btnAddVessel);
@@ -189,20 +192,20 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				EditVesselForm evf = new EditVesselForm();					
 				if(evf.complete()) {
-					LogController.log("Vessel edited in database");
+					LogController.log("Vessel/Installation edited in database");
 					WindowController.setHeaderLabelText();
 					WindowController.showAdministration();				
 				}
 			}
 		});
 		btnAddVessel.setImage(C.getImage("edit.png"));
-		btnAddVessel.setText("Edit Vessel Info");
+		btnAddVessel.setText("Edit " + type + " Info");
 
 
 		// row 2 - user management		
 		Group rowUsers = new Group(compL, SWT.NONE);
 		rowUsers.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		GridLayout gl_rowUsers = new GridLayout(3, true);
+		GridLayout gl_rowUsers = new GridLayout(3, false);
 		gl_rowUsers.marginBottom = 5;
 		gl_rowUsers.marginHeight = 0;
 		rowUsers.setLayout(gl_rowUsers);
@@ -240,7 +243,6 @@ public class AdministrationView {
 
 		Label lblSelect = new Label(rowUsers, SWT.NONE);
 		lblSelect.setText("Manage Existing User:");
-		lblSelect.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 
 		final Combo comboUsers = new Combo(rowUsers, SWT.DROP_DOWN | SWT.READ_ONLY);
 		comboUsers.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
@@ -318,7 +320,7 @@ public class AdministrationView {
 		Label lblSpaceComments = new Label(rowComments, SWT.NONE);
 		lblSpaceComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
 		lblSpaceComments.setText("Space Comments Requiring Approval");
-		
+
 		final List listSpaceComments = new List(rowComments, SWT.BORDER | SWT.V_SCROLL);
 		GridData gd_listSpaceComments = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
 		SpaceCommentsTable.Row[] cRows = null;
@@ -345,8 +347,8 @@ public class AdministrationView {
 			gd_listSpaceComments.heightHint = (cRows.length * 20);
 		}
 		listSpaceComments.setLayoutData(gd_listSpaceComments);
-		
-		
+
+
 		final Button viewBtn = new Button(rowComments, SWT.NONE);
 		viewBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -358,35 +360,13 @@ public class AdministrationView {
 				} catch (SQLException ex) {
 					//
 				}
-				
+
 			}
 		});
 		viewBtn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		viewBtn.setAlignment(SWT.LEFT);
 		viewBtn.setEnabled(false);
 		viewBtn.setText("View Comment");
-
-		/*
-		Label lblEntrypointComments = new Label(rowComments, SWT.NONE);
-		lblEntrypointComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
-		lblEntrypointComments.setText("Entrypoint Comments Requiring Approval");
-		final List listEntrypointComments = new List(rowComments, SWT.BORDER | SWT.V_SCROLL);
-		listEntrypointComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
-		listEntrypointComments.setVisible(false);
-		refreshEntrypointCommentsList(listEntrypointComments);
-		listEntrypointComments.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-				int sel = listEntrypointComments.getSelectionIndex();
-				int id = (Integer) listEntrypointComments.getData(""+sel);
-				ApproveEntrypointCommentForm aecf = new ApproveEntrypointCommentForm(id);
-				if(aecf.complete()) {
-					EsmApplication.alert("The comment was approved!");
-					refreshEntrypointCommentsList(listEntrypointComments);
-				}
-			}
-		});
-		*/
 
 		listSpaceComments.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -404,15 +384,15 @@ public class AdministrationView {
 					EsmApplication.alert("The comment was approved!");
 					refreshSpaceCommentsList(listSpaceComments);
 				}
-				*/
+				 */
 			}
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				viewBtn.setEnabled(true);
 			}
 		});
-		
-		
+
+
 		Label lblPhotoComments = new Label(rowComments, SWT.NONE);
 		lblPhotoComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
 		lblPhotoComments.setText("Photo Comments Requiring Approval");
@@ -477,7 +457,52 @@ public class AdministrationView {
 		rowRight1.setLayout(gl_rowRight1);
 		rowRight1.setBackground(C.APP_BGCOLOR);
 
+		CLabel lblDB = new CLabel(rowRight1, SWT.NONE);
+		gd_lblVessel.widthHint = 120;
+		lblDB.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		lblDB.setFont(C.FONT_12B);
+		lblDB.setBackground(C.APP_BGCOLOR);
+		lblDB.setImage(C.getImage("db.png"));
+		lblDB.setText("Data Export Functions");	
 
+		
+		Button btnDump = new Button(rowRight1, SWT.NONE);
+		btnDump.setToolTipText("Create a complete backup of the database");
+		btnDump.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		btnDump.setText("Database Backup");
+		btnDump.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if (DatabaseController.dumpDatabase()) {
+					//Program.launch(C.TMP_DIR);
+					EsmApplication.alert("Backup completed successfully");
+				} else {
+					LogController.logEvent(this, C.ERROR, "Error dumping data");
+				}
+
+			}
+		});
+
+		Button btnExport = new Button(rowRight1, SWT.NONE);
+		btnExport.setToolTipText("Create a data export file to send by email");
+		btnExport.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		btnExport.setText("Data Export File");
+		btnExport.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if (DatabaseController.exportData()) {
+					EsmApplication.alert("Data Export file created successfully");
+					Program.launch(C.TMP_DIR);
+				} else {
+					LogController.logEvent(this, C.ERROR, "Error exporting data");
+				}
+
+			}
+		});
+
+		
+		
+		
 		scrollPanelRight.setContent(compR);
 		scrollPanelRight.setExpandVertical(true);
 		scrollPanelRight.setExpandHorizontal(true);
