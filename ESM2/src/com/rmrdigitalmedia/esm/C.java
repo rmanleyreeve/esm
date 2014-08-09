@@ -24,14 +24,14 @@ public final class C {
 	public static String INSTALL_DIR = (OS.equals("cocoa")) ? "Shared" : "All Users";
 	public static String SEP = (OS.equals("cocoa")) ? "/" : "\\";;
 	public static String DATA_DIR_NAME = "ESM Data";
-	public static String IMG_DIR_NAME = "images";
 	public static String DOC_DIR_NAME = "docs";
 	public static String LOG_DIR_NAME = "logs";
+	public static String TMP_DIR_NAME = "temp";
 	public static String USER_DOCS_DIR = new File(HOME_DIR).getParentFile().getAbsolutePath();
 	public static String DATA_DIR = USER_DOCS_DIR + SEP + INSTALL_DIR + SEP + DATA_DIR_NAME;
-	public static String IMG_DIR = DATA_DIR + SEP + IMG_DIR_NAME;
 	public static String DOC_DIR = DATA_DIR + SEP + DOC_DIR_NAME;
 	public static String LOG_DIR = DATA_DIR + SEP + LOG_DIR_NAME;
+	public static String TMP_DIR = DATA_DIR + SEP + TMP_DIR_NAME;
 
 	// database properties
 	public static String DB_NAME = "ESM";

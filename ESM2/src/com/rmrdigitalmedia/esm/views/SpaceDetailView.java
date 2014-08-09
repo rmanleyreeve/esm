@@ -1,6 +1,7 @@
 package com.rmrdigitalmedia.esm.views;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -46,6 +47,7 @@ import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
+import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
@@ -54,11 +56,13 @@ import com.rmrdigitalmedia.esm.forms.AddEntrypointForm;
 import com.rmrdigitalmedia.esm.forms.AddSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.AddSpacePhotoForm;
 import com.rmrdigitalmedia.esm.forms.ApproveSpaceCommentForm;
+import com.rmrdigitalmedia.esm.forms.DeleteDocumentDialog;
 import com.rmrdigitalmedia.esm.forms.DeleteEntrypointDialog;
 import com.rmrdigitalmedia.esm.forms.DeleteSpaceCommentDialog;
 import com.rmrdigitalmedia.esm.forms.EditEntrypointForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceForm;
+import com.rmrdigitalmedia.esm.models.DocDataTable;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
@@ -231,13 +235,15 @@ public class SpaceDetailView {
 		});
 		btnAddComment.setImage(C.getImage("comment-add.png"));
 		btnAddComment.setText("Add");
+		new Label(row2, SWT.NONE);
+		new Label(row2, SWT.NONE);
 
 		// loop through and display comments in descending order	
 		try {
 			for (final SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID + " ORDER BY ID DESC")) {
 
 				boolean canApprove = (!spaceComment.getApproved().equals("TRUE") && user.getAccessLevel()==9);
-				
+
 				if(spaceComment.getApproved().equals("TRUE") || canApprove){
 
 					Group commentRow = new Group(compL, SWT.NONE);
@@ -704,9 +710,12 @@ public class SpaceDetailView {
 
 		Button btnAddPhoto = new Button(rowRight3, SWT.NONE);
 		btnAddPhoto.setToolTipText("Add a new Photo for this Enclosed Space");
-		GridData gd_btnAddPhoto = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		GridData gd_btnAddPhoto = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnAddPhoto.verticalIndent = 3;
 		btnAddPhoto.setLayoutData(gd_btnAddPhoto);
+		btnAddPhoto.setImage(C.getImage("photo-add.png"));
+		btnAddPhoto.setText("Add");
+		btnAddPhoto.setEnabled(user.getAccessLevel() >= 2);
 		btnAddPhoto.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -717,19 +726,28 @@ public class SpaceDetailView {
 				}
 			}
 		});
-		btnAddPhoto.setImage(C.getImage("photo-add.png"));
-		btnAddPhoto.setText("Add");
-		btnAddPhoto.setEnabled(user.getAccessLevel() >= 2);
+
+		final Button btnOpenPhoto = new Button(rowRight3, SWT.NONE);
+		btnOpenPhoto.setAlignment(SWT.LEFT);
+		btnOpenPhoto.setToolTipText("View this Photo");
+		GridData gd_btnOpenPhoto = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_btnOpenPhoto.verticalIndent = 3;
+		btnOpenPhoto.setLayoutData(gd_btnOpenPhoto);
+		btnOpenPhoto.setText("View");
+		btnOpenPhoto.setEnabled(false);
+		btnOpenPhoto.setVisible(false);
 
 		// PHOTOS ===============================
-		String imgDir = C.IMG_DIR + C.SEP + spaceID + C.SEP;
-		final String imgDirFull =  imgDir + "full";
-		final String imgDirThumb = imgDir + "thumb";
-		new File(imgDir).mkdir();
-		new File(imgDirThumb).mkdir();
-		new File(imgDirFull).mkdir();
-		if (new File(imgDirThumb).listFiles().length > 0) {
+		PhotoMetadataTable.Row[] pRows = null;
+		try {
+			pRows = PhotoMetadataTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID);
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+		if (pRows.length > 0) {
 			// photos exist - show gallery
+			btnOpenPhoto.setVisible(true);
 			Composite gallHolder = new Composite(rowRight3, SWT.NONE);
 			GridData gd_gallHolder = new GridData(SWT.FILL, SWT.FILL, true, false);
 			gd_gallHolder.horizontalSpan = 3;
@@ -756,22 +774,15 @@ public class SpaceDetailView {
 			gallery.setItemRenderer(ir);
 
 			GalleryItem group = new GalleryItem(gallery, SWT.NONE);
-			for (File f:new File(imgDirThumb).listFiles()) {
-				String fn = f.getName();
-				String fp = f.toString();
-				LogController.log("Image found: " + fp);
-				try {
-					PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow("path", fp);
-					fn = pRow.getTitle();
-				} catch (SQLException ex) {
-					LogController.logEvent(me, C.WARNING, ex);
-				}
-				Image itemImage = C.getExtImage(fp);		
+
+			for (PhotoMetadataTable.Row pRow : pRows) {
+				int dataID = pRow.getDataID();
+				Image itemImage = DatabaseController.readImageDataThumb(dataID);	
 				if (itemImage != null) {
 					GalleryItem item = new GalleryItem(group, SWT.NONE);
 					item.setImage(itemImage);
-					item.setData("file", f.getName());
-					item.setText(fn); 
+					item.setData("id", dataID);
+					item.setText(pRow.getTitle()); 
 				}
 			}		
 			gallery.addMouseListener(new MouseListener() {
@@ -780,27 +791,38 @@ public class SpaceDetailView {
 					GalleryItem[] selection = gallery.getSelection();
 					if (selection == null)
 						return;
-					GalleryItem item = selection[0];			
-					String fullImg = imgDirFull + C.SEP +(String)item.getData("file");
-					String thumbImg = imgDirThumb + C.SEP +(String)item.getData("file");
-					LogController.log("Opening Image={" + fullImg + "}");
-					WindowController.showPhotoViewer(spaceID,fullImg, thumbImg);
-					//Program.launch(fullImg);					
+					GalleryItem item = selection[0];
+					int _dataID = (Integer) item.getData("id");
+					LogController.log("Opening Image={" + _dataID + "}");
+					WindowController.showPhotoViewer(_dataID);
 				}
 				@Override
-				public void mouseDown(MouseEvent e) {}
+				public void mouseDown(MouseEvent e) {
+					btnOpenPhoto.setEnabled(true);
+				}
 				@Override
 				public void mouseUp(MouseEvent e) {}
 			});
 
+			btnOpenPhoto.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent arg0) {
+					GalleryItem[] selection = gallery.getSelection();
+					if (selection == null)
+						return;
+					GalleryItem item = selection[0];
+					int _dataID = (Integer) item.getData("id");
+					LogController.log("Opening Image={" + _dataID + "}");
+					WindowController.showPhotoViewer(_dataID);					
+				}
+			});
+
 		} // endif files > 0
 
-
 		// row 4 - docs header & button bar		
-
 		Group rowRight4 = new Group(compR, SWT.NONE);
 		rowRight4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		GridLayout gl_rowRight4 = new GridLayout(3, false);
+		GridLayout gl_rowRight4 = new GridLayout(4, false);
 		gl_rowRight4.marginBottom = 5;
 		gl_rowRight4.marginHeight = 0;
 		rowRight4.setLayout(gl_rowRight4);
@@ -817,13 +839,13 @@ public class SpaceDetailView {
 
 		Button btnAddDoc = new Button(rowRight4, SWT.NONE);
 		btnAddDoc.setToolTipText("Add a new document for this Enclosed Space");
-		GridData gd_btnAddDoc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		GridData gd_btnAddDoc = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnAddDoc.verticalIndent = 3;
 		btnAddDoc.setLayoutData(gd_btnAddDoc);
 		btnAddDoc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(UploadController.uploadSpaceDocument(spaceID,null)) {
+				if(UploadController.uploadSpaceDocument(spaceID, user.getID())) {
 					WindowController.showSpaceDetail(spaceID);	
 				}
 			}
@@ -832,11 +854,37 @@ public class SpaceDetailView {
 		btnAddDoc.setText("Add");
 		btnAddDoc.setEnabled(user.getAccessLevel() >= 2);
 
+		final Button btnOpenDoc = new Button(rowRight4, SWT.NONE);
+		btnOpenDoc.setAlignment(SWT.LEFT);
+		btnOpenDoc.setToolTipText("View this document");
+		GridData gd_btnOpenDoc = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnOpenDoc.verticalIndent = 3;
+		btnOpenDoc.setLayoutData(gd_btnOpenDoc);
+		btnOpenDoc.setText("View");
+		btnOpenDoc.setEnabled(false);
+		//btnOpenDoc.setVisible(false);
+
+		final Button btnDeleteDoc = new Button(rowRight4, SWT.NONE);
+		btnDeleteDoc.setAlignment(SWT.LEFT);
+		btnDeleteDoc.setToolTipText("Delete this document");
+		GridData gd_btnDeleteDoc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_btnDeleteDoc.verticalIndent = 3;
+		btnDeleteDoc.setLayoutData(gd_btnDeleteDoc);
+		btnDeleteDoc.setText("Delete");
+		btnDeleteDoc.setEnabled(false);
+
 		// DOCS ===============================
-		final String docDir = C.DOC_DIR + C.SEP + spaceID + C.SEP;
-		new File(docDir).mkdir();
-		if (new File(docDir).listFiles().length > 0) {
+		DocDataTable.Row[] dRows = null;
+		try {
+			dRows = DocDataTable.getRows("SPACE_ID="+spaceID);
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+
+		if (dRows.length > 0) {
 			// docs exist - show table
+			btnDeleteDoc.setVisible(user.getAccessLevel()==9);
 			final Table table = new Table(rowRight4, SWT.NONE | SWT.FULL_SELECTION);
 			table.setLayout(new FillLayout());
 			table.setBackground(C.FIELD_BGCOLOR);
@@ -844,7 +892,7 @@ public class SpaceDetailView {
 			gd_table.grabExcessVerticalSpace = true;
 			gd_table.grabExcessHorizontalSpace=true;
 			gd_table.heightHint = 50;
-			gd_table.horizontalSpan = 3;
+			gd_table.horizontalSpan = 4;
 			table.setLayoutData(gd_table);
 			table.setToolTipText("Double-click a document link to open");
 			table.addListener(SWT.MeasureItem, new Listener() {
@@ -854,28 +902,76 @@ public class SpaceDetailView {
 				}
 			});
 			// show files
-			for (File f:new File(docDir).listFiles()) {
-				if(!f.isHidden()) {
-					LogController.log("Document found: " + f);
-					String ext = Files.getFileExtension(f.getName());			
-					ImageData iconData = Program.findProgram(ext).getImageData();
-					Image itemImage = new Image(Display.getCurrent(), iconData);
-					TableItem item = new TableItem(table, SWT.NONE); 
-					item.setBackground(C.FIELD_BGCOLOR);
-					item.setText(f.getName());
-					item.setImage(itemImage);
-				}
+			for (DocDataTable.Row dRow : dRows) {
+				int docID = dRow.getID();
+				String title = dRow.getTitle();
+				LogController.log("Document found: " + docID);
+				String ext = Files.getFileExtension(title);			
+				ImageData iconData = Program.findProgram(ext).getImageData();
+				Image itemImage = new Image(Display.getCurrent(), iconData);
+				TableItem item = new TableItem(table, SWT.NONE); 
+				item.setBackground(C.FIELD_BGCOLOR);
+				item.setText(title);
+				item.setData("id", docID);
+				item.setImage(itemImage);
 			}		
-			table.addListener(SWT.MouseDoubleClick, new Listener() {
+			table.addMouseListener(new MouseListener() {
 				@Override
-				public void handleEvent(Event e) {	
+				public void mouseDoubleClick(MouseEvent e) {
 					TableItem[] selection = table.getSelection();
-					String s = selection[0].getText();
-					LogController.log("Opening Document={" + s + "}");
-					String doc = docDir + C.SEP + s;
-					Program.launch(doc);
+					int id = (Integer) selection[0].getData("id");
+					LogController.log("Opening Document={" + id + "}");
+					try {
+						File f = DatabaseController.readDocument(id);
+						System.out.println(f);
+						Program.launch(f.getPath());
+						f.deleteOnExit();
+					} catch (IOException ex1) {
+						ex1.printStackTrace();
+					}
+				}
+				@Override
+				public void mouseDown(MouseEvent e) {	
+					btnOpenDoc.setEnabled(true);
+					btnDeleteDoc.setEnabled(true);
+				}
+				@Override
+				public void mouseUp(MouseEvent arg0) {
 				}
 			});
+
+			btnOpenDoc.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent arg0) {
+					TableItem[] selection = table.getSelection();
+					int id = (Integer) selection[0].getData("id");
+					LogController.log("Opening Document={" + id + "}");
+					try {
+						File f = DatabaseController.readDocument(id);
+						System.out.println(f);
+						Program.launch(f.getPath());
+						f.deleteOnExit();
+					} catch (IOException ex1) {
+						ex1.printStackTrace();
+					}
+				}
+			});
+			btnDeleteDoc.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent arg0) {
+					TableItem[] selection = table.getSelection();
+					int id = (Integer) selection[0].getData("id");
+					LogController.log("Deleting Document={" + id + "}");
+					DeleteDocumentDialog ddd = new DeleteDocumentDialog();
+					if(ddd.deleteOK(spaceID)) {
+						WindowController.showSpaceDetail(spaceID);	
+					}
+				}
+			});
+			
+		
+			
+			
 		} // endif files > 0	
 
 		// row 5 - signoff header 		

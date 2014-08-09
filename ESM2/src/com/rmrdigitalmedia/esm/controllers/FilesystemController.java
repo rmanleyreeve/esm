@@ -12,7 +12,7 @@ import com.rmrdigitalmedia.esm.EsmApplication;
 public class FilesystemController {
 
 	public static String current = System.getProperty("user.dir");
-	public static File datadir, imgdir, docdir, logdir;
+	public static File datadir, logdir, tmpdir, docdir, imgdir;
 
 	public FilesystemController() {
 	}
@@ -35,14 +35,6 @@ public class FilesystemController {
 
 		// create sub-dirs====================================
 		AppLoader.message("Creating System Directories");
-		imgdir = new File(C.IMG_DIR);
-		LogController.log("Images folder: " + imgdir);
-		if (imgdir.mkdir()) {
-			LogController.log("CREATED");
-		} else {
-			LogController.log("EXISTS");
-		}
-		EsmApplication.appData.setField("IMGDIR", imgdir);
 		docdir = new File(C.DOC_DIR);
 		LogController.log("Docs folder: " + docdir);
 		if (docdir.mkdir()) {
@@ -51,6 +43,14 @@ public class FilesystemController {
 			LogController.log("EXISTS");
 		}
 		EsmApplication.appData.setField("DOCDIR", docdir);
+		tmpdir = new File(C.TMP_DIR);
+		LogController.log("Temp folder: " + tmpdir);
+		if (tmpdir.mkdir()) {
+			LogController.log("CREATED");
+		} else {
+			LogController.log("EXISTS");
+		}
+		EsmApplication.appData.setField("TMPDIR", tmpdir);
 
 		LogController.log("File system integrity check complete");
 	}
