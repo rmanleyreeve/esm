@@ -72,11 +72,13 @@ public final class C {
 	public static String FONT = (OS.equals("cocoa")) ? "Lucida Grande" : "Arial";
 	private static int FONT_ADD = (OS.equals("cocoa")) ? 2 : 0;
 	public static Font BUTTON_FONT = SWTResourceManager.getFont(FONT, 9 + FONT_ADD, SWT.NORMAL);
-	public static Font HEADER_FONT = SWTResourceManager.getFont(FONT, 14 + FONT_ADD, SWT.NORMAL);
+	public static Font HEADER_FONT = SWTResourceManager.getFont(FONT, 13 + FONT_ADD, SWT.NORMAL);
 	public static Font FORM_HEADER_FONT = SWTResourceManager.getFont(FONT, 10 + FONT_ADD, SWT.BOLD);
 	public static Font FONT_8 = SWTResourceManager.getFont(FONT, 8 + FONT_ADD, SWT.NORMAL);
 	public static Font FONT_8B = SWTResourceManager.getFont(FONT, 8 + FONT_ADD, SWT.BOLD);
+	public static Font FONT_8i = SWTResourceManager.getFont(FONT, 8 + FONT_ADD, SWT.ITALIC);
 	public static Font FONT_9 = SWTResourceManager.getFont(FONT, 9 + FONT_ADD, SWT.NORMAL);
+	public static Font FONT_9i = SWTResourceManager.getFont(FONT, 9 + FONT_ADD, SWT.ITALIC);
 	public static Font FONT_9B = SWTResourceManager.getFont(FONT, 9 + FONT_ADD, SWT.BOLD);
 	public static Font FONT_10 = SWTResourceManager.getFont(FONT, 10 + FONT_ADD, SWT.NORMAL);
 	public static Font FONT_10B = SWTResourceManager.getFont(FONT, 10 + FONT_ADD, SWT.BOLD);

@@ -116,7 +116,6 @@ INSERT INTO VESSEL_TYPES (CATEGORY_ID, NAME, CREATED_DATE) VALUES (2, 'Gravity-b
 INSERT INTO VESSEL_TYPES (CATEGORY_ID, NAME, CREATED_DATE) VALUES (2, 'Spar Platform', CURRENT_TIMESTAMP());
 INSERT INTO VESSEL_TYPES (CATEGORY_ID, NAME, CREATED_DATE) VALUES (2, 'Condeep Platform', CURRENT_TIMESTAMP());
 
-
 CREATE TABLE LICENSE (
 	`LICENSEKEY` VARCHAR(20),
 	`VERIFIED_DATE` TIMESTAMP
@@ -257,7 +256,7 @@ INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Does the
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Is internal lighting fitted into the space?','If not, ensure that this is identified and portable lighting is made available to the entrants.',13);
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Are there any power points present in the space?','Identify the position of the power points as these may be needed e.g. to rig additional lighting. As with electrical cables, if damaged they could create a spark  or fire.',14);
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Is there potential for communications black spots (steel lined containers)?','Check within the space for ''black spots'' - if you identify some, a secondary means of communication must be put in place.',15);
-INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Would the enclosed space be able to accommodate a stretcher?','You need to know the length and width of your ships rescue stretcher and estimate whether or not that stretcher can be taken in and used. There is no point finding this out on an actual rescue situation.',16);
+INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Would the enclosed space be able to accommodate a stretcher?','You need to know the length and width of your ship''s rescue stretcher and estimate whether or not that stretcher can be taken in and used. There is no point finding this out on an actual rescue situation.',16);
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Can someone wearing a BA set move freely within the confined space?','For rescue purposes, you need to know in advance whether or not you can operate in the space wearing a BA, if not alternative arrangements need to be made.',17);
 
 CREATE TABLE SPACE_CHECKLIST_AUDIT (
@@ -428,7 +427,7 @@ CREATE TABLE ENTRYPOINT_CLASSIFICATION_QUESTIONS (
 );
 INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Do the physical dimensions and shape of the entry point make entering the enclosed space: Very difficult, Quite difficult, Not difficult?','Consider the location, angle of entry and any obstructions as identified in the audit.',1);
 INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Relating to vertical entries, can a winch be rigged and operated: No, Yes with difficulty, Yes without difficulty','Consider the location of the entry point, is their either a fixed point for anchoring a winch above the space or enough room to erect a temporary fixture such as the ships tripod or quadpod?',2);
-INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('In relation to casualty evacuation from the space. is there sufficient room for a stretcher to be able to be lifted vertically or removed horizontally from the space?','In the event that a casualty needs to be lifted from the space, could a stretcher be used vertically or horizontally. Have drills been conducted to test this procedure. If not discuss with your colleagues how this could be checked. You don’t want to leave it to find out in a real emergency.',3);
+INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('In relation to casualty evacuation from the space. is there sufficient room for a stretcher to be able to be lifted vertically or removed horizontally from the space?','In the event that a casualty needs to be lifted from the space, could a stretcher be used vertically or horizontally. Have drills been conducted to test this procedure. If not discuss with your colleagues how this could be checked. You don''t want to leave it to find out in a real emergency.',3);
 INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('When using radio communications inside the space please rate the signal strength and reception: 1 (poor) to 5 (excellent)','Consider the space overall. If you are not sure check with your colleagues as to what levels of radio communications are acceptable.',4);
 INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('According to your companies SMS, is provision made for an enclosed space rescue team at site?','If you do not know take the time to check your company SMS and see what provision is made for rescue teams.',5);
 INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('According to your companies SMS, is provision made for emergency equipment  at site?','If you do not know take the time to check your company SMS and see what provision is made for rescue equipment.',6);
@@ -457,9 +456,9 @@ ALTER TABLE ENTRYPOINT_CLASSIFICATION_AUDIT
 ADD FOREIGN KEY (ENTRYPOINT_ID) 
 REFERENCES ENTRYPOINTS(ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
-
 -- required for ORM entity framework
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('APPDATA', 0, 1);
+INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('DOC_DATA', 0, 1);
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('PHOTO_DATA', 0, 1);
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('PHOTO_METADATA', 0, 1);
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('SPACE_CHECKLIST_AUDIT', 0, 1);

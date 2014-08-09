@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 
@@ -105,6 +106,9 @@ public class DeleteEntrypointDialog {
 					entry.setDeleted("TRUE");
 					entry.update();
 					LogController.log("Marked entrypoint " + entryID + " as deleted");
+					EsmApplication.appData.deleteField("ENTRY_CHK_" + entryID);
+					EsmApplication.appData.deleteField("ENTRY_CLASS_" + entryID);	
+					EsmApplication.appData.deleteField("ENTRY_STATUS_" + entryID);	
 					formOK = true;
 				} catch (SQLException ex) {
 					LogController.logEvent(this, C.WARNING, ex);

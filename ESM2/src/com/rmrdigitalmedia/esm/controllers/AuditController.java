@@ -437,11 +437,11 @@ public class AuditController {
 			progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID);
 		} catch (Exception ex) {}
 		try {
-			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows("SPACE_ID", spaceID)) {
+			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID)) {
 				int epID = epRow.getID();
 				try {
-					progress += (Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID) ;
-					progress += (Integer) EsmApplication.appData.getField("ENTRY_CLASS_" + epID) ;
+					progress += (Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID);
+					progress += (Integer) EsmApplication.appData.getField("ENTRY_CLASS_" + epID);
 					num = num+2;
 				} catch (Exception ex) { System.out.println("appdata set EP FAILED " + epID); }
 			}

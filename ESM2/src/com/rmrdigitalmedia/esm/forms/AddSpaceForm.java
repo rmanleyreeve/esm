@@ -61,7 +61,7 @@ public class AddSpaceForm {
 		Display display = Display.getDefault();
 		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM);
 		this.myshell = shlVideotelEsm;
-		shlVideotelEsm.setSize(400, 420);
+		shlVideotelEsm.setSize(400, 430);
 		shlVideotelEsm.setText("Videotel ESM");
 		shlVideotelEsm.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
@@ -137,7 +137,12 @@ public class AddSpaceForm {
 		s_description.setLayoutData(gd_sdesc);		
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));		
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));	
+		Label lblHeader = new Label(form, SWT.WRAP);
+		lblHeader.setBackground(C.APP_BGCOLOR);
+		lblHeader.setText("NB: if there are multiple entry points, add details of the primary one; others can be added later.");
+		lblHeader.setFont(C.FONT_8i);
+		lblHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));		
 
 		Label lblEName = new Label(form, SWT.NONE);
 		lblEName.setBackground(C.APP_BGCOLOR);
@@ -222,6 +227,7 @@ public class AddSpaceForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shlVideotelEsm.setLocation (x, y);		  		
 		shlVideotelEsm.setDefaultButton (ok);		
+		new Label(form, SWT.NONE);
 
 		shlVideotelEsm.open ();
 		shlVideotelEsm.layout();

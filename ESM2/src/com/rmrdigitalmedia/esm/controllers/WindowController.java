@@ -51,7 +51,7 @@ public class WindowController {
 	}
 	static Display display;
 	int appHeight, appWidth;
-	static int headerH = 120;
+	static int headerH = 80;
 	int titleH = 40;
 	int footerH = 15;
 	Composite container, header, titleBar;
@@ -120,15 +120,15 @@ public class WindowController {
 
 	public static void setHeaderLabelText() {
 		String txt = "";
-		int offset = 25;
+		int offset = 10;
 		try {
-			txt = "Vessel: " + (String)EsmApplication.appData.getField("VESSEL") + "\n\n";
+			txt = (String)EsmApplication.appData.getField("LOCATION_TYPE") + ": " + (String)EsmApplication.appData.getField("LOCATION_NAME") + "\n";
 			offset += 10;
 		} catch (Exception e1) { }
 		txt += "Current User: " + displayName;
 		lblH.setText(txt);
 		FormData fd_lblH = new FormData();
-		fd_lblH.left = new FormAttachment(logo, 20);
+		fd_lblH.left = new FormAttachment(logo, 10);
 		fd_lblH.top = new FormAttachment((headerH/2)-offset);
 		lblH.setLayoutData(fd_lblH);
 	}
@@ -188,7 +188,7 @@ public class WindowController {
 
 		// set up row element positions =======================
 		FormData fd_header = new FormData();
-		fd_header.bottom = new FormAttachment(container, 100);
+		fd_header.bottom = new FormAttachment(0, 60);
 		fd_header.top = new FormAttachment(container,0);
 		fd_header.right = new FormAttachment(100,0);
 		fd_header.left = new FormAttachment(0,0);
@@ -200,7 +200,6 @@ public class WindowController {
 		fd_title.right = new FormAttachment(100,0);
 		fd_title.left = new FormAttachment(0,0);
 		titleBar.setLayoutData(fd_title);
-
 
 		// buttons ====================================================================================================
 
@@ -336,8 +335,8 @@ public class WindowController {
 		logo.setBackground(C.APP_BGCOLOR);
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0);
-		fd.height = 100;
-		fd.width = 200;
+		fd.height = 65;
+		fd.width = 120;
 		fd.left = new FormAttachment(0, 5);
 		fd.bottom = new FormAttachment(100);
 		logo.setLayoutData (fd);
@@ -354,11 +353,11 @@ public class WindowController {
 		lblMrmLogo.setBackground(C.APP_BGCOLOR);
 		FormData fd_lblmrmLogo = new FormData();
 		fd_lblmrmLogo.top = new FormAttachment(25);
-		fd_lblmrmLogo.right = new FormAttachment(100, -275);
+		fd_lblmrmLogo.right = new FormAttachment(100, -240);
 		lblMrmLogo.setLayoutData(fd_lblmrmLogo);
 
 		lblVtLogo = new Label(header, SWT.NONE);
-		lblVtLogo.setImage(C.getImage("vt_web_logo.png"));
+		lblVtLogo.setImage(C.getImage("vt_logo.png"));
 		lblVtLogo.setBackground(C.APP_BGCOLOR);
 		FormData fd_lblVtLogo = new FormData();
 		fd_lblVtLogo.top = new FormAttachment(25);
