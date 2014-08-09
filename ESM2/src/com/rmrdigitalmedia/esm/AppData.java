@@ -34,6 +34,10 @@ public class AppData {
 		this.data.put(field, value);
 	}
 
+	public void deleteField(String field) {
+		this.data.remove(field);
+	}
+
 	public String dump() {
 		LogController.log("APPDATA: " + this.data.toString());
 		return this.data.toString();

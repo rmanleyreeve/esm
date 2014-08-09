@@ -258,7 +258,8 @@ public class EditVesselForm {
 						vRow.update();
 						formOK = true;
 						LogController.log("Vessel updated in database");
-						EsmApplication.appData.setField("VESSEL",name.getText());
+						EsmApplication.appData.setField("LOCATION_NAME",name.getText());
+						EsmApplication.appData.setField("LOCATION_TYPE", category.getText());
 					} catch (Exception e1) {
 						LogController.logEvent(this, C.ERROR, e1);
 						//e1.printStackTrace();

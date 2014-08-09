@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
@@ -117,6 +118,9 @@ public class DeleteSpaceDialog {
 					space.setDeleted("TRUE");
 					space.update();
 					LogController.log("Marked space " + spaceID + " as deleted");
+					EsmApplication.appData.deleteField("SPACE_CHK_" + spaceID);
+					EsmApplication.appData.deleteField("SPACE_CLASS_" + spaceID);	
+					EsmApplication.appData.deleteField("SPACE_STATUS_" + spaceID);	
 					formOK = true;
 				} catch (SQLException ex) {
 					LogController.logEvent(this, C.WARNING, ex);

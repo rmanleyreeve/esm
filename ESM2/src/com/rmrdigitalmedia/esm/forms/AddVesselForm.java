@@ -63,7 +63,7 @@ public class AddVesselForm {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.myshell = shell;
-		shell.setSize(320, 400);
+		shell.setSize(360, 360);
 		shell.setText("ESM Setup");
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
@@ -98,7 +98,7 @@ public class AddVesselForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("ENTER VESSEL DETAILS");
+		lblTitle.setText("ENTER VESSEL/INSTALLATION DETAILS");
 
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -125,7 +125,7 @@ public class AddVesselForm {
 		lblName.setText("Name:");		
 		name = new Text(form, SWT.BORDER);
 		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_name.widthHint = 200;
+		gd_name.widthHint = 240;
 		name.setLayoutData(gd_name);
 		name.setFocus();
 
@@ -134,7 +134,7 @@ public class AddVesselForm {
 		lblIMO.setText("IMO:");		
 		imo = new Text(form, SWT.BORDER);
 		GridData gd_imo = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_imo.widthHint = 200;
+		gd_imo.widthHint = 240;
 		imo.setLayoutData(gd_imo);
 
 		Label lblCategory = new Label(form, SWT.NONE);
@@ -144,7 +144,7 @@ public class AddVesselForm {
 		category.add("Select...");
 		category.setData("Select...", 0);
 		GridData gd_category = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_category.widthHint = 200;
+		gd_category.widthHint = 240;
 		category.setLayoutData(gd_category);			
 		try {
 			for (VesselCategoriesTable.Row cRow : VesselCategoriesTable.getRows("DELETED=FALSE ORDER BY NAME ASC")) {
@@ -161,7 +161,7 @@ public class AddVesselForm {
 		lblSubType.setText("Type:");	;		
 		type = new Combo(form, SWT.DROP_DOWN);
 		GridData gd_type = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_type.widthHint = 200;
+		gd_type.widthHint = 240;
 		type.setLayoutData(gd_type);
 		type.setEnabled(false);
 
@@ -196,7 +196,7 @@ public class AddVesselForm {
 		owner = new Text(form, SWT.BORDER | SWT.MULTI);
 		GridData gd_owner = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_owner.heightHint = 60;
-		gd_owner.widthHint = 200;
+		gd_owner.widthHint = 240;
 		owner.setLayoutData(gd_owner);		
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -226,7 +226,8 @@ public class AddVesselForm {
 						row.insert();						
 						formOK = true;
 						LogController.log("Vessel added to database");
-						EsmApplication.appData.setField("VESSEL",name.getText());
+						EsmApplication.appData.setField("LOCATION_NAME",name.getText());
+						EsmApplication.appData.setField("LOCATION_TYPE", category.getText());
 					} catch (Exception e1) {
 						LogController.logEvent(this, C.ERROR, e1);
 					}					

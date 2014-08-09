@@ -194,15 +194,15 @@ public class AppLoader {
 				update(); // 80%
 
 				// check/set up new admin user
-				message("Checking Vessel Details");
+				message("Checking Vessel/Installation Details");
 				if (!DatabaseController.checkVessel()) {
 					// open admin user dialog
-					EsmApplication.alert(myshell, "Vessel info not found!");
-					AddVesselForm nvf = new AddVesselForm();
-					if (nvf.complete()) {
-						LogController.log("Vessel saved in database");
+					EsmApplication.alert(myshell, "Vessel/Installation info not found!");
+					AddVesselForm avf = new AddVesselForm();
+					if (avf.complete()) {
+						LogController.log("Vessel/Installation saved in database");
 					} else {
-						EsmApplication.alert("Vessel Info required. Exiting program...");
+						EsmApplication.alert("Vessel/Installation Info required. Exiting program...");
 						LogController.log(C.EXIT_MSG);
 						System.exit(0);
 					}

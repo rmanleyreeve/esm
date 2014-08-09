@@ -127,7 +127,7 @@ public class LoginController {
 		clbl_UserLogin.setLayoutData(rowData);
 		String txt = "";
 		try {
-			txt += (String) EsmApplication.appData.getField("VESSEL") + "\n";
+			txt += (String) EsmApplication.appData.getField("LOCATION_NAME") + "\n";
 		} catch (Exception e1) {
 		}
 		clbl_UserLogin.setText(txt + "User Login");

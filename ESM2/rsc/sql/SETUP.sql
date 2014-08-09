@@ -4,7 +4,6 @@
 -- cleanup
 DROP TABLE IF EXISTS APPDATA;
 DROP TABLE IF EXISTS ENTRYPOINTS;
-DROP TABLE IF EXISTS ENTRYPOINT_COMMENTS;
 DROP TABLE IF EXISTS ESM_USERS;
 DROP TABLE IF EXISTS LICENSE;
 DROP TABLE IF EXISTS SPACES;
@@ -13,6 +12,8 @@ DROP TABLE IF EXISTS VESSEL_CATEGORIES;
 DROP TABLE IF EXISTS VESSEL_TYPES;
 DROP TABLE IF EXISTS VESSEL;
 DROP TABLE IF EXISTS TABLEIDCOUNTERS;
+DROP TABLE IF EXISTS DOC_DATA;
+DROP TABLE IF EXISTS PHOTO_DATA;
 DROP TABLE IF EXISTS PHOTO_METADATA;
 DROP TABLE IF EXISTS SPACE_CHECKLIST_QUESTIONS;
 DROP TABLE IF EXISTS SPACE_CHECKLIST_AUDIT;
@@ -23,7 +24,7 @@ DROP TABLE IF EXISTS SPACE_CLASSIFICATION_AUDIT;
 DROP TABLE IF EXISTS ENTRYPOINT_CLASSIFICATION_QUESTIONS;
 DROP TABLE IF EXISTS ENTRYPOINT_CLASSIFICATION_AUDIT;
 
-
+-- required by ORM entity framework
 CREATE TABLE TABLEIDCOUNTERS (
 	`TABLENAME` VARCHAR(100),
 	COUNTER INT DEFAULT 0,
@@ -126,12 +127,14 @@ CREATE TABLE SPACES (
 	`NAME` VARCHAR(256) NOT NULL,
 	`DESCRIPTION` VARCHAR(4000),
 	`AUTHOR_ID` INT NOT NULL,
+	`SIGNED_OFF` BOOLEAN DEFAULT FALSE,
+	`SIGNOFF_ID` INT,
+	`SIGNOFF_DATE` TIMESTAMP,
 	`CREATED_DATE` TIMESTAMP NOT NULL,
 	`UPDATE_DATE` TIMESTAMP NOT NULL,
 	`DELETED` BOOLEAN DEFAULT FALSE,
 	PRIMARY KEY (ID)
 );
-
 ALTER TABLE SPACES
 ADD FOREIGN KEY (AUTHOR_ID) 
 REFERENCES ESM_USERS(ID) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -175,41 +178,50 @@ ALTER TABLE SPACE_COMMENTS
 ADD FOREIGN KEY (AUTHOR_ID) 
 REFERENCES ESM_USERS(ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
-CREATE TABLE PHOTO_METADATA (
+CREATE TABLE DOC_DATA (
 	`ID` INT AUTO_INCREMENT NOT NULL,
 	`SPACE_ID` INT NOT NULL,
 	`AUTHOR_ID` INT NOT NULL,
 	`TITLE` VARCHAR(128) NOT NULL,
-	`PATH` VARCHAR(256) NOT NULL,
+	`DATA` BLOB NOT NULL,
+	`CREATED_DATE` TIMESTAMP NOT NULL,
+	PRIMARY KEY (ID)
+);
+ALTER TABLE DOC_DATA
+ADD FOREIGN KEY (SPACE_ID) 
+REFERENCES SPACES(ID) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE DOC_DATA
+ADD FOREIGN KEY (AUTHOR_ID) 
+REFERENCES ESM_USERS(ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE PHOTO_DATA (
+	`ID` INT AUTO_INCREMENT NOT NULL,
+	`DATA_FULL` BLOB NOT NULL,
+	`DATA_THUMB` BLOB NOT NULL,
+	`CREATED_DATE` TIMESTAMP NOT NULL,
+	PRIMARY KEY (ID)
+);
+
+CREATE TABLE PHOTO_METADATA (
+	`ID` INT AUTO_INCREMENT NOT NULL,
+	`DATA_ID` INT NOT NULL,
+	`SPACE_ID` INT NOT NULL,
+	`AUTHOR_ID` INT NOT NULL,
+	`TITLE` VARCHAR(128) NOT NULL,
 	`COMMENT` VARCHAR(8000),
 	`CREATED_DATE` TIMESTAMP NOT NULL,
 	`UPDATE_DATE` TIMESTAMP NOT NULL,
-	`APPROVED` BOOLEAN DEFAULT FALSE,
+	`APPROVED` BOOLEAN DEFAULT TRUE,
 	`DELETED` BOOLEAN DEFAULT FALSE,
 	PRIMARY KEY (ID)
 );
+ALTER TABLE PHOTO_METADATA
+ADD FOREIGN KEY (DATA_ID) 
+REFERENCES PHOTO_DATA(ID) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE PHOTO_METADATA
 ADD FOREIGN KEY (SPACE_ID) 
 REFERENCES SPACES(ID) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE PHOTO_METADATA
-ADD FOREIGN KEY (AUTHOR_ID) 
-REFERENCES ESM_USERS(ID) ON DELETE CASCADE ON UPDATE CASCADE;
-
-CREATE TABLE ENTRYPOINT_COMMENTS (
-	`ID` INT AUTO_INCREMENT NOT NULL,
-	`ENTRYPOINT_ID` INT NOT NULL,
-	`AUTHOR_ID` INT NOT NULL,
-	`COMMENT` VARCHAR(8000),
-	`CREATED_DATE` TIMESTAMP NOT NULL,
-	`UPDATE_DATE` TIMESTAMP NOT NULL,
-	`APPROVED` BOOLEAN DEFAULT FALSE,
-	`DELETED` BOOLEAN DEFAULT FALSE,
-	PRIMARY KEY (ID)
-);
-ALTER TABLE ENTRYPOINT_COMMENTS
-ADD FOREIGN KEY (ENTRYPOINT_ID) 
-REFERENCES ENTRYPOINTS(ID) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE ENTRYPOINT_COMMENTS
 ADD FOREIGN KEY (AUTHOR_ID) 
 REFERENCES ESM_USERS(ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -219,6 +231,8 @@ CREATE TABLE APPDATA (
 	`VALUE` VARCHAR(2000) NOT NULL,
 	PRIMARY KEY (ID)
 );
+
+--- audit tables =============================================================
 
 CREATE TABLE SPACE_CHECKLIST_QUESTIONS (
 	`ID` INT AUTO_INCREMENT NOT NULL,
@@ -242,7 +256,7 @@ INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Does the
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Is internal lighting fitted into the space?','If not, ensure that this is identified and portable lighting is made available to the entrants.',13);
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Are there any power points present in the space?','Identify the position of the power points as these may be needed e.g. to rig additional lighting. As with electrical cables, if damaged they could create a spark  or fire.',14);
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Is there potential for communications black spots (steel lined containers)?','Check within the space for ''black spots'' - if you identify some, a secondary means of communication must be put in place.',15);
-INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Would the enclosed space be able to accommodate a stretcher?','You need to know the length and width of your ships rescue stretcher and estimate whether or not that stretcher can be taken in and used. There is no point finding this out on an actual rescue situation.',16);
+INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Would the enclosed space be able to accommodate a stretcher?','You need to know the length and width of your ship''s rescue stretcher and estimate whether or not that stretcher can be taken in and used. There is no point finding this out on an actual rescue situation.',16);
 INSERT INTO SPACE_CHECKLIST_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Can someone wearing a BA set move freely within the confined space?','For rescue purposes, you need to know in advance whether or not you can operate in the space wearing a BA, if not alternative arrangements need to be made.',17);
 
 CREATE TABLE SPACE_CHECKLIST_AUDIT (
@@ -413,7 +427,7 @@ CREATE TABLE ENTRYPOINT_CLASSIFICATION_QUESTIONS (
 );
 INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Do the physical dimensions and shape of the entry point make entering the enclosed space: Very difficult, Quite difficult, Not difficult?','Consider the location, angle of entry and any obstructions as identified in the audit.',1);
 INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('Relating to vertical entries, can a winch be rigged and operated: No, Yes with difficulty, Yes without difficulty','Consider the location of the entry point, is their either a fixed point for anchoring a winch above the space or enough room to erect a temporary fixture such as the ships tripod or quadpod?',2);
-INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('In relation to casualty evacuation from the space. is there sufficient room for a stretcher to be able to be lifted vertically or removed horizontally from the space?','In the event that a casualty needs to be lifted from the space, could a stretcher be used vertically or horizontally. Have drills been conducted to test this procedure. If not discuss with your colleagues how this could be checked. You don’t want to leave it to find out in a real emergency.',3);
+INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('In relation to casualty evacuation from the space. is there sufficient room for a stretcher to be able to be lifted vertically or removed horizontally from the space?','In the event that a casualty needs to be lifted from the space, could a stretcher be used vertically or horizontally. Have drills been conducted to test this procedure. If not discuss with your colleagues how this could be checked. You don''t want to leave it to find out in a real emergency.',3);
 INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('When using radio communications inside the space please rate the signal strength and reception: 1 (poor) to 5 (excellent)','Consider the space overall. If you are not sure check with your colleagues as to what levels of radio communications are acceptable.',4);
 INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('According to your companies SMS, is provision made for an enclosed space rescue team at site?','If you do not know take the time to check your company SMS and see what provision is made for rescue teams.',5);
 INSERT INTO ENTRYPOINT_CLASSIFICATION_QUESTIONS (Q_TEXT,Q_HINT,SEQUENCE) VALUES ('According to your companies SMS, is provision made for emergency equipment  at site?','If you do not know take the time to check your company SMS and see what provision is made for rescue equipment.',6);
@@ -426,20 +440,26 @@ CREATE TABLE ENTRYPOINT_CLASSIFICATION_AUDIT (
 	`Q1_COMMENTS` VARCHAR(2000),
 	`Q2_VALUE` INT(1) DEFAULT 0,
 	`Q2_COMMENTS` VARCHAR(2000),
-	`Q3_VALUE` INT(1) DEFAULT 0,
+	`Q3_BOOLEAN` VARCHAR(1),
 	`Q3_COMMENTS` VARCHAR(2000),
-	`Q4_BOOLEAN` VARCHAR(1),
+	`Q4_VALUE` INT(1) DEFAULT 0,
 	`Q4_COMMENTS` VARCHAR(2000),
-	`Q5_VALUE` INT(1) DEFAULT 0,
+	`Q5_BOOLEAN` VARCHAR(1),
 	`Q5_COMMENTS` VARCHAR(2000),
+	`Q6_BOOLEAN` VARCHAR(1),
+	`Q6_COMMENTS` VARCHAR(2000),
+	`Q7_VALUE` INT(1) DEFAULT 0,
+	`Q7_COMMENTS` VARCHAR(2000),
 	PRIMARY KEY (ID)
 );
 ALTER TABLE ENTRYPOINT_CLASSIFICATION_AUDIT
 ADD FOREIGN KEY (ENTRYPOINT_ID) 
 REFERENCES ENTRYPOINTS(ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- required for entity framework
+-- required for ORM entity framework
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('APPDATA', 0, 1);
+INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('DOC_DATA', 0, 1);
+INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('PHOTO_DATA', 0, 1);
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('PHOTO_METADATA', 0, 1);
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('SPACE_CHECKLIST_AUDIT', 0, 1);
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('SPACE_CLASSIFICATION_AUDIT', 0, 1);
@@ -449,6 +469,5 @@ INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('ESM_USERS', 0, 1
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('SPACES', 0, 1);
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('SPACE_COMMENTS', 0, 1);
 INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('ENTRYPOINTS', 0, 1);
-INSERT INTO TABLEIDCOUNTERS (TABLENAME, COUNTER, SKIP) VALUES ('ENTRYPOINT_COMMENTS', 0, 1);
 
 

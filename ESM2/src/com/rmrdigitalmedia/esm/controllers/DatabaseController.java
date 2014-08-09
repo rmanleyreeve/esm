@@ -36,6 +36,7 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.LicenseTable;
+import com.rmrdigitalmedia.esm.models.VesselCategoriesTable;
 import com.rmrdigitalmedia.esm.models.VesselTable;
 
 public class DatabaseController {
@@ -312,7 +313,7 @@ public class DatabaseController {
 
 	public static boolean checkVessel() {
 		boolean ok = false;
-		LogController.log("Checking Vessel Details...");
+		LogController.log("Checking Vessel/Installation Details...");
 		try {
 			VesselTable.Row[] rows = VesselTable.getAllRows();
 			LogController.log("checkVessel Row Count: " + rows.length);
@@ -320,8 +321,11 @@ public class DatabaseController {
 				VesselTable.Row row = rows[0];
 				ok = true;
 				String vName = row.getName();
-				LogController.log("Vessel " + vName + " Found");
-				EsmApplication.appData.setField("VESSEL", vName);
+				String tName = VesselCategoriesTable.getRow(row.getTypeID()).getName();
+				LogController.log("Vessel/Installation " + vName + " Found");
+				EsmApplication.appData.setField("LOCATION_NAME", vName);
+				EsmApplication.appData.setField("LOCATION_TYPE", tName);
+
 			} else {
 				LogController.log("Vessel NOT Found");
 			}
