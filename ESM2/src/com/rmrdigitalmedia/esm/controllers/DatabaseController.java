@@ -166,7 +166,7 @@ public class DatabaseController {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		System.out.println("Document inserted into DB OK");			
+		LogController.log("Document inserted into DB OK");			
 		return (int) id;
 	}
 
@@ -241,7 +241,7 @@ public class DatabaseController {
 			if (rs.next()) {
 				id = rs.getLong(1);
 			}			
-			System.out.println("Images inserted into DB OK");			
+			LogController.log("Images inserted into DB OK");			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -299,7 +299,7 @@ public class DatabaseController {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			ok = true;
-			System.out.println("Full DB Backup exported to " + fn);
+			LogController.log("Full DB Backup exported to " + fn);
 		} catch (SQLException ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
@@ -320,7 +320,7 @@ public class DatabaseController {
 		try {
 			org.h2.tools.Script.main(bkp);
 			ok = true;
-			System.out.println("SQL file exported to " + fn);
+			LogController.log("SQL file exported to " + fn);
 		} catch (SQLException ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();

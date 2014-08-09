@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm.controllers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
@@ -443,7 +442,9 @@ public class AuditController {
 					progress += (Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID);
 					progress += (Integer) EsmApplication.appData.getField("ENTRY_CLASS_" + epID);
 					num = num+2;
-				} catch (Exception ex) { System.out.println("appdata set EP FAILED " + epID); }
+				} catch (Exception ex) { 
+					LogController.logEvent(AuditController.class, C.ERROR, "appdata set EP FAILED " + epID); 
+				}
 			}
 		} catch (SQLException ex) {}
 		//System.out.println(progress + "/" + num);
