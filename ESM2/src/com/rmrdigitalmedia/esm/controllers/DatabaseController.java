@@ -290,6 +290,44 @@ public class DatabaseController {
 		return img;
 	}
 
+	public static boolean dumpDatabase() {
+		boolean ok = false;
+		try {
+			Connection conn = createConnection();
+			String fn = C.TMP_DIR + C.SEP + new Date().getTime() + "_dump.zip";
+			String sql = "BACKUP TO '" + fn + "';";
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(sql);
+			ok = true;
+			System.out.println("Exported to " + fn);
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+		return ok;
+	}
+
+	public static boolean exportData() {
+		boolean ok = false;
+		String fn = C.TMP_DIR + C.SEP + new Date().getTime() + "_export.zip";
+		String[] bkp = {
+				"-url", C.DB_CONN_STR, 
+				"-user", "sa", 
+				"-password","", 
+				"-script", fn, 
+				"-options", "compression", "zip"
+		};
+
+		try {
+			org.h2.tools.Script.main(bkp);
+			ok = true;
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+		return ok;
+	}
+
 	public static boolean checkAdmin() {
 		boolean ok = false;
 		LogController.log("Checking Admin User...");
