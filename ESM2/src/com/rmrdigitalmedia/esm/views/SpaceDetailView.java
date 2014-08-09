@@ -923,7 +923,6 @@ public class SpaceDetailView {
 					LogController.log("Opening Document={" + id + "}");
 					try {
 						File f = DatabaseController.readDocument(id);
-						System.out.println(f);
 						Program.launch(f.getPath());
 						f.deleteOnExit();
 					} catch (IOException ex1) {
@@ -948,7 +947,6 @@ public class SpaceDetailView {
 					LogController.log("Opening Document={" + id + "}");
 					try {
 						File f = DatabaseController.readDocument(id);
-						System.out.println(f);
 						Program.launch(f.getPath());
 						f.deleteOnExit();
 					} catch (IOException ex1) {
