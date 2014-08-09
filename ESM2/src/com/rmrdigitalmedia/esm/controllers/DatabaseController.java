@@ -299,7 +299,7 @@ public class DatabaseController {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			ok = true;
-			System.out.println("Exported to " + fn);
+			System.out.println("Full DB Backup exported to " + fn);
 		} catch (SQLException ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
@@ -317,10 +317,10 @@ public class DatabaseController {
 				"-script", fn, 
 				"-options", "compression", "zip"
 		};
-
 		try {
 			org.h2.tools.Script.main(bkp);
 			ok = true;
+			System.out.println("SQL file exported to " + fn);
 		} catch (SQLException ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
