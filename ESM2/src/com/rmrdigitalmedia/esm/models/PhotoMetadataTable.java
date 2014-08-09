@@ -52,7 +52,6 @@ public class PhotoMetadataTable
     public static final String spaceIDColumnName = "SPACE_ID";
     public static final String authorIDColumnName = "AUTHOR_ID";
     public static final String titleColumnName = "TITLE";
-    public static final String pathColumnName = "PATH";
     public static final String commentColumnName = "COMMENT";
     public static final String createdDateColumnName = "CREATED_DATE";
     public static final String updateDateColumnName = "UPDATE_DATE";
@@ -61,7 +60,7 @@ public class PhotoMetadataTable
 
     private static String[] allColumns =
     {
-        idColumnName , dataIDColumnName , spaceIDColumnName , authorIDColumnName , titleColumnName , pathColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , approvedColumnName , deletedColumnName , 
+        idColumnName , dataIDColumnName , spaceIDColumnName , authorIDColumnName , titleColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , approvedColumnName , deletedColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -246,7 +245,6 @@ public class PhotoMetadataTable
         private int spaceID ;
         private int authorID ;
         private String title ;
-        private String path ;
         private String comment ;
         private Timestamp createdDate ;
         private Timestamp updateDate ;
@@ -267,12 +265,11 @@ public class PhotoMetadataTable
                 this.spaceID =  Str.toInt( data[2] );
                 this.authorID =  Str.toInt( data[3] );
                 this.title = data[4];
-                this.path = data[5];
-                this.comment = data[6];
-                this.createdDate = Str.toTimestamp( data[7] );
-                this.updateDate = Str.toTimestamp( data[8] );
-                this.approved = data[9];
-                this.deleted = data[10];
+                this.comment = data[5];
+                this.createdDate = Str.toTimestamp( data[6] );
+                this.updateDate = Str.toTimestamp( data[7] );
+                this.approved = data[8];
+                this.deleted = data[9];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -334,17 +331,6 @@ public class PhotoMetadataTable
         public void setTitle( String title )
         {
             this.title = title ;
-        }
-
-
-        public String getPath()
-        {
-            return path ;
-        }
-
-        public void setPath( String path )
-        {
-            this.path = path ;
         }
 
 
@@ -418,7 +404,6 @@ public class PhotoMetadataTable
             data.put( spaceIDColumnName , String.valueOf(  this.spaceID ) );
             data.put( authorIDColumnName , String.valueOf(  this.authorID ) );
             data.put( titleColumnName , this.title );
-            data.put( pathColumnName , this.path );
             data.put( commentColumnName , this.comment );
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
             data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );

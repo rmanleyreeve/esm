@@ -5,16 +5,21 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 
@@ -139,6 +144,56 @@ public class DatabaseController {
 		return ok;
 	}
 
+	public static int insertDocument(File f, int spaceID, int authorID) throws FileNotFoundException {
+		long id = 0;
+		Connection conn = createConnection();
+		String sql = "INSERT INTO DOC_DATA (DATA, SPACE_ID, TITLE,AUTHOR_ID, CREATED_DATE) VALUES (?,?,?,?,?)";
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			InputStream is = new FileInputStream (f);
+			ps.setBinaryStream (1, is, (int)f.length());
+			ps.setInt(2, spaceID);
+			ps.setString(3, f.getName());
+			ps.setInt(4, authorID);
+			ps.setTimestamp(5, new Timestamp(new Date().getTime()));
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next()) {
+				id = rs.getLong(1);
+			}			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		System.out.println("Document inserted into DB OK");			
+		return (int) id;
+	}
+
+	public static File readDocument(int id) throws IOException {
+		Connection conn = createConnection();
+		File f = null;
+		try {
+			String sql = "SELECT DATA, TITLE FROM DOC_DATA WHERE ID=?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				String title = new Date().getTime() + "_" + rs.getString("TITLE");
+				Blob blob = rs.getBlob("DATA");
+				byte [] array = blob.getBytes( 1, ( int ) blob.length() );
+				f = new File(C.TMP_DIR + C.SEP + title);
+				FileOutputStream out = new FileOutputStream(f);
+				out.write(array);
+				out.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(conn);
+		}		
+		return f;
+	}
+
 	public static int insertImageData(File f) throws IOException {
 		long id = 0;
 		Connection conn = createConnection();
@@ -147,7 +202,7 @@ public class DatabaseController {
 		int srcH = bimg.getHeight();
 		OutputStream osF = new ByteArrayOutputStream();
 		try {
-			String sql = "INSERT INTO PHOTO_DATA (DATA_FULL, DATA_THUMB) VALUES (?,?)";
+			String sql = "INSERT INTO PHOTO_DATA (DATA_FULL, DATA_THUMB, CREATED_DATE) VALUES (?,?,?)";
 			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			InputStream is = null;
 			int l = 0;
@@ -163,7 +218,7 @@ public class DatabaseController {
 					LogController.logEvent(me, C.ERROR, "insert full image", ex);
 				}
 			} else {
-				is = new FileInputStream ( f );
+				is = new FileInputStream (f);
 				l = (int) f.length();
 			}
 			ps.setBinaryStream (1, is, l);
@@ -179,13 +234,13 @@ public class DatabaseController {
 				LogController.logEvent(me, C.ERROR, "insert thumbnail", ex);				
 			}
 			ps.setBinaryStream (2, is, l);
-			
+			ps.setTimestamp(3, new Timestamp(new Date().getTime()));
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				id = rs.getLong(1);
 			}			
-			System.out.println("Images inserted into Database OK");			
+			System.out.println("Images inserted into DB OK");			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -233,7 +288,7 @@ public class DatabaseController {
 		}		
 		return img;
 	}
-	
+
 	public static boolean checkAdmin() {
 		boolean ok = false;
 		LogController.log("Checking Admin User...");

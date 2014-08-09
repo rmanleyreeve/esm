@@ -1,6 +1,5 @@
 package com.rmrdigitalmedia.esm.forms;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -187,11 +186,6 @@ public class AddSpaceForm {
 						EsmApplication.appData.setField("SPACE_CHK_" + spaceID,0);
 						EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, 0);
 						EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, "red");
-						// create media directories
-						new File( C.DOC_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // docs						
-						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP ).mkdir(); // image base dir
-						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "full" + C.SEP ).mkdir(); // full
-						new File( C.IMG_DIR + C.SEP + spaceID + C.SEP + "thumb" + C.SEP).mkdir(); // thumbs
 						// create entry DB record
 						EntrypointsTable.Row epRow = EntrypointsTable.getRow();
 						epRow.setName(ep_name.getText());

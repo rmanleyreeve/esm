@@ -528,8 +528,8 @@ public class WindowController {
 		}
 		showSpaceDetail(spaceID);
 	}
-	public static void showPhotoViewer(int spaceID, String fullPath, String thumbPath) {
-		new PhotoViewer(shell, fullPath, thumbPath, spaceID);			
+	public static void showPhotoViewer(int dataID) {
+		new PhotoViewer(shell, dataID);			
 	}
 
 

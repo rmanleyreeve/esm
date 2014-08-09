@@ -17,27 +17,25 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.models.PhotoDataTable;
-import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
+import com.rmrdigitalmedia.esm.models.DocDataTable;
 
-public class DeletePhotoDialog {
+public class DeleteDocumentDialog {
 
 	private FormData fd_lblAProgramUpdate;
-	int commentID;
 	boolean formOK = false;
 
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			DeletePhotoDialog dpd = new DeletePhotoDialog();
-			dpd.deleteOK(0);
+			DeleteDocumentDialog ddd = new DeleteDocumentDialog();
+			ddd.deleteOK(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public DeletePhotoDialog() {
+	public DeleteDocumentDialog() {
 		LogController.log("Running class " + this.getClass().getName());		
 	}
 
@@ -57,7 +55,7 @@ public class DeletePhotoDialog {
 
 		Label lblAProgramUpdate = new Label (dialog, SWT.NONE);
 		lblAProgramUpdate.setFont(C.FONT_10);
-		lblAProgramUpdate.setText ("You are about to permanently delete this Photo.\nAre you sure you want to continue?");
+		lblAProgramUpdate.setText ("You are about to permanently delete this document.\nAre you sure you want to continue?");
 		FormData data;
 		fd_lblAProgramUpdate = new FormData ();
 		lblAProgramUpdate.setLayoutData (fd_lblAProgramUpdate);
@@ -94,18 +92,14 @@ public class DeletePhotoDialog {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
 				try {
-					PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow(id);
-					int dataID = pRow.getDataID();
-					PhotoDataTable.Row dRow = PhotoDataTable.getRow(dataID);
+					DocDataTable.Row dRow = DocDataTable.getRow(id);
 					dRow.delete();
-					LogController.log("Deleted photo " + dataID);
-					pRow.delete();
-					LogController.log("Deleted photo metadata " + id);
+					LogController.log("Deleted document " + id);
 					formOK = true;
 				} catch (SQLException ex) {
 					LogController.logEvent(this, C.ERROR, ex);
 					//ex.printStackTrace();
-					LogController.log("Error occurred deleting photo");
+					LogController.log("Error occurred deleting document");
 				}				
 				dialog.close();
 			}

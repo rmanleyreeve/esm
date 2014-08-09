@@ -1,5 +1,6 @@
 package com.rmrdigitalmedia.esm.forms;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -25,6 +26,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.UploadController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
@@ -185,19 +187,19 @@ public class AddSpacePhotoForm {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
 				Text[] fields = {p_title, p_comment,imgSelected}; Validation.validateFields(fields);				
-				String path = "";
+				int id = 0;
 				if( Validation.validateFields(fields) ) {
 					try {
-						path = UploadController.uploadSpaceImagePath(spaceID, new String[]{imgToUploadPath,imgToUploadName});
+						id = DatabaseController.insertImageData(new File(imgToUploadPath));
 					} catch (Exception ex) {}
-					if(!path.equals("")) {
+					if(id>0) {
 						try {
 							PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow();
 							pRow.setSpaceID(spaceID);
+							pRow.setDataID(id);
 							pRow.setTitle(p_title.getText());
 							pRow.setComment(p_comment.getText());
 							pRow.setAuthorID(authorID);
-							pRow.setPath(path);
 							pRow.setCreatedDate(new Timestamp(new Date().getTime()));
 							pRow.setUpdateDate(new Timestamp(new Date().getTime()));
 							boolean unmod = (EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2);
