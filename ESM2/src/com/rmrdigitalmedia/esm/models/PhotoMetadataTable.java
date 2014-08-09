@@ -1,14 +1,13 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import java.sql.Timestamp ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "PHOTO_METADATA".
  *
@@ -49,6 +48,7 @@ public class PhotoMetadataTable
     public static final String tableName = "PHOTO_METADATA";
 
     public static final String idColumnName = "ID";
+    public static final String dataIDColumnName = "DATA_ID";
     public static final String spaceIDColumnName = "SPACE_ID";
     public static final String authorIDColumnName = "AUTHOR_ID";
     public static final String titleColumnName = "TITLE";
@@ -61,7 +61,7 @@ public class PhotoMetadataTable
 
     private static String[] allColumns =
     {
-        idColumnName , spaceIDColumnName , authorIDColumnName , titleColumnName , pathColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , approvedColumnName , deletedColumnName , 
+        idColumnName , dataIDColumnName , spaceIDColumnName , authorIDColumnName , titleColumnName , pathColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , approvedColumnName , deletedColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -242,6 +242,7 @@ public class PhotoMetadataTable
         private boolean dataLoadedFromDatabase = false ;
 
         private int id ;
+        private int dataID ;
         private int spaceID ;
         private int authorID ;
         private String title ;
@@ -262,15 +263,16 @@ public class PhotoMetadataTable
             if ( data != null )
             {
                 this.id =  Str.toInt( data[0] );
-                this.spaceID =  Str.toInt( data[1] );
-                this.authorID =  Str.toInt( data[2] );
-                this.title = data[3];
-                this.path = data[4];
-                this.comment = data[5];
-                this.createdDate = Str.toTimestamp( data[6] );
-                this.updateDate = Str.toTimestamp( data[7] );
-                this.approved = data[8];
-                this.deleted = data[9];
+                this.dataID =  Str.toInt( data[1] );
+                this.spaceID =  Str.toInt( data[2] );
+                this.authorID =  Str.toInt( data[3] );
+                this.title = data[4];
+                this.path = data[5];
+                this.comment = data[6];
+                this.createdDate = Str.toTimestamp( data[7] );
+                this.updateDate = Str.toTimestamp( data[8] );
+                this.approved = data[9];
+                this.deleted = data[10];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -288,6 +290,17 @@ public class PhotoMetadataTable
         public void setID( int id )
         {
             this.id = id ;
+        }
+
+
+        public int getDataID()
+        {
+            return dataID ;
+        }
+
+        public void setDataID( int dataID )
+        {
+            this.dataID = dataID ;
         }
 
 
@@ -401,6 +414,7 @@ public class PhotoMetadataTable
         {
             Map data = new HashMap();
             data.put( idColumnName , String.valueOf(  this.id ) );
+            data.put( dataIDColumnName , String.valueOf(  this.dataID ) );
             data.put( spaceIDColumnName , String.valueOf(  this.spaceID ) );
             data.put( authorIDColumnName , String.valueOf(  this.authorID ) );
             data.put( titleColumnName , this.title );

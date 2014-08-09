@@ -1,7 +1,14 @@
 package com.rmrdigitalmedia.esm.controllers;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,6 +16,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.imageio.ImageIO;
+
+import net.coobird.thumbnailator.Thumbnails;
+
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 
 import com.google.common.base.Charsets;
@@ -105,8 +118,7 @@ public class DatabaseController {
 		}
 	}
 
-	// DB check methods using entity classes where
-	// possible==============================================
+	// DB methods using entity classes where possible==============================================
 
 	public static boolean verifyLogin(String username, String password) {
 		boolean ok = false;
@@ -127,6 +139,101 @@ public class DatabaseController {
 		return ok;
 	}
 
+	public static int insertImageData(File f) throws IOException {
+		long id = 0;
+		Connection conn = createConnection();
+		BufferedImage bimg = ImageIO.read(f);
+		int srcW = bimg.getWidth();
+		int srcH = bimg.getHeight();
+		OutputStream osF = new ByteArrayOutputStream();
+		try {
+			String sql = "INSERT INTO PHOTO_DATA (DATA_FULL, DATA_THUMB) VALUES (?,?)";
+			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			InputStream is = null;
+			int l = 0;
+			// full size image
+			if (srcW > C.IMG_WIDTH || srcH > C.IMG_HEIGHT) {
+				// larger image, resize
+				try {
+					Thumbnails.of(f).size(C.IMG_WIDTH, C.IMG_HEIGHT).toOutputStream(osF);
+					ByteArrayOutputStream baos = (ByteArrayOutputStream) osF;
+					is = new ByteArrayInputStream((baos).toByteArray());
+					l = baos.size();
+				} catch (IOException ex) { 
+					LogController.logEvent(me, C.ERROR, "insert full image", ex);
+				}
+			} else {
+				is = new FileInputStream ( f );
+				l = (int) f.length();
+			}
+			ps.setBinaryStream (1, is, l);
+			is = null;
+			// thumbs
+			OutputStream osT = new ByteArrayOutputStream();
+			try {
+				Thumbnails.of(f).size(C.THUMB_WIDTH, C.THUMB_HEIGHT).toOutputStream(osT);
+				ByteArrayOutputStream baos = (ByteArrayOutputStream) osT;
+				is = new ByteArrayInputStream((baos).toByteArray());
+				l = baos.size();
+			} catch (IOException ex) { 
+				LogController.logEvent(me, C.ERROR, "insert thumbnail", ex);				
+			}
+			ps.setBinaryStream (2, is, l);
+			
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next()) {
+				id = rs.getLong(1);
+			}			
+			System.out.println("Images inserted into Database OK");			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(conn);
+		}
+		return (int) id;
+	}
+
+	public static Image readImageDataFull(int id) {
+		Connection conn = createConnection();
+		Image img = null;
+		try {
+			String sql = "SELECT DATA_FULL FROM PHOTO_DATA WHERE ID=?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				InputStream is = rs.getBinaryStream("DATA_FULL");
+				img = new Image(Display.getCurrent(), is);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(conn);
+		}		
+		return img;
+	}
+
+	public static Image readImageDataThumb(int id) {
+		Connection conn = createConnection();
+		Image img = null;
+		try {
+			String sql = "SELECT DATA_THUMB FROM PHOTO_DATA WHERE ID=?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				InputStream is = rs.getBinaryStream("DATA_THUMB");
+				img = new Image(Display.getCurrent(), is);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(conn);
+		}		
+		return img;
+	}
+	
 	public static boolean checkAdmin() {
 		boolean ok = false;
 		LogController.log("Checking Admin User...");
