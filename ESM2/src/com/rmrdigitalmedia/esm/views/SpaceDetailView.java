@@ -709,7 +709,7 @@ public class SpaceDetailView {
 		lblPhotos.setText("Photos");	
 
 		Button btnAddPhoto = new Button(rowRight3, SWT.NONE);
-		btnAddPhoto.setToolTipText("Add a new Photo for this Enclosed Space");
+		btnAddPhoto.setToolTipText("Add a new photo for this Enclosed Space");
 		GridData gd_btnAddPhoto = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnAddPhoto.verticalIndent = 3;
 		btnAddPhoto.setLayoutData(gd_btnAddPhoto);
@@ -729,7 +729,7 @@ public class SpaceDetailView {
 
 		final Button btnOpenPhoto = new Button(rowRight3, SWT.NONE);
 		btnOpenPhoto.setAlignment(SWT.LEFT);
-		btnOpenPhoto.setToolTipText("View this Photo");
+		btnOpenPhoto.setToolTipText("View the selected photo");
 		GridData gd_btnOpenPhoto = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_btnOpenPhoto.verticalIndent = 3;
 		btnOpenPhoto.setLayoutData(gd_btnOpenPhoto);
@@ -765,7 +765,7 @@ public class SpaceDetailView {
 			gr.setItemWidth(150);
 			gr.setAutoMargin(true);
 			gallery.setGroupRenderer(gr);
-			gallery.setToolTipText("Double-click a thumbnail image to open larger size");
+			gallery.setToolTipText("Double-click a thumbnail image to open full size view");
 
 			DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
 			ir.setShowRoundedSelectionCorners(false);
@@ -854,7 +854,7 @@ public class SpaceDetailView {
 
 		final Button btnOpenDoc = new Button(rowRight4, SWT.NONE);
 		btnOpenDoc.setAlignment(SWT.LEFT);
-		btnOpenDoc.setToolTipText("View this document");
+		btnOpenDoc.setToolTipText("View the selected document");
 		GridData gd_btnOpenDoc = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnOpenDoc.verticalIndent = 3;
 		btnOpenDoc.setLayoutData(gd_btnOpenDoc);
@@ -915,7 +915,7 @@ public class SpaceDetailView {
 				public void mouseDoubleClick(MouseEvent e) {
 					TableItem[] selection = table.getSelection();
 					int id = (Integer) selection[0].getData("id");
-					LogController.log("Opening Document={" + id + "}");
+					LogController.log("Opening Document " + id);
 					try {
 						File f = DatabaseController.readDocument(id);
 						Program.launch(f.getPath());
@@ -938,7 +938,7 @@ public class SpaceDetailView {
 				public void widgetSelected(SelectionEvent arg0) {
 					TableItem[] selection = table.getSelection();
 					int id = (Integer) selection[0].getData("id");
-					LogController.log("Opening Document={" + id + "}");
+					LogController.log("Opening Document " + id);
 					try {
 						File f = DatabaseController.readDocument(id);
 						Program.launch(f.getPath());
@@ -953,7 +953,7 @@ public class SpaceDetailView {
 				public void widgetSelected(SelectionEvent arg0) {
 					TableItem[] selection = table.getSelection();
 					int id = (Integer) selection[0].getData("id");
-					LogController.log("Deleting Document={" + id + "}");
+					LogController.log("Deleting Document " + id);
 					DeleteDocumentDialog ddd = new DeleteDocumentDialog();
 					if(ddd.deleteOK(spaceID)) {
 						WindowController.showSpaceDetail(spaceID);	
