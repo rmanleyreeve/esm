@@ -44,7 +44,7 @@ public class EditPhotoMetadataForm {
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			EditPhotoMetadataForm epmf = new EditPhotoMetadataForm(1);
+			EditPhotoMetadataForm epmf = new EditPhotoMetadataForm(PhotoMetadataTable.getAllRows()[0].getID());
 			epmf.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -62,7 +62,7 @@ public class EditPhotoMetadataForm {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM);
 		this.myshell = shell;
-		shell.setSize(400, 280);
+		shell.setSize(500, 280);
 		shell.setText("Videotel ESM");
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
@@ -131,9 +131,12 @@ public class EditPhotoMetadataForm {
 		p_title = new Text(form, SWT.BORDER);
 		p_title.setText(pRow.getTitle());
 		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_name.widthHint = 230;
+		gd_name.widthHint = 400;
 		p_title.setLayoutData(gd_name);
 		p_title.setFocus();
+
+		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));		
 
 		Label lblSDesc = new Label(form, SWT.NONE);
 		lblSDesc.setBackground(C.APP_BGCOLOR);
@@ -142,7 +145,7 @@ public class EditPhotoMetadataForm {
 		p_comment.setText(pRow.getComment());
 		GridData gd_sdesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_sdesc.heightHint = 80;
-		gd_sdesc.widthHint = 230;
+		gd_sdesc.widthHint = 400;
 		p_comment.setLayoutData(gd_sdesc);
 
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -186,6 +189,7 @@ public class EditPhotoMetadataForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shell.setLocation (x, y);		  		
 		shell.setDefaultButton (ok);		
+		new Label(form, SWT.NONE);
 
 		shell.open ();
 		shell.layout();

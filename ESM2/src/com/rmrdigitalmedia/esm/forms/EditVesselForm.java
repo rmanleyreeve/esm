@@ -64,7 +64,7 @@ public class EditVesselForm {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.myshell = shell;
-		shell.setSize(320, 400);
+		shell.setSize(360, 360);
 		shell.setText("ESM Setup");
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
@@ -99,7 +99,7 @@ public class EditVesselForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("ENTER VESSEL DETAILS");
+		lblTitle.setText("EDIT VESSEL/INSTALLATION DETAILS");
 
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -132,7 +132,7 @@ public class EditVesselForm {
 		lblName.setText("Name:");		
 		name = new Text(form, SWT.BORDER);
 		GridData gd_name = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_name.widthHint = 200;
+		gd_name.widthHint = 240;
 		name.setLayoutData(gd_name);
 		name.setText(vRow.getName());
 
@@ -141,7 +141,7 @@ public class EditVesselForm {
 		lblIMO.setText("IMO:");		
 		imo = new Text(form, SWT.BORDER);
 		GridData gd_imo = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_imo.widthHint = 200;
+		gd_imo.widthHint = 240;
 		imo.setLayoutData(gd_imo);
 		imo.setText(vRow.getImoNumber());
 
@@ -152,7 +152,7 @@ public class EditVesselForm {
 		category.add("Select...");
 		category.setData("Select...", 0);
 		GridData gd_category = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_category.widthHint = 200;
+		gd_category.widthHint = 240;
 		category.setLayoutData(gd_category);
 		int cat_id = 0;
 		try {
@@ -180,7 +180,7 @@ public class EditVesselForm {
 		lblSubType.setText("Type:");	;		
 		type = new Combo(form, SWT.DROP_DOWN);
 		GridData gd_type = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_type.widthHint = 200;
+		gd_type.widthHint = 240;
 		type.setLayoutData(gd_type);
 		type.add("Select...");
 		type.setData("Select...", 0);				
@@ -230,7 +230,7 @@ public class EditVesselForm {
 		owner = new Text(form, SWT.BORDER | SWT.MULTI);
 		GridData gd_owner = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_owner.heightHint = 60;
-		gd_owner.widthHint = 200;
+		gd_owner.widthHint = 240;
 		owner.setLayoutData(gd_owner);	
 		owner.setText(vRow.getOwner());
 
