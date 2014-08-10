@@ -99,7 +99,8 @@ public class LogController {
 		} catch (Exception ex) {
 			System.out.println(ex.toString());
 		}
-		System.out.println(msg); // TODO for development debugging ONLY
+		// TODO for development debugging ONLY
+		System.out.println(msg); 
 
 	}
 

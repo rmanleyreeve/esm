@@ -169,7 +169,7 @@ public class LoginController {
 		txt_Password.setLayoutData(rowData_4);
 		txt_Password.setEchoChar('*');
 
-		//TODO for development
+		//TODO for development ONLY
 		txt_Username.setText("admin");
 		txt_Password.setText("pass");
 
