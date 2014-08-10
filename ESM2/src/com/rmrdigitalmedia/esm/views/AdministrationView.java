@@ -321,7 +321,7 @@ public class AdministrationView {
 
 		Label lblSpaceComments = new Label(rowComments, SWT.NONE);
 		lblSpaceComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
-		lblSpaceComments.setText("Space Comments Requiring Approval");
+		lblSpaceComments.setText("Space Comments Requiring Approval:");
 
 		final List listSpaceComments = new List(rowComments, SWT.BORDER | SWT.V_SCROLL);
 		GridData gd_listSpaceComments = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
@@ -397,7 +397,7 @@ public class AdministrationView {
 
 		Label lblPhotoComments = new Label(rowComments, SWT.NONE);
 		lblPhotoComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
-		lblPhotoComments.setText("Photo Comments Requiring Approval");
+		lblPhotoComments.setText("Photo Comments Requiring Approval:");
 		final List listPhotoComments = new List(rowComments, SWT.BORDER | SWT.V_SCROLL);
 		listPhotoComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
 		listPhotoComments.setVisible(false);
