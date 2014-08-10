@@ -1,5 +1,6 @@
 package com.rmrdigitalmedia.esm.views;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
+import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.AddUserForm;
@@ -140,7 +142,7 @@ public class AdministrationView {
 		}
 	}
 
-	public static void buildPage(Composite parent) {
+	public static void buildPage(final Composite parent) {
 
 		for (Control c : parent.getChildren()) {
 			c.dispose();
@@ -465,10 +467,10 @@ public class AdministrationView {
 		lblDB.setImage(C.getImage("db.png"));
 		lblDB.setText("Data Export Functions");	
 
-		
+
 		Button btnDump = new Button(rowRight1, SWT.NONE);
 		btnDump.setToolTipText("Create a complete backup of the database");
-		btnDump.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		btnDump.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		btnDump.setText("Database Backup");
 		btnDump.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -482,10 +484,13 @@ public class AdministrationView {
 
 			}
 		});
+		Label lblDump = new Label(rowRight1, SWT.NONE);
+		lblDump.setText("Create a complete backup of the database");
+		lblDump.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 
 		Button btnExport = new Button(rowRight1, SWT.NONE);
 		btnExport.setToolTipText("Create a data export file to send by email");
-		btnExport.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		btnExport.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		btnExport.setText("Data Export File");
 		btnExport.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -499,10 +504,36 @@ public class AdministrationView {
 
 			}
 		});
+		Label lblExport = new Label(rowRight1, SWT.NONE);
+		lblExport.setText("Generate a data export file to send by email");
+		lblExport.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 
-		
-		
-		
+		Button btnSend = new Button(rowRight1, SWT.NONE);
+		btnSend.setText("Send Data");
+		btnSend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
+		btnSend.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
+				File f = DatabaseController.exportDataFile();
+				if (f.exists() && InternetController.checkNetAccess()) {					
+					if(InternetController.uploadFileFTP(f.getPath(), f.getName())) {
+						EsmApplication.alert("File uploaded successfully");
+						parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
+					} else {
+						LogController.logEvent(this, C.ERROR, "Error uploading file");
+					}					
+				} else {
+					LogController.logEvent(this, C.ERROR, "No net access or file missing");
+				}
+
+			}
+		});
+		Label lblSend = new Label(rowRight1, SWT.NONE);
+		lblSend.setText("Send data export to Videotel server");
+		lblSend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
+
+
 		scrollPanelRight.setContent(compR);
 		scrollPanelRight.setExpandVertical(true);
 		scrollPanelRight.setExpandHorizontal(true);

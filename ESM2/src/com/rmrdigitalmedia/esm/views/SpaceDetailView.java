@@ -791,7 +791,7 @@ public class SpaceDetailView {
 						return;
 					GalleryItem item = selection[0];
 					int _dataID = (Integer) item.getData("id");
-					LogController.log("Opening Image={" + _dataID + "}");
+					LogController.log("Opening Image " + _dataID);
 					WindowController.showPhotoViewer(_dataID);
 				}
 				@Override
@@ -810,12 +810,12 @@ public class SpaceDetailView {
 						return;
 					GalleryItem item = selection[0];
 					int _dataID = (Integer) item.getData("id");
-					LogController.log("Opening Image={" + _dataID + "}");
+					LogController.log("Opening Image " + _dataID);
 					WindowController.showPhotoViewer(_dataID);					
 				}
 			});
 
-		} // endif files > 0
+		} // endif photos > 0
 
 		// row 4 - docs header & button bar		
 		Group rowRight4 = new Group(compR, SWT.NONE);
@@ -860,7 +860,6 @@ public class SpaceDetailView {
 		btnOpenDoc.setLayoutData(gd_btnOpenDoc);
 		btnOpenDoc.setText("View");
 		btnOpenDoc.setEnabled(false);
-		//btnOpenDoc.setVisible(false);
 
 		final Button btnDeleteDoc = new Button(rowRight4, SWT.NONE);
 		btnDeleteDoc.setAlignment(SWT.LEFT);
@@ -901,7 +900,7 @@ public class SpaceDetailView {
 			for (DocDataTable.Row dRow : dRows) {
 				int docID = dRow.getID();
 				String title = dRow.getTitle();
-				LogController.log("Document found: " + docID);
+				//LogController.log("Document found: " + docID);
 				String ext = Files.getFileExtension(title);			
 				ImageData iconData = Program.findProgram(ext).getImageData();
 				Image itemImage = new Image(Display.getCurrent(), iconData);
@@ -934,7 +933,6 @@ public class SpaceDetailView {
 				public void mouseUp(MouseEvent arg0) {
 				}
 			});
-
 			btnOpenDoc.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent arg0) {
@@ -963,13 +961,9 @@ public class SpaceDetailView {
 				}
 			});
 			
-		
-			
-			
-		} // endif files > 0	
+		} // endif docs > 0	
 
 		// row 5 - signoff header 		
-
 		Group rowRight5 = new Group(compR, SWT.NONE);
 		rowRight5.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowRight5 = new GridLayout(3, false);
