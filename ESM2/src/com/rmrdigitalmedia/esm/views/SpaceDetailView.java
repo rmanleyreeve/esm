@@ -79,7 +79,7 @@ public class SpaceDetailView {
 	private static String df(Timestamp ts) {
 		SimpleDateFormat d = new SimpleDateFormat("dd - MM - yyyy");
 		SimpleDateFormat t = new SimpleDateFormat("kk:mm");
-		return new String( "Date: " + d.format(ts) + "  Time:" + t.format(ts) );
+		return new String( "Date: " + d.format(ts) + "  Time: " + t.format(ts) );
 	}
 
 
@@ -283,7 +283,7 @@ public class SpaceDetailView {
 					lblPosted.setFont(C.FONT_9);
 					lblPosted.setBackground(C.APP_BGCOLOR);
 					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
-					lblPosted.setText("Posted " + sdf.format(spaceComment.getUpdateDate()));
+					lblPosted.setText("Posted: " + sdf.format(spaceComment.getUpdateDate()));
 
 					if( user.getAccessLevel()==9 || user.getID()==author.getID())	{	
 						Button btnEditComment = new Button(commentRow, SWT.NONE);
