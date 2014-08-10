@@ -467,10 +467,8 @@ public class AdministrationView {
 		lblDB.setImage(C.getImage("db.png"));
 		lblDB.setText("Data Export Functions");	
 
-
+		// db dump
 		Button btnDump = new Button(rowRight1, SWT.NONE);
-		btnDump.setToolTipText("Create a complete backup of the database");
-		btnDump.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		btnDump.setText("Database Backup");
 		btnDump.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -486,11 +484,10 @@ public class AdministrationView {
 		});
 		Label lblDump = new Label(rowRight1, SWT.NONE);
 		lblDump.setText("Create a complete backup of the database");
-		lblDump.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
-
+		btnDump.setToolTipText(lblDump.getText());
+		
+		// create local file
 		Button btnExport = new Button(rowRight1, SWT.NONE);
-		btnExport.setToolTipText("Create a data export file to send by email");
-		btnExport.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		btnExport.setText("Data Export File");
 		btnExport.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -505,34 +502,42 @@ public class AdministrationView {
 			}
 		});
 		Label lblExport = new Label(rowRight1, SWT.NONE);
-		lblExport.setText("Generate a data export file to send by email");
-		lblExport.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
-
+		lblExport.setText("Generate a data export file to send manually by email");
+		btnExport.setToolTipText(lblExport.getText());
+		
+		// create file and ftp to server
 		Button btnSend = new Button(rowRight1, SWT.NONE);
-		btnSend.setText("Send Data");
-		btnSend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
+		btnSend.setText("Send Data File");
 		btnSend.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
-				File f = DatabaseController.exportDataFile();
-				if (f.exists() && InternetController.checkNetAccess()) {					
-					if(InternetController.uploadFileFTP(f.getPath(), f.getName())) {
-						EsmApplication.alert("File uploaded successfully");
-						parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
+				if (InternetController.checkNetAccess()) {
+					File f = DatabaseController.exportDataFile();
+					if (f.exists()) {					
+						if(InternetController.uploadFileFTP(f.getPath(), f.getName())) {
+							EsmApplication.alert("File uploaded successfully");
+						} else {
+							LogController.logEvent(this, C.ERROR, "Error uploading file");
+						}					
 					} else {
-						LogController.logEvent(this, C.ERROR, "Error uploading file");
-					}					
+						LogController.logEvent(this, C.ERROR, "Data file missing");
+					}
 				} else {
-					LogController.logEvent(this, C.ERROR, "No net access or file missing");
+					LogController.logEvent(this, C.ERROR, "No internet connection for FTP export");
+					EsmApplication.alert("ERROR: No Internet connection");
 				}
-
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 			}
 		});
 		Label lblSend = new Label(rowRight1, SWT.NONE);
-		lblSend.setText("Send data export to Videotel server");
-		lblSend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
+		lblSend.setText("Generate data export file and send to Videotel server");
+		btnSend.setToolTipText(lblSend.getText());
 
+		
+		
+		
+		
 
 		scrollPanelRight.setContent(compR);
 		scrollPanelRight.setExpandVertical(true);
