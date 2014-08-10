@@ -67,7 +67,6 @@ public final class C {
 	public static Color ROW_HIGHLIGHT = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND);
 	public static Color ROW_SELECTED = SWTResourceManager.getColor(0, 128, 255);
 
-
 	// UI fonts
 	public static String FONT = (OS.equals("cocoa")) ? "Lucida Grande" : "Arial";
 	private static int FONT_ADD = (OS.equals("cocoa")) ? 2 : 0;
@@ -93,6 +92,10 @@ public final class C {
 	public static String REMOTE_URL = "http://www.rmrdigitalmedia.co.uk/esm/";
 	public static String LATEST_VERSION_URL = REMOTE_URL + "version.txt";
 	public static String UPDATE_URL = REMOTE_URL + "updates.php";
+	public static String FTP_SERVER = "ftp.rmrdigitalmedia.co.uk";
+	public static String FTP_USER = "esm@rmrdigitalmedia.co.uk";
+	public static String FTP_PASS = "Vide0tel";
+	
 
 	// message text
 	public static String NEW_VERSION_ALERT = "New version available!";

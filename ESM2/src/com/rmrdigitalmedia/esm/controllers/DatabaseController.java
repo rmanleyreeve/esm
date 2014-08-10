@@ -299,7 +299,7 @@ public class DatabaseController {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			ok = true;
-			LogController.log("Full DB Backup exported to " + fn);
+			LogController.log("Full DB Backup exported to: " + fn);
 		} catch (SQLException ex) {
 			LogController.logEvent(me, C.ERROR, "Error dumping database", ex);		}
 		return ok;
@@ -318,11 +318,40 @@ public class DatabaseController {
 		try {
 			org.h2.tools.Script.main(bkp);
 			ok = true;
-			LogController.log("SQL file exported to " + fn);
+			LogController.log("SQL file exported to: " + fn);
 		} catch (SQLException ex) {
 			LogController.logEvent(me, C.ERROR, "Error exporting SQL file", ex);
 		}
 		return ok;
+	}
+
+	public static File exportDataFile() {
+		File f = null;
+		String license = "";
+		try {
+			license = LicenseTable.getAllRows()[0].getLicensekey();
+		} catch (SQLException ex1) {
+			// TODO Auto-generated catch block
+			ex1.printStackTrace();
+		}
+		String fn = C.TMP_DIR + C.SEP;
+		fn +=  license + "_"; 
+		fn += new Date().getTime() + "_export.zip";
+		String[] bkp = {
+				"-url", C.DB_CONN_STR, 
+				"-user", "sa", 
+				"-password","", 
+				"-script", fn, 
+				"-options", "compression", "zip"
+		};
+		try {
+			org.h2.tools.Script.main(bkp);
+			LogController.log("SQL file exported to: " + fn);
+			f = new File(fn);
+		} catch (SQLException ex) {
+			LogController.logEvent(me, C.ERROR, "Error exporting SQL file", ex);
+		}
+		return f;
 	}
 
 	public static boolean checkAdmin() {

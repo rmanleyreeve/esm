@@ -2,15 +2,20 @@ package com.rmrdigitalmedia.esm.controllers;
 
 import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.browser.Browser;
@@ -130,5 +135,40 @@ public class InternetController {
 		}
 		// display.dispose();
 	}
+
+	public static boolean uploadFileFTP(String filePath, String fileName) {
+		boolean ok = false; 
+		FTPClient ftpClient = new FTPClient();
+		try {
+			ftpClient.connect(C.FTP_SERVER, 21);
+			ftpClient.login(C.FTP_USER, C.FTP_PASS);
+			ftpClient.enterLocalPassiveMode();
+			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+			InputStream inputStream = new FileInputStream(filePath);
+			LogController.log("Upload started...");
+			boolean done = ftpClient.storeFile(fileName, inputStream);
+			inputStream.close();
+			if (done) {
+				LogController.log("Upload completed.");
+				ok = true;
+			}
+		} catch (IOException ex) {
+			LogController.logEvent(me, C.ERROR, ex);
+		} finally {
+			try {
+				if (ftpClient.isConnected()) {
+					ftpClient.logout();
+					ftpClient.disconnect();
+				}
+			} catch (IOException ex) {
+				LogController.logEvent(me, C.ERROR, ex);
+			}
+		}
+		return ok;
+	}
+
+
+
+
 
 }
