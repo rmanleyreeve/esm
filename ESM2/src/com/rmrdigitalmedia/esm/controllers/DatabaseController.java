@@ -301,9 +301,7 @@ public class DatabaseController {
 			ok = true;
 			LogController.log("Full DB Backup exported to " + fn);
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
+			LogController.logEvent(me, C.ERROR, "Error dumping database", ex);		}
 		return ok;
 	}
 
@@ -322,8 +320,7 @@ public class DatabaseController {
 			ok = true;
 			LogController.log("SQL file exported to " + fn);
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
+			LogController.logEvent(me, C.ERROR, "Error exporting SQL file", ex);
 		}
 		return ok;
 	}

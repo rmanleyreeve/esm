@@ -742,9 +742,7 @@ public class SpaceDetailView {
 		try {
 			pRows = PhotoMetadataTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID);
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
+			LogController.logEvent(me, C.ERROR, "Error getting photo metadata from database", ex);		}
 		if (pRows.length > 0) {
 			// photos exist - show gallery
 			btnOpenPhoto.setVisible(true);
@@ -878,9 +876,7 @@ public class SpaceDetailView {
 		try {
 			dRows = DocDataTable.getRows("SPACE_ID="+spaceID);
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
+			LogController.logEvent(me, C.ERROR, "Error getting document data from database", ex);		}
 
 		if (dRows.length > 0) {
 			// docs exist - show table

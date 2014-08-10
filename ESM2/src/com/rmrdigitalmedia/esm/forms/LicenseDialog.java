@@ -121,7 +121,7 @@ public class LicenseDialog {
 		text.setLayoutData (data);
 		text.setText("");
 		
-		// TODO for development
+		// TODO for development ONLY
 		text.setText("22356-81122-26817");
 
 		text.setFocus();
