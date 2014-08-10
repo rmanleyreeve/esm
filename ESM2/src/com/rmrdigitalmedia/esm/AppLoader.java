@@ -178,7 +178,7 @@ public class AppLoader {
 				update(); // 60%
 
 				// check/set up new admin user
-				message("Checking for System Administrator account");
+				message("Checking for Administrator account");
 				if (!DatabaseController.checkAdmin()) {
 					// open admin user dialog
 					EsmApplication.alert(myshell, "System Administrator not found!");
