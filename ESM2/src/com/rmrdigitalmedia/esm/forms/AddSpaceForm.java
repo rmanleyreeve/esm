@@ -61,7 +61,7 @@ public class AddSpaceForm {
 		Display display = Display.getDefault();
 		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM);
 		this.myshell = shlVideotelEsm;
-		shlVideotelEsm.setSize(400, 430);
+		shlVideotelEsm.setSize(400, 450);
 		shlVideotelEsm.setText("Videotel ESM");
 		shlVideotelEsm.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
