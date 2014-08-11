@@ -135,13 +135,15 @@ public class InternetController {
 	}
 
 	public static boolean uploadFileFTP(String filePath, String fileName) {
+		//netsh advfirewall set global StatefulFTP disable
 		boolean ok = false; 
 		FTPClient ftpClient = new FTPClient();
 		try {
 			ftpClient.connect(C.FTP_SERVER, 21);
 			ftpClient.login(C.FTP_USER, C.FTP_PASS);
-			ftpClient.enterLocalPassiveMode();
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+			ftpClient.enterLocalPassiveMode();
+			ftpClient.setUseEPSVwithIPv4(true);
 			InputStream inputStream = new FileInputStream(filePath);
 			LogController.log("Upload started...");
 			boolean done = ftpClient.storeFile(fileName, inputStream);
@@ -151,7 +153,7 @@ public class InternetController {
 				ok = true;
 			}
 		} catch (IOException ex) {
-			LogController.logEvent(me, C.ERROR, ex);
+			LogController.logEvent(me, C.FATAL, ex);
 		} finally {
 			try {
 				if (ftpClient.isConnected()) {
@@ -159,7 +161,7 @@ public class InternetController {
 					ftpClient.disconnect();
 				}
 			} catch (IOException ex) {
-				LogController.logEvent(me, C.ERROR, ex);
+				LogController.logEvent(me, C.FATAL, ex);
 			}
 		}
 		return ok;
