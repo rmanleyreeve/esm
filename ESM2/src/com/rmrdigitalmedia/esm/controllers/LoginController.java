@@ -170,8 +170,7 @@ public class LoginController {
 		txt_Password.setEchoChar('*');
 
 		//TODO for development ONLY
-		txt_Username.setText("admin");
-		txt_Password.setText("pass");
+		txt_Username.setText("admin"); txt_Password.setText("pass");
 
 		// Composite to hold button
 		final Composite cmp_ButtonBar = new Composite(cmp_Login, SWT.NONE);

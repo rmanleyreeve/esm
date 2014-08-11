@@ -61,7 +61,7 @@ public class AddAdminForm {
 		this.myshell = shell;
 		shell.setSize(450, 360);
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
-		shell.setText("ESM Setup");
+		shell.setText("Videotel ESM Setup");
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 
 		Composite container = new Composite(shell,SWT.NONE);
@@ -85,6 +85,7 @@ public class AddAdminForm {
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
+		lblImg.setBackground(C.TITLEBAR_BGCOLOR);
 
 		Label lblTitle = new Label(header, SWT.NONE);
 		lblTitle.setForeground(C.APP_BGCOLOR);

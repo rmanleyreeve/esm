@@ -87,6 +87,7 @@ public class AddSpaceCommentForm {
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);
 		lblImg.setLayoutData(fd_lblImg);
+		lblImg.setBackground(C.TITLEBAR_BGCOLOR);
 
 		Label lblTitle = new Label(header, SWT.NONE);
 		lblTitle.setForeground(C.APP_BGCOLOR);

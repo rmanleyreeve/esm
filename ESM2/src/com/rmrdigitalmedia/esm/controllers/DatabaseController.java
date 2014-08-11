@@ -330,9 +330,8 @@ public class DatabaseController {
 		String license = "";
 		try {
 			license = LicenseTable.getAllRows()[0].getLicensekey();
-		} catch (SQLException ex1) {
-			// TODO Auto-generated catch block
-			ex1.printStackTrace();
+		} catch (SQLException ex) {
+			LogController.logEvent(me, C.FATAL, "Could not get license key", ex);
 		}
 		String fn = C.TMP_DIR + C.SEP;
 		fn +=  license + "_"; 
