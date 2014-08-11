@@ -35,6 +35,14 @@ public class FilesystemController {
 
 		// create sub-dirs====================================
 		AppLoader.message("Creating System Directories");
+		logdir = new File(C.DOC_DIR);
+		LogController.log("Logs folder: " + logdir);
+		if (logdir.mkdir()) {
+			LogController.log("CREATED");
+		} else {
+			LogController.log("EXISTS");
+		}
+		EsmApplication.appData.setField("LOGDIR", logdir);
 		docdir = new File(C.DOC_DIR);
 		LogController.log("Docs folder: " + docdir);
 		if (docdir.mkdir()) {
