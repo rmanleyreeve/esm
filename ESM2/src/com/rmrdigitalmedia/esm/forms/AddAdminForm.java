@@ -33,7 +33,7 @@ public class AddAdminForm {
 
 	Shell myshell;
 	boolean formOK = false;
-	Text username,password,forename,surname,rank,jobtitle,workid;
+	Text username,password,forename,surname,rank,workid;
 	int month, accesslevel = 9;
 	Combo dd,mm,yyyy;
 	// form layout  guides
@@ -206,7 +206,7 @@ public class AddAdminForm {
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				Text[] fields = {username,password,forename,surname,rank,jobtitle,workid}; Validation.validateFields(fields);
+				Text[] fields = {username,password,forename,surname,rank,workid}; Validation.validateFields(fields);
 				Combo[] dates = {dd,mm,yyyy}; Validation.validateDates(dates);			
 				month = (Integer)mm.getData(mm.getText());				
 				if( Validation.validateFields(fields) && Validation.validateDates(dates) ) {
