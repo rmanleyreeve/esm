@@ -57,7 +57,7 @@ public class AddAdminForm {
 	public boolean complete() {	
 
 		Display display = Display.getDefault();
-		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		this.myshell = shell;
 		shell.setSize(450, 360);
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
