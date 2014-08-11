@@ -53,7 +53,7 @@ public class AuditController {
 		int score = 0;
 		SpaceChecklistAuditTable.Row row = null;
 		try {
-			row = SpaceChecklistAuditTable.getRow("SPACE_ID", "" + spaceID);
+			row = SpaceChecklistAuditTable.getRow("SPACE_ID", ""+spaceID);
 		} catch (SQLException ex) {
 			LogController.logEvent(AuditController.class, C.FATAL, ex);
 		}
@@ -142,7 +142,7 @@ public class AuditController {
 		String light = "null";
 		SpaceClassificationAuditTable.Row row = null;
 		try {
-			row = SpaceClassificationAuditTable.getRow("SPACE_ID", "" + spaceID);
+			row = SpaceClassificationAuditTable.getRow("SPACE_ID", ""+spaceID);
 		} catch (SQLException ex) {
 			LogController.logEvent(AuditController.class, C.FATAL, ex);
 		}
@@ -203,7 +203,7 @@ public class AuditController {
 			} // N = green
 			max = 8;
 			try {
-				if (isN(SpaceChecklistAuditTable.getRow("SPACE_ID", "" + spaceID).getQ7Boolean())) {
+				if (isN(SpaceChecklistAuditTable.getRow("SPACE_ID", ""+spaceID).getQ7Boolean())) {
 					max = 7;
 				}
 			} catch (SQLException ex) {
@@ -324,8 +324,7 @@ public class AuditController {
 		String light = "null";
 		EntrypointClassificationAuditTable.Row row = null;
 		try {
-			row = EntrypointClassificationAuditTable.getRow("ENTRYPOINT_ID", ""
-					+ entryID);
+			row = EntrypointClassificationAuditTable.getRow("ENTRYPOINT_ID", ""+entryID);
 		} catch (SQLException ex) {
 			LogController.logEvent(AuditController.class, C.FATAL, ex);
 		}
@@ -465,7 +464,7 @@ public class AuditController {
 			complete = false;
 		}
 		try {
-			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows("SPACE_ID", spaceID)) {
+			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID)) {
 				int epID = epRow.getID();
 				if ((Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID) < 100) {
 					complete = false;

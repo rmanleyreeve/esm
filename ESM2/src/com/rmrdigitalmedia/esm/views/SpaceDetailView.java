@@ -601,7 +601,7 @@ public class SpaceDetailView {
 			lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
 			AuditController.calculateEntryClassificationCompletion(epID);
 			String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+epID);
-			if(epTL.equals("")) { epTL = "red"; }
+			if(epTL.equals("")) { epTL = "null"; }
 			lblEntryPointAuditLight.setImage(C.getImage(""+epTL+".png"));
 			gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 			gd_lblEntryPointAuditLight.horizontalIndent = 10;
@@ -658,14 +658,15 @@ public class SpaceDetailView {
 				public void widgetSelected(SelectionEvent arg0) {
 					DeleteEntrypointDialog ded = new DeleteEntrypointDialog();					
 					if(ded.deleteOK(epID)) {
-						LogController.log("Entry point " + epID + " marked as deleted in database");
+						LogController.log("Entrypoint " + epID + " marked as deleted in database");
 						EsmApplication.alert("The entry point was deleted!");
 						WindowController.showSpaceDetail(spaceID);									
 					} else {
-						LogController.log("User " + epID + " not deleted");
+						LogController.log("Entrypoint " + epID + " not deleted");
 					}
 				}
 			});
+			btnDeleteEntry.setEnabled( epRows.length>1 && (user.getAccessLevel()==9 || user.getID()==epRow.getAuthorID()) );
 
 		} // end for
 
