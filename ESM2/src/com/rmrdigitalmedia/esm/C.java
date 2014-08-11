@@ -63,7 +63,8 @@ public final class C {
 	public static Color RED = SWTResourceManager.getColor(237, 28, 36);
 	public static Color AMBER = SWTResourceManager.getColor(241, 89, 42);
 	public static Color GREEN = SWTResourceManager.getColor(11, 148, 68);
-	public static Map<String, Color> TRAFFICLIGHTS = ImmutableMap.of("red", C.RED, "amber", C.AMBER, "green", C.GREEN);
+	public static Color NULL = SWTResourceManager.getColor(100, 100, 100);
+	public static Map<String, Color> TRAFFICLIGHTS = ImmutableMap.of("null", C.NULL, "red", C.RED, "amber", C.AMBER, "green", C.GREEN);
 	public static Color ROW_HIGHLIGHT = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND);
 	public static Color ROW_SELECTED = SWTResourceManager.getColor(0, 128, 255);
 
