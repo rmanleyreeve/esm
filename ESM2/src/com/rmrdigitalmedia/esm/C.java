@@ -66,7 +66,7 @@ public final class C {
 	public static Color NULL = SWTResourceManager.getColor(100, 100, 100);
 	public static Map<String, Color> TRAFFICLIGHTS = ImmutableMap.of("null", C.NULL, "red", C.RED, "amber", C.AMBER, "green", C.GREEN);
 	public static Color ROW_HIGHLIGHT = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND);
-	public static Color ROW_SELECTED = SWTResourceManager.getColor(0, 128, 255);
+	public static Color ROW_SELECTED = SWTResourceManager.getColor(165, 200, 250);
 
 	// UI fonts
 	public static String FONT = (OS.equals("cocoa")) ? "Lucida Grande" : "Arial";
