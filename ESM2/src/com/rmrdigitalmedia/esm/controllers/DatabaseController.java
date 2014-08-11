@@ -20,15 +20,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
-
 import javax.imageio.ImageIO;
-
 import net.coobird.thumbnailator.Thumbnails;
-
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.AppLoader;
@@ -38,6 +34,7 @@ import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.LicenseTable;
 import com.rmrdigitalmedia.esm.models.VesselCategoriesTable;
 import com.rmrdigitalmedia.esm.models.VesselTable;
+import com.rmrdigitalmedia.esm.models.VesselTypesTable;
 
 public class DatabaseController {
 
@@ -94,10 +91,10 @@ public class DatabaseController {
 		try {
 			conn = DriverManager.getConnection(C.DB_CONN_STR_SETUP, "sa", "");
 			LogController.log("OK");
-			//loadRunSqlFile("SETUP.sql");
+			loadRunSqlFile("SETUP.sql");
 
 			// TODO for development ONLY
-			loadRunSqlFile("DEMO.sql");
+			//loadRunSqlFile("DEMO.sql");
 
 		} catch (SQLException e) {
 			LogController.logEvent(me, C.FATAL, "DB SETUP FAILED", e);
@@ -384,10 +381,10 @@ public class DatabaseController {
 				VesselTable.Row row = rows[0];
 				ok = true;
 				String vName = row.getName();
-				String tName = VesselCategoriesTable.getRow(row.getTypeID()).getName();
+				String cName = VesselCategoriesTable.getRow(VesselTypesTable.getRow(row.getTypeID()).getCategoryID()).getName();
 				LogController.log("Vessel/Installation " + vName + " Found");
 				EsmApplication.appData.setField("LOCATION_NAME", vName);
-				EsmApplication.appData.setField("LOCATION_TYPE", tName);
+				EsmApplication.appData.setField("LOCATION_TYPE", cName);
 
 			} else {
 				LogController.log("Vessel NOT Found");
