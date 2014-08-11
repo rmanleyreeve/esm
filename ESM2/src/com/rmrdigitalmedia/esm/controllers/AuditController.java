@@ -14,6 +14,10 @@ import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 @SuppressWarnings("unused")
 public class AuditController {
+	
+	/*
+	 * These methods might have to be re-written using pure java.sql code to improve performance?
+	 */
 
 	public static void init() {
 		// do initial audit calculations here
