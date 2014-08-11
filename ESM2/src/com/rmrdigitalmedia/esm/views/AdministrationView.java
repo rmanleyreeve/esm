@@ -348,8 +348,8 @@ public class AdministrationView {
 		if(cRows.length > 10) {
 			gd_listSpaceComments.heightHint = (cRows.length * 20);
 		}
+		gd_listSpaceComments.exclude = (cRows.length==0);
 		listSpaceComments.setLayoutData(gd_listSpaceComments);
-
 
 		final Button viewBtn = new Button(rowComments, SWT.NONE);
 		viewBtn.addSelectionListener(new SelectionAdapter() {
@@ -365,10 +365,12 @@ public class AdministrationView {
 
 			}
 		});
-		viewBtn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		viewBtn.setAlignment(SWT.LEFT);
 		viewBtn.setEnabled(false);
 		viewBtn.setText("View Comment");
+		GridData gd_viewBtn = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_viewBtn.exclude = (cRows.length==0);
+		viewBtn.setLayoutData(gd_viewBtn);
 
 		listSpaceComments.addSelectionListener(new SelectionAdapter() {
 			@Override
