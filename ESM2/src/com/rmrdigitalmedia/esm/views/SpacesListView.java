@@ -260,7 +260,7 @@ public class SpacesListView {
 				}
 				for (EntrypointsTable.Row eRow : eRows) {
 					String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+eRow.getID());
-					if(epTL.equals("")) { epTL = "red"; }
+					if(epTL.equals("")) { epTL = "null"; }
 					gc.drawImage(C.getImage(epTL+".png"), x, 0);
 					//gc.setBackground(C.TRAFFICLIGHTS.get(epTL));
 					//gc.fillOval(x, 0, 18, 18);
