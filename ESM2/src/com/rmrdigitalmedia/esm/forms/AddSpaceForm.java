@@ -191,7 +191,7 @@ public class AddSpaceForm {
 						// create empty space audit records
 						EsmApplication.appData.setField("SPACE_CHK_" + spaceID,0);
 						EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, 0);
-						EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, "red");
+						EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, "null");
 						// create entry DB record
 						EntrypointsTable.Row epRow = EntrypointsTable.getRow();
 						epRow.setName(ep_name.getText());
@@ -206,7 +206,7 @@ public class AddSpaceForm {
 						// create empty entry audit records
 						EsmApplication.appData.setField("ENTRY_CHK_" + epID, 0);						
 						EsmApplication.appData.setField("ENTRY_CLASS_" + epID, 0);
-						EsmApplication.appData.setField("ENTRY_STATUS_" + epID, "red");
+						EsmApplication.appData.setField("ENTRY_STATUS_" + epID, "null");
 						formOK = true;
 					} catch (Exception e1) {
 						e1.printStackTrace();

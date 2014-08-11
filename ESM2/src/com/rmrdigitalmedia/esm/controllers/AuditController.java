@@ -20,7 +20,7 @@ public class AuditController {
 		long startTime = System.currentTimeMillis();
 		LogController.log("Initial Space audits calculation started");
 		try {
-			for (SpacesTable.Row sRow : SpacesTable.getAllRows()) {
+			for (SpacesTable.Row sRow : SpacesTable.getRows("DELETED=FALSE")) {
 				int spaceID = sRow.getID();
 				AuditController.calculateSpaceChecklistCompletion(spaceID);
 				AuditController.calculateSpaceClassificationCompletion(spaceID);
@@ -28,7 +28,7 @@ public class AuditController {
 			LogController.log("Space audits calculation completed in " + (System.currentTimeMillis() - startTime) + "ms");
 			startTime = System.currentTimeMillis();
 			LogController.log("Initial Entry audits calculation started");
-			for (EntrypointsTable.Row epRow : EntrypointsTable.getAllRows()) {
+			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows("DELETED=FALSE")) {
 				int entryID = epRow.getID();
 				AuditController.calculateEntryChecklistCompletion(entryID);
 				AuditController.calculateEntryClassificationCompletion(entryID);
@@ -218,9 +218,9 @@ public class AuditController {
 		}
 		EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, progress);
 		EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, light);
-		// System.out.println("Calculating space "+userID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
-		// System.out.println("Space " + userID + " status array: " + status.toString());
-		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
+		//System.out.println("Calculating space "+spaceID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
+		//System.out.println("Space " + spaceID + " status array: " + status.toString());
+		//System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	// =========================================================================================================================
