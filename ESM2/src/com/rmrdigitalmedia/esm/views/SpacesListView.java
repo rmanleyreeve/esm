@@ -234,7 +234,7 @@ public class SpacesListView {
 			imgData.transparentPixel = whitePixel;
 			Image img = new Image(Display.getDefault(),imgData);
 			GC gc = new GC(img);
-			gc.setAntialias(SWT.ON);
+			gc.setAntialias(SWT.OFF);
 			gc.setBackground(C.FIELD_BGCOLOR);
 			EntrypointsTable.Row[] eRows;
 			try {
