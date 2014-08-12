@@ -145,6 +145,14 @@ public class LoginController {
 		final RowData rowData_2 = new RowData();
 		rowData_2.width = 170;
 		txt_Username.setLayoutData(rowData_2);
+		txt_Username.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent ke) {
+				if (ke.keyCode == SWT.ESC) {
+					shell.dispose();
+				}
+			}
+		});
 
 		// Label for the password
 		final CLabel clbl_Password = new CLabel(cmp_Login, SWT.NONE);
@@ -161,6 +169,9 @@ public class LoginController {
 			public void keyPressed(KeyEvent ke) {
 				if (ke.keyCode == SWT.CR) {
 					submit();
+				}
+				if (ke.keyCode == SWT.ESC) {
+					shell.dispose();
 				}
 			}
 		});
@@ -238,6 +249,10 @@ public class LoginController {
 		shell.setBounds(rect);
 		shell.open();
 		LogController.log("Awaiting user input...");
+		
+	
+		
+		
 
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
