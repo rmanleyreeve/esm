@@ -788,7 +788,7 @@ public class SpaceDetailView {
 				@Override
 				public void mouseDoubleClick(MouseEvent e) {
 					GalleryItem[] selection = gallery.getSelection();
-					if (selection == null)
+					if (selection == null || selection.length == 0)
 						return;
 					GalleryItem item = selection[0];
 					int _dataID = (Integer) item.getData("id");
@@ -797,7 +797,7 @@ public class SpaceDetailView {
 				}
 				@Override
 				public void mouseDown(MouseEvent e) {
-					btnOpenPhoto.setEnabled(true);
+					btnOpenPhoto.setEnabled( (gallery.getSelection().length > 0) );
 				}
 				@Override
 				public void mouseUp(MouseEvent e) {}
@@ -861,6 +861,7 @@ public class SpaceDetailView {
 		btnOpenDoc.setLayoutData(gd_btnOpenDoc);
 		btnOpenDoc.setText("View");
 		btnOpenDoc.setEnabled(false);
+		btnOpenDoc.setVisible(false);
 
 		final Button btnDeleteDoc = new Button(rowRight4, SWT.NONE);
 		btnDeleteDoc.setAlignment(SWT.LEFT);
@@ -870,6 +871,7 @@ public class SpaceDetailView {
 		btnDeleteDoc.setLayoutData(gd_btnDeleteDoc);
 		btnDeleteDoc.setText("Delete");
 		btnDeleteDoc.setEnabled(false);
+		btnDeleteDoc.setVisible(false);
 
 		// DOCS ===============================
 		DocDataTable.Row[] dRows = null;
@@ -880,6 +882,7 @@ public class SpaceDetailView {
 
 		if (dRows.length > 0) {
 			// docs exist - show table
+			btnOpenDoc.setVisible(true);
 			btnDeleteDoc.setVisible(user.getAccessLevel()==9);
 			final Table table = new Table(rowRight4, SWT.NONE | SWT.FULL_SELECTION);
 			table.setLayout(new FillLayout());
@@ -961,7 +964,7 @@ public class SpaceDetailView {
 					}
 				}
 			});
-			
+
 		} // endif docs > 0	
 
 		// row 5 - signoff header 		
