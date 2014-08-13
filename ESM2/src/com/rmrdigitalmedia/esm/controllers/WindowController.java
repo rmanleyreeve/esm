@@ -54,6 +54,7 @@ public class WindowController {
 	static int headerH = 80;
 	int titleH = 40;
 	int footerH = 15;
+	int buttonTop = 5;
 	Composite container, header, titleBar;
 	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration, pageSpaceAudit, pageEntryAudit;
 	static Label pageTitle, onlineStatus, logo, lblH;
@@ -209,7 +210,7 @@ public class WindowController {
 		//onlineStatus.setImage(C.getImage("16_globe.png"));
 		onlineStatus.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_onlineStatus = new FormData();
-		fd_onlineStatus.top = new FormAttachment(titleBar,(titleH/5)+5);
+		fd_onlineStatus.top = new FormAttachment(titleBar,(buttonTop)+5);
 		fd_onlineStatus.right = new FormAttachment(100, -10);
 		onlineStatus.setLayoutData(fd_onlineStatus);
 		onlineStatus.setToolTipText("Application is online");
@@ -229,7 +230,7 @@ public class WindowController {
 		btnAdmin.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnAdmin = new FormData();
 		fd_btnAdmin.right = new FormAttachment(onlineStatus, -15);
-		fd_btnAdmin.top = new FormAttachment(titleBar,titleH/5);
+		fd_btnAdmin.top = new FormAttachment(titleBar,buttonTop);
 		btnAdmin.setLayoutData(fd_btnAdmin);
 		btnAdmin.setEnabled(false);
 
@@ -250,7 +251,7 @@ public class WindowController {
 		btnAddSpace.setFont(C.BUTTON_FONT);
 		btnAddSpace.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnAddSpace = new FormData();
-		fd_btnAddSpace.top = new FormAttachment(titleBar,titleH/5);
+		fd_btnAddSpace.top = new FormAttachment(titleBar,buttonTop);
 		fd_btnAddSpace.right = new FormAttachment(btnAdmin,-25);
 		btnAddSpace.setLayoutData(fd_btnAddSpace);
 
@@ -268,7 +269,7 @@ public class WindowController {
 		btnViewSpaceDetails.setFont(C.BUTTON_FONT);
 		btnViewSpaceDetails.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnEditSpace = new FormData();
-		fd_btnEditSpace.top = new FormAttachment(titleBar,titleH/5);
+		fd_btnEditSpace.top = new FormAttachment(titleBar,buttonTop);
 		fd_btnEditSpace.right = new FormAttachment(btnAddSpace,-5);
 		btnViewSpaceDetails.setLayoutData(fd_btnEditSpace);
 		btnViewSpaceDetails.setEnabled(false);
@@ -293,7 +294,7 @@ public class WindowController {
 		btnDeleteSpace.setFont(C.BUTTON_FONT);
 		btnDeleteSpace.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnDeleteSpace = new FormData();
-		fd_btnDeleteSpace.top = new FormAttachment(titleBar,titleH/5);
+		fd_btnDeleteSpace.top = new FormAttachment(titleBar,buttonTop);
 		fd_btnDeleteSpace.right = new FormAttachment(btnViewSpaceDetails,-5);
 		btnDeleteSpace.setLayoutData(fd_btnDeleteSpace);
 		btnDeleteSpace.setEnabled(false);
