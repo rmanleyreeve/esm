@@ -115,6 +115,7 @@ public class InternetController {
 	}
 
 	public static void renderHTML(String html) {
+		//	http://dataurl.net/#dataurlmaker
 		Shell shell = new Shell(Display.getDefault());
 		shell.setLayout(new FillLayout());
 		Browser browser;
