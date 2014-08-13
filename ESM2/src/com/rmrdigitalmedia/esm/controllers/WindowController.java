@@ -63,6 +63,7 @@ public class WindowController {
 	static Button btnSpacesList, btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
 	public static int currentSpaceId = 0;
+	public static String helpfile = C.HELPFILE_GENERIC;
 	public static EsmUsersTable.Row user;
 	SpacesTable.Row[] rows;
 	private Label lblVtLogo;
@@ -214,6 +215,24 @@ public class WindowController {
 		fd_btnHelp.right = new FormAttachment(100, -10);
 		btnHelp.setLayoutData(fd_btnHelp);
 		btnHelp.setToolTipText("Help for this page");
+		btnHelp.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				// read text from disk
+				LogController.log("Help File: "+helpfile);
+				String html = "";
+				try {
+					html += CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/htm/"+helpfile), Charsets.UTF_8));
+				} catch (IOException e) {
+					LogController.logEvent(me,C.WARNING,e);
+				}	
+				if(!html.equals("")) {
+					InternetController.renderHTML(html);
+				}
+
+				
+			}
+		});
 
 		btnAdmin = new Button(titleBar, SWT.PUSH);
 		btnAdmin.setToolTipText("Administration Menu (authorized users only)");
@@ -393,11 +412,11 @@ public class WindowController {
 	// methods to display pages etc
 	void showSpacesList(){
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		LogController.log("Displaying Space List page");
 		SpacesListView.buildTable(pageSpacesList);
 		stackLayout.topControl = pageSpacesList;
 		pageTitle.setText(C.SPACES_LIST_TITLE);
+		helpfile = C.HELPFILE_SPACESLIST;
 		btnAddSpace.setVisible(true);
 		btnDeleteSpace.setVisible(true);
 		btnDeleteSpace.setEnabled(false);
@@ -415,6 +434,7 @@ public class WindowController {
 		AdministrationView.buildPage(pageAdministration);
 		stackLayout.topControl = pageAdministration;
 		pageTitle.setText(C.ADMIN_PAGE_TITLE);
+		helpfile = C.HELPFILE_ADMIN;
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
@@ -424,7 +444,6 @@ public class WindowController {
 	}
 	public static void showSpaceDetail(int spaceID) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		currentSpaceId = spaceID;
 		LogController.log("Loading Space Detail page for user selection: Space ID "+spaceID);
 		SpaceDetailView.buildPage(pageSpaceDetail, spaceID);
@@ -434,6 +453,7 @@ public class WindowController {
 		} catch (SQLException e) {
 			LogController.logEvent(me, C.WARNING, e);
 		}
+		helpfile = C.HELPFILE_SPACEDETAIL;
 		btnAddSpace.setVisible(false);
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
@@ -443,7 +463,6 @@ public class WindowController {
 	}
 	public static void showSpaceAuditChecklist(int spaceID) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		currentSpaceId = spaceID;
 		LogController.log("Displaying Internal Space Audit Checklist for ID:" + spaceID);
 		SpaceAuditChecklistView.buildPage(pageSpaceAudit, spaceID);
@@ -453,6 +472,7 @@ public class WindowController {
 			title += " for " + SpacesTable.getRow(spaceID).getName();
 		} catch (SQLException ex) {}
 		pageTitle.setText(title);
+		helpfile = C.HELPFILE_SPACE_AUDIT_CHECK;
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
@@ -462,7 +482,6 @@ public class WindowController {
 	}
 	public static void showSpaceAuditClassification(int spaceID) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		currentSpaceId = spaceID;
 		LogController.log("Displaying Internal Space Audit Classification for ID:" + spaceID);
 		SpaceAuditClassificationView.buildPage(pageSpaceAudit, spaceID);
@@ -472,6 +491,7 @@ public class WindowController {
 			title += " for " + SpacesTable.getRow(spaceID).getName();
 		} catch (SQLException ex) {}
 		pageTitle.setText(title);
+		helpfile = C.HELPFILE_SPACE_AUDIT_CLASS;
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
@@ -481,7 +501,6 @@ public class WindowController {
 	}
 	public static void showEntryAuditChecklist(int entryID) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		LogController.log("Displaying Entry Point Audit Checklist for ID:" + entryID);
 		EntryAuditChecklistView.buildPage(pageEntryAudit, entryID);
 		stackLayout.topControl = pageEntryAudit;
@@ -490,6 +509,7 @@ public class WindowController {
 			title += " for " + EntrypointsTable.getRow(entryID).getName();
 		} catch (SQLException ex) {}
 		pageTitle.setText(title);
+		helpfile = C.HELPFILE_EP_AUDIT_CHECK;
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
@@ -499,7 +519,6 @@ public class WindowController {
 	}
 	public static void showEntryAuditClassification(int entryID) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		//onlineStatus.setEnabled(InternetController.checkNetAccess());
 		LogController.log("Displaying Entry Point Audit Classification for ID:" + entryID);
 		EntryAuditClassificationView.buildPage(pageEntryAudit, entryID);
 		stackLayout.topControl = pageEntryAudit;
@@ -508,6 +527,7 @@ public class WindowController {
 			title += " for " + EntrypointsTable.getRow(entryID).getName();
 		} catch (SQLException ex) {}
 		pageTitle.setText(title);
+		helpfile = C.HELPFILE_EP_AUDIT_CLASS;
 		btnAddSpace.setVisible(false);	
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
