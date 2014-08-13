@@ -312,14 +312,14 @@ public class WindowController {
 		btnSpacesList.setFont(C.BUTTON_FONT);
 		btnSpacesList.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnSpacesList = new FormData();
-		fd_btnSpacesList.top = new FormAttachment(titleBar,titleH/5);
+		fd_btnSpacesList.top = new FormAttachment(titleBar,buttonTop);
 		fd_btnSpacesList.right = new FormAttachment(btnAdmin,-25);
 		btnSpacesList.setLayoutData(fd_btnSpacesList);
 
 		// layout settings
 		FormData fd_pageTitle = new FormData();
 		fd_pageTitle.right = new FormAttachment(50);
-		fd_pageTitle.top = new FormAttachment(titleBar,titleH/5);
+		fd_pageTitle.top = new FormAttachment(titleBar,buttonTop);
 		fd_pageTitle.left = new FormAttachment(1);
 		pageTitle.setLayoutData(fd_pageTitle);
 
