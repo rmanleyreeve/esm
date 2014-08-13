@@ -91,10 +91,10 @@ public class DatabaseController {
 		try {
 			conn = DriverManager.getConnection(C.DB_CONN_STR_SETUP, "sa", "");
 			LogController.log("OK");
-			//loadRunSqlFile("SETUP.sql");
+			loadRunSqlFile("SETUP.sql");
 
 			// TODO for development ONLY
-			loadRunSqlFile("DEMO.sql");
+			//loadRunSqlFile("DEMO.sql");
 
 		} catch (SQLException e) {
 			LogController.logEvent(me, C.FATAL, "DB SETUP FAILED", e);

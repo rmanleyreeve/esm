@@ -122,7 +122,7 @@ public class LicenseDialog {
 		text.setText("");
 		
 		// TODO for development ONLY
-		text.setText("22356-81122-26817");
+		//text.setText("22356-81122-26817");
 
 		text.setFocus();
 		Button ok = new Button (dialog, SWT.PUSH);

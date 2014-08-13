@@ -57,9 +57,9 @@ public class WindowController {
 	int buttonTop = 5;
 	Composite container, header, titleBar;
 	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration, pageSpaceAudit, pageEntryAudit;
-	static Label pageTitle, onlineStatus, logo, lblH;
+	static Label pageTitle, logo, lblH;
 	static String displayName;
-	public static Button btnAddSpace, btnDeleteSpace, btnAdmin, btnViewSpaceDetails;
+	public static Button btnAddSpace, btnDeleteSpace, btnAdmin, btnViewSpaceDetails, btnHelp;
 	static Button btnSpacesList, btnAddEntry, btnEditEntry, btnDeleteEntry, btnEntryList;	
 	static StackLayout stackLayout;
 	public static int currentSpaceId = 0;
@@ -206,15 +206,14 @@ public class WindowController {
 
 		Button foo = new Button(titleBar, SWT.NONE); // dummy button to take default
 
-		onlineStatus = new Label(titleBar, SWT.NONE);
-		//onlineStatus.setImage(C.getImage("16_globe.png"));
-		onlineStatus.setBackground(C.TITLEBAR_BGCOLOR);
-		FormData fd_onlineStatus = new FormData();
-		fd_onlineStatus.top = new FormAttachment(titleBar,(buttonTop)+5);
-		fd_onlineStatus.right = new FormAttachment(100, -10);
-		onlineStatus.setLayoutData(fd_onlineStatus);
-		onlineStatus.setToolTipText("Application is online");
-		onlineStatus.setEnabled(InternetController.checkNetAccess());
+		btnHelp = new Button(titleBar, SWT.NONE);
+		btnHelp.setImage(C.getImage("hint.png"));
+		btnHelp.setBackground(C.TITLEBAR_BGCOLOR);
+		FormData fd_btnHelp = new FormData();
+		fd_btnHelp.top = new FormAttachment(titleBar,buttonTop);
+		fd_btnHelp.right = new FormAttachment(100, -10);
+		btnHelp.setLayoutData(fd_btnHelp);
+		btnHelp.setToolTipText("Help for this page");
 
 		btnAdmin = new Button(titleBar, SWT.PUSH);
 		btnAdmin.setToolTipText("Administration Menu (authorized users only)");
@@ -229,7 +228,7 @@ public class WindowController {
 		btnAdmin.setFont(C.BUTTON_FONT);
 		btnAdmin.setBackground(C.TITLEBAR_BGCOLOR);
 		FormData fd_btnAdmin = new FormData();
-		fd_btnAdmin.right = new FormAttachment(onlineStatus, -15);
+		fd_btnAdmin.right = new FormAttachment(btnHelp, -15);
 		fd_btnAdmin.top = new FormAttachment(titleBar,buttonTop);
 		btnAdmin.setLayoutData(fd_btnAdmin);
 		btnAdmin.setEnabled(false);
@@ -412,7 +411,6 @@ public class WindowController {
 
 	public static void showAdministration() {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		onlineStatus.setEnabled(InternetController.checkNetAccess());
 		LogController.log("Displaying Administration page");
 		AdministrationView.buildPage(pageAdministration);
 		stackLayout.topControl = pageAdministration;
