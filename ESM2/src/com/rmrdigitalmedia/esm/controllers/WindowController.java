@@ -319,7 +319,7 @@ public class WindowController {
 		// layout settings
 		FormData fd_pageTitle = new FormData();
 		fd_pageTitle.right = new FormAttachment(50);
-		fd_pageTitle.top = new FormAttachment(titleBar,buttonTop);
+		fd_pageTitle.top = new FormAttachment(titleBar,10);
 		fd_pageTitle.left = new FormAttachment(1);
 		pageTitle.setLayoutData(fd_pageTitle);
 
