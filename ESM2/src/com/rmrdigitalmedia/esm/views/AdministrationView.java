@@ -219,7 +219,7 @@ public class AdministrationView {
 		lblUsers.setLayoutData(gd_lblUsers);
 		lblUsers.setFont(C.FONT_12B);
 		lblUsers.setBackground(C.APP_BGCOLOR);
-		lblUsers.setImage(C.getImage("users.png"));
+		lblUsers.setImage(C.getImage("users_icon.png"));
 		lblUsers.setText("Manage Users");	
 
 		Button btnAddUser = new Button(rowUsers, SWT.NONE);
@@ -316,7 +316,7 @@ public class AdministrationView {
 		lblComments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1));
 		lblComments.setFont(C.FONT_12B);
 		lblComments.setBackground(C.APP_BGCOLOR);
-		lblComments.setImage(C.getImage("space_icon.png"));
+		lblComments.setImage(C.getImage("comments_icon.png"));
 		lblComments.setText("Manage Comments");	
 
 		Label lblSpaceComments = new Label(rowComments, SWT.NONE);
