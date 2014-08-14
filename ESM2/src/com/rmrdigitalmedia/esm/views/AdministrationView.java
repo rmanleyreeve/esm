@@ -515,7 +515,7 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				if (InternetController.checkNetAccess()) {
-					File f = DatabaseController.exportDataFile();
+					File f = DatabaseController.exportSqlFile();
 					if (f.exists()) {					
 						if(InternetController.uploadFileFTP(f.getPath(), f.getName())) {
 							EsmApplication.alert("File uploaded successfully");
