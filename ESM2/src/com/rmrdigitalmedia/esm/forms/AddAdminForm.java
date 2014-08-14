@@ -80,7 +80,7 @@ public class AddAdminForm {
 		header.setLayoutData(fd_header);
 
 		Label lblImg = new Label(header, SWT.NONE);
-		lblImg.setImage(C.getImage("user.png"));
+		lblImg.setImage(C.getImage("user_icon.png"));
 		FormData fd_lblImg = new FormData();
 		fd_lblImg.top = new FormAttachment(0);
 		fd_lblImg.left = new FormAttachment(0);

@@ -114,7 +114,7 @@ public class AdministrationViewTest {
 		lblUsers.setLayoutData(gd_lblUsers);
 		lblUsers.setFont(C.FONT_12B);
 		lblUsers.setBackground(C.APP_BGCOLOR);
-		lblUsers.setImage(C.getImage("users.png"));
+		lblUsers.setImage(C.getImage("users_icon.png"));
 		lblUsers.setText("Manage Users");	
 
 		Button btnAddUser = new Button(rowLeft1, SWT.NONE);
