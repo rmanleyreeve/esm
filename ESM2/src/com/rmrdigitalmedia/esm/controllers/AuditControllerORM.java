@@ -1,18 +1,22 @@
 package com.rmrdigitalmedia.esm.controllers;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
+import com.rmrdigitalmedia.esm.models.EntrypointClassificationAuditTable;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistAuditTable;
+import com.rmrdigitalmedia.esm.models.SpaceClassificationAuditTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 @SuppressWarnings("unused")
-public class AuditController {
+public class AuditControllerORM {
+	
+	/*
+	 * These methods might have to be re-written using pure java.sql code to improve performance?
+	 */
 
 	public static void init() {
 		// do initial audit calculations here
@@ -21,101 +25,96 @@ public class AuditController {
 		try {
 			for (SpacesTable.Row sRow : SpacesTable.getRows("DELETED=FALSE")) {
 				int spaceID = sRow.getID();
-				AuditController.calculateSpaceChecklistCompletion(spaceID);
-				AuditController.calculateSpaceClassificationCompletion(spaceID);
+				AuditControllerORM.calculateSpaceChecklistCompletion(spaceID);
+				AuditControllerORM.calculateSpaceClassificationCompletion(spaceID);
 			}
 			LogController.log("Space audits calculation completed in " + (System.currentTimeMillis() - startTime) + "ms");
 			startTime = System.currentTimeMillis();
 			LogController.log("Initial Entry audits calculation started");
 			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows("DELETED=FALSE")) {
 				int entryID = epRow.getID();
-				AuditController.calculateEntryChecklistCompletion(entryID);
-				AuditController.calculateEntryClassificationCompletion(entryID);
+				AuditControllerORM.calculateEntryChecklistCompletion(entryID);
+				AuditControllerORM.calculateEntryClassificationCompletion(entryID);
 			}
 			LogController.log("Entry audits calculation completed in " + (System.currentTimeMillis() - startTime) + "ms");
 		} catch (SQLException e1) {
-			LogController.logEvent(AuditController.class, C.FATAL, "Initial Space audits calculation", e1);
+			LogController.logEvent(AuditControllerORM.class, C.FATAL, "Initial Space audits calculation", e1);
 		}
 		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	// INTERNAL SPACE CHECKLIST
-	public static void calculateSpaceChecklistCompletion(int spaceID) throws SQLException {
+	public static void calculateSpaceChecklistCompletion(int spaceID) {
 		long startTime = System.currentTimeMillis();
 		double percent = 0;
 		int progress = 0;
 		int max = 0;
 		int score = 0;
-		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
-		ResultSet row = null;
-		String sql = "SELECT * FROM SPACE_CHECKLIST_AUDIT WHERE SPACE_ID=?";
+		SpaceChecklistAuditTable.Row row = null;
 		try {
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, spaceID);
-			row = ps.executeQuery();
-		} catch (SQLException e) {
-			LogController.logEvent(AuditController.class, C.FATAL, e);		
+			row = SpaceChecklistAuditTable.getRow("SPACE_ID", ""+spaceID);
+		} catch (SQLException ex) {
+			LogController.logEvent(AuditControllerORM.class, C.FATAL, ex);
 		}
-		if(row!=null && row.next()) {			
-			if (C.notNullOrEmpty(row.getString("Q1_DIMS_H"))
-					&& C.notNullOrEmpty(row.getString("Q1_DIMS_L"))
-					&& C.notNullOrEmpty(row.getString("Q1_DIMS_W"))) {
+		if (row != null) {
+			if (C.notNullOrEmpty(row.getQ1DimsH())
+					&& C.notNullOrEmpty(row.getQ1DimsL())
+					&& C.notNullOrEmpty(row.getQ1DimsW())) {
 				score += 1;
 			}
-			String q2 = row.getString("Q2_BOOLEAN");
-			if (isN(q2) || (isY(q2) && C.notNullOrEmpty(row.getString("Q2_DESC")))) {
+			String q2 = row.getQ2Boolean();
+			if (isN(q2) || (isY(q2) && C.notNullOrEmpty(row.getQ2Desc()))) {
 				score += 1;
 			}
-			if (row.getString("Q3_BOOLEAN") != null) {
+			if (row.getQ3Boolean() != null) {
 				score += 1;
 			}
-			String q4 = row.getString("Q4_BOOLEAN");
+			String q4 = row.getQ4Boolean();
 			if (isN(q4)
-					|| (isY(q4) && C.notNullOrEmpty(row.getString("Q4_DIMS_H")) && C.notNullOrEmpty(row.getString("Q4_DIMS_W")))) {
+					|| (isY(q4) && C.notNullOrEmpty(row.getQ4DimsH()) && C.notNullOrEmpty(row.getQ4DimsW()))) {
 				score += 1;
 			}
-			if (row.getString("Q5_BOOLEAN") != null) {
+			if (row.getQ5Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q6_BOOLEAN") != null) {
+			if (row.getQ6Boolean() != null) {
 				score += 1;
 			}
-			String q7 = row.getString("Q7_BOOLEAN");
-			if (isN(q7) || (isY(q7) && row.getInt("Q7_RATING") != 0)) {
+			String q7 = row.getQ7Boolean();
+			if (isN(q7) || (isY(q7) && row.getQ7Rating() != 0)) {
 				score += 1;
 			}
-			String q8 = row.getString("Q8_BOOLEAN");
-			if (isN(q8) || (isY(q8) && row.getInt("Q8_RATING") != 0)) {
+			String q8 = row.getQ8Boolean();
+			if (isN(q8) || (isY(q8) && row.getQ8Rating() != 0)) {
 				score += 1;
 			}
-			String q9 = row.getString("Q9_BOOLEAN");
-			if (isN(q9) || (isY(q9) && row.getInt("Q9_RATING") != 0)) {
+			String q9 = row.getQ9Boolean();
+			if (isN(q9) || (isY(q9) && row.getQ9Rating() != 0)) {
 				score += 1;
 			}
-			String q10 = row.getString("Q10_BOOLEAN");
-			if (isN(q10) || (isY(q10) && row.getInt("Q10_RATING") != 0)) {
+			String q10 = row.getQ10Boolean();
+			if (isN(q10) || (isY(q10) && row.getQ10Rating() != 0)) {
 				score += 1;
 			}
-			if (row.getString("Q11_BOOLEAN") != null) {
+			if (row.getQ11Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q12_BOOLEAN") != null) {
+			if (row.getQ12Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q13_BOOLEAN") != null) {
+			if (row.getQ13Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q14_BOOLEAN") != null) {
+			if (row.getQ14Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q15_BOOLEAN") != null) {
+			if (row.getQ15Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q16_BOOLEAN") != null) {
+			if (row.getQ16Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q6_BOOLEAN") != null) {
+			if (row.getQ17Boolean() != null) {
 				score += 1;
 			}
 			max = 17;
@@ -123,52 +122,45 @@ public class AuditController {
 				max = 14;
 			}
 			percent = Math.round(((float) score / max) * 100);
-			progress = (int) Math.floor(percent / 10) * 10;	
-			ps.close();
-			conn.close();
-		}		
+			progress = (int) Math.floor(percent / 10) * 10;
+		}
 		EsmApplication.appData.setField("SPACE_CHK_" + spaceID, progress);
 		// System.out.println("Calculating space "+userID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
 		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	// INTERNAL SPACE CLASSIFICATION
-	public static void calculateSpaceClassificationCompletion(int spaceID) throws SQLException {
+	public static void calculateSpaceClassificationCompletion(int spaceID) {
 		long startTime = System.currentTimeMillis();
 		double percent = 0;
 		int progress = 0;
 		int max = 0;
 		int score = 0;
 		ArrayList<Integer> status = new ArrayList<Integer>();
-		String light = "null";		
-		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
-		ResultSet row = null;
-		String sql = "SELECT * FROM SPACE_CLASSIFICATION_AUDIT WHERE SPACE_ID=?";
+		String light = "null";
+		SpaceClassificationAuditTable.Row row = null;
 		try {
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, spaceID);
-			row = ps.executeQuery();
-		} catch (SQLException e) {
-			LogController.logEvent(AuditController.class, C.FATAL, e);		
+			row = SpaceClassificationAuditTable.getRow("SPACE_ID", ""+spaceID);
+		} catch (SQLException ex) {
+			LogController.logEvent(AuditControllerORM.class, C.FATAL, ex);
 		}
-		if(row!=null && row.next()) {			
-			int q1 = row.getInt("Q1_VALUE");
+		if (row != null) {
+			int q1 = row.getQ1Value();
 			if (q1 != 0) {
 				score += 1;
 				status.add(q1);
 			}
-			int q2 = row.getInt("Q2_VALUE");
+			int q2 = row.getQ2Value();
 			if (q2 != 0) {
 				score += 1;
 				status.add(q2);
 			}
-			int q3 = row.getInt("Q3_VALUE");
+			int q3 = row.getQ3Value();
 			if (q3 != 0) {
 				score += 1;
 				status.add(q3);
 			}
-			int q4 = row.getInt("Q4_VALUE");
+			int q4 = row.getQ4Value();
 			if (q4 != 0) {
 				score += 1;
 				if (q4 == 5) {
@@ -179,17 +171,17 @@ public class AuditController {
 					status.add(2);
 				}
 			}
-			int q5 = row.getInt("Q5_VALUE");
+			int q5 = row.getQ5Value();
 			if (q5 != 0) {
 				score += 1;
 				status.add(q5);
 			}
-			int q6 = row.getInt("Q6_VALUE");
+			int q6 = row.getQ6Value();
 			if (q6 != 0) {
 				score += 1;
 				status.add(q6);
 			}
-			String q7 = row.getString("Q7_BOOLEAN");
+			String q7 = row.getQ7Boolean();
 			if (q7 != null) {
 				score += 1;
 				if (isY(q7)) {
@@ -198,7 +190,7 @@ public class AuditController {
 					status.add(3);
 				}
 			} // N = green
-			String q8 = row.getString("Q8_BOOLEAN");
+			String q8 = row.getQ8Boolean();
 			if (q8 != null) {
 				score += 1;
 				if (isY(q8)) {
@@ -216,8 +208,6 @@ public class AuditController {
 			}
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
-			ps.close();
-			conn.close();
 		}
 		if(status.contains(1)) {
 			light = "red";
@@ -238,75 +228,71 @@ public class AuditController {
 	// =========================================================================================================================
 
 	// ENTRY POINT CHECKLIST
-	public static void calculateEntryChecklistCompletion(int entryID) throws SQLException {
+	public static void calculateEntryChecklistCompletion(int entryID) {
 		long startTime = System.currentTimeMillis();
 		double percent = 0;
 		int progress = 0;
 		int max = 0;
 		int score = 0;
-		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
-		ResultSet row = null;
-		String sql = "SELECT * FROM ENTRYPOINT_CHECKLIST_AUDIT WHERE ENTRYPOINT_ID=?";
+		EntrypointChecklistAuditTable.Row row = null;
 		try {
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, entryID);
-			row = ps.executeQuery();
-		} catch (SQLException e) {
-			LogController.logEvent(AuditController.class, C.FATAL, e);		
+			row = EntrypointChecklistAuditTable.getRow("ENTRYPOINT_ID", "" + entryID);
+		} catch (SQLException ex) {
+			LogController.logEvent(AuditControllerORM.class, C.FATAL, ex);
 		}
-		if(row!=null && row.next()) {			
-			String q1 = row.getString("Q1_VALUE");
-			if (q1 != null) {
+		if (row != null) {
+			String q1 = row.getQ1Value();
+			if (row.getQ1Value() != null) {
 				score += 1;
 			}
-			if (q1 != null && q1.equals("OUTSIDE") && row.getString("Q2_BOOLEAN") != null) {
+			if (q1 != null && q1.equals("OUTSIDE")
+					&& row.getQ2Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q3_BOOLEAN") != null) {
+			if (row.getQ3Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q4_VALUE") != null) {
+			if (row.getQ4Value() != null) {
 				score += 1;
 			}
-			if (C.notNullOrEmpty(row.getString("Q5_DIMS_H"))
-					&& C.notNullOrEmpty(row.getString("Q5_DIMS_W"))) {
+			if (C.notNullOrEmpty(row.getQ5DimsH())
+					&& C.notNullOrEmpty(row.getQ5DimsW())) {
 				score += 1;
 			}
-			if (row.getString("Q6_BOOLEAN") != null) {
+			if (row.getQ6Boolean() != null) {
 				score += 1;
 			}
-			String q7 = row.getString("Q7_VALUE");
+			String q7 = row.getQ7Value();
 			if (q7 != null) {
 				score += 1;
 			}
 			if (q7 != null && q7.equals("VERTICAL")
-					&& row.getString("Q8_BOOLEAN") != null) {
+					&& row.getQ8Boolean() != null) {
 				score += 1;
 			}
 			if (q7 != null && q7.equals("VERTICAL")
-					&& row.getString("Q9_BOOLEAN") != null) {
+					&& row.getQ9Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q10_BOOLEAN") != null) {
+			if (row.getQ10Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q11_BOOLEAN") != null) {
+			if (row.getQ11Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q12_BOOLEAN") != null) {
+			if (row.getQ12Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q13_BOOLEAN") != null) {
+			if (row.getQ13Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q14_BOOLEAN") != null) {
+			if (row.getQ14Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q15_BOOLEAN") != null) {
+			if (row.getQ15Boolean() != null) {
 				score += 1;
 			}
-			if (row.getString("Q16_BOOLEAN") != null) {
+			if (row.getQ16Boolean() != null) {
 				score += 1;
 			}
 			max = 16;
@@ -319,8 +305,6 @@ public class AuditController {
 			}
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
-			ps.close();
-			conn.close();
 		}
 		EsmApplication.appData.setField("ENTRY_CHK_" + entryID, progress);
 		// System.out.println("Calculating entry "+entryID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress);
@@ -328,7 +312,7 @@ public class AuditController {
 	}
 
 	// ENTRY POINT CLASSIFICATION
-	public static void calculateEntryClassificationCompletion(int entryID) throws SQLException {
+	public static void calculateEntryClassificationCompletion(int entryID) {
 		long startTime = System.currentTimeMillis();
 		double percent = 0;
 		int progress = 0;
@@ -336,29 +320,24 @@ public class AuditController {
 		int score = 0;
 		ArrayList<Integer> status = new ArrayList<Integer>();
 		String light = "null";
-		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
-		ResultSet row = null;
-		String sql = "SELECT * FROM ENTRYPOINT_CLASSIFICATION_AUDIT WHERE ENTRYPOINT_ID=?";
+		EntrypointClassificationAuditTable.Row row = null;
 		try {
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, entryID);
-			row = ps.executeQuery();
-		} catch (SQLException e) {
-			LogController.logEvent(AuditController.class, C.FATAL, e);		
-	}
-		if(row!=null && row.next()) {			
-			int q1 = row.getInt("Q1_VALUE");
+			row = EntrypointClassificationAuditTable.getRow("ENTRYPOINT_ID", ""+entryID);
+		} catch (SQLException ex) {
+			LogController.logEvent(AuditControllerORM.class, C.FATAL, ex);
+		}
+		if (row != null) {
+			int q1 = row.getQ1Value();
 			if (q1 != 0) {
 				score += 1;
 				status.add(q1);
 			}
-			int q2 = row.getInt("Q2_VALUE");
+			int q2 = row.getQ2Value();
 			if (q2 != 0) {
 				score += 1;
 				status.add(q2);
 			}
-			String q3 = row.getString("Q3_BOOLEAN");
+			String q3 = row.getQ3Boolean();
 			if (q3 != null) {
 				score += 1;
 				if (isY(q3)) {
@@ -367,7 +346,7 @@ public class AuditController {
 					status.add(1);
 				}
 			} // Y = green
-			int q4 = row.getInt("Q4_VALUE");
+			int q4 = row.getQ4Value();
 			if (q4 != 0) {
 				score += 1;
 				if (q4 == 5) {
@@ -378,7 +357,7 @@ public class AuditController {
 					status.add(2);
 				}
 			}
-			String q5 = row.getString("Q5_BOOLEAN");
+			String q5 = row.getQ5Boolean();
 			if (q5 != null) {
 				score += 1;
 				if (isY(q5)) {
@@ -387,7 +366,7 @@ public class AuditController {
 					status.add(1);
 				}
 			} // Y = green
-			String q6 = row.getString("Q6_BOOLEAN");
+			String q6 = row.getQ6Boolean();
 			if (q6 != null) {
 				score += 1;
 				if (isY(q6)) {
@@ -396,7 +375,7 @@ public class AuditController {
 					status.add(1);
 				}
 			} // Y = green
-			int q7 = row.getInt("Q7_VALUE");
+			int q7 = row.getQ7Value();
 			if (q7 != 0) {
 				score += 1;
 				status.add(q7);
@@ -404,8 +383,6 @@ public class AuditController {
 			max = 7;
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
-			ps.close();
-			conn.close();
 		}
 		if(status.contains(1)) {
 			light = "red";
@@ -459,28 +436,19 @@ public class AuditController {
 		try {
 			progress += (Integer) EsmApplication.appData.getField("SPACE_CHK_" + spaceID);
 			progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID);
-		} catch (Exception ex) {}		
-		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
-		ResultSet epRow = null;
-		String sql = "SELECT ID FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=?";
+		} catch (Exception ex) {}
 		try {
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, spaceID);
-			epRow = ps.executeQuery(sql);
-			while(epRow.next()) {
-				int epID = epRow.getInt("ID");
+			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID)) {
+				int epID = epRow.getID();
 				try {
 					progress += (Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID);
 					progress += (Integer) EsmApplication.appData.getField("ENTRY_CLASS_" + epID);
 					num = num+2;
 				} catch (Exception ex) { 
-					LogController.logEvent(AuditController.class, C.ERROR, "appdata set EP FAILED " + epID); 
+					LogController.logEvent(AuditControllerORM.class, C.ERROR, "appdata set EP FAILED " + epID); 
 				}
 			}
-		} catch (SQLException e) {
-			LogController.logEvent(AuditController.class, C.FATAL, e);		
-		}
+		} catch (SQLException ex) {}
 		//System.out.println(progress + "/" + num);
 		return (int) Math.floor((progress / num) / 10) * 10;
 	}
@@ -492,17 +460,10 @@ public class AuditController {
 		}
 		if ((Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID) < 100) {
 			complete = false;
-		}		
-		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
-		ResultSet epRow = null;
-		String sql = "SELECT ID FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=?";
+		}
 		try {
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, spaceID);
-			epRow = ps.executeQuery(sql);
-			while(epRow.next()) {
-				int epID = epRow.getInt("ID");
+			for (EntrypointsTable.Row epRow : EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID)) {
+				int epID = epRow.getID();
 				if ((Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID) < 100) {
 					complete = false;
 				}

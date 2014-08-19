@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
@@ -42,7 +41,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
@@ -599,7 +597,11 @@ public class SpaceDetailView {
 			lblEntryPointAuditImg.setBackground(C.APP_BGCOLOR);
 			// status light
 			lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
-			AuditController.calculateEntryClassificationCompletion(epID);
+			try {
+				AuditController.calculateEntryClassificationCompletion(epID);
+			} catch (SQLException e1) {
+				LogController.logEvent(me, C.FATAL, "ERROR CALC ENTRY CLASSIFICATION COMPLETION", e1);
+			}
 			String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+epID);
 			if(epTL.equals("")) { epTL = "null"; }
 			lblEntryPointAuditLight.setImage(C.getImage(""+epTL+".png"));
