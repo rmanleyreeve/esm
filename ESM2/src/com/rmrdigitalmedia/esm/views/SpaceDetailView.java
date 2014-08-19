@@ -571,18 +571,26 @@ public class SpaceDetailView {
 		GridData gd_lblEntryPointAuditImg, gd_lblEntryPointAuditLight, gd_btnShowEntryAudit, gd_lblEntryPoint, gd_btnEditEntry, gd_btnDeleteEntry;
 		Button btnShowEntryAudit, btnEditEntry, btnDeleteEntry;
 		int rh = 20;
+		
+		
+		
+		
+		
+		
+		
 		try {
 			Connection conn = DatabaseController.createConnection();
-			PreparedStatement  ps = null;
-			ResultSet epRow = null;
 			String sql = "SELECT * FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=?";
-			ps = conn.prepareStatement(sql);
+			PreparedStatement ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ps.setInt(1, spaceID);
-			epRow = ps.executeQuery();
+			ResultSet epRow = ps.executeQuery();
+			int rowCount = 0;
+			if (epRow.last()) {
+				rowCount = epRow.getRow();
+				epRow.beforeFirst();
+			}				
 			// for loop
-			int epCount = 0;
 			while(epRow.next()) {	
-				epCount++;
 				final int epID = epRow.getInt("ID");
 				String epName = epRow.getString("NAME");
 				lblEntryPoint = new CLabel(rowRight2, SWT.NONE);
@@ -677,7 +685,7 @@ public class SpaceDetailView {
 						}
 					}
 				});
-				btnDeleteEntry.setEnabled( epCount>1 && (user.getAccessLevel()==9 || user.getID()==epRow.getInt("AUTHOR_ID")) );
+				btnDeleteEntry.setEnabled( rowCount>1 && (user.getAccessLevel()==9 || user.getID()==epRow.getInt("AUTHOR_ID")) );
 
 			} // end for
 
