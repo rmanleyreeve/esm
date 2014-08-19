@@ -2,6 +2,9 @@ package com.rmrdigitalmedia.esm.views;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -60,11 +63,8 @@ import com.rmrdigitalmedia.esm.forms.DeleteSpaceCommentDialog;
 import com.rmrdigitalmedia.esm.forms.EditEntrypointForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceForm;
-import com.rmrdigitalmedia.esm.models.DocDataTable;
-import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
-import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class SpaceDetailView {
@@ -238,11 +238,18 @@ public class SpaceDetailView {
 
 		// loop through and display comments in descending order	
 		try {
-			for (final SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID + " ORDER BY ID DESC")) {
+			Connection conn = DatabaseController.createConnection();
+			PreparedStatement  ps = null;
+			String sql = "SELECT * FROM SPACE_COMMENTS WHERE DELETED=FALSE AND SPACE_ID=? ORDER BY ID DESC";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, spaceID);
+			final ResultSet spaceComment = ps.executeQuery();
+			while(spaceComment.next()) {			
 
-				boolean canApprove = (!spaceComment.getApproved().equals("TRUE") && user.getAccessLevel()==9);
+				boolean canApprove = (!spaceComment.getBoolean("APPROVED") && user.getAccessLevel()==9);
+				final int commentID = spaceComment.getInt("ID");
 
-				if(spaceComment.getApproved().equals("TRUE") || canApprove){
+				if(spaceComment.getBoolean("APPROVED") || canApprove){
 
 					Group commentRow = new Group(compL, SWT.NONE);
 					commentRow.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -253,7 +260,7 @@ public class SpaceDetailView {
 					commentRow.setLayout(gl_commentRow);
 					commentRow.setBackground(C.APP_BGCOLOR);
 
-					EsmUsersTable.Row author = EsmUsersTable.getRow(spaceComment.getAuthorID());
+					EsmUsersTable.Row author = EsmUsersTable.getRow(spaceComment.getInt("AUTHOR_ID"));
 					Label lblAuthor = new Label(commentRow, SWT.NONE);
 					GridData gd_lblAuthor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1);
 					gd_lblAuthor.horizontalIndent = 1;
@@ -263,7 +270,7 @@ public class SpaceDetailView {
 					lblAuthor.setText(author.getForename() + " " + author.getSurname());		
 
 					Text comment = new Text(commentRow, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY);
-					comment.setText(spaceComment.getComment());
+					comment.setText(spaceComment.getString("COMMENT"));
 					comment.setEditable(false);
 					comment.setFont(C.FONT_11);
 					comment.setBackground(C.FIELD_BGCOLOR);
@@ -281,7 +288,7 @@ public class SpaceDetailView {
 					lblPosted.setFont(C.FONT_9);
 					lblPosted.setBackground(C.APP_BGCOLOR);
 					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
-					lblPosted.setText("Posted: " + sdf.format(spaceComment.getUpdateDate()));
+					lblPosted.setText("Posted: " + sdf.format(spaceComment.getDate("UPDATE_DATE")));
 
 					if( user.getAccessLevel()==9 || user.getID()==author.getID())	{	
 						Button btnEditComment = new Button(commentRow, SWT.NONE);
@@ -294,7 +301,7 @@ public class SpaceDetailView {
 						btnEditComment.addSelectionListener(new SelectionAdapter() {
 							@Override
 							public void widgetSelected(SelectionEvent arg0) {
-								EditSpaceCommentForm esf = new EditSpaceCommentForm(spaceComment.getID());					
+								EditSpaceCommentForm esf = new EditSpaceCommentForm(commentID);					
 								if(esf.complete()) {
 									WindowController.showSpaceDetail(spaceID);									
 								}
@@ -311,7 +318,7 @@ public class SpaceDetailView {
 						btnDeleteComment.addSelectionListener(new SelectionAdapter() {
 							@Override
 							public void widgetSelected(SelectionEvent arg0) {
-								int _id = spaceComment.getID();
+								int _id = commentID;
 								DeleteSpaceCommentDialog dscd = new DeleteSpaceCommentDialog();					
 								if(dscd.deleteOK(_id)) {
 									LogController.log("Space Comment "+_id+" marked as deleted in database");
@@ -333,7 +340,7 @@ public class SpaceDetailView {
 						btnApproveComment.addSelectionListener(new SelectionAdapter() {
 							@Override
 							public void widgetSelected(SelectionEvent arg0) {
-								int id = spaceComment.getID();
+								int id = commentID;
 								ApproveSpaceCommentForm ascf = new ApproveSpaceCommentForm(id);
 								if(ascf.complete()) {
 									EsmApplication.alert("The comment was approved!");
@@ -348,10 +355,10 @@ public class SpaceDetailView {
 				}
 
 			}	// end loop
-
-
+			ps.close();
+			conn.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LogController.logEvent(me, C.ERROR, e);
 		}
 
 		scrollPanelLeft.setContent(compL);
@@ -563,114 +570,121 @@ public class SpaceDetailView {
 		Label lblEntryPointAuditImg, lblEntryPointAuditLight;
 		GridData gd_lblEntryPointAuditImg, gd_lblEntryPointAuditLight, gd_btnShowEntryAudit, gd_lblEntryPoint, gd_btnEditEntry, gd_btnDeleteEntry;
 		Button btnShowEntryAudit, btnEditEntry, btnDeleteEntry;
-		EntrypointsTable.Row[] epRows = null;
 		int rh = 20;
-
 		try {
-			epRows = EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID=" + spaceID);
-		} catch (SQLException e1) {
-			LogController.logEvent(me, C.ERROR, e1);
+			Connection conn = DatabaseController.createConnection();
+			PreparedStatement  ps = null;
+			ResultSet epRow = null;
+			String sql = "SELECT * FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, spaceID);
+			epRow = ps.executeQuery();
+			// for loop
+			int epCount = 0;
+			while(epRow.next()) {	
+				epCount++;
+				final int epID = epRow.getInt("ID");
+				String epName = epRow.getString("NAME");
+				lblEntryPoint = new CLabel(rowRight2, SWT.NONE);
+				lblEntryPoint.setFont(C.FONT_10);
+				gd_lblEntryPoint = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+				//gd_lblEntryPoint.horizontalIndent = 10;
+				gd_lblEntryPoint.heightHint = rh;
+				lblEntryPoint.setLayoutData(gd_lblEntryPoint);
+				lblEntryPoint.setBackground(C.APP_BGCOLOR);
+				lblEntryPoint.setImage(C.getImage("entry.png"));
+				lblEntryPoint.setText(epName);
+				lblEntryPoint.setToolTipText(epRow.getString("DESCRIPTION"));
+				lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
+				// work out completion status based on id
+				int epcs = AuditController.calculateEntryCompletionStatus(epID);
+				lblEntryPointAuditImg.setImage(C.getImage("Percent_"+ epcs +".png"));
+				gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+				gd_lblEntryPointAuditImg.widthHint = 160;
+				gd_lblEntryPointAuditImg.heightHint = rh;
+				lblEntryPointAuditImg.setLayoutData(gd_lblEntryPointAuditImg);
+				lblEntryPointAuditImg.setBackground(C.APP_BGCOLOR);
+				// status light
+				lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
+				try {
+					AuditController.calculateEntryClassificationCompletion(epID);
+				} catch (SQLException e1) {
+					LogController.logEvent(me, C.FATAL, "ERROR CALC ENTRY CLASSIFICATION COMPLETION", e1);
+				}
+				String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+epID);
+				if(epTL.equals("")) { epTL = "null"; }
+				lblEntryPointAuditLight.setImage(C.getImage(""+epTL+".png"));
+				gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+				gd_lblEntryPointAuditLight.horizontalIndent = 10;
+				gd_lblEntryPointAuditLight.heightHint = rh;
+				lblEntryPointAuditLight.setLayoutData(gd_lblEntryPointAuditLight);
+				lblEntryPointAuditLight.setBackground(C.APP_BGCOLOR);
+				// audit button
+				btnShowEntryAudit = new Button(rowRight2, SWT.NONE);
+				btnShowEntryAudit.setToolTipText("Launch the Entry Point Audit for " + epName);
+				gd_btnShowEntryAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+				//gd_btnEditAudit.verticalIndent = 3;
+				gd_btnShowEntryAudit.heightHint = rh;
+				//gd_btnShowEntryAudit.widthHint = 70;
+				btnShowEntryAudit.setLayoutData(gd_btnShowEntryAudit);
+				btnShowEntryAudit.setFont(C.FONT_9);
+				btnShowEntryAudit.setText("Audit");
+				btnShowEntryAudit.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						WindowController.showEntryAuditChecklist(epID);
+					}
+				});
+				// edit button
+				btnEditEntry = new Button(rowRight2, SWT.NONE);
+				btnEditEntry.setToolTipText("Edit details of the Entry Point");
+				gd_btnEditEntry = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
+				//gd_btnEditEntry.verticalIndent = 3;
+				gd_btnEditEntry.heightHint = rh;
+				//gd_btnEditEntry.widthHint = 60;
+				btnEditEntry.setLayoutData(gd_btnEditEntry);
+				btnEditEntry.setFont(C.FONT_9);
+				btnEditEntry.setText("Edit");
+				btnEditEntry.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						EditEntrypointForm eef = new EditEntrypointForm(epID);					
+						if(eef.complete()) {
+							WindowController.showSpaceDetail(spaceID);									
+						}
+					}
+				});
+				// delete button
+				btnDeleteEntry = new Button(rowRight2, SWT.NONE);
+				btnDeleteEntry.setToolTipText("Delete this Entry Point");
+				gd_btnDeleteEntry = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+				//gd_btnDeleteEntry.verticalIndent = 3;
+				gd_btnDeleteEntry.heightHint = rh;
+				//gd_btnDeleteEntry.widthHint = 60;
+				btnDeleteEntry.setLayoutData(gd_btnDeleteEntry);
+				btnDeleteEntry.setFont(C.FONT_9);
+				btnDeleteEntry.setText("Delete");
+				btnDeleteEntry.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						DeleteEntrypointDialog ded = new DeleteEntrypointDialog();					
+						if(ded.deleteOK(epID)) {
+							LogController.log("Entrypoint " + epID + " marked as deleted in database");
+							EsmApplication.alert("The entry point was deleted!");
+							WindowController.showSpaceDetail(spaceID);									
+						} else {
+							LogController.log("Entrypoint " + epID + " not deleted");
+						}
+					}
+				});
+				btnDeleteEntry.setEnabled( epCount>1 && (user.getAccessLevel()==9 || user.getID()==epRow.getInt("AUTHOR_ID")) );
+
+			} // end for
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
-		// for loop
-		for (final EntrypointsTable.Row epRow:epRows) {
-			final int epID = epRow.getID();
-			String epName = epRow.getName();
-			lblEntryPoint = new CLabel(rowRight2, SWT.NONE);
-			lblEntryPoint.setFont(C.FONT_10);
-			gd_lblEntryPoint = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-			//gd_lblEntryPoint.horizontalIndent = 10;
-			gd_lblEntryPoint.heightHint = rh;
-			lblEntryPoint.setLayoutData(gd_lblEntryPoint);
-			lblEntryPoint.setBackground(C.APP_BGCOLOR);
-			lblEntryPoint.setImage(C.getImage("entry.png"));
-			lblEntryPoint.setText(epName);
-			lblEntryPoint.setToolTipText(epRow.getDescription());
-			lblEntryPointAuditImg = new Label(rowRight2, SWT.NONE);
-			// work out completion status based on id
-			int epcs = AuditController.calculateEntryCompletionStatus(epID);
-			lblEntryPointAuditImg.setImage(C.getImage("Percent_"+ epcs +".png"));
-			gd_lblEntryPointAuditImg = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-			gd_lblEntryPointAuditImg.widthHint = 160;
-			gd_lblEntryPointAuditImg.heightHint = rh;
-			lblEntryPointAuditImg.setLayoutData(gd_lblEntryPointAuditImg);
-			lblEntryPointAuditImg.setBackground(C.APP_BGCOLOR);
-			// status light
-			lblEntryPointAuditLight = new Label(rowRight2, SWT.RIGHT);
-			try {
-				AuditController.calculateEntryClassificationCompletion(epID);
-			} catch (SQLException e1) {
-				LogController.logEvent(me, C.FATAL, "ERROR CALC ENTRY CLASSIFICATION COMPLETION", e1);
-			}
-			String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+epID);
-			if(epTL.equals("")) { epTL = "null"; }
-			lblEntryPointAuditLight.setImage(C.getImage(""+epTL+".png"));
-			gd_lblEntryPointAuditLight = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
-			gd_lblEntryPointAuditLight.horizontalIndent = 10;
-			gd_lblEntryPointAuditLight.heightHint = rh;
-			lblEntryPointAuditLight.setLayoutData(gd_lblEntryPointAuditLight);
-			lblEntryPointAuditLight.setBackground(C.APP_BGCOLOR);
-			// audit button
-			btnShowEntryAudit = new Button(rowRight2, SWT.NONE);
-			btnShowEntryAudit.setToolTipText("Launch the Entry Point Audit for " + epName);
-			gd_btnShowEntryAudit = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-			//gd_btnEditAudit.verticalIndent = 3;
-			gd_btnShowEntryAudit.heightHint = rh;
-			//gd_btnShowEntryAudit.widthHint = 70;
-			btnShowEntryAudit.setLayoutData(gd_btnShowEntryAudit);
-			btnShowEntryAudit.setFont(C.FONT_9);
-			btnShowEntryAudit.setText("Audit");
-			btnShowEntryAudit.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent arg0) {
-					WindowController.showEntryAuditChecklist(epID);
-				}
-			});
-			// edit button
-			btnEditEntry = new Button(rowRight2, SWT.NONE);
-			btnEditEntry.setToolTipText("Edit details of the Entry Point");
-			gd_btnEditEntry = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
-			//gd_btnEditEntry.verticalIndent = 3;
-			gd_btnEditEntry.heightHint = rh;
-			//gd_btnEditEntry.widthHint = 60;
-			btnEditEntry.setLayoutData(gd_btnEditEntry);
-			btnEditEntry.setFont(C.FONT_9);
-			btnEditEntry.setText("Edit");
-			btnEditEntry.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent arg0) {
-					EditEntrypointForm eef = new EditEntrypointForm(epID);					
-					if(eef.complete()) {
-						WindowController.showSpaceDetail(spaceID);									
-					}
-				}
-			});
-			// delete button
-			btnDeleteEntry = new Button(rowRight2, SWT.NONE);
-			btnDeleteEntry.setToolTipText("Delete this Entry Point");
-			gd_btnDeleteEntry = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-			//gd_btnDeleteEntry.verticalIndent = 3;
-			gd_btnDeleteEntry.heightHint = rh;
-			//gd_btnDeleteEntry.widthHint = 60;
-			btnDeleteEntry.setLayoutData(gd_btnDeleteEntry);
-			btnDeleteEntry.setFont(C.FONT_9);
-			btnDeleteEntry.setText("Delete");
-			btnDeleteEntry.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent arg0) {
-					DeleteEntrypointDialog ded = new DeleteEntrypointDialog();					
-					if(ded.deleteOK(epID)) {
-						LogController.log("Entrypoint " + epID + " marked as deleted in database");
-						EsmApplication.alert("The entry point was deleted!");
-						WindowController.showSpaceDetail(spaceID);									
-					} else {
-						LogController.log("Entrypoint " + epID + " not deleted");
-					}
-				}
-			});
-			btnDeleteEntry.setEnabled( epRows.length>1 && (user.getAccessLevel()==9 || user.getID()==epRow.getAuthorID()) );
-
-		} // end for
 
 		sep = new Label(rowRight2, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));		
@@ -758,14 +772,14 @@ public class SpaceDetailView {
 
 			final Gallery gallery = new Gallery(gallHolder, SWT.MULTI | SWT.H_SCROLL);
 			GridData gd_gallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-			gd_gallery.minimumHeight = 150;
+			gd_gallery.minimumHeight = C.THUMB_HEIGHT + 15;
 			gallery.setLayoutData(gd_gallery);
 			gallery.setBackground(C.FIELD_BGCOLOR);
 
 			NoGroupRenderer gr = new NoGroupRenderer();
 			gr.setMinMargin(0);
-			gr.setItemHeight(150);
-			gr.setItemWidth(150);
+			gr.setItemHeight(C.THUMB_HEIGHT);
+			gr.setItemWidth(C.THUMB_WIDTH);
 			gr.setAutoMargin(true);
 			gallery.setGroupRenderer(gr);
 			gallery.setToolTipText("Double-click a thumbnail image to open full size view");
@@ -876,98 +890,118 @@ public class SpaceDetailView {
 		btnDeleteDoc.setVisible(false);
 
 		// DOCS ===============================
-		DocDataTable.Row[] dRows = null;
 		try {
-			dRows = DocDataTable.getRows("SPACE_ID="+spaceID);
-		} catch (SQLException ex) {
-			LogController.logEvent(me, C.ERROR, "Error getting document data from database", ex);		}
+			Connection conn = DatabaseController.createConnection();
+			PreparedStatement ps = null;
+			ResultSet dRow = null;
+			String sql = "SELECT DOC_DATA.*, ESM_USERS.FORENAME, ESM_USERS.SURNAME FROM DOC_DATA INNER JOIN ESM_USERS ON ESM_USERS.ID = DOC_DATA.AUTHOR_ID WHERE SPACE_ID=?";
+			ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ps.setInt(1, spaceID);
+			dRow = ps.executeQuery();
+			int rowcount = 0;
+			if (dRow.last()) {
+				rowcount = dRow.getRow();
+				dRow.beforeFirst();
+			}				
+			if (rowcount > 0) {
+				// docs exist - show table
+				btnOpenDoc.setVisible(true);
+				btnDeleteDoc.setVisible(user.getAccessLevel()==9);
+				final Table table = new Table(rowRight4, SWT.NONE | SWT.FULL_SELECTION);
+				table.setLayout(new FillLayout());
+				table.setBackground(C.FIELD_BGCOLOR);
+				GridData gd_table = new GridData(GridData.FILL_BOTH);
+				gd_table.grabExcessVerticalSpace = true;
+				gd_table.grabExcessHorizontalSpace=true;
+				gd_table.heightHint = 50;
+				gd_table.horizontalSpan = 4;
+				table.setLayoutData(gd_table);
+				table.setToolTipText("Double-click a document link to open");
+				table.addListener(SWT.MeasureItem, new Listener() {
+					@Override
+					public void handleEvent(Event event) {
+						event.height = 20;
+					}
+				});
+				// show files
+				// for loop
+				while(dRow.next()) {
+					int docID = dRow.getInt("ID");
+					String title = dRow.getString("TITLE");
+					String ext = Files.getFileExtension(title);	
+					title += "    (posted " + sdf.format(dRow.getDate("CREATED_DATE"));
+					try { 
+						title += " by " + dRow.getString("FORENAME") + " " + dRow.getString("SURNAME");
+					} catch (SQLException e2) {
+						LogController.logEvent(me, C.WARNING, e2);
+					}
+					title += ")";
+					//LogController.log("Document found: " + docID);
+					ImageData iconData = Program.findProgram(ext).getImageData();
+					Image itemImage = new Image(Display.getCurrent(), iconData);
+					TableItem item = new TableItem(table, SWT.NONE); 
+					item.setBackground(C.FIELD_BGCOLOR);
+					item.setText(title);
+					item.setData("id", docID);
+					item.setImage(itemImage);
+				}	
 
-		if (dRows.length > 0) {
-			// docs exist - show table
-			btnOpenDoc.setVisible(true);
-			btnDeleteDoc.setVisible(user.getAccessLevel()==9);
-			final Table table = new Table(rowRight4, SWT.NONE | SWT.FULL_SELECTION);
-			table.setLayout(new FillLayout());
-			table.setBackground(C.FIELD_BGCOLOR);
-			GridData gd_table = new GridData(GridData.FILL_BOTH);
-			gd_table.grabExcessVerticalSpace = true;
-			gd_table.grabExcessHorizontalSpace=true;
-			gd_table.heightHint = 50;
-			gd_table.horizontalSpan = 4;
-			table.setLayoutData(gd_table);
-			table.setToolTipText("Double-click a document link to open");
-			table.addListener(SWT.MeasureItem, new Listener() {
-				@Override
-				public void handleEvent(Event event) {
-					event.height = 20;
-				}
-			});
-			// show files
-			for (DocDataTable.Row dRow : dRows) {
-				int docID = dRow.getID();
-				String title = dRow.getTitle();
-				//LogController.log("Document found: " + docID);
-				String ext = Files.getFileExtension(title);			
-				ImageData iconData = Program.findProgram(ext).getImageData();
-				Image itemImage = new Image(Display.getCurrent(), iconData);
-				TableItem item = new TableItem(table, SWT.NONE); 
-				item.setBackground(C.FIELD_BGCOLOR);
-				item.setText(title);
-				item.setData("id", docID);
-				item.setImage(itemImage);
-			}		
-			table.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseDoubleClick(MouseEvent e) {
-					TableItem[] selection = table.getSelection();
-					int id = (Integer) selection[0].getData("id");
-					LogController.log("Opening Document " + id);
-					try {
-						File f = DatabaseController.readDocument(id);
-						Program.launch(f.getPath());
-						f.deleteOnExit();
-					} catch (IOException ex1) {
-						ex1.printStackTrace();
+				table.addMouseListener(new MouseListener() {
+					@Override
+					public void mouseDoubleClick(MouseEvent e) {
+						TableItem[] selection = table.getSelection();
+						int id = (Integer) selection[0].getData("id");
+						LogController.log("Opening Document " + id);
+						try {
+							File f = DatabaseController.readDocument(id);
+							Program.launch(f.getPath());
+							f.deleteOnExit();
+						} catch (IOException ex1) {
+							ex1.printStackTrace();
+						}
 					}
-				}
-				@Override
-				public void mouseDown(MouseEvent e) {	
-					btnOpenDoc.setEnabled(true);
-					btnDeleteDoc.setEnabled(true);
-				}
-				@Override
-				public void mouseUp(MouseEvent arg0) {
-				}
-			});
-			btnOpenDoc.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent arg0) {
-					TableItem[] selection = table.getSelection();
-					int id = (Integer) selection[0].getData("id");
-					LogController.log("Opening Document " + id);
-					try {
-						File f = DatabaseController.readDocument(id);
-						Program.launch(f.getPath());
-						f.deleteOnExit();
-					} catch (IOException ex1) {
-						ex1.printStackTrace();
+					@Override
+					public void mouseDown(MouseEvent e) {	
+						btnOpenDoc.setEnabled(true);
+						btnDeleteDoc.setEnabled(true);
 					}
-				}
-			});
-			btnDeleteDoc.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent arg0) {
-					TableItem[] selection = table.getSelection();
-					int id = (Integer) selection[0].getData("id");
-					LogController.log("Deleting Document " + id);
-					DeleteDocumentDialog ddd = new DeleteDocumentDialog();
-					if(ddd.deleteOK(spaceID)) {
-						WindowController.showSpaceDetail(spaceID);	
+					@Override
+					public void mouseUp(MouseEvent arg0) {
 					}
-				}
-			});
+				});
+				btnOpenDoc.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						TableItem[] selection = table.getSelection();
+						int id = (Integer) selection[0].getData("id");
+						LogController.log("Opening Document " + id);
+						try {
+							File f = DatabaseController.readDocument(id);
+							Program.launch(f.getPath());
+							f.deleteOnExit();
+						} catch (IOException ex1) {
+							ex1.printStackTrace();
+						}
+					}
+				});
+				btnDeleteDoc.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						TableItem[] selection = table.getSelection();
+						int id = (Integer) selection[0].getData("id");
+						LogController.log("Deleting Document " + id);
+						DeleteDocumentDialog ddd = new DeleteDocumentDialog();
+						if(ddd.deleteOK(spaceID)) {
+							WindowController.showSpaceDetail(spaceID);	
+						}
+					}
+				});
 
-		} // endif docs > 0	
+			} // endif docs > 0	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 
 		// row 5 - signoff header 		
 		Group rowRight5 = new Group(compR, SWT.NONE);
