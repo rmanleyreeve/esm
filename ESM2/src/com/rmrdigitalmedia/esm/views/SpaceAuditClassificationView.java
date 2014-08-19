@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -28,7 +27,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -707,7 +705,10 @@ public class SpaceAuditClassificationView {
 			} catch (SQLException e) {
 				LogController.logEvent(SpaceAuditClassificationView.class, C.FATAL, "ERROR UPDATE SPACE CLASSIFICATION ROW", e);
 			}
-			AuditController.calculateSpaceClassificationCompletion(spaceID);
+			try {
+				AuditController.calculateSpaceClassificationCompletion(spaceID);
+			} catch (SQLException e) {
+				LogController.logEvent(SpaceAuditClassificationView.class, C.FATAL, "ERROR CALC SPACE CLASSIFICATION COMPLETION", e);			}
 		}
 		
 	}

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import com.rmrdigitalmedia.esm.AppLoader;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
@@ -122,7 +121,7 @@ public class FilesystemController {
 		}
 	}
 
-	public void createLogDir() {
+	public static void createLogDir() {
 		logdir = new File(C.LOG_DIR);
 		if (logdir.mkdir()) {
 			System.out.println("LOG DIR CREATED: " + logdir);

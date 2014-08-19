@@ -3,7 +3,6 @@ package com.rmrdigitalmedia.esm.models ;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
-
 import com.javaranch.db.DBFacade;
 import com.javaranch.db.DBQuery;
 import com.javaranch.db.DBResults;

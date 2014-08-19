@@ -867,7 +867,11 @@ public class EntryAuditChecklistView {
 			} catch (SQLException e) {
 				LogController.logEvent(EntryAuditChecklistView.class, C.FATAL, "ERROR UPDATE ENTRYPOINT CHECKLIST ROW", e);
 			}
-			AuditController.calculateEntryChecklistCompletion(entryID);
+			try {
+				AuditController.calculateEntryChecklistCompletion(entryID);
+			} catch (SQLException e) {
+				LogController.logEvent(EntryAuditChecklistView.class, C.FATAL, "ERROR CALC ENTRYPOINT CHECKLIST COMPLETION", e);
+			}
 		}
 
 	}
