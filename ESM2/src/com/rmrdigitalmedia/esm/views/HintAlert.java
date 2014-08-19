@@ -52,6 +52,7 @@ public class HintAlert {
 		lblIcon.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 
 		Text txtMsg = new Text(shell, SWT.WRAP | SWT.MULTI);
+		txtMsg.setEditable(false);
 		GridData gd_txtMsg = new GridData(SWT.LEFT, SWT.TOP, true, false, 1, 1);
 		gd_txtMsg.verticalIndent = 3;
 		gd_txtMsg.widthHint = 400;

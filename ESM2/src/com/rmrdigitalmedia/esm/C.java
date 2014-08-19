@@ -39,8 +39,8 @@ public final class C {
 	// image properties
 	public static int IMG_WIDTH = 800;
 	public static int IMG_HEIGHT = 600;
-	public static int THUMB_WIDTH = 150;
-	public static int THUMB_HEIGHT = 150;
+	public static int THUMB_WIDTH = 125;
+	public static int THUMB_HEIGHT = 125;
 	
 	// pdf properties
 	public static String BLANK_SPACE_FORM = "blank_space_form.pdf";

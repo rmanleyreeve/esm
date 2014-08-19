@@ -467,7 +467,7 @@ public class AuditController {
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, spaceID);
-			epRow = ps.executeQuery(sql);
+			epRow = ps.executeQuery();
 			while(epRow.next()) {
 				int epID = epRow.getInt("ID");
 				try {
