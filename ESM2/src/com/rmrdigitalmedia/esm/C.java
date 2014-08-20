@@ -101,7 +101,7 @@ public final class C {
 	public static String LOGIN_FAIL_MSG = "Username or Password not recognised.\nPlease try again.";
 	public static String SPACE_ALERT_RED = "The space you have selected has been classified as RED.\nBe extra cautious as you proceed.";
 	public static String SPACE_NOT_AUTH = "This space has NOT been authorized.";
-	public static String COPYRIGHT = "\t\u00a9 Videotel 2014";
+	public static String COPYRIGHT = "\t\t\u00a9Videotel 2014";
 
 	// app screen titles
 	public static String APP_NAME = "Enclosed Spaces Management System";
@@ -128,18 +128,6 @@ public final class C {
 	public static String HELPFILE_EP_AUDIT_CHECK = "ep_audit_checklist_help.html";
 	public static String HELPFILE_EP_AUDIT_CLASS = "ep_audit_classification_help.html";
 	public static String HELPFILE_GENERIC = "help.html";
-
-	/*
-	 * public static void makeHoverButton(final Button b) { // NOT SUPPORTED ON
-	 * WINDOWS :-( b.addMouseTrackListener(new MouseTrackAdapter() {
-	 * 
-	 * @Override public void mouseEnter(MouseEvent arg0) {
-	 * //System.out.println(b);
-	 * b.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED)); }
-	 * 
-	 * @Override public void mouseExit(MouseEvent arg0) {
-	 * b.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK)); } }); }
-	 */
 
 	private C() {
 		throw new AssertionError();
