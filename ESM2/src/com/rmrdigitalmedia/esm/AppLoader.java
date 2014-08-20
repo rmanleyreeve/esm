@@ -43,12 +43,12 @@ public class AppLoader {
 		LogController.log("Progress: " + pbar.getSelection() + "%");
 	}
 
-	public static void message(String txt) {
+	public static void splashMessage(String txt) {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e1) {
 		}
-		LogController.log("SPLASH MSG: " + txt);
+		//LogController.log("SPLASH MSG: " + txt);
 		pmsg.setText(txt);
 	}
 
@@ -114,7 +114,7 @@ public class AppLoader {
 		Monitor primary = display.getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
 		Rectangle rect = splash.getBounds();
-		LogController.log("Splash Screen Size: " + rect.width + ":" + rect.height);
+		//LogController.log("Splash Screen Size: " + rect.width + ":" + rect.height);
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		splash.setLocation(x, y);
@@ -125,19 +125,19 @@ public class AppLoader {
 			public void run() {
 
 				// check/set up filesystem
-				LogController.log("AppLoader: filesystem check");
-				message("Checking file system integrity");
+				LogController.log("Starting filesystem check");
+				splashMessage("Checking file system integrity");
 				FilesystemController fs = new FilesystemController();
 				fs.checkFS();
-				message("File system integrity check complete");
+				splashMessage("File system integrity check complete");
 				update(); // 20%
 
 				// check/set up database
-				LogController.log("AppLoader: database check");
-				message("Checking database integrity");
+				LogController.log("Starting database check");
+				splashMessage("Checking database integrity");
 				DatabaseController db = new DatabaseController();
 				db.checkDB();
-				message("Database integrity check complete");
+				splashMessage("Database integrity check complete");
 				update(); // 40%
 
 				// background thread
@@ -160,7 +160,7 @@ public class AppLoader {
 				auditInit.start();
 
 				// check license key in DB
-				message("Checking License Key");
+				splashMessage("Checking License Key");
 				if (!DatabaseController.checkLicenseKey()) {
 					// open license key dialog
 					EsmApplication.alert(myshell, "License key not found!");
@@ -176,7 +176,7 @@ public class AppLoader {
 				update(); // 60%
 
 				// check/set up new admin user
-				message("Checking for Administrator account");
+				splashMessage("Checking for Administrator account");
 				if (!DatabaseController.checkAdmin()) {
 					// open admin user dialog
 					EsmApplication.alert(myshell, "System Administrator not found!");
@@ -192,7 +192,7 @@ public class AppLoader {
 				update(); // 80%
 
 				// check/set up new admin user
-				message("Checking Vessel/Installation Details");
+				splashMessage("Checking Vessel/Installation Details");
 				if (!DatabaseController.checkVessel()) {
 					// open admin user dialog
 					EsmApplication.alert(myshell, "Vessel/Installation info not found!");

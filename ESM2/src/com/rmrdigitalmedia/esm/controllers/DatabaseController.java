@@ -52,14 +52,14 @@ public class DatabaseController {
 	}
 
 	public void checkDB() {
-		LogController.log("Checking DB...");
+		LogController.log("Checking Database...");
 		if (!testConnection()) {
 			LogController.log("DB DOES NOT EXIST!");
 			createDB();
 		} else {
 			LogController.log("DB EXISTS");
 		}
-		LogController.log("DB check completed");
+		LogController.log("DB check completed.");
 	}
 
 	public boolean testConnection() {
@@ -238,7 +238,7 @@ public class DatabaseController {
 			if (rs.next()) {
 				id = rs.getLong(1);
 			}			
-			LogController.log("Images inserted into DB OK");			
+			LogController.log("Image data inserted into database");			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -410,7 +410,7 @@ public class DatabaseController {
 		LogController.log("Checking Admin User...");
 		try {
 			EsmUsersTable.Row[] rows = EsmUsersTable.getRows("ACCESS_LEVEL=9 AND DELETED=FALSE");
-			LogController.log("checkAdmin Row Count: " + rows.length);
+			LogController.log("Found: " + rows.length);
 			if (rows.length == 1) {
 				EsmUsersTable.Row row = rows[0];
 				ok = true;
@@ -431,7 +431,7 @@ public class DatabaseController {
 		LogController.log("Checking Vessel/Installation Details...");
 		try {
 			VesselTable.Row[] rows = VesselTable.getAllRows();
-			LogController.log("checkVessel Row Count: " + rows.length);
+			LogController.log("Found " + rows.length);
 			if (rows.length == 1) {
 				VesselTable.Row row = rows[0];
 				ok = true;
@@ -458,7 +458,7 @@ public class DatabaseController {
 		try {
 			LicenseTable.Row[] rows = LicenseTable
 					.getRows("LICENSEKEY IS NOT NULL");
-			LogController.log("checkLicenseKey Row Count: " + rows.length);
+			LogController.log("Found: " + rows.length);
 			if (rows.length == 1) {
 				LicenseTable.Row row = rows[0];
 				key = row.getLicensekey();

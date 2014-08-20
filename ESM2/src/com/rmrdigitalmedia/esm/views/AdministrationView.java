@@ -141,6 +141,7 @@ public class AdministrationView {
 	}
 
 	public static void buildPage(final Composite parent) {
+		LogController.log("Building Administration page");
 
 		for (Control c : parent.getChildren()) {
 			c.dispose();

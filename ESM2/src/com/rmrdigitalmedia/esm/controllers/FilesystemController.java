@@ -33,7 +33,7 @@ public class FilesystemController {
 		}
 
 		// create sub-dirs====================================
-		AppLoader.message("Creating System Directories");
+		AppLoader.splashMessage("Creating System Directories");
 		logdir = new File(C.LOG_DIR);
 		LogController.log("Logs folder: " + logdir);
 		if (logdir.mkdir()) {
@@ -59,7 +59,7 @@ public class FilesystemController {
 		}
 		EsmApplication.appData.setField("TMPDIR", tmpdir);
 
-		LogController.log("File system integrity check complete");
+		LogController.log("File system integrity check complete.");
 	}
 
 	public static void createBlankSpaceForm() {

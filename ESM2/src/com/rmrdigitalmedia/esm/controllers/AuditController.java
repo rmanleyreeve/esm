@@ -17,7 +17,7 @@ public class AuditController {
 	public static void init() {
 		// do initial audit calculations here
 		long startTime = System.currentTimeMillis();
-		LogController.log("Initial Space audits calculation started");
+		LogController.log("Initial Space Audits calculation started");
 		try {
 			for (SpacesTable.Row sRow : SpacesTable.getRows("DELETED=FALSE")) {
 				int spaceID = sRow.getID();

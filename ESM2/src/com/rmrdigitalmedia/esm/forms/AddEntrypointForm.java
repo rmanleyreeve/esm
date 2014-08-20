@@ -158,7 +158,7 @@ public class AddEntrypointForm {
 						epRow.setDeleted("FALSE");
 						int epID = (int) epRow.insert();
 						EsmApplication.appData.setField("ENTRY_CHK_" + epID, 0);						
-						EsmApplication.appData.setField("ENTRY_CLASS_" + epID, "");
+						EsmApplication.appData.setField("ENTRY_CLASS_" + epID, 0);
 						EsmApplication.appData.setField("ENTRY_STATUS_" + epID, "null");
 						LogController.log("Entry Point "+epID+" added to database.");				        
 						formOK = true;

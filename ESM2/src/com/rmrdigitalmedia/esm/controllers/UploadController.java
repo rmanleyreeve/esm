@@ -16,6 +16,7 @@ public class UploadController {
 	static Display display = Display.getCurrent();
 
 	public static String[] uploadSpaceImageDialog() {
+		LogController.log("Opening photo select dialog");
 		final FileDialog dialog = new FileDialog(new Shell(), SWT.OPEN | SWT.ON_TOP);
 		dialog.setText("Choose an image");
 		String platform = SWT.getPlatform();
@@ -36,8 +37,9 @@ public class UploadController {
 		}
 		return null;
 	}	
-	
+
 	public static String uploadSpaceDocumentDialog() {
+		LogController.log("Opening document select dialog");
 		final FileDialog dialog = new FileDialog(new Shell(), SWT.OPEN);
 		dialog.setText("Choose a document");
 		String platform = SWT.getPlatform();
@@ -58,15 +60,17 @@ public class UploadController {
 		return null;
 	}
 
-	
+
 	public static boolean uploadSpaceDocument(int spaceID, int authorID) {
 		int id = 0;
 		String fn = uploadSpaceDocumentDialog();
-		File f = new File(fn);
-		try {
-			id = DatabaseController.insertDocument(f, spaceID, authorID);
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
+		if(fn != null) {
+			File f = new File(fn);
+			try {
+				id = DatabaseController.insertDocument(f, spaceID, authorID);
+			} catch (FileNotFoundException ex) {
+				ex.printStackTrace();
+			}
 		}
 		return (id > 0);
 	}

@@ -102,7 +102,7 @@ public class SpaceDetailView {
 	}
 
 	public static void buildPage(final Composite parent, final int spaceID) {
-
+		LogController.log("Building Space Detail page");
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 
 		SpacesTable.Row sRow = null;
@@ -999,7 +999,7 @@ public class SpaceDetailView {
 						int id = (Integer) selection[0].getData("id");
 						LogController.log("Deleting Document " + id);
 						DeleteDocumentDialog ddd = new DeleteDocumentDialog();
-						if(ddd.deleteOK(spaceID)) {
+						if(ddd.deleteOK(id)) {
 							WindowController.showSpaceDetail(spaceID);	
 						}
 					}

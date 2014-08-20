@@ -67,7 +67,7 @@ public class SpacesListView {
 	}	
 
 	public static void buildTable(Composite parent) {
-		LogController.log("Building Space List page");
+		LogController.log("Building Spaces List page");
 		// clean up
 		for (Control c:parent.getChildren()) {
 			c.dispose();
