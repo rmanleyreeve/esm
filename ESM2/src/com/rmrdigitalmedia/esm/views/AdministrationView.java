@@ -243,6 +243,7 @@ public class AdministrationView {
 
 		Label lblSelect = new Label(rowUsers, SWT.NONE);
 		lblSelect.setText("Manage Existing User:");
+		lblSelect.setBackground(C.APP_BGCOLOR);
 
 		final Combo comboUsers = new Combo(rowUsers, SWT.DROP_DOWN | SWT.READ_ONLY);
 		comboUsers.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
@@ -286,9 +287,6 @@ public class AdministrationView {
 			}			
 		});
 
-		sep = new Label(rowUsers, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));	
-
 		comboUsers.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -320,6 +318,7 @@ public class AdministrationView {
 		Label lblSpaceComments = new Label(rowComments, SWT.NONE);
 		lblSpaceComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
 		lblSpaceComments.setText("Space Comments Requiring Approval:");
+		lblSpaceComments.setBackground(C.APP_BGCOLOR);
 
 		final List listSpaceComments = new List(rowComments, SWT.BORDER | SWT.V_SCROLL);
 		GridData gd_listSpaceComments = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
@@ -398,6 +397,8 @@ public class AdministrationView {
 		Label lblPhotoComments = new Label(rowComments, SWT.NONE);
 		lblPhotoComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
 		lblPhotoComments.setText("Photo Comments Requiring Approval:");
+		lblPhotoComments.setBackground(C.APP_BGCOLOR);
+		
 		final List listPhotoComments = new List(rowComments, SWT.BORDER | SWT.V_SCROLL);
 		listPhotoComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
 		listPhotoComments.setVisible(false);
@@ -484,6 +485,7 @@ public class AdministrationView {
 		});
 		Label lblDump = new Label(rowRight1, SWT.NONE);
 		lblDump.setText("Create a complete backup of the database");
+		lblDump.setBackground(C.APP_BGCOLOR);
 		btnDump.setToolTipText(lblDump.getText());
 		
 		// create local file
@@ -503,6 +505,7 @@ public class AdministrationView {
 		});
 		Label lblExport = new Label(rowRight1, SWT.NONE);
 		lblExport.setText("Generate a data export file to send manually by email");
+		lblExport.setBackground(C.APP_BGCOLOR);
 		btnExport.setToolTipText(lblExport.getText());
 		
 		// create file and ftp to server
@@ -532,6 +535,7 @@ public class AdministrationView {
 		});
 		Label lblSend = new Label(rowRight1, SWT.NONE);
 		lblSend.setText("Generate data export file and send to Videotel server");
+		lblSend.setBackground(C.APP_BGCOLOR);
 		btnSend.setToolTipText(lblSend.getText());
 
 		
