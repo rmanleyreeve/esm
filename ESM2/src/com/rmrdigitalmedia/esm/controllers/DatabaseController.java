@@ -299,7 +299,7 @@ public class DatabaseController {
 		// text data
 		try {
 			Connection conn = createConnection();
-			String[] tables = {"VESSEL","LICENSE","SPACES","ENTRYPOINTS","SPACE_COMMENTS","PHOTO_METADATA","SPACE_CHECKLIST_AUDIT","ENTRYPOINT_CHECKLIST_AUDIT","SPACE_CLASSIFICATION_AUDIT","ENTRYPOINT_CLASSIFICATION_AUDIT"};
+			String[] tables = {"DOC_DATA","PHOTO_DATA","VESSEL","LICENSE","ESM_USERS","SPACES","ENTRYPOINTS","SPACE_COMMENTS","PHOTO_METADATA","SPACE_CHECKLIST_AUDIT","ENTRYPOINT_CHECKLIST_AUDIT","SPACE_CLASSIFICATION_AUDIT","ENTRYPOINT_CLASSIFICATION_AUDIT"};
 			for(String table:tables) {
 				String fn = dir + C.SEP + table + ".csv";
 				String sql = "CALL CSVWRITE('" + fn + "', 'SELECT * FROM "+table+"', 'charset=UTF-8');";
