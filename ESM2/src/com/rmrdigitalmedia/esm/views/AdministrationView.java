@@ -495,7 +495,7 @@ public class AdministrationView {
 		btnExport.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if (DatabaseController.exportData()) {
+				if (DatabaseController.generateZipFile().exists()) {
 					EsmApplication.alert("Data Export file created successfully");
 					Program.launch(C.TMP_DIR);
 				} else {
@@ -517,7 +517,7 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				if (InternetController.checkNetAccess()) {
-					File f = DatabaseController.exportSqlFile();
+					File f = DatabaseController.generateZipFile();
 					if (f.exists()) {					
 						if(InternetController.uploadFileFTP(f.getPath(), f.getName())) {
 							EsmApplication.alert("File uploaded successfully");

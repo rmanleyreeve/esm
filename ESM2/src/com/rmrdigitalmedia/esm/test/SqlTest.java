@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
+import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 
 public class SqlTest {
 
@@ -23,6 +24,7 @@ public class SqlTest {
 
 
 	public SqlTest() {
+		FilesystemController.createLogDir();
 		Display display = Display.getDefault();
 		final Shell shell = new Shell(SWT.DIALOG_TRIM );
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
@@ -41,11 +43,11 @@ public class SqlTest {
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if (DatabaseController.exportSql()) {
-					System.out.println("test file created successfully");
+				if (DatabaseController.generateZipFile().exists()) {
+					System.out.println("zip file created successfully");
 					Program.launch(C.TMP_DIR);
 				} else {
-					System.out.println("Error exporting data");
+					System.out.println("Error creating zip");
 				}
 			}
 		});

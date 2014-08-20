@@ -39,15 +39,13 @@ import com.rmrdigitalmedia.esm.models.VesselTypesTable;
 public class DatabaseController {
 
 	public ProgressBar bar;
-	private static Object me;
 
 	public DatabaseController() {
-		me = this;
 		LogController.log("Running class " + this.getClass().getName());
 		try {
 			Class.forName("org.h2.Driver");
 		} catch (ClassNotFoundException e) {
-			LogController.logEvent(me, C.FATAL, "H2 Driver error", e);
+			LogController.logEvent(DatabaseController.class, C.FATAL, "H2 Driver error", e);
 		}
 	}
 
@@ -70,7 +68,7 @@ public class DatabaseController {
 			ok = true;
 			close(conn);
 		} catch (SQLException e) {
-			LogController.logEvent(me, C.FATAL, "testConnection", e);
+			LogController.logEvent(DatabaseController.class, C.FATAL, "testConnection", e);
 		}
 		return ok;
 	}
@@ -80,7 +78,7 @@ public class DatabaseController {
 		try {
 			conn = DriverManager.getConnection(C.DB_CONN_STR, "sa", "");
 		} catch (SQLException e) {
-			LogController.logEvent(me, C.FATAL, "createConnection", e);
+			LogController.logEvent(DatabaseController.class, C.FATAL, "createConnection", e);
 		}
 		return conn;
 	}
@@ -97,7 +95,7 @@ public class DatabaseController {
 			//loadRunSqlFile("DEMO.sql");
 
 		} catch (SQLException e) {
-			LogController.logEvent(me, C.FATAL, "DB SETUP FAILED", e);
+			LogController.logEvent(DatabaseController.class, C.FATAL, "DB SETUP FAILED", e);
 			// e.printStackTrace();
 			System.exit(0);
 		}
@@ -110,18 +108,16 @@ public class DatabaseController {
 		try {
 			sql = CharStreams.toString(new InputStreamReader(DatabaseController.class.getResourceAsStream("/sql/" + fName), Charsets.UTF_8));
 		} catch (IOException e) {
-			LogController.logEvent(me, C.ERROR, e);
+			LogController.logEvent(DatabaseController.class, C.ERROR, e);
 		}
 		try {
 			runQuery(sql);
 			LogController.log("OK");
 		} catch (SQLException e) {
-			LogController.logEvent(me, C.ERROR, "SQL LOAD FAILED", e);
+			LogController.logEvent(DatabaseController.class, C.ERROR, "SQL LOAD FAILED", e);
 			AppLoader.die("Failed to load SQL file '" + fName + "'");
 		}
 	}
-
-	// DB methods using entity classes where possible==============================================
 
 	public static boolean verifyLogin(String username, String password) {
 		boolean ok = false;
@@ -134,13 +130,15 @@ public class DatabaseController {
 			}
 			close(rs);
 		} catch (SQLException e) {
-			LogController.logEvent(me, C.FATAL, "login verify", e);
+			LogController.logEvent(DatabaseController.class, C.FATAL, "login verify", e);
 			e.printStackTrace();
 		} finally {
 			close(conn);
 		}
 		return ok;
 	}
+
+	// DB BINARY FILE METHODS =============================================================================================================
 
 	public static int insertDocument(File f, int spaceID, int authorID) throws FileNotFoundException {
 		long id = 0;
@@ -213,7 +211,7 @@ public class DatabaseController {
 					is = new ByteArrayInputStream((baos).toByteArray());
 					l = baos.size();
 				} catch (IOException ex) { 
-					LogController.logEvent(me, C.ERROR, "insert full image", ex);
+					LogController.logEvent(DatabaseController.class, C.ERROR, "insert full image", ex);
 				}
 			} else {
 				is = new FileInputStream (f);
@@ -229,7 +227,7 @@ public class DatabaseController {
 				is = new ByteArrayInputStream((baos).toByteArray());
 				l = baos.size();
 			} catch (IOException ex) { 
-				LogController.logEvent(me, C.ERROR, "insert thumbnail", ex);				
+				LogController.logEvent(DatabaseController.class, C.ERROR, "insert thumbnail", ex);				
 			}
 			ps.setBinaryStream (2, is, l);
 			ps.setTimestamp(3, new Timestamp(new Date().getTime()));
@@ -287,6 +285,56 @@ public class DatabaseController {
 		return img;
 	}
 
+	// DB EXPORT METHODS =============================================================================================================
+
+	public static File generateZipFile() {
+		boolean _csv=false, _sql=false;
+		String license = "";
+		try {
+			license = LicenseTable.getAllRows()[0].getLicensekey();
+		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
+		}
+		String dir = C.TMP_DIR + C.SEP + license;
+		// text data
+		try {
+			Connection conn = createConnection();
+			String[] tables = {"VESSEL","LICENSE","SPACES","ENTRYPOINTS","SPACE_COMMENTS","PHOTO_METADATA","SPACE_CHECKLIST_AUDIT","ENTRYPOINT_CHECKLIST_AUDIT","SPACE_CLASSIFICATION_AUDIT","ENTRYPOINT_CLASSIFICATION_AUDIT"};
+			for(String table:tables) {
+				String fn = dir + C.SEP + table + ".csv";
+				String sql = "CALL CSVWRITE('" + fn + "', 'SELECT * FROM "+table+"', 'charset=UTF-8');";
+				Statement stmt = conn.createStatement();
+				stmt.executeQuery(sql);
+				stmt.close();
+				_csv = true;
+				LogController.log("Exported: " + fn);
+			}
+			close(conn);
+		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Error creating CSV file", ex);		
+		}
+		// binary data
+		try {
+			Connection conn = createConnection();
+			String fn = dir + C.SEP + "BINARY.sql";
+			String sql = "SCRIPT NOSETTINGS TO '"+fn+"' CHARSET 'UTF-8' TABLE DOC_DATA,PHOTO_DATA";
+			Statement stmt = conn.createStatement();
+			stmt.executeQuery(sql);
+			stmt.close();
+			LogController.log("Exported: " + fn);
+			_sql = true;
+			close(conn);
+		} catch (SQLException e) {
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Error creating SQL file", e);
+		}
+		File zf = null;
+		if(_csv && _sql) {
+			zf = ZipController.createZipFile(new File(dir));
+		}		
+		return zf;
+	}
+
+
 	public static boolean dumpDatabase() {
 		boolean ok = false;
 		try {
@@ -298,7 +346,7 @@ public class DatabaseController {
 			ok = true;
 			LogController.log("Full DB Backup exported to: " + fn);
 		} catch (SQLException ex) {
-			LogController.logEvent(me, C.ERROR, "Error dumping database", ex);		}
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error dumping database", ex);		}
 		return ok;
 	}
 
@@ -308,12 +356,12 @@ public class DatabaseController {
 		try {
 			license = LicenseTable.getAllRows()[0].getLicensekey();
 		} catch (SQLException ex) {
-			LogController.logEvent(me, C.FATAL, "Could not get license key", ex);
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
 		}
 		String fn = C.TMP_DIR + C.SEP;
 		fn +=  license + "_"; 
 		fn += new Date().getTime() + "_export.sql";
-		String sql = "SCRIPT NOSETTINGS DROP TO '"+fn+"' CHARSET 'UTF-8' TABLE ";
+		String sql = "SCRIPT NOSETTINGS TO '"+fn+"' CHARSET 'UTF-8' TABLE ";
 		sql +="VESSEL,LICENSE,SPACES,ENTRYPOINTS,SPACE_COMMENTS,DOC_DATA,PHOTO_DATA,PHOTO_METADATA,SPACE_CHECKLIST_AUDIT,ENTRYPOINT_CHECKLIST_AUDIT,SPACE_CLASSIFICATION_AUDIT,ENTRYPOINT_CLASSIFICATION_AUDIT";
 		System.out.println(sql);
 		try {
@@ -324,7 +372,7 @@ public class DatabaseController {
 			close(conn);
 			ok = true;
 		} catch (SQLException e) {
-			LogController.logEvent(me, C.ERROR, "Error exporting SQL file", e);
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting SQL file", e);
 		}
 		return ok;
 	}
@@ -344,7 +392,7 @@ public class DatabaseController {
 			ok = true;
 			LogController.log("DB script file exported to: " + fn);
 		} catch (SQLException ex) {
-			LogController.logEvent(me, C.ERROR, "Error exporting DB script file", ex);
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting DB script file", ex);
 		}
 		return ok;
 	}
@@ -355,7 +403,7 @@ public class DatabaseController {
 		try {
 			license = LicenseTable.getAllRows()[0].getLicensekey();
 		} catch (SQLException ex) {
-			LogController.logEvent(me, C.FATAL, "Could not get license key", ex);
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
 		}
 		String fn = C.TMP_DIR + C.SEP;
 		fn +=  license + "_"; 
@@ -372,7 +420,7 @@ public class DatabaseController {
 			LogController.log("DB script file exported to: " + fn);
 			f = new File(fn);
 		} catch (SQLException ex) {
-			LogController.logEvent(me, C.ERROR, "Error exporting DB script file", ex);
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting DB script file", ex);
 		}
 		return f;
 	}
@@ -383,13 +431,13 @@ public class DatabaseController {
 		try {
 			license = LicenseTable.getAllRows()[0].getLicensekey();
 		} catch (SQLException ex) {
-			LogController.logEvent(me, C.FATAL, "Could not get license key", ex);
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
 		}
 		String fn = C.TMP_DIR + C.SEP;
 		fn +=  license + "_"; 
 		fn += new Date().getTime() + "_export.sql";
-		String sql = "SCRIPT NOSETTINGS DROP TO '"+fn+"' CHARSET 'UTF-8' TABLE ";
-		sql +="VESSEL,LICENSE,SPACES,ENTRYPOINTS,SPACE_COMMENTS,DOC_DATA,PHOTO_DATA,PHOTO_METADATA,SPACE_CHECKLIST_AUDIT,ENTRYPOINT_CHECKLIST_AUDIT,SPACE_CLASSIFICATION_AUDIT,ENTRYPOINT_CLASSIFICATION_AUDIT";
+		String sql = "SCRIPT NOSETTINGS TO '"+fn+"' CHARSET 'UTF-8' TABLE ";
+		sql +="LICENSE,VESSEL,SPACES,ENTRYPOINTS,SPACE_COMMENTS,DOC_DATA,PHOTO_DATA,PHOTO_METADATA,SPACE_CHECKLIST_AUDIT,ENTRYPOINT_CHECKLIST_AUDIT,SPACE_CLASSIFICATION_AUDIT,ENTRYPOINT_CLASSIFICATION_AUDIT";
 		System.out.println(sql);
 		try {
 			Connection conn = createConnection();
@@ -400,7 +448,7 @@ public class DatabaseController {
 			LogController.log("DB script file exported to: " + fn);
 			f = new File(fn);
 		} catch (SQLException e) {
-			LogController.logEvent(me, C.ERROR, "Error exporting SQL file", e);
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting SQL file", e);
 		}
 		return f;
 	}
@@ -420,7 +468,7 @@ public class DatabaseController {
 				LogController.log("Admin NOT Found");
 			}
 		} catch (SQLException e) {
-			LogController.logEvent(me, C.ERROR, "Admin check", e);
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Admin check", e);
 			e.printStackTrace();
 		}
 		return ok;
@@ -445,7 +493,7 @@ public class DatabaseController {
 				LogController.log("Vessel NOT Found");
 			}
 		} catch (SQLException e) {
-			LogController.logEvent(me, C.ERROR, "Vessel check", e);
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Vessel check", e);
 			e.printStackTrace();
 		}
 		return ok;
@@ -469,18 +517,16 @@ public class DatabaseController {
 				LogController.log("License NOT found");
 			}
 		} catch (SQLException e) {
-			LogController.logEvent(me, C.ERROR, "License check", e);
+			LogController.logEvent(DatabaseController.class, C.ERROR, "License check", e);
 		}
 		return ok;
 	}
 
-	// DB utility methods
-	// ==========================================================================
+	// DB utility methods =================================================================================================
 	public static ResultSet getResultSet(Connection conn, String sql)
 			throws SQLException {
 		ResultSet rs;
-		PreparedStatement st = conn.prepareStatement(sql,
-				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		PreparedStatement st = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		rs = st.executeQuery();
 		return rs;
 	}
@@ -498,7 +544,7 @@ public class DatabaseController {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				LogController.logEvent(me, C.WARNING, e);
+				LogController.logEvent(DatabaseController.class, C.WARNING, e);
 			}
 		}
 	}
@@ -510,9 +556,10 @@ public class DatabaseController {
 				rs.close();
 				st.close();
 			} catch (SQLException e) {
-				LogController.logEvent(me, C.WARNING, e);
+				LogController.logEvent(DatabaseController.class, C.WARNING, e);
 			}
 		}
 	}
+
 
 }

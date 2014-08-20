@@ -68,8 +68,7 @@ public class LogController {
 		}
 	}
 
-	public static void logEvent(Object c, int severity, String _msg,
-			Exception ex) {
+	public static void logEvent(Object c, int severity, String _msg, Exception ex) {
 		// need to handle severity
 		String classname = c.getClass().getName();
 		if (severity > 0) {
