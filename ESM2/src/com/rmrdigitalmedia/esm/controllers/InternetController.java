@@ -80,6 +80,8 @@ public class InternetController {
 			LogController.log("NEW VERSION AVAILABLE: " + latestVersion);
 			// EsmApplication.alert(C.NEW_VERSION_ALERT);
 			UpdateDialog ud = new UpdateDialog(latestVersion);
+		} else {
+			LogController.log("No updates found");
 		}
 	}
 

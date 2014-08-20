@@ -229,9 +229,9 @@ public class LoginController {
 		final CLabel clbl_Message = new CLabel(cmp_Login, SWT.NONE);
 		clbl_Message.setFont(C.FONT_8);
 		clbl_Message.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		clbl_Message.setAlignment(SWT.RIGHT);
+		clbl_Message.setAlignment(SWT.CENTER);
 		final RowData rd_clbl_Message = new RowData();
-		rd_clbl_Message.width = 188;
+		rd_clbl_Message.width = 190;
 		clbl_Message.setLayoutData(rd_clbl_Message);
 		String vtxt = "";
 		try {
@@ -243,7 +243,7 @@ public class LoginController {
 
 		// render window
 		shell.setDefaultButton(btnLogin);
-		LogController.log("LoginController Window Size: " + rect.width + ":" + rect.height);
+		//LogController.log("LoginController Window Size: " + rect.width + ":" + rect.height);
 		shell.setBounds(rect);
 		shell.open();
 		LogController.log("Awaiting user input...");

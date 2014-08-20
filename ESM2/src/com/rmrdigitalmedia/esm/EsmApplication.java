@@ -26,10 +26,9 @@ public class EsmApplication {
 		final Display display = new Display();
 
 		// create log dir first
-		FilesystemController fs = new FilesystemController();
-		fs.createLogDir();
-		System.out.println("LOGFILE: " + LogController.logfile);
-		LogController.log("STARTING " + C.APP_NAME + "...");
+		FilesystemController.createLogDir();
+		System.out.println("LOGFILE: " + LogController.logfile + "\n");
+		LogController.log("STARTING " + C.APP_NAME + "...\n");
 		LogController.log("Running class " + me.getClass().getName());
 		appData = new AppData();
 
@@ -122,8 +121,8 @@ public class EsmApplication {
 	}
 
 	public static void runApp(Row user, Shell loginWindow) {
-		// close login window now - all program setup is complete - open main
-		// app window
+		// close login window now - all program setup is complete - open main app window
+		LogController.log("PROGRAM SETUP COMPLETED");
 		loginWindow.close();
 		loginWindow.dispose();
 		wc = new WindowController(user);

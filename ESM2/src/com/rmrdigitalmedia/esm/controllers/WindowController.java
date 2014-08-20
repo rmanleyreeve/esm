@@ -102,7 +102,7 @@ public class WindowController {
 		Rectangle rect = shell.getBounds ();
 		appWidth = rect.width;
 		appHeight = rect.height;
-		LogController.log("Size: " + appWidth + "x" + appHeight);
+		LogController.log("Main Window Size: " + appWidth + "x" + appHeight);
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shell.setLocation (x, y);		
@@ -410,7 +410,7 @@ public class WindowController {
 	// methods to display pages etc
 	void showSpacesList(){
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		LogController.log("Displaying Space List page");
+		LogController.log("Displaying Spaces List");
 		SpacesListView.buildTable(pageSpacesList);
 		stackLayout.topControl = pageSpacesList;
 		pageTitle.setText(C.SPACES_LIST_TITLE);
@@ -428,7 +428,7 @@ public class WindowController {
 
 	public static void showAdministration() {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		LogController.log("Displaying Administration page");
+		LogController.log("Displaying Administration");
 		AdministrationView.buildPage(pageAdministration);
 		stackLayout.topControl = pageAdministration;
 		pageTitle.setText(C.ADMIN_PAGE_TITLE);
@@ -443,7 +443,7 @@ public class WindowController {
 	public static void showSpaceDetail(int spaceID) {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		currentSpaceId = spaceID;
-		LogController.log("Loading Space Detail page for user selection: Space ID "+spaceID);
+		LogController.log("Displaying Space Detail for ID "+spaceID);
 		SpaceDetailView.buildPage(pageSpaceDetail, spaceID);
 		stackLayout.topControl = pageSpaceDetail;
 		try {
