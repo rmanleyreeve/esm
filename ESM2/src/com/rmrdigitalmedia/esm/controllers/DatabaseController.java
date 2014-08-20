@@ -288,7 +288,7 @@ public class DatabaseController {
 	// DB EXPORT METHODS =============================================================================================================
 
 	public static File generateZipFile() {
-		boolean _csv=false, _sql=false;
+		boolean csv=false;
 		String license = "";
 		try {
 			license = LicenseTable.getAllRows()[0].getLicensekey();
@@ -299,41 +299,40 @@ public class DatabaseController {
 		// text data
 		try {
 			Connection conn = createConnection();
-			String[] tables = {"DOC_DATA","PHOTO_DATA","VESSEL","LICENSE","ESM_USERS","SPACES","ENTRYPOINTS","SPACE_COMMENTS","PHOTO_METADATA","SPACE_CHECKLIST_AUDIT","ENTRYPOINT_CHECKLIST_AUDIT","SPACE_CLASSIFICATION_AUDIT","ENTRYPOINT_CLASSIFICATION_AUDIT"};
+			String[] tables = {
+					"DOC_DATA",
+					"PHOTO_DATA",
+					"VESSEL",
+					"LICENSE",
+					"ESM_USERS",
+					"SPACES",
+					"ENTRYPOINTS",
+					"SPACE_COMMENTS",
+					"PHOTO_METADATA",
+					"SPACE_CHECKLIST_AUDIT",
+					"ENTRYPOINT_CHECKLIST_AUDIT",
+					"SPACE_CLASSIFICATION_AUDIT",
+					"ENTRYPOINT_CLASSIFICATION_AUDIT"
+			};
 			for(String table:tables) {
 				String fn = dir + C.SEP + table + ".csv";
 				String sql = "CALL CSVWRITE('" + fn + "', 'SELECT * FROM "+table+"', 'charset=UTF-8');";
 				Statement stmt = conn.createStatement();
 				stmt.executeQuery(sql);
 				stmt.close();
-				_csv = true;
+				csv = true;
 				LogController.log("Exported: " + fn);
 			}
 			close(conn);
 		} catch (SQLException ex) {
 			LogController.logEvent(DatabaseController.class, C.FATAL, "Error creating CSV file", ex);		
 		}
-		// binary data
-		try {
-			Connection conn = createConnection();
-			String fn = dir + C.SEP + "BINARY.sql";
-			String sql = "SCRIPT NOSETTINGS TO '"+fn+"' CHARSET 'UTF-8' TABLE DOC_DATA,PHOTO_DATA";
-			Statement stmt = conn.createStatement();
-			stmt.executeQuery(sql);
-			stmt.close();
-			LogController.log("Exported: " + fn);
-			_sql = true;
-			close(conn);
-		} catch (SQLException e) {
-			LogController.logEvent(DatabaseController.class, C.FATAL, "Error creating SQL file", e);
-		}
 		File zf = null;
-		if(_csv && _sql) {
+		if(csv) {
 			zf = ZipController.createZipFile(new File(dir));
 		}		
 		return zf;
 	}
-
 
 	public static boolean dumpDatabase() {
 		boolean ok = false;
@@ -350,108 +349,7 @@ public class DatabaseController {
 		return ok;
 	}
 
-	public static boolean exportSql() {
-		boolean ok = false;
-		String license = "";
-		try {
-			license = LicenseTable.getAllRows()[0].getLicensekey();
-		} catch (SQLException ex) {
-			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
-		}
-		String fn = C.TMP_DIR + C.SEP;
-		fn +=  license + "_"; 
-		fn += new Date().getTime() + "_export.sql";
-		String sql = "SCRIPT NOSETTINGS TO '"+fn+"' CHARSET 'UTF-8' TABLE ";
-		sql +="VESSEL,LICENSE,SPACES,ENTRYPOINTS,SPACE_COMMENTS,DOC_DATA,PHOTO_DATA,PHOTO_METADATA,SPACE_CHECKLIST_AUDIT,ENTRYPOINT_CHECKLIST_AUDIT,SPACE_CLASSIFICATION_AUDIT,ENTRYPOINT_CLASSIFICATION_AUDIT";
-		System.out.println(sql);
-		try {
-			Connection conn = createConnection();
-			PreparedStatement st = conn.prepareStatement(sql);
-			st.execute();
-			st.close();
-			close(conn);
-			ok = true;
-		} catch (SQLException e) {
-			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting SQL file", e);
-		}
-		return ok;
-	}
-
-	public static boolean exportData() {
-		boolean ok = false;
-		String fn = C.TMP_DIR + C.SEP + new Date().getTime() + "_export.zip";
-		String[] bkp = {
-				"-url", C.DB_CONN_STR, 
-				"-user", "sa", 
-				"-password","", 
-				"-script", fn, 
-				"-options", "compression", "zip"
-		};
-		try {
-			org.h2.tools.Script.main(bkp);
-			ok = true;
-			LogController.log("DB script file exported to: " + fn);
-		} catch (SQLException ex) {
-			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting DB script file", ex);
-		}
-		return ok;
-	}
-
-	public static File exportDataFile() {
-		File f = null;
-		String license = "";
-		try {
-			license = LicenseTable.getAllRows()[0].getLicensekey();
-		} catch (SQLException ex) {
-			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
-		}
-		String fn = C.TMP_DIR + C.SEP;
-		fn +=  license + "_"; 
-		fn += new Date().getTime() + "_export.zip";
-		String[] bkp = {
-				"-url", C.DB_CONN_STR, 
-				"-user", "sa", 
-				"-password","", 
-				"-script", fn, 
-				"-options", "compression", "zip"
-		};
-		try {
-			org.h2.tools.Script.main(bkp);
-			LogController.log("DB script file exported to: " + fn);
-			f = new File(fn);
-		} catch (SQLException ex) {
-			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting DB script file", ex);
-		}
-		return f;
-	}
-
-	public static File exportSqlFile() {
-		File f = null;
-		String license = "";
-		try {
-			license = LicenseTable.getAllRows()[0].getLicensekey();
-		} catch (SQLException ex) {
-			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
-		}
-		String fn = C.TMP_DIR + C.SEP;
-		fn +=  license + "_"; 
-		fn += new Date().getTime() + "_export.sql";
-		String sql = "SCRIPT NOSETTINGS TO '"+fn+"' CHARSET 'UTF-8' TABLE ";
-		sql +="LICENSE,VESSEL,SPACES,ENTRYPOINTS,SPACE_COMMENTS,DOC_DATA,PHOTO_DATA,PHOTO_METADATA,SPACE_CHECKLIST_AUDIT,ENTRYPOINT_CHECKLIST_AUDIT,SPACE_CLASSIFICATION_AUDIT,ENTRYPOINT_CLASSIFICATION_AUDIT";
-		System.out.println(sql);
-		try {
-			Connection conn = createConnection();
-			PreparedStatement st = conn.prepareStatement(sql);
-			st.execute();
-			st.close();
-			close(conn);
-			LogController.log("DB script file exported to: " + fn);
-			f = new File(fn);
-		} catch (SQLException e) {
-			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting SQL file", e);
-		}
-		return f;
-	}
+	// DB CHECK METHODS =============================================================================================================
 
 	public static boolean checkAdmin() {
 		boolean ok = false;
@@ -561,5 +459,118 @@ public class DatabaseController {
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	public static boolean exportSql() {
+		boolean ok = false;
+		String license = "";
+		try {
+			license = LicenseTable.getAllRows()[0].getLicensekey();
+		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
+		}
+		String fn = C.TMP_DIR + C.SEP;
+		fn +=  license + "_"; 
+		fn += new Date().getTime() + "_export.sql";
+		String sql = "SCRIPT NOSETTINGS TO '"+fn+"' CHARSET 'UTF-8' TABLE ";
+		sql +="VESSEL,LICENSE,SPACES,ENTRYPOINTS,SPACE_COMMENTS,DOC_DATA,PHOTO_DATA,PHOTO_METADATA,SPACE_CHECKLIST_AUDIT,ENTRYPOINT_CHECKLIST_AUDIT,SPACE_CLASSIFICATION_AUDIT,ENTRYPOINT_CLASSIFICATION_AUDIT";
+		System.out.println(sql);
+		try {
+			Connection conn = createConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.execute();
+			st.close();
+			close(conn);
+			ok = true;
+		} catch (SQLException e) {
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting SQL file", e);
+		}
+		return ok;
+	}
 
+	public static boolean exportData() {
+		boolean ok = false;
+		String fn = C.TMP_DIR + C.SEP + new Date().getTime() + "_export.zip";
+		String[] bkp = {
+				"-url", C.DB_CONN_STR, 
+				"-user", "sa", 
+				"-password","", 
+				"-script", fn, 
+				"-options", "compression", "zip"
+		};
+		try {
+			org.h2.tools.Script.main(bkp);
+			ok = true;
+			LogController.log("DB script file exported to: " + fn);
+		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting DB script file", ex);
+		}
+		return ok;
+	}
+
+	public static File exportDataFile() {
+		File f = null;
+		String license = "";
+		try {
+			license = LicenseTable.getAllRows()[0].getLicensekey();
+		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
+		}
+		String fn = C.TMP_DIR + C.SEP;
+		fn +=  license + "_"; 
+		fn += new Date().getTime() + "_export.zip";
+		String[] bkp = {
+				"-url", C.DB_CONN_STR, 
+				"-user", "sa", 
+				"-password","", 
+				"-script", fn, 
+				"-options", "compression", "zip"
+		};
+		try {
+			org.h2.tools.Script.main(bkp);
+			LogController.log("DB script file exported to: " + fn);
+			f = new File(fn);
+		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting DB script file", ex);
+		}
+		return f;
+	}
+
+	public static File exportSqlFile() {
+		File f = null;
+		String license = "";
+		try {
+			license = LicenseTable.getAllRows()[0].getLicensekey();
+		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
+		}
+		String fn = C.TMP_DIR + C.SEP;
+		fn +=  license + "_"; 
+		fn += new Date().getTime() + "_export.sql";
+		String sql = "SCRIPT NOSETTINGS TO '"+fn+"' CHARSET 'UTF-8' TABLE ";
+		sql +="LICENSE,VESSEL,SPACES,ENTRYPOINTS,SPACE_COMMENTS,DOC_DATA,PHOTO_DATA,PHOTO_METADATA,SPACE_CHECKLIST_AUDIT,ENTRYPOINT_CHECKLIST_AUDIT,SPACE_CLASSIFICATION_AUDIT,ENTRYPOINT_CLASSIFICATION_AUDIT";
+		System.out.println(sql);
+		try {
+			Connection conn = createConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.execute();
+			st.close();
+			close(conn);
+			LogController.log("DB script file exported to: " + fn);
+			f = new File(fn);
+		} catch (SQLException e) {
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error exporting SQL file", e);
+		}
+		return f;
+	}
+	*/
+
+	
 }
