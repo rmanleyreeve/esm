@@ -346,7 +346,7 @@ public class AuditController {
 			row = ps.executeQuery();
 		} catch (SQLException e) {
 			LogController.logEvent(AuditController.class, C.FATAL, e);		
-	}
+		}
 		if(row!=null && row.next()) {			
 			int q1 = row.getInt("Q1_VALUE");
 			if (q1 != 0) {
@@ -489,9 +489,11 @@ public class AuditController {
 		boolean complete = true;
 		if ((Integer) EsmApplication.appData.getField("SPACE_CHK_" + spaceID) < 100) {
 			complete = false;
+			System.out.println("space check<100");
 		}
 		if ((Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID) < 100) {
 			complete = false;
+			System.out.println("space class<100");
 		}		
 		Connection conn = DatabaseController.createConnection();
 		PreparedStatement  ps = null;
@@ -500,18 +502,21 @@ public class AuditController {
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, spaceID);
-			epRow = ps.executeQuery(sql);
+			epRow = ps.executeQuery();
 			while(epRow.next()) {
 				int epID = epRow.getInt("ID");
 				if ((Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID) < 100) {
 					complete = false;
+					//System.out.println("entry "+epID+" check<100");
 				}
 				if ((Integer) EsmApplication.appData.getField("ENTRY_CLASS_" + epID) < 100) {
 					complete = false;
+					//System.out.println("entry "+epID+" class<100");
 				}
 			}
 		} catch (SQLException ex) {
 			complete = false;
+			LogController.logEvent(AuditController.class, C.ERROR, "DB error on completion query", ex);
 		}
 		return complete;
 	}

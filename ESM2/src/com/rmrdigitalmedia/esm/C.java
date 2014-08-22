@@ -121,12 +121,12 @@ public final class C {
 	
 	// help file names
 	public static String HELPFILE_ADMIN = "administration_help.html";
-	public static String HELPFILE_SPACESLIST = "spaces_list.html";
+	public static String HELPFILE_SPACESLIST = "spaces_list_help.html";
 	public static String HELPFILE_SPACEDETAIL = "space_detail_help.html";
-	public static String HELPFILE_SPACE_AUDIT_CHECK = "space_audit_checklist_help.html";
-	public static String HELPFILE_SPACE_AUDIT_CLASS = "space_audit_classification_help.html";
-	public static String HELPFILE_EP_AUDIT_CHECK = "ep_audit_checklist_help.html";
-	public static String HELPFILE_EP_AUDIT_CLASS = "ep_audit_classification_help.html";
+	public static String HELPFILE_SPACE_AUDIT_CHECK = "audit_help.html";
+	public static String HELPFILE_SPACE_AUDIT_CLASS = "audit_help.html";
+	public static String HELPFILE_EP_AUDIT_CHECK = "audit_help.html";
+	public static String HELPFILE_EP_AUDIT_CLASS = "audit_help.html";
 	public static String HELPFILE_GENERIC = "help.html";
 
 	private C() {
