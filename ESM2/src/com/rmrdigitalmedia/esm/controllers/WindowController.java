@@ -66,6 +66,7 @@ public class WindowController {
 	SpacesTable.Row[] rows;
 	private Label lblVtLogo;
 	private Label lblMrmLogo;
+	private static boolean isAdmin = false;
 
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
@@ -81,6 +82,7 @@ public class WindowController {
 	public WindowController(EsmUsersTable.Row user) {
 		me = this;
 		WindowController.user = user;
+		isAdmin = (user.getAccessLevel()==9);
 		this.displayName = user.getRank() + " " + user.getForename() + " " + user.getSurname();
 		LogController.log("Running class " + this.getClass().getName());
 		LogController.log("Logged in user: " + displayName);
@@ -394,10 +396,7 @@ public class WindowController {
 		lblF.setFont(C.FONT_8);
 		lblF.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblF.setText(txt + C.COPYRIGHT);				
-
-		if(user.getAccessLevel()==9) {
-			btnAdmin.setEnabled(true);
-		}
+		btnAdmin.setEnabled(isAdmin);
 
 		FormData fd_foo = new FormData();
 		fd_foo.right = new FormAttachment(120);
@@ -421,7 +420,7 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(true);
 		btnViewSpaceDetails.setEnabled(false);
 		btnSpacesList.setVisible(false);
-		btnAdmin.setEnabled(true);
+		btnAdmin.setEnabled(isAdmin);
 		formHolder.layout();
 		shell.setCursor(new Cursor(display, SWT.CURSOR_ARROW));
 	}
@@ -456,7 +455,7 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(true);
-		btnAdmin.setEnabled(true);
+		btnAdmin.setEnabled(isAdmin);
 		formHolder.layout();
 	}
 	public static void showSpaceAuditChecklist(int spaceID) {
@@ -475,7 +474,7 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
-		btnAdmin.setEnabled(true);
+		btnAdmin.setEnabled(isAdmin);
 		formHolder.layout();
 	}
 	public static void showSpaceAuditClassification(int spaceID) {
@@ -494,7 +493,7 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
-		btnAdmin.setEnabled(true);
+		btnAdmin.setEnabled(isAdmin);
 		formHolder.layout();
 	}
 	public static void showEntryAuditChecklist(int entryID) {
@@ -512,7 +511,7 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
-		btnAdmin.setEnabled(true);
+		btnAdmin.setEnabled(isAdmin);
 		formHolder.layout();
 	}
 	public static void showEntryAuditClassification(int entryID) {
@@ -530,7 +529,7 @@ public class WindowController {
 		btnViewSpaceDetails.setVisible(false);
 		btnDeleteSpace.setVisible(false);
 		btnSpacesList.setVisible(false);
-		btnAdmin.setEnabled(true);
+		btnAdmin.setEnabled(isAdmin);
 		formHolder.layout();
 	}
 
