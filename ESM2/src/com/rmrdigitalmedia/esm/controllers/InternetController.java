@@ -16,8 +16,11 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
@@ -115,9 +118,11 @@ public class InternetController {
 	}
 
 	public static void renderHTML(String html) {
-		// http://dataurl.net/#dataurlmaker
+		// http://dataurl.net/#dataurlmaker - use this for images
 		Shell shell = new Shell(Display.getDefault());
 		shell.setLayout(new FillLayout());
+		shell.setText("Videotel ESM Help");
+		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32		
 		Browser browser;
 		try {
 			browser = new Browser(shell, SWT.NONE);
@@ -126,13 +131,17 @@ public class InternetController {
 			shell.dispose();
 			return;
 		}
-		browser.setText(html);
+		browser.setText(html);		
+		// set size
+		Monitor primary = Display.getCurrent().getPrimaryMonitor ();
+		Rectangle bounds = primary.getBounds ();
+		shell.setSize(700, bounds.height-100); 
+		shell.setLocation (20, 20);				
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!Display.getDefault().readAndDispatch())
 				Display.getDefault().sleep();
 		}
-		// display.dispose();
 	}
 
 	public static boolean uploadFileFTP(String filePath, String fileName) {
