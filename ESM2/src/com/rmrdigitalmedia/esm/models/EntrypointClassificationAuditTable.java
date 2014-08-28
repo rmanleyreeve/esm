@@ -1,12 +1,12 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "ENTRYPOINT_CLASSIFICATION_AUDIT".
  *
@@ -62,10 +62,11 @@ public class EntrypointClassificationAuditTable
     public static final String q6CommentsColumnName = "Q6_COMMENTS";
     public static final String q7ValueColumnName = "Q7_VALUE";
     public static final String q7CommentsColumnName = "Q7_COMMENTS";
+    public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        idColumnName , entrypointIDColumnName , q1ValueColumnName , q1CommentsColumnName , q2ValueColumnName , q2CommentsColumnName , q3BooleanColumnName , q3CommentsColumnName , q4ValueColumnName , q4CommentsColumnName , q5BooleanColumnName , q5CommentsColumnName , q6BooleanColumnName , q6CommentsColumnName , q7ValueColumnName , q7CommentsColumnName , 
+        idColumnName , entrypointIDColumnName , q1ValueColumnName , q1CommentsColumnName , q2ValueColumnName , q2CommentsColumnName , q3BooleanColumnName , q3CommentsColumnName , q4ValueColumnName , q4CommentsColumnName , q5BooleanColumnName , q5CommentsColumnName , q6BooleanColumnName , q6CommentsColumnName , q7ValueColumnName , q7CommentsColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -265,6 +266,7 @@ public class EntrypointClassificationAuditTable
         private int q7Value ;
         private boolean q7ValueNull = true ;
         private String q7Comments ;
+        private String remoteIdentifier ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -295,6 +297,7 @@ public class EntrypointClassificationAuditTable
                 this.q7ValueNull = ( data[14] == null );
                 this.q7Value = q7ValueNull ? 0 : Str.toInt( data[14] );
                 this.q7Comments = data[15];
+                this.remoteIdentifier = data[16];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -592,6 +595,17 @@ public class EntrypointClassificationAuditTable
         }
 
 
+        public String getRemoteIdentifier()
+        {
+            return remoteIdentifier ;
+        }
+
+        public void setRemoteIdentifier( String remoteIdentifier )
+        {
+            this.remoteIdentifier = remoteIdentifier ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -618,6 +632,7 @@ public class EntrypointClassificationAuditTable
             data.put( q6CommentsColumnName , this.q6Comments );
             data.put( q7ValueColumnName , this.q7ValueNull ? null : String.valueOf( this.q7Value ) );
             data.put( q7CommentsColumnName , this.q7Comments );
+            data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
         }
 

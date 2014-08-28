@@ -144,7 +144,7 @@ public class DatabaseController {
 		long id = 0;
 		String mimeType = FilesystemController.getMimeType(f);
 		Connection conn = createConnection();
-		String sql = "INSERT INTO DOC_DATA (DATA, SPACE_ID, TITLE, MIME_TYPE, AUTHOR_ID, CREATED_DATE) VALUES (?,?,?,?,?,?)";
+		String sql = "INSERT INTO DOC_DATA (DATA, SPACE_ID, TITLE, MIME_TYPE, AUTHOR_ID, CREATED_DATE,REMOTE_IDENTIFIER) VALUES (?,?,?,?,?,?,?)";
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -155,6 +155,7 @@ public class DatabaseController {
 			ps.setString(4, mimeType);
 			ps.setInt(5, authorID);
 			ps.setTimestamp(6, new Timestamp(new Date().getTime()));
+			ps.setString(7, (String) EsmApplication.appData.getField("LICENSE"));
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
@@ -202,7 +203,7 @@ public class DatabaseController {
 		int srcH = bimg.getHeight();
 		OutputStream osF = new ByteArrayOutputStream();
 		try {
-			String sql = "INSERT INTO PHOTO_DATA (DATA_FULL, DATA_THUMB, MIME_TYPE, CREATED_DATE) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO PHOTO_DATA (DATA_FULL, DATA_THUMB, MIME_TYPE, CREATED_DATE, REMOTE_IDENTIFIER) VALUES (?,?,?,?,?)";
 			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			InputStream is = null;
 			int l = 0;
@@ -236,6 +237,7 @@ public class DatabaseController {
 			ps.setBinaryStream (2, is, l);
 			ps.setString(3, mimeType);
 			ps.setTimestamp(4, new Timestamp(new Date().getTime()));
+			ps.setString(5, (String) EsmApplication.appData.getField("LICENSE"));
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
@@ -408,8 +410,7 @@ public class DatabaseController {
 		LogController.log("Checking License Key...");
 		String key = "";
 		try {
-			LicenseTable.Row[] rows = LicenseTable
-					.getRows("LICENSEKEY IS NOT NULL");
+			LicenseTable.Row[] rows = LicenseTable.getRows("LICENSEKEY IS NOT NULL");
 			LogController.log("Found: " + rows.length);
 			if (rows.length == 1) {
 				LicenseTable.Row row = rows[0];

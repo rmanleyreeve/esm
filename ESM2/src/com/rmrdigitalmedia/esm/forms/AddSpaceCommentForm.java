@@ -156,6 +156,7 @@ public class AddSpaceCommentForm {
 							sRow.setApproved("FALSE");
 						}
 						sRow.setDeleted("FALSE");
+						sRow.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 						sRow.insert();
 						LogController.log("Space comment added to database.");		        
 						formOK = true;

@@ -1,13 +1,13 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import java.sql.Timestamp ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "DOC_DATA".
  *
@@ -52,11 +52,13 @@ public class DocDataTable
     public static final String authorIDColumnName = "AUTHOR_ID";
     public static final String titleColumnName = "TITLE";
     public static final String dataColumnName = "DATA";
+    public static final String mimeTypeColumnName = "MIME_TYPE";
     public static final String createdDateColumnName = "CREATED_DATE";
+    public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        idColumnName , spaceIDColumnName , authorIDColumnName , titleColumnName , dataColumnName , createdDateColumnName , 
+        idColumnName , spaceIDColumnName , authorIDColumnName , titleColumnName , dataColumnName , mimeTypeColumnName , createdDateColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -241,7 +243,9 @@ public class DocDataTable
         private int authorID ;
         private String title ;
         private String data ;
+        private String mimeType ;
         private Timestamp createdDate ;
+        private String remoteIdentifier ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -257,7 +261,9 @@ public class DocDataTable
                 this.authorID =  Str.toInt( data[2] );
                 this.title = data[3];
                 this.data = data[4];
-                this.createdDate = Str.toTimestamp( data[5] );
+                this.mimeType = data[5];
+                this.createdDate = Str.toTimestamp( data[6] );
+                this.remoteIdentifier = data[7];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -322,6 +328,17 @@ public class DocDataTable
         }
 
 
+        public String getMimeType()
+        {
+            return mimeType ;
+        }
+
+        public void setMimeType( String mimeType )
+        {
+            this.mimeType = mimeType ;
+        }
+
+
         public Timestamp getCreatedDate()
         {
             return createdDate ;
@@ -330,6 +347,17 @@ public class DocDataTable
         public void setCreatedDate( Timestamp createdDate )
         {
             this.createdDate = createdDate ;
+        }
+
+
+        public String getRemoteIdentifier()
+        {
+            return remoteIdentifier ;
+        }
+
+        public void setRemoteIdentifier( String remoteIdentifier )
+        {
+            this.remoteIdentifier = remoteIdentifier ;
         }
 
 
@@ -348,7 +376,9 @@ public class DocDataTable
             data.put( authorIDColumnName , String.valueOf(  this.authorID ) );
             data.put( titleColumnName , this.title );
             data.put( dataColumnName , this.data );
+            data.put( mimeTypeColumnName , this.mimeType );
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
+            data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
         }
 

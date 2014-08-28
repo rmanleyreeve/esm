@@ -184,6 +184,7 @@ public class AddSpaceForm {
 						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						sRow.setDeleted("FALSE");
+						sRow.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 						int spaceID = (int) sRow.insert();
 						LogController.log("Space "+spaceID+" added to database.");
 						// create empty space audit records
@@ -199,6 +200,7 @@ public class AddSpaceForm {
 						epRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						epRow.setAuthorID(authorID);
 						epRow.setDeleted("FALSE");
+						epRow.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 						int epID = (int) epRow.insert();
 						LogController.log("Entry Point "+epID+" added to database.");				        
 						// create empty entry audit records

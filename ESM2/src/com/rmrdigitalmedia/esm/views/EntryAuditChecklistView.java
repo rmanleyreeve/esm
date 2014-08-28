@@ -782,6 +782,7 @@ public class EntryAuditChecklistView {
 			try {
 				EntrypointChecklistAuditTable.Row r = EntrypointChecklistAuditTable.getRow();
 				r.setEntrypointID(entryID);
+				r.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 				r.insert();
 			} catch (SQLException e1) {
 				LogController.logEvent(SpaceAuditChecklistView.class, C.FATAL, "ERROR INSERT ENTRYPOINT CHECKLIST ROW", e1);

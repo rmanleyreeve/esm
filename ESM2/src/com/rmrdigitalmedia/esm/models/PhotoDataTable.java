@@ -1,13 +1,13 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import java.sql.Timestamp ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "PHOTO_DATA".
  *
@@ -50,11 +50,13 @@ public class PhotoDataTable
     public static final String idColumnName = "ID";
     public static final String dataFullColumnName = "DATA_FULL";
     public static final String dataThumbColumnName = "DATA_THUMB";
+    public static final String mimeTypeColumnName = "MIME_TYPE";
     public static final String createdDateColumnName = "CREATED_DATE";
+    public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        idColumnName , dataFullColumnName , dataThumbColumnName , createdDateColumnName , 
+        idColumnName , dataFullColumnName , dataThumbColumnName , mimeTypeColumnName , createdDateColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -237,7 +239,9 @@ public class PhotoDataTable
         private int id ;
         private String dataFull ;
         private String dataThumb ;
+        private String mimeType ;
         private Timestamp createdDate ;
+        private String remoteIdentifier ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -251,7 +255,9 @@ public class PhotoDataTable
                 this.id =  Str.toInt( data[0] );
                 this.dataFull = data[1];
                 this.dataThumb = data[2];
-                this.createdDate = Str.toTimestamp( data[3] );
+                this.mimeType = data[3];
+                this.createdDate = Str.toTimestamp( data[4] );
+                this.remoteIdentifier = data[5];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -294,6 +300,17 @@ public class PhotoDataTable
         }
 
 
+        public String getMimeType()
+        {
+            return mimeType ;
+        }
+
+        public void setMimeType( String mimeType )
+        {
+            this.mimeType = mimeType ;
+        }
+
+
         public Timestamp getCreatedDate()
         {
             return createdDate ;
@@ -302,6 +319,17 @@ public class PhotoDataTable
         public void setCreatedDate( Timestamp createdDate )
         {
             this.createdDate = createdDate ;
+        }
+
+
+        public String getRemoteIdentifier()
+        {
+            return remoteIdentifier ;
+        }
+
+        public void setRemoteIdentifier( String remoteIdentifier )
+        {
+            this.remoteIdentifier = remoteIdentifier ;
         }
 
 
@@ -318,7 +346,9 @@ public class PhotoDataTable
             data.put( idColumnName , String.valueOf(  this.id ) );
             data.put( dataFullColumnName , this.dataFull );
             data.put( dataThumbColumnName , this.dataThumb );
+            data.put( mimeTypeColumnName , this.mimeType );
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
+            data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
         }
 

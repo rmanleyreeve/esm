@@ -1,13 +1,13 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import java.sql.Timestamp ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "PHOTO_METADATA".
  *
@@ -57,10 +57,11 @@ public class PhotoMetadataTable
     public static final String updateDateColumnName = "UPDATE_DATE";
     public static final String approvedColumnName = "APPROVED";
     public static final String deletedColumnName = "DELETED";
+    public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        idColumnName , dataIDColumnName , spaceIDColumnName , authorIDColumnName , titleColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , approvedColumnName , deletedColumnName , 
+        idColumnName , dataIDColumnName , spaceIDColumnName , authorIDColumnName , titleColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , approvedColumnName , deletedColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -250,6 +251,7 @@ public class PhotoMetadataTable
         private Timestamp updateDate ;
         private String approved ;
         private String deleted ;
+        private String remoteIdentifier ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -270,6 +272,7 @@ public class PhotoMetadataTable
                 this.updateDate = Str.toTimestamp( data[7] );
                 this.approved = data[8];
                 this.deleted = data[9];
+                this.remoteIdentifier = data[10];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -389,6 +392,17 @@ public class PhotoMetadataTable
         }
 
 
+        public String getRemoteIdentifier()
+        {
+            return remoteIdentifier ;
+        }
+
+        public void setRemoteIdentifier( String remoteIdentifier )
+        {
+            this.remoteIdentifier = remoteIdentifier ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -409,6 +423,7 @@ public class PhotoMetadataTable
             data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );
             data.put( approvedColumnName , this.approved );
             data.put( deletedColumnName , this.deleted );
+            data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
         }
 

@@ -1,12 +1,12 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "ENTRYPOINT_CHECKLIST_AUDIT".
  *
@@ -81,10 +81,11 @@ public class EntrypointChecklistAuditTable
     public static final String q15CommentsColumnName = "Q15_COMMENTS";
     public static final String q16BooleanColumnName = "Q16_BOOLEAN";
     public static final String q16CommentsColumnName = "Q16_COMMENTS";
+    public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        idColumnName , entrypointIDColumnName , q1ValueColumnName , q1CommentsColumnName , q2BooleanColumnName , q2CommentsColumnName , q3BooleanColumnName , q3CommentsColumnName , q4ValueColumnName , q4CommentsColumnName , q5DimsHColumnName , q5DimsWColumnName , q5CommentsColumnName , q6BooleanColumnName , q6CommentsColumnName , q7ValueColumnName , q7CommentsColumnName , q8BooleanColumnName , q8CommentsColumnName , q9BooleanColumnName , q9CommentsColumnName , q10BooleanColumnName , q10CommentsColumnName , q11BooleanColumnName , q11CommentsColumnName , q12BooleanColumnName , q12CommentsColumnName , q13BooleanColumnName , q13CommentsColumnName , q14BooleanColumnName , q14CommentsColumnName , q15BooleanColumnName , q15CommentsColumnName , q16BooleanColumnName , q16CommentsColumnName , 
+        idColumnName , entrypointIDColumnName , q1ValueColumnName , q1CommentsColumnName , q2BooleanColumnName , q2CommentsColumnName , q3BooleanColumnName , q3CommentsColumnName , q4ValueColumnName , q4CommentsColumnName , q5DimsHColumnName , q5DimsWColumnName , q5CommentsColumnName , q6BooleanColumnName , q6CommentsColumnName , q7ValueColumnName , q7CommentsColumnName , q8BooleanColumnName , q8CommentsColumnName , q9BooleanColumnName , q9CommentsColumnName , q10BooleanColumnName , q10CommentsColumnName , q11BooleanColumnName , q11CommentsColumnName , q12BooleanColumnName , q12CommentsColumnName , q13BooleanColumnName , q13CommentsColumnName , q14BooleanColumnName , q14CommentsColumnName , q15BooleanColumnName , q15CommentsColumnName , q16BooleanColumnName , q16CommentsColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -299,6 +300,7 @@ public class EntrypointChecklistAuditTable
         private String q15Comments ;
         private String q16Boolean ;
         private String q16Comments ;
+        private String remoteIdentifier ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -344,6 +346,7 @@ public class EntrypointChecklistAuditTable
                 this.q15Comments = data[32];
                 this.q16Boolean = data[33];
                 this.q16Comments = data[34];
+                this.remoteIdentifier = data[35];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -738,6 +741,17 @@ public class EntrypointChecklistAuditTable
         }
 
 
+        public String getRemoteIdentifier()
+        {
+            return remoteIdentifier ;
+        }
+
+        public void setRemoteIdentifier( String remoteIdentifier )
+        {
+            this.remoteIdentifier = remoteIdentifier ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -783,6 +797,7 @@ public class EntrypointChecklistAuditTable
             data.put( q15CommentsColumnName , this.q15Comments );
             data.put( q16BooleanColumnName , this.q16Boolean );
             data.put( q16CommentsColumnName , this.q16Comments );
+            data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
         }
 

@@ -142,6 +142,7 @@ public class LicenseDialog {
 						LicenseTable.Row row = LicenseTable.getRow();
 						row.setLicensekey(key);
 						row.setVerifiedDate(new Timestamp(new Date().getTime()));
+						row.setRemoteIdentifier(key);
 						row.insert();						
 						formOK = true;
 						EsmApplication.appData.setField("LICENSE", key);

@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
@@ -234,6 +235,7 @@ public class AddUserForm {
 						row.setCreatedDate(new Timestamp(new Date().getTime()));
 						row.setUpdateDate(new Timestamp(new Date().getTime()));
 						row.setDeleted("FALSE");
+						row.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 						long newID = row.insert();
 						formOK = true;
 						LogController.log("User "+newID+" added to database.");

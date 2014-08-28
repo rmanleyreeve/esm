@@ -156,6 +156,7 @@ public class AddEntrypointForm {
 						epRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						epRow.setAuthorID(authorID);
 						epRow.setDeleted("FALSE");
+						epRow.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 						int epID = (int) epRow.insert();
 						EsmApplication.appData.setField("ENTRY_CHK_" + epID, 0);						
 						EsmApplication.appData.setField("ENTRY_CLASS_" + epID, 0);

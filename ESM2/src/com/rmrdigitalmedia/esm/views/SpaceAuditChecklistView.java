@@ -1003,6 +1003,7 @@ public class SpaceAuditChecklistView {
 			try {
 				SpaceChecklistAuditTable.Row r = SpaceChecklistAuditTable.getRow();
 				r.setSpaceID(spaceID);
+				r.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 				r.insert();
 			} catch (SQLException e1) {
 				LogController.logEvent(SpaceAuditChecklistView.class, C.FATAL, "ERROR INSERT SPACE CHECKLIST ROW", e1);

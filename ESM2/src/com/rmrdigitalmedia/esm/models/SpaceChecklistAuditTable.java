@@ -1,12 +1,12 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "SPACE_CHECKLIST_AUDIT".
  *
@@ -90,10 +90,11 @@ public class SpaceChecklistAuditTable
     public static final String q16CommentsColumnName = "Q16_COMMENTS";
     public static final String q17BooleanColumnName = "Q17_BOOLEAN";
     public static final String q17CommentsColumnName = "Q17_COMMENTS";
+    public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        idColumnName , spaceIDColumnName , q1DimsHColumnName , q1DimsWColumnName , q1DimsLColumnName , q1CommentsColumnName , q2BooleanColumnName , q2DescColumnName , q3BooleanColumnName , q3CommentsColumnName , q4BooleanColumnName , q4DimsHColumnName , q4DimsWColumnName , q4CommentsColumnName , q5BooleanColumnName , q5CommentsColumnName , q6BooleanColumnName , q6CommentsColumnName , q7BooleanColumnName , q7RatingColumnName , q7CommentsColumnName , q8BooleanColumnName , q8RatingColumnName , q8CommentsColumnName , q9BooleanColumnName , q9RatingColumnName , q9CommentsColumnName , q10BooleanColumnName , q10RatingColumnName , q10CommentsColumnName , q11BooleanColumnName , q11CommentsColumnName , q12BooleanColumnName , q12CommentsColumnName , q13BooleanColumnName , q13CommentsColumnName , q14BooleanColumnName , q14CommentsColumnName , q15BooleanColumnName , q15CommentsColumnName , q16BooleanColumnName , q16CommentsColumnName , q17BooleanColumnName , q17CommentsColumnName , 
+        idColumnName , spaceIDColumnName , q1DimsHColumnName , q1DimsWColumnName , q1DimsLColumnName , q1CommentsColumnName , q2BooleanColumnName , q2DescColumnName , q3BooleanColumnName , q3CommentsColumnName , q4BooleanColumnName , q4DimsHColumnName , q4DimsWColumnName , q4CommentsColumnName , q5BooleanColumnName , q5CommentsColumnName , q6BooleanColumnName , q6CommentsColumnName , q7BooleanColumnName , q7RatingColumnName , q7CommentsColumnName , q8BooleanColumnName , q8RatingColumnName , q8CommentsColumnName , q9BooleanColumnName , q9RatingColumnName , q9CommentsColumnName , q10BooleanColumnName , q10RatingColumnName , q10CommentsColumnName , q11BooleanColumnName , q11CommentsColumnName , q12BooleanColumnName , q12CommentsColumnName , q13BooleanColumnName , q13CommentsColumnName , q14BooleanColumnName , q14CommentsColumnName , q15BooleanColumnName , q15CommentsColumnName , q16BooleanColumnName , q16CommentsColumnName , q17BooleanColumnName , q17CommentsColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -321,6 +322,7 @@ public class SpaceChecklistAuditTable
         private String q16Comments ;
         private String q17Boolean ;
         private String q17Comments ;
+        private String remoteIdentifier ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -379,6 +381,7 @@ public class SpaceChecklistAuditTable
                 this.q16Comments = data[41];
                 this.q17Boolean = data[42];
                 this.q17Comments = data[43];
+                this.remoteIdentifier = data[44];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -984,6 +987,17 @@ public class SpaceChecklistAuditTable
         }
 
 
+        public String getRemoteIdentifier()
+        {
+            return remoteIdentifier ;
+        }
+
+        public void setRemoteIdentifier( String remoteIdentifier )
+        {
+            this.remoteIdentifier = remoteIdentifier ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -1038,6 +1052,7 @@ public class SpaceChecklistAuditTable
             data.put( q16CommentsColumnName , this.q16Comments );
             data.put( q17BooleanColumnName , this.q17Boolean );
             data.put( q17CommentsColumnName , this.q17Comments );
+            data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
         }
 

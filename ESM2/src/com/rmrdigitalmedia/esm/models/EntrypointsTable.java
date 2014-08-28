@@ -1,13 +1,13 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import java.sql.Timestamp ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "ENTRYPOINTS".
  *
@@ -55,10 +55,11 @@ public class EntrypointsTable
     public static final String createdDateColumnName = "CREATED_DATE";
     public static final String updateDateColumnName = "UPDATE_DATE";
     public static final String deletedColumnName = "DELETED";
+    public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        idColumnName , spaceIDColumnName , nameColumnName , descriptionColumnName , authorIDColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , 
+        idColumnName , spaceIDColumnName , nameColumnName , descriptionColumnName , authorIDColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -246,6 +247,7 @@ public class EntrypointsTable
         private Timestamp createdDate ;
         private Timestamp updateDate ;
         private String deleted ;
+        private String remoteIdentifier ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -264,6 +266,7 @@ public class EntrypointsTable
                 this.createdDate = Str.toTimestamp( data[5] );
                 this.updateDate = Str.toTimestamp( data[6] );
                 this.deleted = data[7];
+                this.remoteIdentifier = data[8];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -361,6 +364,17 @@ public class EntrypointsTable
         }
 
 
+        public String getRemoteIdentifier()
+        {
+            return remoteIdentifier ;
+        }
+
+        public void setRemoteIdentifier( String remoteIdentifier )
+        {
+            this.remoteIdentifier = remoteIdentifier ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -379,6 +393,7 @@ public class EntrypointsTable
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
             data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );
             data.put( deletedColumnName , this.deleted );
+            data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
         }
 
