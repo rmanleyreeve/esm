@@ -221,6 +221,7 @@ public class AddAdminForm {
 						row.setCreatedDate(new Timestamp(new Date().getTime()));
 						row.setUpdateDate(new Timestamp(new Date().getTime()));
 						row.setDeleted("FALSE");
+						row.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 						row.insert();
 						formOK = true;
 						LogController.log("Admin User added to database");

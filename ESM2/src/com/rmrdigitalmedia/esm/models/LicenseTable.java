@@ -1,13 +1,13 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import java.sql.Timestamp ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "LICENSE".
  *
@@ -49,10 +49,11 @@ public class LicenseTable
 
     public static final String licensekeyColumnName = "LICENSEKEY";
     public static final String verifiedDateColumnName = "VERIFIED_DATE";
+    public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        licensekeyColumnName , verifiedDateColumnName , 
+        licensekeyColumnName , verifiedDateColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -184,6 +185,7 @@ public class LicenseTable
 
         private String licensekey ;
         private Timestamp verifiedDate ;
+        private String remoteIdentifier ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -196,6 +198,7 @@ public class LicenseTable
             {
                 this.licensekey = data[0];
                 this.verifiedDate = Str.toTimestamp( data[1] );
+                this.remoteIdentifier = data[2];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -227,6 +230,17 @@ public class LicenseTable
         }
 
 
+        public String getRemoteIdentifier()
+        {
+            return remoteIdentifier ;
+        }
+
+        public void setRemoteIdentifier( String remoteIdentifier )
+        {
+            this.remoteIdentifier = remoteIdentifier ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -239,6 +253,7 @@ public class LicenseTable
             Map data = new HashMap();
             data.put( licensekeyColumnName , this.licensekey );
             data.put( verifiedDateColumnName , this.verifiedDate == null ? null : this.verifiedDate.toString() );
+            data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
         }
 

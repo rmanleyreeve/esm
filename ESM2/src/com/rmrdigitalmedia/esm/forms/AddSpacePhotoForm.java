@@ -208,6 +208,7 @@ public class AddSpacePhotoForm {
 								pRow.setApproved("FALSE");
 							}
 							pRow.setDeleted("FALSE");
+							pRow.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 							pRow.insert();
 							LogController.log("Photo comment added to database.");
 							if(!unmod) {

@@ -579,6 +579,7 @@ public class EntryAuditClassificationView {
 			try {
 				EntrypointClassificationAuditTable.Row r = EntrypointClassificationAuditTable.getRow();
 				r.setEntrypointID(entryID);
+				r.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 				r.insert();
 			} catch (SQLException e1) {
 				LogController.logEvent(EntryAuditClassificationView.class, C.FATAL, "ERROR INSERT ENTRY CLASSIFICATION ROW", e1);

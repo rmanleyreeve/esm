@@ -1,13 +1,13 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import com.javaranch.common.Str;
-import com.javaranch.db.DBResults;
-import com.javaranch.db.TableFacade;
+import java.util.Map ;
+import java.util.HashMap ;
+import java.sql.Connection ;
+import java.sql.SQLException ;
+import java.sql.Timestamp ;
+import com.javaranch.common.Str ;
+import com.javaranch.db.DBResults ;
+import com.javaranch.db.TableFacade ;
 
 /** Strongly typed access to the database table "VESSEL".
  *
@@ -54,10 +54,11 @@ public class VesselTable
     public static final String ownerColumnName = "OWNER";
     public static final String createdDateColumnName = "CREATED_DATE";
     public static final String updateDateColumnName = "UPDATE_DATE";
+    public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        idColumnName , nameColumnName , imoNumberColumnName , typeIDColumnName , ownerColumnName , createdDateColumnName , updateDateColumnName , 
+        idColumnName , nameColumnName , imoNumberColumnName , typeIDColumnName , ownerColumnName , createdDateColumnName , updateDateColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -245,6 +246,7 @@ public class VesselTable
         private String owner ;
         private Timestamp createdDate ;
         private Timestamp updateDate ;
+        private String remoteIdentifier ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
         Row()
@@ -263,6 +265,7 @@ public class VesselTable
                 this.owner = data[4];
                 this.createdDate = Str.toTimestamp( data[5] );
                 this.updateDate = Str.toTimestamp( data[6] );
+                this.remoteIdentifier = data[7];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -377,6 +380,17 @@ public class VesselTable
         }
 
 
+        public String getRemoteIdentifier()
+        {
+            return remoteIdentifier ;
+        }
+
+        public void setRemoteIdentifier( String remoteIdentifier )
+        {
+            this.remoteIdentifier = remoteIdentifier ;
+        }
+
+
 
         
         private boolean dataLoadedFromDatabase()
@@ -394,6 +408,7 @@ public class VesselTable
             data.put( ownerColumnName , this.owner );
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
             data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );
+            data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
         }
 

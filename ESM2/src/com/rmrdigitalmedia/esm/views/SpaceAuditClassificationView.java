@@ -643,6 +643,7 @@ public class SpaceAuditClassificationView {
 			try {
 				SpaceClassificationAuditTable.Row r = SpaceClassificationAuditTable.getRow();
 				r.setSpaceID(spaceID);
+				r.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
 				r.insert();
 			} catch (SQLException e1) {
 				LogController.logEvent(SpaceAuditClassificationView.class, C.FATAL, "ERROR INSERT SPACE CLASSIFICATION ROW", e1);

@@ -37,7 +37,6 @@ import com.rmrdigitalmedia.esm.forms.ApprovePhotoCommentForm;
 import com.rmrdigitalmedia.esm.forms.DeleteUserDialog;
 import com.rmrdigitalmedia.esm.forms.EditUserForm;
 import com.rmrdigitalmedia.esm.forms.EditVesselForm;
-import com.rmrdigitalmedia.esm.models.EntrypointCommentsTable;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
@@ -83,34 +82,6 @@ public class AdministrationView {
 			combo.setData(un, uRow.getID());
 		}
 		combo.select(0);
-	}
-
-
-	static void refreshEntrypointCommentsList(List list){
-		list.setVisible(false);
-		list.removeAll();
-		EntrypointCommentsTable.Row[] cRows = null;
-		try {
-			cRows = EntrypointCommentsTable.getRows("DELETED=FALSE AND APPROVED=FALSE");
-		} catch (SQLException ex) {
-			LogController.logEvent(AdministrationView.class, C.ERROR, ex);
-		}
-		if(cRows != null && cRows.length>0) {
-			int c = 0;
-			for(EntrypointCommentsTable.Row cRow:cRows) {
-				int cID = cRow.getID();
-				String author = "";
-				try {
-					author = EsmUsersTable.getRow(cRow.getAuthorID()).getSurname().toUpperCase() + ", " + EsmUsersTable.getRow(cRow.getAuthorID()).getForename();
-				} catch (SQLException ex) {	}
-				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
-				list.add("#" + cID + ": Posted " + sdf.format(cRow.getUpdateDate()) + " by " + author );
-				list.setData(""+c, cID);
-				c++;
-			}
-			list.setVisible(true);
-			list.redraw();
-		}
 	}
 
 	static void refreshPhotoCommentsList(List list){
