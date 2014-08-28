@@ -4,9 +4,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import org.apache.tika.config.TikaConfig;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.mime.MediaType;
 import com.rmrdigitalmedia.esm.AppLoader;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+
 
 public class FilesystemController {
 
@@ -128,5 +133,20 @@ public class FilesystemController {
 		} else {
 			System.out.println("Did not create LOG DIR: " + logdir);
 		}
+	}
+
+	public static String getMimeType(File f) {
+		String mt = "";
+		try {
+			TikaConfig tika;
+			tika = new TikaConfig();
+			Metadata metadata = new Metadata();
+			metadata.set(Metadata.RESOURCE_NAME_KEY, f.toString());
+			MediaType mimetype = tika.getDetector().detect(TikaInputStream.get(f), metadata);
+			mt = mimetype.toString();
+		} catch (Exception e) {
+			LogController.logEvent(FilesystemController.class, C.WARNING, "Error getting mime type from file", e);
+		}
+		return mt;
 	}
 }
