@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
+import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.Thumbnails;
 import org.eclipse.swt.graphics.Image;
@@ -142,8 +143,10 @@ public class DatabaseController {
 
 	public static int insertDocument(File f, int spaceID, int authorID) throws FileNotFoundException {
 		long id = 0;
+		MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+		String mimeType = mimeTypesMap.getContentType(f);
 		Connection conn = createConnection();
-		String sql = "INSERT INTO DOC_DATA (DATA, SPACE_ID, TITLE,AUTHOR_ID, CREATED_DATE) VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO DOC_DATA (DATA, SPACE_ID, TITLE, MIME_TYPE, AUTHOR_ID, CREATED_DATE) VALUES (?,?,?,?,?,?)";
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -151,8 +154,9 @@ public class DatabaseController {
 			ps.setBinaryStream (1, is, (int)f.length());
 			ps.setInt(2, spaceID);
 			ps.setString(3, f.getName());
-			ps.setInt(4, authorID);
-			ps.setTimestamp(5, new Timestamp(new Date().getTime()));
+			ps.setString(4, mimeType);
+			ps.setInt(5, authorID);
+			ps.setTimestamp(6, new Timestamp(new Date().getTime()));
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
@@ -192,13 +196,15 @@ public class DatabaseController {
 
 	public static int insertImageData(File f) throws IOException {
 		long id = 0;
+		MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+		String mimeType = mimeTypesMap.getContentType(f);
 		Connection conn = createConnection();
 		BufferedImage bimg = ImageIO.read(f);
 		int srcW = bimg.getWidth();
 		int srcH = bimg.getHeight();
 		OutputStream osF = new ByteArrayOutputStream();
 		try {
-			String sql = "INSERT INTO PHOTO_DATA (DATA_FULL, DATA_THUMB, CREATED_DATE) VALUES (?,?,?)";
+			String sql = "INSERT INTO PHOTO_DATA (DATA_FULL, DATA_THUMB, MIME_TYPE, CREATED_DATE) VALUES (?,?,?,?)";
 			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			InputStream is = null;
 			int l = 0;
@@ -230,7 +236,8 @@ public class DatabaseController {
 				LogController.logEvent(DatabaseController.class, C.ERROR, "insert thumbnail", ex);				
 			}
 			ps.setBinaryStream (2, is, l);
-			ps.setTimestamp(3, new Timestamp(new Date().getTime()));
+			ps.setString(3, mimeType);
+			ps.setTimestamp(4, new Timestamp(new Date().getTime()));
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
