@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
-import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.Thumbnails;
 import org.eclipse.swt.graphics.Image;
@@ -143,8 +142,7 @@ public class DatabaseController {
 
 	public static int insertDocument(File f, int spaceID, int authorID) throws FileNotFoundException {
 		long id = 0;
-		MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
-		String mimeType = mimeTypesMap.getContentType(f);
+		String mimeType = FilesystemController.getMimeType(f);
 		Connection conn = createConnection();
 		String sql = "INSERT INTO DOC_DATA (DATA, SPACE_ID, TITLE, MIME_TYPE, AUTHOR_ID, CREATED_DATE) VALUES (?,?,?,?,?,?)";
 		PreparedStatement ps;
@@ -163,6 +161,7 @@ public class DatabaseController {
 				id = rs.getLong(1);
 			}			
 		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error inserting document", ex);
 			ex.printStackTrace();
 		}
 		LogController.log("Document inserted into DB OK");			
@@ -196,8 +195,7 @@ public class DatabaseController {
 
 	public static int insertImageData(File f) throws IOException {
 		long id = 0;
-		MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
-		String mimeType = mimeTypesMap.getContentType(f);
+		String mimeType = FilesystemController.getMimeType(f);
 		Connection conn = createConnection();
 		BufferedImage bimg = ImageIO.read(f);
 		int srcW = bimg.getWidth();
@@ -245,6 +243,7 @@ public class DatabaseController {
 			}			
 			LogController.log("Image data inserted into database");			
 		} catch (SQLException e) {
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error inserting image data", e);
 			e.printStackTrace();
 		} finally {
 			close(conn);
