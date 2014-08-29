@@ -52,18 +52,18 @@ public final class C {
 	public static String APP_ICON_32 = "appicon32.png";
 
 	// UI style properties
-	public static Color APP_BGCOLOR = SWTResourceManager.getColor(222, 224, 226);
-	public static Color TITLEBAR_BGCOLOR = SWTResourceManager.getColor(122, 130, 137);
-	public static Color FIELD_BGCOLOR = SWTResourceManager.getColor(238, 238, 238);
-	public static Color BAR_BGCOLOR = SWTResourceManager.getColor(182, 186, 190);
-	public static Color AUDIT_COLHEADER_BGCOLOR = SWTResourceManager.getColor(38, 147, 255);
-	public static Color RED = SWTResourceManager.getColor(237, 28, 36);
-	public static Color AMBER = SWTResourceManager.getColor(241, 89, 42);
-	public static Color GREEN = SWTResourceManager.getColor(11, 148, 68);
-	public static Color NULL = SWTResourceManager.getColor(100, 100, 100);
+	public static Color APP_BGCOLOR = SWTResourceManager.getColor(222, 224, 226); // #DEE0E2
+	public static Color TITLEBAR_BGCOLOR = SWTResourceManager.getColor(122, 130, 137); // #7A8289
+	public static Color FIELD_BGCOLOR = SWTResourceManager.getColor(238, 238, 238); // #EEEEEE
+	public static Color BAR_BGCOLOR = SWTResourceManager.getColor(182, 186, 190); // #B6BABE
+	public static Color AUDIT_COLHEADER_BGCOLOR = SWTResourceManager.getColor(38, 147, 255); // #2693FF
+	public static Color RED = SWTResourceManager.getColor(237, 28, 36); // #ED1C24
+	public static Color AMBER = SWTResourceManager.getColor(241, 89, 42); // #F1592A
+	public static Color GREEN = SWTResourceManager.getColor(11, 148, 68); // #0B9444
+	public static Color NULL = SWTResourceManager.getColor(100, 100, 100); // #646464
 	public static Map<String, Color> TRAFFICLIGHTS = ImmutableMap.of("null", C.NULL, "red", C.RED, "amber", C.AMBER, "green", C.GREEN);
 	public static Color ROW_HIGHLIGHT = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND);
-	public static Color ROW_SELECTED = SWTResourceManager.getColor(165, 200, 250);
+	public static Color ROW_SELECTED = SWTResourceManager.getColor(165, 200, 250); // #A5C8FA
 
 	// UI fonts
 	public static String FONT = (OS.equals("cocoa")) ? "Lucida Grande" : "Arial";

@@ -288,7 +288,7 @@ public class SpaceDetailView {
 					lblPosted.setFont(C.FONT_9);
 					lblPosted.setBackground(C.APP_BGCOLOR);
 					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
-					lblPosted.setText("Posted: " + sdf.format(spaceComment.getDate("UPDATE_DATE")));
+					lblPosted.setText("Posted: " + sdf.format(spaceComment.getTimestamp("UPDATE_DATE")));
 
 					if( user.getAccessLevel()==9 || user.getID()==author.getID())	{	
 						Button btnEditComment = new Button(commentRow, SWT.NONE);
@@ -937,7 +937,7 @@ public class SpaceDetailView {
 					int docID = dRow.getInt("ID");
 					String title = dRow.getString("TITLE");
 					String ext = Files.getFileExtension(title);	
-					title += "    (posted " + sdf.format(dRow.getDate("CREATED_DATE"));
+					title += "    (posted " + sdf.format(dRow.getTimestamp("CREATED_DATE"));
 					try { 
 						title += " by " + dRow.getString("FORENAME") + " " + dRow.getString("SURNAME");
 					} catch (SQLException e2) {
