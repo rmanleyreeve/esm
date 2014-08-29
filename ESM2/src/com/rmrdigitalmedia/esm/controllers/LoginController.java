@@ -70,6 +70,7 @@ public class LoginController {
 				alertTxt.setText(C.LOGIN_FAIL_MSG);
 				txt_Username.setText("");
 				txt_Password.setText("");
+				txt_Username.setFocus();
 			}
 		}
 	}
