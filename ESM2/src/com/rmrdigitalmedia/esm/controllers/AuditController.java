@@ -269,8 +269,7 @@ public class AuditController {
 			if (row.getString("Q4_VALUE") != null) {
 				score += 1;
 			}
-			if (C.notNullOrEmpty(row.getString("Q5_DIMS_H"))
-					&& C.notNullOrEmpty(row.getString("Q5_DIMS_W"))) {
+			if (C.notNullOrEmpty(row.getString("Q5_DIMS_H")) && C.notNullOrEmpty(row.getString("Q5_DIMS_W"))) {
 				score += 1;
 			}
 			if (row.getString("Q6_BOOLEAN") != null) {
@@ -280,12 +279,10 @@ public class AuditController {
 			if (q7 != null) {
 				score += 1;
 			}
-			if (q7 != null && q7.equals("VERTICAL")
-					&& row.getString("Q8_BOOLEAN") != null) {
+			if (q7 != null && q7.equals("VERTICAL")	&& row.getString("Q8_BOOLEAN") != null) {
 				score += 1;
 			}
-			if (q7 != null && q7.equals("VERTICAL")
-					&& row.getString("Q9_BOOLEAN") != null) {
+			if (q7 != null && q7.equals("VERTICAL")	&& row.getString("Q9_BOOLEAN") != null) {
 				score += 1;
 			}
 			if (row.getString("Q10_BOOLEAN") != null) {
