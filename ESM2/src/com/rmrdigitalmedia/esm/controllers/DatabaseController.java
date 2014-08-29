@@ -211,7 +211,7 @@ public class DatabaseController {
 			if (srcW > C.IMG_WIDTH || srcH > C.IMG_HEIGHT) {
 				// larger image, resize
 				try {
-					Thumbnails.of(f).size(C.IMG_WIDTH, C.IMG_HEIGHT).toOutputStream(osF);
+					Thumbnails.of(f).outputQuality(0.5).size(C.IMG_WIDTH, C.IMG_HEIGHT).toOutputStream(osF);
 					ByteArrayOutputStream baos = (ByteArrayOutputStream) osF;
 					is = new ByteArrayInputStream((baos).toByteArray());
 					l = baos.size();
