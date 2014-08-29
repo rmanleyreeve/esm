@@ -1053,7 +1053,9 @@ public class SpaceDetailView {
 		if(signedoff) {
 			try {
 				EsmUsersTable.Row authUser = EsmUsersTable.getRow(sRow.getSignoffID());
-				lblAuthName.setText(authUser.getForename() + " " + authUser.getSurname());
+				String so = authUser.getForename() + " " + authUser.getSurname();
+				so += "  " + sdf.format(sRow.getSignoffDate());
+				lblAuthName.setText(so);
 			} catch (SQLException e1) {}
 		} else {
 			lblAuthName.setText(C.SPACE_NOT_AUTH);
