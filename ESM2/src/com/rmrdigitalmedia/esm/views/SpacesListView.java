@@ -236,7 +236,7 @@ public class SpacesListView {
 			gc.setBackground(C.FIELD_BGCOLOR);
 			EntrypointsTable.Row[] eRows;
 			try {
-				eRows = EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID);
+				eRows = EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID+" ORDER BY ID DESC");
 				int centreX = (imgStatusW/2) - 10;
 				int x=0;
 				switch (eRows.length) {

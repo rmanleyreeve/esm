@@ -570,17 +570,11 @@ public class SpaceDetailView {
 		Label lblEntryPointAuditImg, lblEntryPointAuditLight;
 		GridData gd_lblEntryPointAuditImg, gd_lblEntryPointAuditLight, gd_btnShowEntryAudit, gd_lblEntryPoint, gd_btnEditEntry, gd_btnDeleteEntry;
 		Button btnShowEntryAudit, btnEditEntry, btnDeleteEntry;
-		int rh = 20;
-		
-		
-		
-		
-		
-		
+		int rh = 20;		
 		
 		try {
 			Connection conn = DatabaseController.createConnection();
-			String sql = "SELECT * FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=?";
+			String sql = "SELECT * FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=? ORDER BY ID DESC";
 			PreparedStatement ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ps.setInt(1, spaceID);
 			ResultSet epRow = ps.executeQuery();
@@ -765,7 +759,7 @@ public class SpaceDetailView {
 		// PHOTOS ===============================
 		PhotoMetadataTable.Row[] pRows = null;
 		try {
-			pRows = PhotoMetadataTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID);
+			pRows = PhotoMetadataTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID+" ORDER BY ID DESC");
 		} catch (SQLException ex) {
 			LogController.logEvent(me, C.ERROR, "Error getting photo metadata from database", ex);		}
 		if (pRows.length > 0) {
@@ -902,7 +896,7 @@ public class SpaceDetailView {
 			Connection conn = DatabaseController.createConnection();
 			PreparedStatement ps = null;
 			ResultSet dRow = null;
-			String sql = "SELECT DOC_DATA.*, ESM_USERS.FORENAME, ESM_USERS.SURNAME FROM DOC_DATA INNER JOIN ESM_USERS ON ESM_USERS.ID = DOC_DATA.AUTHOR_ID WHERE SPACE_ID=?";
+			String sql = "SELECT DOC_DATA.*, ESM_USERS.FORENAME, ESM_USERS.SURNAME FROM DOC_DATA INNER JOIN ESM_USERS ON ESM_USERS.ID = DOC_DATA.AUTHOR_ID WHERE SPACE_ID=? ORDER BY DOC_DATA.ID DESC";
 			ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ps.setInt(1, spaceID);
 			dRow = ps.executeQuery();
