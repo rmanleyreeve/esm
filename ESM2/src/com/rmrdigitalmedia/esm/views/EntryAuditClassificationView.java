@@ -32,6 +32,7 @@ import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
+import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
 import com.rmrdigitalmedia.esm.models.EntrypointClassificationAuditTable;
 import com.rmrdigitalmedia.esm.models.EntrypointClassificationQuestionsTable;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
@@ -337,9 +338,16 @@ public class EntryAuditClassificationView {
 		}
 		//-------------------------------------------------------------------------------------------------------
 		qNum = 2;
-		Label q2_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
-		Label q2_col2 = makeColumn2(tbl, qHints.elementAt(qNum), false);
-		Composite q2_col3 = makeColumn3(tbl,1, false);
+		boolean hideit = true;
+		try {
+			hideit = EntrypointChecklistAuditTable.getRow(entryID).getQ7Value().equals("HORIZONTAL");
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Label q2_col1 = MakeColumn1(tbl,qText.elementAt(qNum), hideit);
+		Label q2_col2 = makeColumn2(tbl, qHints.elementAt(qNum), hideit);
+		Composite q2_col3 = makeColumn3(tbl,1, hideit);
 		q2_radio1 = new Button(q2_col3, SWT.RADIO);
 		q2_radio1.setText("Very difficult");
 		q2_radio1.setBackground(C.APP_BGCOLOR);
@@ -352,14 +360,14 @@ public class EntryAuditClassificationView {
 		q2_radio3.setText("Not difficult");
 		q2_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q2_radio3.setSelection(aRow.getQ2Value()==3); 
-		Label q2_col4 = makeColumn4(tbl, false);	
+		Label q2_col4 = makeColumn4(tbl, hideit);	
 		if(q2_radio1.getSelection()) { q2_col4.setImage(C.getImage("red.png")); }
 		if(q2_radio2.getSelection()) { q2_col4.setImage(C.getImage("amber.png")); }
 		if(q2_radio3.getSelection()) { q2_col4.setImage(C.getImage("green.png")); }
-		q2_col5 = MakeColumn5(tbl, false);
+		q2_col5 = MakeColumn5(tbl, hideit);
 		if(!empty) q2_col5.setText( C.notNull(aRow.getQ2Comments()) );
-		sep = Separator(tbl, false);
-		if(!empty && aRow.getQ2Value()==0) {
+		sep = Separator(tbl, hideit);
+		if(hideit && !empty && aRow.getQ2Value()==0) {
 			q2_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		}
 		//-------------------------------------------------------------------------------------------------------
