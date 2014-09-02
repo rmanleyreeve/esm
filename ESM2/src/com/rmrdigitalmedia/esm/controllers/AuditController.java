@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpaceChecklistAuditTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
@@ -399,6 +400,10 @@ public class AuditController {
 				status.add(q7);
 			}				
 			max = 7;
+			String vh = EntrypointChecklistAuditTable.getRow(entryID).getQ7Value();
+			if(vh!=null && vh.equals("HORIZONTAL") ) {
+				max--;
+			}
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
 			ps.close();
