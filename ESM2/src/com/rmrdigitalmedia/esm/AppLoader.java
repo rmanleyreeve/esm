@@ -64,18 +64,21 @@ public class AppLoader {
 		me = this;
 		LogController.log("Running class " + this.getClass().getName());
 
-		String vtxt = "0.0.0";
+		String[] vtxt = {"0.0.0","build 001"};
 		try {
-			vtxt = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));
+			vtxt = CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8)).split("\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String[] varr = vtxt.split("\\.");
-		EsmApplication.appData.setField("VERSION", vtxt);
+		
+		String[] varr = vtxt[0].trim().split("\\.");
+		String build = vtxt[1];
+		EsmApplication.appData.setField("VERSION", vtxt[0].trim());
 		EsmApplication.appData.setField("MAJOR", Integer.parseInt(varr[0]));
 		EsmApplication.appData.setField("MINOR", Integer.parseInt(varr[1]));
 		EsmApplication.appData.setField("POINT", Integer.parseInt(varr[2]));
-
+		EsmApplication.appData.setField("BUILD", build);
+		
 		final Shell splash = new Shell(SWT.ON_TOP);
 		AppLoader.myshell = splash;
 		FormLayout layout = new FormLayout();

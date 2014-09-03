@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
+import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.forms.AddSpaceForm;
@@ -71,6 +72,7 @@ public class WindowController {
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
+			EsmApplication.appData = new AppData();
 			WindowController window = new WindowController(EsmUsersTable.getRow("USERNAME", "admin"));
 			window.open();
 		} catch (Exception e) {
@@ -384,18 +386,19 @@ public class WindowController {
 		lblVtLogo.setLayoutData(fd_lblVtLogo);
 
 		// read text from disk
-		String txt = C.APP_NAME;
+		String txt = C.APP_NAME + "\t" + C.COPYRIGHT;
 		try {
-			txt += "\tVersion " + CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));
+			txt += "\tVersion " + CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8)).replaceAll("(\\r|\\n)", " ");
 		} catch (IOException e) {
 			LogController.logEvent(me,C.WARNING,e);
 		}		
-		Label lblF = new Label(footer,SWT.HORIZONTAL);
+		Label lblF = new Label(footer,SWT.BORDER | SWT.HORIZONTAL | SWT.CENTER);
 		lblF.setAlignment(SWT.CENTER);
 		lblF.setBackground(C.TITLEBAR_BGCOLOR);
 		lblF.setFont(C.FONT_8);
 		lblF.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		lblF.setText(txt + C.COPYRIGHT);				
+		lblF.setText(txt);
+		
 		btnAdmin.setEnabled(isAdmin);
 
 		FormData fd_foo = new FormData();
@@ -406,6 +409,8 @@ public class WindowController {
 		showSpacesList();
 	}
 
+
+	
 	// methods to display pages etc
 	void showSpacesList(){
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
