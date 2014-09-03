@@ -829,14 +829,10 @@ public class PdfController {
 				c4.addElement(new Phrase(entryClassRow.getQ7Comments(),font5));
 				tblEntryClass.addCell(c1); tblEntryClass.addCell(c2); tblEntryClass.addCell(c3); tblEntryClass.addCell(c4);
 
-
 				tblEntryClass.setSpacingAfter(40);
 				document.add(tblEntryClass);
 
-
 			} // end entry points loop
-
-
 
 			document.close(); // no need to close PDFwriter?
 			ok = true;
