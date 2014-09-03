@@ -27,28 +27,28 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
-public class EditUserForm {
+public class EditAdminForm {
 
 	Shell myshell;
 	boolean formOK = false;
 	Text username,password,forename,surname,rank,workid;
-	int accesslevel,month, userID, headerH = 40;
-	Combo dd,mm,yyyy,accessLevels;
+	Combo dd,mm,yyyy;
 	Label sep;	
+	int month, userID, headerH = 40;
 	EsmUsersTable.Row uRow;
 	private static Object me;
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			EditUserForm euf = new EditUserForm(2);
+			EditAdminForm euf = new EditAdminForm(2);
 			euf.complete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public EditUserForm(int _userID) {
+	public EditAdminForm(int _userID) {
 		me = this;
 		LogController.log("Running class " + this.getClass().getName());
 		userID = _userID;
@@ -59,7 +59,7 @@ public class EditUserForm {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.myshell = shell;
-		shell.setSize(460, 400);
+		shell.setSize(460, 350);
 		shell.setText("ESM Setup");
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
@@ -95,7 +95,7 @@ public class EditUserForm {
 		fd_lblTitle.left = new FormAttachment(lblImg, 16);
 		lblTitle.setLayoutData(fd_lblTitle);
 		lblTitle.setBackground(C.TITLEBAR_BGCOLOR);
-		lblTitle.setText("EDIT PROGRAM USER");
+		lblTitle.setText("EDIT ADMINISTRATOR");
 
 		Composite formHolder = new Composite(container,SWT.BORDER);
 		FormData fd_formHolder = new FormData();
@@ -197,21 +197,6 @@ public class EditUserForm {
 		}
 		yyyy.select(s);
 
-
-		Label lblAccess = new Label(form, SWT.NONE);
-		lblAccess.setBackground(C.APP_BGCOLOR);
-		lblAccess.setText("Access Level:");	
-		accessLevels = new Combo(form, SWT.DROP_DOWN | SWT.READ_ONLY);
-		String[] levels = {"Disabled","Moderated User","Approved User","User with Sign-Off"};
-		for (int i=0;i<levels.length;i++) {
-			accessLevels.add(levels[i]);
-			accessLevels.setData(levels[i],i);
-		}
-		accessLevels.select(uRow.getAccessLevel());
-		GridData gd_access = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
-		gd_access.widthHint = 160;
-		accessLevels.setLayoutData(gd_access);
-
 		sep = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1));		
 
@@ -226,7 +211,6 @@ public class EditUserForm {
 			public void widgetSelected (SelectionEvent e) {
 				Text[] fields = {username,forename,surname,rank,workid}; Validation.validateFields(fields);
 				Combo[] dates = {dd,mm,yyyy}; Validation.validateDates(dates);			
-				accesslevel = (Integer)accessLevels.getData(accessLevels.getText());
 				month = (Integer)mm.getData(mm.getText());
 				if( Validation.validateFields(fields) && Validation.validateDates(dates) ) {
 					try {
@@ -235,14 +219,13 @@ public class EditUserForm {
 						uRow.setSurname(surname.getText());
 						uRow.setRank(rank.getText());
 						uRow.setWorkIdentifier(workid.getText());
-						uRow.setAccessLevel(accesslevel);
 						uRow.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());
 						uRow.setCreatedDate(new Timestamp(new Date().getTime()));
 						uRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						uRow.setDeleted("FALSE");
 						uRow.update();
 						formOK = true;
-						LogController.log("User edited in database.");
+						LogController.log("Administrator edited in database.");
 					} catch (Exception e1) {
 						LogController.logEvent(this, C.ERROR, e1);
 					}					
@@ -263,6 +246,9 @@ public class EditUserForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shell.setLocation (x, y);		  		
 		shell.setDefaultButton (ok);
+		new Label(form, SWT.NONE);
+		new Label(form, SWT.NONE);
+		new Label(form, SWT.NONE);
 
 		shell.open ();
 		shell.layout();
@@ -270,7 +256,7 @@ public class EditUserForm {
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("Edit User form closed");	
+		LogController.log("Edit Admin form closed");	
 		return formOK;
 	}
 }
