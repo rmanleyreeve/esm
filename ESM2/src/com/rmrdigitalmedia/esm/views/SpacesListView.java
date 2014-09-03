@@ -74,7 +74,7 @@ public class SpacesListView {
 		}
 		tableRows.clear();
 		selectedRow = 0;
-		
+
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 
 		// scrolling frame to hold the grid panel

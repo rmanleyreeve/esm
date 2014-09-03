@@ -342,8 +342,7 @@ public class EntryAuditClassificationView {
 		try {
 			hideit = EntrypointChecklistAuditTable.getRow(entryID).getQ7Value().equals("HORIZONTAL");
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LogController.logEvent(EntryAuditClassificationView.class, C.ERROR, e1);
 		}
 		Label q2_col1 = MakeColumn1(tbl,qText.elementAt(qNum), hideit);
 		Label q2_col2 = makeColumn2(tbl, qHints.elementAt(qNum), hideit);

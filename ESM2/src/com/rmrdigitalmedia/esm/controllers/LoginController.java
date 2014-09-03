@@ -248,10 +248,10 @@ public class LoginController {
 		shell.setBounds(rect);
 		shell.open();
 		LogController.log("Awaiting user input...");
-		
-	
-		
-		
+
+
+
+
 
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())

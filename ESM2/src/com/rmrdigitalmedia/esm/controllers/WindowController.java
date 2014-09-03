@@ -134,7 +134,7 @@ public class WindowController {
 		fd_lblH.top = new FormAttachment((headerH/2)-offset);
 		lblH.setLayoutData(fd_lblH);
 	}
-	
+
 	protected void createContents() {
 
 		// set up container layout
@@ -230,7 +230,7 @@ public class WindowController {
 					InternetController.renderHTML(html);
 				}
 
-				
+
 			}
 		});
 

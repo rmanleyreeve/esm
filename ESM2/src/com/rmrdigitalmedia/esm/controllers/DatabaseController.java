@@ -292,7 +292,7 @@ public class DatabaseController {
 		}		
 		return img;
 	}
-	
+
 
 	// DB EXPORT METHODS =============================================================================================================
 
@@ -467,14 +467,14 @@ public class DatabaseController {
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 	/*
 	public static boolean exportSql() {
 		boolean ok = false;
@@ -578,7 +578,7 @@ public class DatabaseController {
 		}
 		return f;
 	}
-	*/
+	 */
 
-	
+
 }

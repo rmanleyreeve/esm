@@ -775,7 +775,7 @@ public class EntryAuditChecklistView {
 		parent.layout();
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 	}
-	
+
 	static void saveAudit(int entryID) {
 		// insert new row if empty
 		if(empty) {

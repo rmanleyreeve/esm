@@ -41,7 +41,7 @@ public final class C {
 	public static int IMG_HEIGHT = 600;
 	public static int THUMB_WIDTH = 125;
 	public static int THUMB_HEIGHT = 125;
-	
+
 	// pdf properties
 	public static String BLANK_SPACE_FORM = "blank_space_form.pdf";
 	public static String BLANK_ENTRY_FORM = "blank_entry_form.pdf";
@@ -93,7 +93,7 @@ public final class C {
 	public static String FTP_SERVER = "ftp.rmrdigitalmedia.co.uk";
 	public static String FTP_USER = "esm@rmrdigitalmedia.co.uk";
 	public static String FTP_PASS = "Vide0tel";
-	
+
 
 	// message text
 	public static String NEW_VERSION_ALERT = "New version available!";
@@ -118,7 +118,7 @@ public final class C {
 	public static int WARNING = 2;
 	public static int ERROR = 3;
 	public static int FATAL = 4;
-	
+
 	// help file names
 	public static String HELPFILE_ADMIN = "administration_help.html";
 	public static String HELPFILE_SPACESLIST = "spaces_list_help.html";
@@ -128,6 +128,19 @@ public final class C {
 	public static String HELPFILE_EP_AUDIT_CHECK = "audit_help.html";
 	public static String HELPFILE_EP_AUDIT_CLASS = "audit_help.html";
 	public static String HELPFILE_GENERIC = "help.html";
+	
+	// PDF report properties
+	public static String DISCLAIMER = "Some sort of disclaimer Lorem ipsum dolor sit amet, "
+			+ "consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
+			+ "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+			+ "Duis aute irure dolor inreprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
+			+ "Excepteur sint occaecatcupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+	public static String SPACE_OVERALL_STATUS_MSG_RED = "It is advised that extreme caution is observed when using this space.";
+	public static String SPACE_OVERALL_STATUS_MSG_AMBER = "It is advised that caution is observed when using this space.";
+	public static String SPACE_OVERALL_STATUS_MSG_GREEN = "There are no significant hazards reported for this space.";
+	public static String ENTRY_OVERALL_STATUS_MSG_RED = "It is advised that extreme caution is observed when using this entry point.";
+	public static String ENTRY_OVERALL_STATUS_MSG_AMBER = "It is advised that extreme caution is observed when using this entry point.";
+	public static String ENTRY_OVERALL_STATUS_MSG_GREEN = "There are no significant hazards reported for this entry point.";
 
 	private C() {
 		throw new AssertionError();
@@ -162,7 +175,7 @@ public final class C {
 	public static boolean notNullOrEmpty(String s) {
 		return (s != null && !s.equals(""));
 	}
-	
+
 	public static boolean isNullOrEmpty(String s) {
 		return (s == null || s.equals(""));
 	}

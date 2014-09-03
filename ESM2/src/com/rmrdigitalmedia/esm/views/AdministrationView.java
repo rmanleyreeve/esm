@@ -370,7 +370,7 @@ public class AdministrationView {
 		lblPhotoComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
 		lblPhotoComments.setText("Photo Comments Requiring Approval:");
 		lblPhotoComments.setBackground(C.APP_BGCOLOR);
-		
+
 		final List listPhotoComments = new List(rowComments, SWT.BORDER | SWT.V_SCROLL);
 		listPhotoComments.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
 		listPhotoComments.setVisible(false);
@@ -459,7 +459,7 @@ public class AdministrationView {
 		lblDump.setText("Create a complete backup of the database");
 		lblDump.setBackground(C.APP_BGCOLOR);
 		btnDump.setToolTipText(lblDump.getText());
-		
+
 		// create local file
 		Button btnExport = new Button(rowRight1, SWT.NONE);
 		btnExport.setText("Data Export File");
@@ -479,7 +479,7 @@ public class AdministrationView {
 		lblExport.setText("Generate a data export file to send manually by email");
 		lblExport.setBackground(C.APP_BGCOLOR);
 		btnExport.setToolTipText(lblExport.getText());
-		
+
 		// create file and ftp to server
 		Button btnSend = new Button(rowRight1, SWT.NONE);
 		btnSend.setText("Send Data File");
@@ -510,10 +510,10 @@ public class AdministrationView {
 		lblSend.setBackground(C.APP_BGCOLOR);
 		btnSend.setToolTipText(lblSend.getText());
 
-		
-		
-		
-		
+
+
+
+
 
 		scrollPanelRight.setContent(compR);
 		scrollPanelRight.setExpandVertical(true);

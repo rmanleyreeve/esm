@@ -47,10 +47,10 @@ public class LicenseDialog {
 		// algo - remove dashes, last 7 digits + privateKey number should = first 7 digits
 		// check key format
 		if(
-		key.length() != 17 || 
-		key.charAt(5) != '-' ||
-		key.charAt(11) != '-'
-		) { 
+				key.length() != 17 || 
+				key.charAt(5) != '-' ||
+				key.charAt(11) != '-'
+				) { 
 			return false; 
 		}
 		String kStr = key.replaceAll("-", "");		
@@ -118,7 +118,7 @@ public class LicenseDialog {
 		data.bottom = new FormAttachment (cancel, 0, SWT.DEFAULT);
 		text.setLayoutData (data);
 		text.setText("");
-		
+
 		// TODO for development ONLY
 		//text.setText("22356-81122-26817");
 

@@ -22,6 +22,7 @@ import com.itextpdf.text.Image;
 import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.PdfController;
 
 public class PdfTest {
@@ -49,14 +50,14 @@ public class PdfTest {
 		}
 		return buf;
 	}
-	
+
 	public static Image getImage(String path) throws BadElementException, MalformedURLException, IOException {
 		Image img;
 		InputStream is = PdfTest.class.getResourceAsStream(path);
 		img = Image.getInstance( getBytes(is) );		
 		return img;
 	}
-	
+
 
 
 	public PdfTest() {
@@ -79,23 +80,19 @@ public class PdfTest {
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				
+
 				try {
 					EsmApplication.appData = new AppData();
 					if (PdfController.buildAudit(2)) {						
 						Program.launch(C.TMP_DIR + C.SEP + "SPACE_2_AUDIT.pdf");					
 					} else {
 						System.out.println("Failed to generate PDF");
-					}
-					
+					}					
 				} catch (DocumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LogController.logEvent(PdfTest.class, C.ERROR, "Error getting PDF document", e);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+					LogController.logEvent(PdfTest.class, C.ERROR, "Error getting DB data for PDF document", e);				}
+
 				shell.dispose();
 			}
 		});
