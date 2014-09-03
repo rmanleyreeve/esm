@@ -82,7 +82,7 @@ public class SpaceAuditClassificationView {
 	static Button q8_radio1;
 	private static Button q8_radio2;
 	private static Text q8_col5;
-	
+
 	private static String df(Timestamp ts) {
 		SimpleDateFormat d = new SimpleDateFormat("dd - MM - yyyy");
 		SimpleDateFormat t = new SimpleDateFormat("kk:mm");
@@ -182,7 +182,7 @@ public class SpaceAuditClassificationView {
 		separator.setLayoutData(gd);		
 		return separator;
 	}
-	
+
 	public static void buildPage(final Composite parent, final int spaceID) {
 
 		for (Control c:parent.getChildren()) {
@@ -243,7 +243,7 @@ public class SpaceAuditClassificationView {
 		gl_tbl.horizontalSpacing = 1;
 		tbl.setLayout(gl_tbl);
 		tbl.setBackground(C.APP_BGCOLOR);
-		
+
 		// column headers
 		CLabel lblChecklist = new CLabel(tbl, SWT.NONE);
 		GridData gd_lblChecklist = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
@@ -290,7 +290,7 @@ public class SpaceAuditClassificationView {
 		lblComments.setFont(C.FONT_12B);
 		sep = new Label(tbl, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.CENTER);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 5, 1));				
-		
+
 		// get from DB
 		SpaceClassificationAuditTable.Row aRow = null;
 		try {
@@ -312,7 +312,7 @@ public class SpaceAuditClassificationView {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		
+
 		// start loop through audit classification questions
 		qNum = 1;
 		Label q1_col1 = MakeColumn1(tbl,qText.elementAt(qNum), false);
@@ -536,7 +536,7 @@ public class SpaceAuditClassificationView {
 			q8_col1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		}
 		//-------------------------------------------------------------------------------------------------------
-		
+
 		// Q7 toggle alert message
 		q7_radio1.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -558,7 +558,7 @@ public class SpaceAuditClassificationView {
 			}
 		});		
 
-		
+
 		// footer row
 		Group footerRow = new Group(comp, SWT.NONE);
 		footerRow.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, false));
@@ -568,7 +568,7 @@ public class SpaceAuditClassificationView {
 		gl_footerRow.marginWidth = 0;
 		footerRow.setLayout(gl_footerRow);
 		footerRow.setBackground(C.APP_BGCOLOR);
-		
+
 		final Button btnReturn = new Button(footerRow, SWT.NONE);
 		btnReturn.setToolTipText("Save and return to Space Details");
 		btnReturn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
@@ -586,7 +586,7 @@ public class SpaceAuditClassificationView {
 				WindowController.showSpaceDetail(spaceID);
 			}
 		});		
-		
+
 		final Button btnSave = new Button(footerRow, SWT.NONE);
 		btnSave.setToolTipText("Save Classification");
 		btnSave.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, true, 1, 1));
@@ -614,7 +614,7 @@ public class SpaceAuditClassificationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
-			// save to DB
+				// save to DB
 				saveAudit(spaceID);
 				// next screen
 				WindowController.showSpaceAuditChecklist(spaceID);
@@ -636,7 +636,7 @@ public class SpaceAuditClassificationView {
 		parent.layout();
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 	}
-	
+
 	static void saveAudit(int spaceID) {
 		// insert new row if empty
 		if(empty) {
@@ -711,8 +711,8 @@ public class SpaceAuditClassificationView {
 			} catch (SQLException e) {
 				LogController.logEvent(SpaceAuditClassificationView.class, C.FATAL, "ERROR CALC SPACE CLASSIFICATION COMPLETION", e);			}
 		}
-		
+
 	}
 
-	
+
 }

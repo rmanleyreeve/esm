@@ -168,7 +168,7 @@ public class EditUserForm {
 		gd_workid.widthHint = 250;
 		workid.setLayoutData(gd_workid);
 		workid.setText(uRow.getWorkIdentifier());
-		
+
 		String[] dob = uRow.getDob().split("-");
 		Label lblDOB = new Label(form, SWT.NONE);
 		lblDOB.setBackground(C.APP_BGCOLOR);

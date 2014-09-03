@@ -220,7 +220,7 @@ public class SpaceAuditChecklistView {
 		t.setVisible(!hide);
 	}
 
-	
+
 	public static void buildPage(final Composite parent, final int spaceID) {
 
 		for (Control c:parent.getChildren()) {
@@ -270,7 +270,7 @@ public class SpaceAuditChecklistView {
 		final int progress = (Integer) EsmApplication.appData.getField("SPACE_CHK_"+spaceID);
 		//final int complete = AuditController.calculateSpaceCompletionStatus(spaceID);
 		lblStatusImg.setImage(C.getImage("Percent_"+progress+".png"));
-	
+
 		//table layout
 		final Group tbl = new Group(comp, SWT.BORDER);
 		tbl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -956,7 +956,7 @@ public class SpaceAuditChecklistView {
 				WindowController.showSpaceAuditChecklist(spaceID);
 			}
 		});
-		
+
 		final Button btnProceed = new Button(footerRow, SWT.NONE);
 		btnProceed.setToolTipText("Save Checklist and go to Classification");
 		btnProceed.setBackground(C.APP_BGCOLOR);
@@ -991,7 +991,7 @@ public class SpaceAuditChecklistView {
 				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
 			}
 		});
-		
+
 		// final layout settings	
 		parent.layout();
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));

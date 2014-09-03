@@ -1057,7 +1057,7 @@ public class SpaceDetailView {
 		} else {
 			lblAuthName.setText(C.SPACE_NOT_AUTH);
 		}
-		
+
 		btnSignOff.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -1092,17 +1092,14 @@ public class SpaceDetailView {
 						Program.launch(C.TMP_DIR);
 						Program.launch(C.TMP_DIR + C.SEP + "SPACE_"+spaceID+"_AUDIT.pdf");					
 					}
-					
 				} catch (DocumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LogController.logEvent(SpaceDetailView.class, C.ERROR, "Error getting PDF document", e);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LogController.logEvent(SpaceDetailView.class, C.ERROR, "Error getting DB data for PDF document", e);
 				}
-				
-			
-			
+
+
+
 			}
 		});
 

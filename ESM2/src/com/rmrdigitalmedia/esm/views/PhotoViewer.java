@@ -52,7 +52,7 @@ public class PhotoViewer {
 		final Shell shell = new Shell(SWT.DIALOG_TRIM);
 
 		if (pRow != null) {
-			
+
 			final int spaceID = pRow.getSpaceID();
 			final int metaID = pRow.getID();
 			shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
