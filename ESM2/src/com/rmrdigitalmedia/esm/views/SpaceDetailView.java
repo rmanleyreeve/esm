@@ -1077,7 +1077,7 @@ public class SpaceDetailView {
 		});
 
 		Button btnPrint = new Button(rowRight5, SWT.NONE);
-		btnPrint.setToolTipText("Produce a PDF of the completed audit for this space and its entry points");
+		btnPrint.setToolTipText("Produce a printable PDF of the completed audit for this space and its entry points");
 		btnPrint.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		btnPrint.setImage(C.getImage("print.png"));
 		btnPrint.setText("Create Audit PDF");
@@ -1091,6 +1091,8 @@ public class SpaceDetailView {
 					if (PdfController.buildAudit(spaceID)) {
 						Program.launch(C.TMP_DIR);
 						Program.launch(C.TMP_DIR + C.SEP + "SPACE_"+spaceID+"_AUDIT.pdf");					
+					} else {
+						LogController.log("Failed to generate PDF");
 					}
 				} catch (DocumentException e) {
 					LogController.logEvent(SpaceDetailView.class, C.ERROR, "Error getting PDF document", e);

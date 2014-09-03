@@ -348,15 +348,15 @@ public class EntryAuditClassificationView {
 		Label q2_col2 = makeColumn2(tbl, qHints.elementAt(qNum), hideit);
 		Composite q2_col3 = makeColumn3(tbl,1, hideit);
 		q2_radio1 = new Button(q2_col3, SWT.RADIO);
-		q2_radio1.setText("Very difficult");
+		q2_radio1.setText("No");
 		q2_radio1.setBackground(C.APP_BGCOLOR);
 		if(!empty) q2_radio1.setSelection(aRow.getQ2Value()==1); 
 		q2_radio2 = new Button(q2_col3, SWT.RADIO);
-		q2_radio2.setText("Quite difficult");
+		q2_radio2.setText("Yes with difficulty");
 		q2_radio2.setBackground(C.APP_BGCOLOR);
 		if(!empty) q2_radio2.setSelection(aRow.getQ2Value()==2); 
 		q2_radio3 = new Button(q2_col3, SWT.RADIO);
-		q2_radio3.setText("Not difficult");
+		q2_radio3.setText("Yes without difficulty");
 		q2_radio3.setBackground(C.APP_BGCOLOR);
 		if(!empty) q2_radio3.setSelection(aRow.getQ2Value()==3); 
 		Label q2_col4 = makeColumn4(tbl, hideit);	
@@ -480,7 +480,7 @@ public class EntryAuditClassificationView {
 		q7_radio1.setBackground(C.APP_BGCOLOR);
 		if(!empty) q7_radio1.setSelection(aRow.getQ7Value()==1); 
 		q7_radio2 = new Button(q7_col3, SWT.RADIO);
-		q7_radio2.setText("Fairly difficult");
+		q7_radio2.setText("Quite difficult");
 		q7_radio2.setBackground(C.APP_BGCOLOR);
 		if(!empty) q7_radio2.setSelection(aRow.getQ7Value()==2); 
 		q7_radio3 = new Button(q7_col3, SWT.RADIO);

@@ -16,6 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.Display;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -81,7 +84,8 @@ public class PdfController {
 	public static Image getImageFromPath(String path) throws BadElementException, MalformedURLException, IOException {
 		Image img;
 		InputStream is = PdfTest.class.getResourceAsStream(path);
-		img = Image.getInstance( getBytes(is) );		
+		img = Image.getInstance( getBytes(is) );
+		img.setCompressionLevel(7);
 		return img;
 	}
 
@@ -96,7 +100,8 @@ public class PdfController {
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
 				is = rs.getBinaryStream("DATA_THUMB");
-				img = Image.getInstance( getBytes(is) );		
+				img = Image.getInstance( getBytes(is) );
+				img.setCompressionLevel(7);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -117,6 +122,7 @@ public class PdfController {
 
 	@SuppressWarnings("unused")
 	public static boolean buildAudit(int spaceID) throws DocumentException, SQLException {
+		Display.getCurrent().getActiveShell().setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_WAIT));
 		boolean ok = false;
 		if(!AuditController.isSpaceSignedOff(spaceID)) {
 			return false;
@@ -160,8 +166,7 @@ public class PdfController {
 		Rectangle r = document.getPageSize();
 		int h = (int) r.getHeight(); //842
 		int w = (int) r.getWidth(); //595
-		int ls = 10;
-		//System.out.println("H=" + h + "\nW="+w);
+		int ls = 10, lH = 15, lW = 15, imgPad = 5, v, c = 0;
 		Font font1 = new Font(Font.HELVETICA, 15, Font.BOLD);
 		Font font2 = new Font(Font.HELVETICA, 9,  Font.ITALIC);
 		Font font3 = new Font(Font.HELVETICA, 9, Font.BOLD);
@@ -169,13 +174,20 @@ public class PdfController {
 		Font font5 = new Font(Font.HELVETICA, 8, Font.NORMAL);
 		Paragraph p;
 		Phrase ph;
-		PdfPCell c1;
-		PdfPCell c2;
-		PdfPCell c3;
-		PdfPCell c4;
-		String s;
+		PdfPTable tblSpaceCheck, tblSpaceClass, tblEntryCheck, tblEntryClass, tblEntryOverallStatus;
+		float[] colsSpaceCheck = {50,15,35};
+		float[] colsSpaceClass = {50,15,10,25};
+		float[] colsEntryCheck = {50,15,35};
+		float[] colsEntryClass = {50,15,10,25};
+		PdfPCell c1, c2, c3, c4, h1, h2, h3, h4, os, statusHeader;
 		boolean q7Check = false;
-		int c = 0;
+		String[] diff = {"","Very difficult","Quite difficult","Not difficult"};
+		String[] diff2 = {"","No", "Yes with difficulty", "Yes without difficulty"};		
+		String s, light, vs, sLight;
+		Image tl;
+		ArrayList<Integer> status = new ArrayList<Integer>();
+		java.awt.Color cellBG = new java.awt.Color(222, 224, 226);
+
 
 		try {
 			// set up
@@ -198,7 +210,7 @@ public class PdfController {
 			document.add(new Paragraph("Date generated: " + sdf.format(new Date()) + s(10) + "Authorised By: " + signOffName, font3));
 
 			p = new Paragraph("Vessel Information", font1);
-			p.setSpacingBefore(ls);
+			p.setSpacingBefore(ls*2);
 			document.add(p);			
 			p = new Paragraph("The following information in this report was generated on the following "+locType+":", font2);
 			p.setSpacingAfter(ls);
@@ -206,17 +218,23 @@ public class PdfController {
 			document.add(new Paragraph(locType +" Name: " + locName  + s(10) + "IMO Number: " + imo, font3));
 
 			p = new Paragraph("The Space", font1);
-			p.setSpacingBefore(ls);
+			p.setSpacingBefore(ls*2);
 			document.add(p);			
 			p = new Paragraph("The space described in this report:", font2);
 			p.setSpacingAfter(ls);
 			document.add(p);
-			document.add(new Paragraph("Name: " + sRow.getName() + s(10) + "ID: " + spaceID, font3));
-			document.add(new Paragraph("Created By: " + authorName + s(5)
+			p = new Paragraph("Name: " + sRow.getName() + s(10) + "ID: " + spaceID, font3);
+			p.setSpacingAfter(ls);
+			document.add(p);
+			p = new Paragraph("Created By: " + authorName + s(5)
 					+ "Created Date: " + sdf.format(sRow.getCreatedDate()) + s(5)
 					+ "Last Modified: " + sdf.format(sRow.getUpdateDate()), 
-					font3));
-			document.add(new Paragraph("Description", font3));
+					font3);
+			p.setSpacingAfter(ls);
+			document.add(p);
+			p = new Paragraph("Description", font3);
+			p.setSpacingAfter(ls);
+			document.add(p);
 			document.add(new Paragraph(sRow.getDescription(), font4));
 
 			document.newPage();
@@ -231,14 +249,18 @@ public class PdfController {
 			document.add(p);
 
 			// SPACE CHECKLIST table =============================================================
-			float[] colsCheck = {50,15,35};
-			PdfPTable tblSpaceCheck = new PdfPTable(colsCheck);
+			tblSpaceCheck = new PdfPTable(colsSpaceCheck);
 			tblSpaceCheck.setTotalWidth(560);
 			tblSpaceCheck.setLockedWidth(true);
-			tblSpaceCheck.addCell(new PdfPCell(new Paragraph("Checklist Questions",font3)));
-			tblSpaceCheck.addCell(new Paragraph("Answers",font3));
-			tblSpaceCheck.addCell(new PdfPCell(new Paragraph("Comments",font3)));
-			PdfPCell os;
+			h1 = new PdfPCell(new Paragraph("Checklist Questions",font3));
+			h1.setBackgroundColor(cellBG);
+			tblSpaceCheck.addCell(h1);
+			h2 = new PdfPCell(new Paragraph("Answers",font3));
+			h2.setBackgroundColor(cellBG);
+			tblSpaceCheck.addCell(h2);
+			h3 = new PdfPCell(new Paragraph("Comments",font3));
+			h3.setBackgroundColor(cellBG);
+			tblSpaceCheck.addCell(h3);
 			// start loop through questions
 
 			//Q1
@@ -389,26 +411,25 @@ public class PdfController {
 			tblSpaceCheck.setSpacingAfter(40);
 			document.add(tblSpaceCheck);
 
-
 			// SPACE CLASSIFICATION table =============================================================
-			float[] colsClass = {50,15,10,25};
-			PdfPTable tblSpaceClass = new PdfPTable(colsClass);
+			tblSpaceClass = new PdfPTable(colsSpaceClass);
 			tblSpaceClass.setTotalWidth(560);
 			tblSpaceClass.setLockedWidth(true);
-			tblSpaceClass.addCell(new PdfPCell(new Paragraph("Classification Questions",font3)));
-			tblSpaceClass.addCell(new PdfPCell(new Paragraph("Answers",font3)));		
-			PdfPCell statusHeader = new PdfPCell(new Paragraph("Status",font3));
+			h1 = new PdfPCell(new Paragraph("Classification Questions",font3));
+			h1.setBackgroundColor(cellBG);
+			tblSpaceClass.addCell(h1);
+			h2 = new PdfPCell(new Paragraph("Answers",font3));
+			h2.setBackgroundColor(cellBG);
+			tblSpaceClass.addCell(h2);
+			statusHeader = new PdfPCell(new Paragraph("Status",font3));
 			statusHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+			statusHeader.setBackgroundColor(cellBG);
 			tblSpaceClass.addCell(statusHeader);
-			tblSpaceClass.addCell(new PdfPCell(new Paragraph("Comments",font3)));
+			h4 = new PdfPCell(new Paragraph("Comments",font3));
+			h4.setBackgroundColor(cellBG);
+			tblSpaceClass.addCell(h4);
 
 			// start loop through questions
-			String light;
-			Image tl;
-			int v;
-			String vs;
-			String[] diff = {"","Very difficult","Quite difficult","Not difficult"};
-			ArrayList<Integer> status = new ArrayList<Integer>();
 			//Q1
 			c = 1;	
 			c1 = new PdfPCell(); c2 = new PdfPCell(); c4 = new PdfPCell();
@@ -421,8 +442,8 @@ public class PdfController {
 			if(v==2) light="amber";
 			if(v==3) light="green";
 			tl = getImageFromPath("/img/"+light+".png");
-			tl.scaleAbsolute(10, 10);
-			c3 = new PdfPCell(tl,false);
+			tl.scaleAbsolute(15, 15);
+			c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 			c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			c4.addElement(new Phrase(spaceClassRow.getQ1Comments(),font5));
 			tblSpaceClass.addCell(c1); tblSpaceClass.addCell(c2); tblSpaceClass.addCell(c3); tblSpaceClass.addCell(c4);
@@ -438,8 +459,8 @@ public class PdfController {
 			if(v==2) light="amber";
 			if(v==3) light="green";
 			tl = getImageFromPath("/img/"+light+".png");
-			tl.scaleAbsolute(10, 10);
-			c3 = new PdfPCell(tl,false);
+			tl.scaleAbsolute(15, 15);
+			c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 			c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);			
 			c4.addElement(new Phrase(spaceClassRow.getQ2Comments(),font5));
 			tblSpaceClass.addCell(c1); tblSpaceClass.addCell(c2); tblSpaceClass.addCell(c3); tblSpaceClass.addCell(c4);
@@ -456,8 +477,8 @@ public class PdfController {
 				if(v==2) light="amber";
 				if(v==3) light="green";
 				tl = getImageFromPath("/img/"+light+".png");
-				tl.scaleAbsolute(10, 10);
-				c3 = new PdfPCell(tl,false);
+				tl.scaleAbsolute(lW,lH);
+				c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 				c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				c4.addElement(new Phrase(spaceClassRow.getQ3Comments(),font5));
 				tblSpaceClass.addCell(c1); tblSpaceClass.addCell(c2); tblSpaceClass.addCell(c3); tblSpaceClass.addCell(c4);
@@ -474,8 +495,8 @@ public class PdfController {
 			if(v==2 || v==3 | v==4) light="amber";
 			if(v==5) light="green";
 			tl = getImageFromPath("/img/"+light+".png");
-			tl.scaleAbsolute(10, 10);
-			c3 = new PdfPCell(tl,false);
+			tl.scaleAbsolute(lW,lH);
+			c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 			c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			c4.addElement(new Phrase(spaceClassRow.getQ4Comments(),font5));
 			tblSpaceClass.addCell(c1); tblSpaceClass.addCell(c2); tblSpaceClass.addCell(c3); tblSpaceClass.addCell(c4);
@@ -491,8 +512,8 @@ public class PdfController {
 			if(v==2) light="amber";
 			if(v==3) light="green";
 			tl = getImageFromPath("/img/"+light+".png");
-			tl.scaleAbsolute(10, 10);
-			c3 = new PdfPCell(tl,false);
+			tl.scaleAbsolute(lW,lH);
+			c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 			c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			c4.addElement(new Phrase(spaceClassRow.getQ5Comments(),font5));
 			tblSpaceClass.addCell(c1); tblSpaceClass.addCell(c2); tblSpaceClass.addCell(c3); tblSpaceClass.addCell(c4);
@@ -508,8 +529,8 @@ public class PdfController {
 			if(v==2) light="amber";
 			if(v==3) light="green";
 			tl = getImageFromPath("/img/"+light+".png");
-			tl.scaleAbsolute(10, 10);
-			c3 = new PdfPCell(tl,false);
+			tl.scaleAbsolute(lW,lH);
+			c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 			c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			c4.addElement(new Phrase(spaceClassRow.getQ6Comments(),font5));
 			tblSpaceClass.addCell(c1); tblSpaceClass.addCell(c2); tblSpaceClass.addCell(c3); tblSpaceClass.addCell(c4);
@@ -524,8 +545,8 @@ public class PdfController {
 			if(isY(vs)) light="red";
 			if(isN(vs)) light="green";
 			tl = getImageFromPath("/img/"+light+".png");
-			tl.scaleAbsolute(10, 10);
-			c3 = new PdfPCell(tl,false);
+			tl.scaleAbsolute(lW,lH);
+			c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 			c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			c4.addElement(new Phrase(spaceClassRow.getQ7Comments(),font5));
 			tblSpaceClass.addCell(c1); tblSpaceClass.addCell(c2); tblSpaceClass.addCell(c3); tblSpaceClass.addCell(c4);
@@ -540,18 +561,17 @@ public class PdfController {
 			if(isY(vs)) light="red";
 			if(isN(vs)) light="green";
 			tl = getImageFromPath("/img/"+light+".png");
-			tl.scaleAbsolute(10, 10);
-			c3 = new PdfPCell(tl,false);
+			tl.scaleAbsolute(lW,lH);
+			c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 			c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			c4.addElement(new Phrase(spaceClassRow.getQ8Comments(),font5));
 			tblSpaceClass.addCell(c1); tblSpaceClass.addCell(c2); tblSpaceClass.addCell(c3); tblSpaceClass.addCell(c4);
-
 
 			tblSpaceClass.setSpacingAfter(40);
 			document.add(tblSpaceClass);
 
 			// overall classification stuff here...
-			String sLight = "null";
+			sLight = "null";
 			if(status.contains(1)) {
 				sLight = "red";
 				s = C.SPACE_OVERALL_STATUS_MSG_RED;		
@@ -572,16 +592,12 @@ public class PdfController {
 			tblSpaceOverallStatus.addCell(statusHeader);		
 			tblSpaceOverallStatus.addCell(new PdfPCell(new Paragraph("The overall classification of this space is " + sLight.toUpperCase() + ".\n" + s, font2)));
 			tl = getImageFromPath("/img/"+sLight+".png");
-			tl.scaleAbsolute(10, 10);
+			tl.scaleAbsolute(lW,lH);
 			os = new PdfPCell(tl,false);
 			os.setHorizontalAlignment(Element.ALIGN_CENTER); os.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			tblSpaceOverallStatus.addCell(os);
 			tblSpaceOverallStatus.setSpacingAfter(20);
 			document.add(tblSpaceOverallStatus);
-
-
-
-
 
 
 
@@ -613,11 +629,6 @@ public class PdfController {
 
 			// LOOP THROUGH ENTRY POINTS						
 			EntrypointsTable.Row[] epRows = EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID);
-			PdfPTable tblEntryCheck, tblEntryClass, tblEntryOverallStatus;
-			float[] colsEntryCheck = {50,15,35};
-			float[] colsEntryClass = {50,15,10,25};
-
-
 			for (EntrypointsTable.Row epRow:epRows) {
 
 				document.newPage();
@@ -637,9 +648,15 @@ public class PdfController {
 				tblEntryCheck = new PdfPTable(colsEntryCheck);
 				tblEntryCheck.setTotalWidth(560);
 				tblEntryCheck.setLockedWidth(true);
-				tblEntryCheck.addCell(new PdfPCell(new Paragraph("Checklist Questions",font3)));
-				tblEntryCheck.addCell(new Paragraph("Answers",font3));
-				tblEntryCheck.addCell(new PdfPCell(new Paragraph("Comments",font3)));
+				h1 = new PdfPCell(new Paragraph("Checklist Questions",font3));
+				h1.setBackgroundColor(cellBG);
+				tblEntryCheck.addCell(h1);
+				h2 = new PdfPCell(new Paragraph("Answers",font3));
+				h2.setBackgroundColor(cellBG);
+				tblEntryCheck.addCell(h2);
+				h3 = new PdfPCell(new Paragraph("Comments",font3));
+				h3.setBackgroundColor(cellBG);
+				tblEntryCheck.addCell(h3);
 
 				// start loop through questions
 				//Q1
@@ -769,14 +786,19 @@ public class PdfController {
 				tblEntryClass = new PdfPTable(colsEntryClass);
 				tblEntryClass.setTotalWidth(560);
 				tblEntryClass.setLockedWidth(true);
-				tblEntryClass.addCell(new PdfPCell(new Paragraph("Classification Questions",font3)));
-				tblEntryClass.addCell(new PdfPCell(new Paragraph("Answers",font3)));		
+				h1 = new PdfPCell(new Paragraph("Classification Questions",font3));
+				h1.setBackgroundColor(cellBG);
+				tblEntryClass.addCell(h1);
+				h2 = new PdfPCell(new Paragraph("Answers",font3));
+				h2.setBackgroundColor(cellBG);
+				tblEntryClass.addCell(h2);
 				statusHeader = new PdfPCell(new Paragraph("Status",font3));
 				statusHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+				statusHeader.setBackgroundColor(cellBG);
 				tblEntryClass.addCell(statusHeader);
-				tblEntryClass.addCell(new PdfPCell(new Paragraph("Comments",font3)));
-
-				String[] diff2 = {"","No", "Yes with difficulty", "Yes without difficulty"};
+				h4 = new PdfPCell(new Paragraph("Comments",font3));
+				h4.setBackgroundColor(cellBG);
+				tblEntryClass.addCell(h4);
 
 				// start loop through questions
 				//Q1
@@ -790,8 +812,8 @@ public class PdfController {
 				if(v==2) light="amber";
 				if(v==3) light="green";
 				tl = getImageFromPath("/img/"+light+".png");
-				tl.scaleAbsolute(10, 10);
-				c3 = new PdfPCell(tl,false);
+				tl.scaleAbsolute(lW,lH);
+				c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 				c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				c4.addElement(new Phrase(entryClassRow.getQ1Comments(),font5));
 				tblEntryClass.addCell(c1); tblEntryClass.addCell(c2); tblEntryClass.addCell(c3); tblEntryClass.addCell(c4);
@@ -807,8 +829,8 @@ public class PdfController {
 					if(v==2) light="amber";
 					if(v==3) light="green";
 					tl = getImageFromPath("/img/"+light+".png");
-					tl.scaleAbsolute(10, 10);
-					c3 = new PdfPCell(tl,false);
+					tl.scaleAbsolute(lW,lH);
+					c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 					c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					c4.addElement(new Phrase(entryClassRow.getQ2Comments(),font5));
 					tblEntryClass.addCell(c1); tblEntryClass.addCell(c2); tblEntryClass.addCell(c3); tblEntryClass.addCell(c4);
@@ -823,8 +845,8 @@ public class PdfController {
 				if(isN(vs)) light="red";
 				if(isY(vs)) light="green";
 				tl = getImageFromPath("/img/"+light+".png");
-				tl.scaleAbsolute(10, 10);
-				c3 = new PdfPCell(tl,false);
+				tl.scaleAbsolute(lW,lH);
+				c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 				c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				c4.addElement(new Phrase(entryClassRow.getQ3Comments(),font5));
 				tblEntryClass.addCell(c1); tblEntryClass.addCell(c2); tblEntryClass.addCell(c3); tblEntryClass.addCell(c4);
@@ -839,8 +861,8 @@ public class PdfController {
 				if(v==2 || v==3 || v==4) light="amber";
 				if(v==5) light="green";
 				tl = getImageFromPath("/img/"+light+".png");
-				tl.scaleAbsolute(10, 10);
-				c3 = new PdfPCell(tl,false);
+				tl.scaleAbsolute(lW,lH);
+				c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 				c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				c4.addElement(new Phrase(entryClassRow.getQ4Comments(),font5));
 				tblEntryClass.addCell(c1); tblEntryClass.addCell(c2); tblEntryClass.addCell(c3); tblEntryClass.addCell(c4);
@@ -854,8 +876,8 @@ public class PdfController {
 				if(isN(vs)) light="red";
 				if(isY(vs)) light="green";
 				tl = getImageFromPath("/img/"+light+".png");
-				tl.scaleAbsolute(10, 10);
-				c3 = new PdfPCell(tl,false);
+				tl.scaleAbsolute(lW,lH);
+				c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 				c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				c4.addElement(new Phrase(entryClassRow.getQ5Comments(),font5));
 				tblEntryClass.addCell(c1); tblEntryClass.addCell(c2); tblEntryClass.addCell(c3); tblEntryClass.addCell(c4);
@@ -869,8 +891,8 @@ public class PdfController {
 				if(isN(vs)) light="red";
 				if(isY(vs)) light="green";
 				tl = getImageFromPath("/img/"+light+".png");
-				tl.scaleAbsolute(10, 10);
-				c3 = new PdfPCell(tl,false);
+				tl.scaleAbsolute(lW,lH);
+				c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 				c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				c4.addElement(new Phrase(entryClassRow.getQ6Comments(),font5));
 				tblEntryClass.addCell(c1); tblEntryClass.addCell(c2); tblEntryClass.addCell(c3); tblEntryClass.addCell(c4);
@@ -885,8 +907,8 @@ public class PdfController {
 				if(v==2) light="amber";
 				if(v==3) light="green";
 				tl = getImageFromPath("/img/"+light+".png");
-				tl.scaleAbsolute(10, 10);
-				c3 = new PdfPCell(tl,false);
+				tl.scaleAbsolute(lW,lH);
+				c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
 				c3.setHorizontalAlignment(Element.ALIGN_CENTER); c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				c4.addElement(new Phrase(entryClassRow.getQ7Comments(),font5));
 				tblEntryClass.addCell(c1); tblEntryClass.addCell(c2); tblEntryClass.addCell(c3); tblEntryClass.addCell(c4);
@@ -912,20 +934,18 @@ public class PdfController {
 				tblEntryOverallStatus = new PdfPTable(colsEntryOverall);
 				tblEntryOverallStatus.setTotalWidth(560);
 				tblEntryOverallStatus.setLockedWidth(true);
-				tblEntryOverallStatus.addCell(new PdfPCell(new Paragraph("Overall Classification",font3)));
+				h1 = new PdfPCell(new Paragraph("Overall Classification",font3));
+				h1.setBackgroundColor(cellBG);
+				tblEntryOverallStatus.addCell(h1);
 				tblEntryOverallStatus.addCell(statusHeader);		
 				tblEntryOverallStatus.addCell(new PdfPCell(new Paragraph("The overall classification of this entry point is " + sLight.toUpperCase() + ".\n" + s, font2)));
 				tl = getImageFromPath("/img/"+sLight+".png");
-				tl.scaleAbsolute(10, 10);
+				tl.scaleAbsolute(lW,lH);
 				os = new PdfPCell(tl,false);
 				os.setHorizontalAlignment(Element.ALIGN_CENTER); os.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				tblEntryOverallStatus.addCell(os);
 				tblEntryOverallStatus.setSpacingAfter(20);
 				document.add(tblEntryOverallStatus);
-
-
-
-
 
 			} // end entry points loop
 
@@ -957,19 +977,17 @@ public class PdfController {
 				EsmUsersTable.Row author = EsmUsersTable.getRow(pRow.getAuthorID());
 				String auName = author.getForename() + " " + author.getSurname();
 				document.add(new Paragraph(auName,font3));
-				document.add(new Paragraph(pRow.getTitle(),font3));
+				document.add(new Paragraph(pRow.getTitle(),font4));
 				int dataID = pRow.getDataID();
-				Image img = getImageFromDB(dataID);	
+				Image img = getImageFromDB(dataID);
+				img.setCompressionLevel(7);
+				img.scaleToFit(100, 100);
 				document.add(img);
 				p = new Paragraph("Posted: " + sdf.format(pRow.getUpdateDate()),font3);
 				p.setSpacingAfter(ls);
 				document.add(p);				
 			}
 			document.add(new Paragraph(" "));
-
-
-
-
 
 			document.close(); // no need to close PDFwriter?
 			ok = true;
@@ -988,7 +1006,7 @@ public class PdfController {
 			e.printStackTrace();
 		}
 
-
+		Display.getCurrent().getActiveShell().setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_ARROW));
 		return ok;
 	}
 

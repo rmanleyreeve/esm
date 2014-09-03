@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
+import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
@@ -35,7 +36,9 @@ import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.AddUserForm;
 import com.rmrdigitalmedia.esm.forms.ApprovePhotoCommentForm;
 import com.rmrdigitalmedia.esm.forms.DeleteUserDialog;
+import com.rmrdigitalmedia.esm.forms.EditAdminForm;
 import com.rmrdigitalmedia.esm.forms.EditUserForm;
+import com.rmrdigitalmedia.esm.forms.EditUserPasswordForm;
 import com.rmrdigitalmedia.esm.forms.EditVesselForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
@@ -56,6 +59,7 @@ public class AdministrationView {
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
 			Composite comp = new Composite(shell, SWT.BORDER);
 			user = EsmUsersTable.getRow(1);
+			EsmApplication.appData = new AppData();
 			AdministrationView.buildPage(comp);
 			shell.open();
 			while (!shell.isDisposed()) {
@@ -136,7 +140,7 @@ public class AdministrationView {
 
 
 		// row 1 - vessel management		
-		String type = (String) EsmApplication.appData.getField("LOCATION_TYPE");
+		final String type = (String) EsmApplication.appData.getField("LOCATION_TYPE");
 		Group rowVessel = new Group(compL, SWT.NONE);
 		rowVessel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowVessel = new GridLayout(3, true);
@@ -152,10 +156,10 @@ public class AdministrationView {
 		lblVessel.setFont(C.FONT_12B);
 		lblVessel.setBackground(C.APP_BGCOLOR);
 		lblVessel.setImage(C.getImage("vessel.png"));
-		lblVessel.setText("Manage " + type + " Info");	
+		lblVessel.setText("Manage " + type + " Details");	
 
 		Button btnAddVessel = new Button(rowVessel, SWT.NONE);
-		btnAddVessel.setToolTipText("Edit " + type + " Information");
+		btnAddVessel.setToolTipText("Edit " + type + " Details");
 		GridData gd_btnAddVessel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
 		gd_btnAddVessel.verticalIndent = 3;
 		btnAddVessel.setLayoutData(gd_btnAddVessel);
@@ -164,17 +168,73 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				EditVesselForm evf = new EditVesselForm();					
 				if(evf.complete()) {
-					LogController.log("Vessel/Installation edited in database");
+					LogController.log(type + " edited in database");
 					WindowController.setHeaderLabelText();
 					WindowController.showAdministration();				
 				}
 			}
 		});
 		btnAddVessel.setImage(C.getImage("edit.png"));
-		btnAddVessel.setText("Edit " + type + " Info");
+		btnAddVessel.setText("Edit " + type + " Details");
 
 
-		// row 2 - user management		
+		// row - admin management		
+		Group rowUser = new Group(compL, SWT.NONE);
+		rowUser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		GridLayout gl_rowUser = new GridLayout(3, false);
+		gl_rowUser.marginBottom = 5;
+		gl_rowUser.marginHeight = 0;
+		rowUser.setLayout(gl_rowUser);
+		rowUser.setBackground(C.APP_BGCOLOR);
+
+		CLabel lblUser = new CLabel(rowUser, SWT.NONE);
+		GridData gd_lblUser = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
+		gd_lblUser.widthHint = 120;
+		lblUser.setLayoutData(gd_lblUser);
+		lblUser.setFont(C.FONT_12B);
+		lblUser.setBackground(C.APP_BGCOLOR);
+		lblUser.setImage(C.getImage("users_icon.png"));
+		lblUser.setText("My Details");	
+
+		Button btnEditMe = new Button(rowUser, SWT.NONE);
+		btnEditMe.setToolTipText("Edit my Details");
+		GridData gd_btnEditMe = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnEditMe.verticalIndent = 3;
+		btnEditMe.setLayoutData(gd_btnEditMe);
+		btnEditMe.setImage(C.getImage("add.png"));
+		btnEditMe.setText("Edit My Details");
+		btnEditMe.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				EditAdminForm eaf = new EditAdminForm(user.getID());
+				if(eaf.complete()) {
+					EsmApplication.alert("Your user record was updated!");
+				}
+			}
+		});
+
+		Button btnEditMyPass = new Button(rowUser, SWT.NONE);
+		btnEditMyPass.setToolTipText("Edit my Password");
+		GridData gd_btnEditMyPass = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		gd_btnEditMyPass.horizontalIndent = 10;
+		gd_btnEditMyPass.verticalIndent = 3;
+		btnEditMyPass.setLayoutData(gd_btnEditMyPass);
+		btnEditMyPass.setImage(C.getImage("add.png"));
+		btnEditMyPass.setText("Change Password");
+		btnEditMyPass.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				EditUserPasswordForm eupf = new EditUserPasswordForm(user.getID());
+				if(eupf.complete()) {
+					EsmApplication.alert("Your user password was updated!");
+				}
+			}
+		});
+
+		sep = new Label(rowUser, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));			
+		
+		// row - user management		
 		Group rowUsers = new Group(compL, SWT.NONE);
 		rowUsers.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowUsers = new GridLayout(3, false);
@@ -219,16 +279,37 @@ public class AdministrationView {
 
 		final Combo comboUsers = new Combo(rowUsers, SWT.DROP_DOWN | SWT.READ_ONLY);
 		comboUsers.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
-		refreshCombo(comboUsers);
+		refreshCombo(comboUsers);	
+		
 		final Button btnEditUser = new Button(rowUsers, SWT.NONE);
+		btnEditUser.setToolTipText("Edit the details for this User");
 		btnEditUser.setEnabled(false);
-		btnEditUser.setText("Edit");
+		btnEditUser.setText("Edit Details");
 
+		final Button btnEditUserPass = new Button(rowUsers, SWT.NONE);
+		btnEditUserPass.setToolTipText("Change the password for this User");
+		btnEditUserPass.setEnabled(false);
+		btnEditUserPass.setText("Change Password");
+		
 		final Button btnDelUser = new Button(rowUsers, SWT.NONE);
-		btnDelUser.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		btnDelUser.setToolTipText("Delete this User from the system");
+		GridData gd_btnDelUser = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnDelUser.horizontalIndent = 50;
+		btnDelUser.setLayoutData(gd_btnDelUser);
 		btnDelUser.setEnabled(false);
 		btnDelUser.setText("Delete");
-
+		
+		// change password button behaviour
+		btnEditUserPass.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				EditUserPasswordForm eupf = new EditUserPasswordForm(selectedUser);
+				if(eupf.complete()) {
+					EsmApplication.alert("The user password was updated!");
+				}
+			
+			}			
+		});
 		// edit button behaviour
 		btnEditUser.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -264,8 +345,8 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				selectedUser = (Integer) comboUsers.getData(comboUsers.getText());
 				LogController.log("Selected user ID: "+selectedUser);
-				//btnViewUser.setEnabled(selectedUser > 0);
 				btnEditUser.setEnabled(selectedUser > 0);
+				btnEditUserPass.setEnabled(selectedUser > 0);
 				btnDelUser.setEnabled(selectedUser > 0);
 			}
 		});
