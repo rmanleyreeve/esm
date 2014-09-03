@@ -75,9 +75,6 @@ public class LoginController {
 		}
 	}
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	public void createContents() {
 		shell = new Shell(display, SWT.ON_TOP);
 		final FillLayout fillLayout = new FillLayout();
@@ -248,10 +245,6 @@ public class LoginController {
 		shell.setBounds(rect);
 		shell.open();
 		LogController.log("Awaiting user input...");
-
-
-
-
 
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())

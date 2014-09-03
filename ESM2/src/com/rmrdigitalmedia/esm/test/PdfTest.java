@@ -27,7 +27,7 @@ import com.rmrdigitalmedia.esm.controllers.PdfController;
 
 public class PdfTest {
 
-	public static int _id = 2;
+	public static int id = 3;
 
 	public static void main(String[] args) {
 		new PdfTest();
@@ -58,8 +58,6 @@ public class PdfTest {
 		return img;
 	}
 
-
-
 	public PdfTest() {
 		//FilesystemController.createLogDir();
 		Display display = Display.getDefault();
@@ -73,18 +71,16 @@ public class PdfTest {
 		gl_shell.marginLeft = 2;
 		gl_shell.marginBottom = 2;
 		shell.setLayout(gl_shell);
-
 		Button btnAdd = new Button(shell, SWT.NONE);
 		btnAdd.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));		
 		btnAdd.setText("Execute");		
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-
 				try {
 					EsmApplication.appData = new AppData();
-					if (PdfController.buildAudit(2)) {						
-						Program.launch(C.TMP_DIR + C.SEP + "SPACE_2_AUDIT.pdf");					
+					if (PdfController.buildAudit(id)) {						
+						Program.launch(C.TMP_DIR + C.SEP + "SPACE_"+id+"_AUDIT.pdf");					
 					} else {
 						System.out.println("Failed to generate PDF");
 					}					
@@ -92,20 +88,16 @@ public class PdfTest {
 					LogController.logEvent(PdfTest.class, C.ERROR, "Error getting PDF document", e);
 				} catch (SQLException e) {
 					LogController.logEvent(PdfTest.class, C.ERROR, "Error getting DB data for PDF document", e);				}
-
 				shell.dispose();
 			}
 		});
-
-
-		shell.open();
 		shell.pack();
+		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
 		shell.dispose();
-
 	}
 
 }
