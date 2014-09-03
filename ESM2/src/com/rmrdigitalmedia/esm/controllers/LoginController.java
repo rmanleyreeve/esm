@@ -236,11 +236,11 @@ public class LoginController {
 		clbl_Message.setLayoutData(rd_clbl_Message);
 		String vtxt = "";
 		try {
-			vtxt = "Version " + CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8));
+			vtxt = "Version " + CharStreams.toString(new InputStreamReader(this.getClass().getResourceAsStream("/txt/version.txt"), Charsets.UTF_8)).replaceAll("(\\r|\\n)", " ");
 		} catch (IOException e) {
 			LogController.logEvent(this, C.WARNING, e);
 		}
-		clbl_Message.setText(vtxt + C.COPYRIGHT);
+		clbl_Message.setText(vtxt);
 
 		// render window
 		shell.setDefaultButton(btnLogin);
