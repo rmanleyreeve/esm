@@ -292,11 +292,12 @@ public class DatabaseController {
 		}		
 		return img;
 	}
+	
 
 	// DB EXPORT METHODS =============================================================================================================
 
 	public static File generateZipFile() {
-		boolean csv=false;
+		boolean csv = false;
 		String license = "";
 		try {
 			license = LicenseTable.getAllRows()[0].getLicensekey();

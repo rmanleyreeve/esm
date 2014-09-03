@@ -2,12 +2,8 @@ package com.rmrdigitalmedia.esm.test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import org.eclipse.swt.SWT;
@@ -21,15 +17,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.PdfController;
 
 public class PdfTest {
@@ -89,8 +81,9 @@ public class PdfTest {
 			public void widgetSelected(SelectionEvent arg0) {
 				
 				try {
-					if (PdfController.buildAudit(1)) {						
-						Program.launch(C.TMP_DIR + C.SEP + "SPACE_2.pdf");					
+					EsmApplication.appData = new AppData();
+					if (PdfController.buildAudit(2)) {						
+						Program.launch(C.TMP_DIR + C.SEP + "SPACE_2_AUDIT.pdf");					
 					} else {
 						System.out.println("Failed to generate PDF");
 					}
