@@ -1090,6 +1090,7 @@ public class SpaceDetailView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) { 
 				try {
+					PdfController.setPath(C.TMP_DIR);
 					if (PdfController.buildAudit(spaceID)) {
 						Program.launch(C.TMP_DIR);
 						Program.launch(C.TMP_DIR + C.SEP + "SPACE_"+spaceID+"_AUDIT.pdf");					

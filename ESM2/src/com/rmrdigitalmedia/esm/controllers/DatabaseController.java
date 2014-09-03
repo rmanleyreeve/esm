@@ -27,14 +27,17 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
+import com.itextpdf.text.DocumentException;
 import com.rmrdigitalmedia.esm.AppLoader;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.LicenseTable;
+import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.VesselCategoriesTable;
 import com.rmrdigitalmedia.esm.models.VesselTable;
 import com.rmrdigitalmedia.esm.models.VesselTypesTable;
+import com.rmrdigitalmedia.esm.test.PdfTest;
 
 public class DatabaseController {
 
@@ -298,6 +301,7 @@ public class DatabaseController {
 
 	public static File generateZipFile() {
 		boolean csv = false;
+		boolean pdf = true;
 		String license = "";
 		try {
 			license = LicenseTable.getAllRows()[0].getLicensekey();
@@ -305,7 +309,8 @@ public class DatabaseController {
 			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
 		}
 		String dir = C.TMP_DIR + C.SEP + license;
-		// text data
+		
+		// CSV data from DB tables
 		try {
 			Connection conn = createConnection();
 			String[] tables = {
@@ -336,8 +341,26 @@ public class DatabaseController {
 		} catch (SQLException ex) {
 			LogController.logEvent(DatabaseController.class, C.FATAL, "Error creating CSV file", ex);		
 		}
+		
+		// PDF docs
+		PdfController.setPath(dir);
+		try {
+			for(SpacesTable.Row sRow:SpacesTable.getRows("DELETED=FALSE")) {
+				if(!sRow.isSignoffIDNull()) {
+					if(!PdfController.buildAudit(sRow.getID())) {
+						pdf = false;
+					}
+				}
+			}
+		} catch (SQLException e) {
+			LogController.logEvent(PdfTest.class, C.ERROR, "Error getting DB data for PDF document", e);
+		} catch (DocumentException e) {
+			LogController.logEvent(PdfTest.class, C.ERROR, "Error getting PDF document", e);
+		}				
+		
+		// zip up folder
 		File zf = null;
-		if(csv) {
+		if(pdf && csv) {
 			zf = ZipController.createZipFile(new File(dir));
 		}		
 		return zf;

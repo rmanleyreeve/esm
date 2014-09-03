@@ -52,11 +52,16 @@ import com.rmrdigitalmedia.esm.test.PdfTest;
 
 public class PdfController {
 
-	public PdfController() {		
-	}
-
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
+	private static String path = C.TMP_DIR;
+	static String fPath;
 
+	public static String getPath() {
+		return path;
+	}
+	public static void setPath(String _path) {
+		PdfController.path = _path;
+	}
 	private static boolean isY(String s) {
 		return (s != null && s.equals("Y"));
 	}
@@ -189,7 +194,8 @@ public class PdfController {
 
 		try {
 			// set up output file
-			File f = new File(C.TMP_DIR + C.SEP + "SPACE_"+spaceID+"_AUDIT.pdf");
+			fPath = getPath() + C.SEP + "SPACE_"+spaceID+"_AUDIT.pdf";
+			File f = new File(fPath);
 			PdfWriter.getInstance(document, new FileOutputStream(f));
 			document.open();
 
@@ -1007,6 +1013,7 @@ public class PdfController {
 			e.printStackTrace();
 		}
 
+		LogController.log("Created PDF: "+fPath);
 		Display.getCurrent().getActiveShell().setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_ARROW));
 		return ok;
 	}
