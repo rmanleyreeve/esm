@@ -60,7 +60,6 @@ public class PdfController {
 	private static boolean isY(String s) {
 		return (s != null && s.equals("Y"));
 	}
-
 	private static boolean isN(String s) {
 		return (s != null && s.equals("N"));
 	}
@@ -88,7 +87,6 @@ public class PdfController {
 		img.setCompressionLevel(7);
 		return img;
 	}
-
 	public static Image getImageFromDB(int id) throws BadElementException, MalformedURLException, IOException, SQLException {
 		Image img = null;
 		Connection conn = DatabaseController.createConnection();
@@ -110,8 +108,6 @@ public class PdfController {
 		}	
 		return img;
 	}
-
-
 	public static String s(int n) {
 		String o = "";
 		for(int i=0;i<n;i++) {
@@ -159,13 +155,16 @@ public class PdfController {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-
+		
+		// doc properties
 		Document document = new Document(PageSize.A4, 20, 20, 20, 20);
 		document.addAuthor("Videotel ESM"); 
 		document.addSubject("Enclosed Space Report"); 
 		Rectangle r = document.getPageSize();
 		int h = (int) r.getHeight(); //842
 		int w = (int) r.getWidth(); //595
+		
+		// constants
 		int ls = 10, lH = 15, lW = 15, imgPad = 5, v, c = 0;
 		Font font1 = new Font(Font.HELVETICA, 15, Font.BOLD);
 		Font font2 = new Font(Font.HELVETICA, 9,  Font.ITALIC);
@@ -188,9 +187,8 @@ public class PdfController {
 		ArrayList<Integer> status = new ArrayList<Integer>();
 		java.awt.Color cellBG = new java.awt.Color(222, 224, 226);
 
-
 		try {
-			// set up
+			// set up output file
 			File f = new File(C.TMP_DIR + C.SEP + "SPACE_"+spaceID+"_AUDIT.pdf");
 			PdfWriter.getInstance(document, new FileOutputStream(f));
 			document.open();
@@ -210,7 +208,7 @@ public class PdfController {
 			document.add(new Paragraph("Date generated: " + sdf.format(new Date()) + s(10) + "Authorised By: " + signOffName, font3));
 
 			p = new Paragraph("Vessel Information", font1);
-			p.setSpacingBefore(ls*2);
+			p.setSpacingBefore(ls*3);
 			document.add(p);			
 			p = new Paragraph("The following information in this report was generated on the following "+locType+":", font2);
 			p.setSpacingAfter(ls);
@@ -218,7 +216,7 @@ public class PdfController {
 			document.add(new Paragraph(locType +" Name: " + locName  + s(10) + "IMO Number: " + imo, font3));
 
 			p = new Paragraph("The Space", font1);
-			p.setSpacingBefore(ls*2);
+			p.setSpacingBefore(ls*3);
 			document.add(p);			
 			p = new Paragraph("The space described in this report:", font2);
 			p.setSpacingAfter(ls);
@@ -540,10 +538,9 @@ public class PdfController {
 			c1.addElement(new Phrase((String)qTextSpaceClass.elementAt(c),font5));
 			vs = spaceClassRow.getQ7Boolean();
 			c2.addElement(new Phrase(vs,font5));
-			status.add(v);
 			light = "null";
-			if(isY(vs)) light="red";
-			if(isN(vs)) light="green";
+			if(isY(vs)) { light="red"; status.add(1); }
+			if(isN(vs)) { light="green"; status.add(3); }
 			tl = getImageFromPath("/img/"+light+".png");
 			tl.scaleAbsolute(lW,lH);
 			c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
@@ -556,10 +553,9 @@ public class PdfController {
 			c1.addElement(new Phrase((String)qTextSpaceClass.elementAt(c),font5));
 			vs = spaceClassRow.getQ8Boolean();
 			c2.addElement(new Phrase(vs,font5));
-			status.add(v);
 			light = "null";
-			if(isY(vs)) light="red";
-			if(isN(vs)) light="green";
+			if(isY(vs)) { light="red"; status.add(1); }
+			if(isN(vs)) { light="green"; status.add(3); }
 			tl = getImageFromPath("/img/"+light+".png");
 			tl.scaleAbsolute(lW,lH);
 			c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
@@ -575,12 +571,12 @@ public class PdfController {
 			if(status.contains(1)) {
 				sLight = "red";
 				s = C.SPACE_OVERALL_STATUS_MSG_RED;		
-			}
-			if (status.contains(2) && !status.contains(1)) {
+			} 
+			else if (status.contains(2) && !status.contains(1)) {
 				sLight = "amber";
 				s = C.SPACE_OVERALL_STATUS_MSG_AMBER;		
 			}
-			if (status.contains(3) && !status.contains(1) && !status.contains(2)) {
+			else if (status.contains(3) && !status.contains(1) && !status.contains(2)) {
 				sLight = "green";
 				s = C.SPACE_OVERALL_STATUS_MSG_GREEN;		
 			}		
@@ -799,6 +795,7 @@ public class PdfController {
 				h4 = new PdfPCell(new Paragraph("Comments",font3));
 				h4.setBackgroundColor(cellBG);
 				tblEntryClass.addCell(h4);
+				status.clear();
 
 				// start loop through questions
 				//Q1
@@ -806,7 +803,8 @@ public class PdfController {
 				c1 = new PdfPCell(); c2 = new PdfPCell(); c4 = new PdfPCell();
 				c1.addElement(new Phrase((String)qTextEntryClass.elementAt(c),font5));
 				v = entryClassRow.getQ1Value();
-				c2.addElement(new Phrase(diff[v],font5));			
+				c2.addElement(new Phrase(diff[v],font5));
+				status.add(v);
 				light = "null";
 				if(v==1) light="red";
 				if(v==2) light="amber";
@@ -824,6 +822,7 @@ public class PdfController {
 					c1.addElement(new Phrase((String)qTextEntryClass.elementAt(c),font5));
 					v = entryClassRow.getQ2Value();
 					c2.addElement(new Phrase(diff2[v],font5));			
+					status.add(v);
 					light = "null";
 					if(v==1) light="red";
 					if(v==2) light="amber";
@@ -841,6 +840,7 @@ public class PdfController {
 				c1.addElement(new Phrase((String)qTextEntryClass.elementAt(c),font5));
 				vs = entryClassRow.getQ3Boolean();
 				c2.addElement(new Phrase(vs,font5));			
+				status.add(v);
 				light = "null";
 				if(isN(vs)) light="red";
 				if(isY(vs)) light="green";
@@ -857,9 +857,9 @@ public class PdfController {
 				v = entryClassRow.getQ4Value();
 				c2.addElement(new Phrase(""+v,font5));			
 				light = "null";
-				if(v==1) light="red";
-				if(v==2 || v==3 || v==4) light="amber";
-				if(v==5) light="green";
+				if(v==1) { light="red"; status.add(v); }
+				if(v==2 || v==3 || v==4) { light="amber"; status.add(2); }
+				if(v==5) { light="green"; status.add(3); }
 				tl = getImageFromPath("/img/"+light+".png");
 				tl.scaleAbsolute(lW,lH);
 				c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
@@ -873,8 +873,8 @@ public class PdfController {
 				vs = entryClassRow.getQ5Boolean();
 				c2.addElement(new Phrase(vs,font5));			
 				light = "null";
-				if(isN(vs)) light="red";
-				if(isY(vs)) light="green";
+				if(isN(vs)) { light="red"; status.add(1); }
+				if(isY(vs)) { light="green"; status.add(3); }
 				tl = getImageFromPath("/img/"+light+".png");
 				tl.scaleAbsolute(lW,lH);
 				c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
@@ -888,8 +888,8 @@ public class PdfController {
 				vs = entryClassRow.getQ6Boolean();
 				c2.addElement(new Phrase(vs,font5));			
 				light = "null";
-				if(isN(vs)) light="red";
-				if(isY(vs)) light="green";
+				if(isN(vs)) { light="red"; status.add(1); }
+				if(isY(vs)) { light="green"; status.add(3); }
 				tl = getImageFromPath("/img/"+light+".png");
 				tl.scaleAbsolute(lW,lH);
 				c3 = new PdfPCell(tl,false); c3.setPadding(imgPad);
@@ -901,7 +901,8 @@ public class PdfController {
 				c1 = new PdfPCell(); c2 = new PdfPCell(); c4 = new PdfPCell();
 				c1.addElement(new Phrase((String)qTextEntryClass.elementAt(c),font5));
 				v = entryClassRow.getQ7Value();
-				c2.addElement(new Phrase(diff[v],font5));			
+				c2.addElement(new Phrase(diff[v],font5));
+				status.add(v);
 				light = "null";
 				if(v==1) light="red";
 				if(v==2) light="amber";
@@ -922,11 +923,11 @@ public class PdfController {
 					sLight = "red";
 					s = C.ENTRY_OVERALL_STATUS_MSG_RED;		
 				}
-				if (status.contains(2) && !status.contains(1)) {
+				else if (status.contains(2) && !status.contains(1)) {
 					sLight = "amber";
 					s = C.ENTRY_OVERALL_STATUS_MSG_AMBER;		
 				}
-				if (status.contains(3) && !status.contains(1) && !status.contains(2)) {
+				else if (status.contains(3) && !status.contains(1) && !status.contains(2)) {
 					sLight = "green";
 					s = C.ENTRY_OVERALL_STATUS_MSG_GREEN;		
 				}		

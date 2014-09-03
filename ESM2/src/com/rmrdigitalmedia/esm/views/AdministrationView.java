@@ -139,7 +139,7 @@ public class AdministrationView {
 		compL.setBackground(C.APP_BGCOLOR);
 
 
-		// row 1 - vessel management		
+		// row - vessel management		
 		final String type = (String) EsmApplication.appData.getField("LOCATION_TYPE");
 		Group rowVessel = new Group(compL, SWT.NONE);
 		rowVessel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -176,7 +176,6 @@ public class AdministrationView {
 		});
 		btnAddVessel.setImage(C.getImage("edit.png"));
 		btnAddVessel.setText("Edit " + type + " Details");
-
 
 		// row - admin management		
 		Group rowUser = new Group(compL, SWT.NONE);
@@ -230,9 +229,6 @@ public class AdministrationView {
 				}
 			}
 		});
-
-		sep = new Label(rowUser, SWT.SEPARATOR | SWT.HORIZONTAL);
-		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));			
 		
 		// row - user management		
 		Group rowUsers = new Group(compL, SWT.NONE);
@@ -339,7 +335,7 @@ public class AdministrationView {
 				}
 			}			
 		});
-
+		// dropdown behaviour
 		comboUsers.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -352,7 +348,7 @@ public class AdministrationView {
 		});
 
 
-		// row 3 - comment management		
+		// row - comment management		
 		Group rowComments = new Group(compL, SWT.NONE);
 		rowComments.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowComments = new GridLayout(4, false);
@@ -504,7 +500,7 @@ public class AdministrationView {
 		compR.setLayout(gl_compR);
 		compR.setBackground(C.APP_BGCOLOR);
 
-		// row 1 - name, id, description fields
+		// row - DB export
 		Group rowRight1 = new Group(compR, SWT.NONE);
 		rowRight1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowRight1 = new GridLayout(2, false);

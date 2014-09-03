@@ -340,7 +340,7 @@ public class EntryAuditClassificationView {
 		qNum = 2;
 		boolean hideit = true;
 		try {
-			hideit = EntrypointChecklistAuditTable.getRow(entryID).getQ7Value().equals("HORIZONTAL");
+			hideit = EntrypointChecklistAuditTable.getRow("ENTRYPOINT_ID",""+entryID).getQ7Value().equals("HORIZONTAL");
 		} catch (SQLException e1) {
 			LogController.logEvent(EntryAuditClassificationView.class, C.ERROR, e1);
 		}

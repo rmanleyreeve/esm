@@ -1057,6 +1057,14 @@ public class SpaceDetailView {
 		} else {
 			lblAuthName.setText(C.SPACE_NOT_AUTH);
 		}
+		
+		final Button btnPrint = new Button(rowRight5, SWT.NONE);
+		btnPrint.setToolTipText("Produce a printable PDF of the completed audit for this space and its entry points");
+		btnPrint.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		btnPrint.setImage(C.getImage("print.png"));
+		btnPrint.setText("Create Audit PDF");
+		btnPrint.setEnabled(signedoff);
+		btnPrint.setVisible(signedoff);
 
 		btnSignOff.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1070,19 +1078,13 @@ public class SpaceDetailView {
 					uRow.update();
 					lblAuthName.setText(user.getForename() + " " + user.getSurname());
 					btnSignOff.setEnabled(false);
+					btnPrint.setEnabled(true);
+					btnPrint.setVisible(true);
 				} catch (SQLException e) {
 					LogController.logEvent(me, C.ERROR, "Error saving Space "+spaceID+" signoff data", e);
 				}				
 			}
 		});
-
-		Button btnPrint = new Button(rowRight5, SWT.NONE);
-		btnPrint.setToolTipText("Produce a printable PDF of the completed audit for this space and its entry points");
-		btnPrint.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
-		btnPrint.setImage(C.getImage("print.png"));
-		btnPrint.setText("Create Audit PDF");
-		btnPrint.setEnabled(signedoff);
-		btnPrint.setVisible(signedoff);
 
 		btnPrint.addSelectionListener(new SelectionAdapter() {
 			@Override
