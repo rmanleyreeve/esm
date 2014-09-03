@@ -55,7 +55,7 @@ public class ZipController {
 	}
 
 	public static void addToZipFile(File file, ZipOutputStream zos) throws FileNotFoundException, IOException {
-		System.out.println("Writing '" + file.getName() + "' to ZIP file");
+		LogController.log("Writing '" + file.getName() + "' to ZIP file");
 		FileInputStream fis = new FileInputStream(file);
 		ZipEntry zipEntry = new ZipEntry(file.getName());
 		zos.putNextEntry(zipEntry);
