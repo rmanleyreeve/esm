@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 
 public class UploadController {
 
@@ -69,7 +70,11 @@ public class UploadController {
 			try {
 				id = DatabaseController.insertDocument(f, spaceID, authorID);
 			} catch (FileNotFoundException ex) {
-				ex.printStackTrace();
+				LogController.logEvent(UploadController.class, C.ERROR, "Problem reading file", ex);
+				EsmApplication.alert("The document could not be uploaded:\n"+ex.getMessage());
+			} catch (EmptyDataException e) {
+				LogController.logEvent(UploadController.class, C.ERROR, "Error with file data", e);
+				EsmApplication.alert("The document could not be uploaded:\n"+e.getMessage());
 			}
 		}
 		return (id > 0);
