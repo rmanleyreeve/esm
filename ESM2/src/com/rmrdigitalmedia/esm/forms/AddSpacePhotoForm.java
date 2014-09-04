@@ -201,7 +201,7 @@ public class AddSpacePhotoForm {
 							pRow.setAuthorID(authorID);
 							pRow.setCreatedDate(new Timestamp(new Date().getTime()));
 							pRow.setUpdateDate(new Timestamp(new Date().getTime()));
-							boolean unmod = (EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2);
+							boolean unmod = (EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >1);
 							if(unmod) {
 								pRow.setApproved("TRUE");
 							} else {

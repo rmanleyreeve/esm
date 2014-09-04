@@ -156,7 +156,7 @@ public class EditUserPasswordForm {
 				Text[] fields = {newpass,confirmnewpass}; Validation.validateFields(fields);
 				if( Validation.validateFields(fields) && Validation.checkMatch(fields) ) {
 					try {
-						uRow.setPassword(newpass.getText());
+						uRow.setPassword(C.doMD5(newpass.getText()));
 						uRow.setUpdateDate(new Timestamp(new Date().getTime()));
 						uRow.update();
 						formOK = true;
