@@ -39,8 +39,17 @@ import com.rmrdigitalmedia.esm.models.VesselTable;
 import com.rmrdigitalmedia.esm.models.VesselTypesTable;
 import com.rmrdigitalmedia.esm.test.PdfTest;
 
+@SuppressWarnings("serial")
+	class EmptyDataException extends Exception {
+	      public EmptyDataException() {}
+	      public EmptyDataException(String message) {
+	         super(message);
+	      }
+	 }	
+
 public class DatabaseController {
 
+	
 	public ProgressBar bar;
 
 	public DatabaseController() {
@@ -143,7 +152,7 @@ public class DatabaseController {
 
 	// DB BINARY FILE METHODS =============================================================================================================
 
-	public static int insertDocument(File f, int spaceID, int authorID) throws FileNotFoundException {
+	public static int insertDocument(File f, int spaceID, int authorID) throws FileNotFoundException, EmptyDataException {
 		long id = 0;
 		String mimeType = FilesystemController.getMimeType(f);
 		Connection conn = createConnection();
@@ -151,7 +160,13 @@ public class DatabaseController {
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			InputStream is = new FileInputStream (f);
+			InputStream is = new FileInputStream (f);			
+			if(f.length()==0) {
+				try {
+					is.close();
+				} catch (IOException e) {}
+				throw new EmptyDataException("The file appears to be empty");
+			}
 			ps.setBinaryStream (1, is, (int)f.length());
 			ps.setInt(2, spaceID);
 			ps.setString(3, f.getName());
@@ -165,8 +180,7 @@ public class DatabaseController {
 				id = rs.getLong(1);
 			}			
 		} catch (SQLException ex) {
-			LogController.logEvent(DatabaseController.class, C.ERROR, "Error inserting document", ex);
-			ex.printStackTrace();
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Error inserting document into DB", ex);
 		}
 		LogController.log("Document inserted into DB OK");			
 		return (int) id;
@@ -197,8 +211,12 @@ public class DatabaseController {
 		return f;
 	}
 
-	public static int insertImageData(File f) throws IOException {
+	public static int insertImageData(File f) throws IOException, EmptyDataException {
 		long id = 0;
+		if(f.length()==0) {
+			return 0;
+			//throw new EmptyDataException("The file appears to be empty");
+		}
 		String mimeType = FilesystemController.getMimeType(f);
 		Connection conn = createConnection();
 		BufferedImage bimg = ImageIO.read(f);

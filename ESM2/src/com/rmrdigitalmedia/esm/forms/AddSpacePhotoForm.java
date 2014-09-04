@@ -218,6 +218,9 @@ public class AddSpacePhotoForm {
 							LogController.logEvent(this, C.NOTICE, "Photo Comment upload", e1);
 						}		
 						formOK = true;
+					} else {
+						LogController.log("Error uploading image data into DB");
+						EsmApplication.alert("The image could not be uploaded");
 					}
 					try {
 						Thread.sleep(1000);
