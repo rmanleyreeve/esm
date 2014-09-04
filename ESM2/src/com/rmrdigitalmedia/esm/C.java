@@ -130,11 +130,11 @@ public final class C {
 	public static String HELPFILE_GENERIC = "help.html";
 
 	// PDF report properties
-	public static String DISCLAIMER = "Some sort of disclaimer Lorem ipsum dolor sit amet, "
-			+ "consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
-			+ "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
-			+ "Duis aute irure dolor inreprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
-			+ "Excepteur sint occaecatcupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+	public static String DISCLAIMER = "This program is intended to reflect the best available "
+			+ "techniques and practices at the time of production. It is intended purely as comment. "
+			+ "No responsibility is accepted by Videotel, or by any firm, corporation or organisation "
+			+ "who or which has been in any way concerned with the production, supply or sale of this program "
+			+ "for accuracy of any information given hereon or for any omission here from.";
 	public static String SPACE_OVERALL_STATUS_MSG_RED = "It is advised that extreme caution is observed when using this space.";
 	public static String SPACE_OVERALL_STATUS_MSG_AMBER = "It is advised that caution is observed when using this space.";
 	public static String SPACE_OVERALL_STATUS_MSG_GREEN = "There are no significant hazards reported for this space.";
