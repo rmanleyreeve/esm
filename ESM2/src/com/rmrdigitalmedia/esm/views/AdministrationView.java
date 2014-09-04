@@ -192,7 +192,7 @@ public class AdministrationView {
 		lblUser.setLayoutData(gd_lblUser);
 		lblUser.setFont(C.FONT_12B);
 		lblUser.setBackground(C.APP_BGCOLOR);
-		lblUser.setImage(C.getImage("users_icon.png"));
+		lblUser.setImage(C.getImage("user_icon.png"));
 		lblUser.setText("My Details");	
 
 		Button btnEditMe = new Button(rowUser, SWT.NONE);
