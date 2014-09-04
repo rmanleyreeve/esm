@@ -149,7 +149,7 @@ public class AddSpaceCommentForm {
 						sRow.setAuthorID(authorID);
 						sRow.setCreatedDate(new Timestamp(new Date().getTime()));
 						sRow.setUpdateDate(new Timestamp(new Date().getTime()));
-						boolean unmod = (EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >= 2);
+						boolean unmod = (EsmUsersTable.getRow("ID", ""+authorID).getAccessLevel() >1);
 						if(unmod) {
 							sRow.setApproved("TRUE");
 						} else {

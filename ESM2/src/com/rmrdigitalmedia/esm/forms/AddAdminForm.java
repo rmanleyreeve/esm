@@ -211,7 +211,7 @@ public class AddAdminForm {
 					try {
 						EsmUsersTable.Row row = EsmUsersTable.getRow();
 						row.setUsername(username.getText());
-						row.setPassword(password.getText());
+						row.setPassword(C.doMD5(password.getText()));
 						row.setForename(forename.getText());
 						row.setSurname(surname.getText());
 						row.setRank(rank.getText());

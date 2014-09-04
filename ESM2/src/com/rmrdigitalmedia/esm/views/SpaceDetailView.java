@@ -72,6 +72,7 @@ import com.rmrdigitalmedia.esm.models.SpacesTable;
 public class SpaceDetailView {
 	static Object me = new SpaceDetailView();
 	static EsmUsersTable.Row user = WindowController.user;
+	static int access = user.getAccessLevel();
 
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 	private static Label sep;
@@ -106,7 +107,6 @@ public class SpaceDetailView {
 	public static void buildPage(final Composite parent, final int spaceID) {
 		LogController.log("Building Space Detail page");
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
-
 		SpacesTable.Row sRow = null;
 		try {
 			sRow = SpacesTable.getRow(spaceID);
@@ -184,7 +184,7 @@ public class SpaceDetailView {
 		description.setLayoutData(gd_description);
 		description.setText(sRow.getDescription());		
 
-		if( user.getAccessLevel()==9 )	{	
+		if(access == 9)	{	
 			Button btnEditSpace = new Button(row1, SWT.RIGHT);
 			btnEditSpace.setText("Edit");
 			btnEditSpace.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
@@ -247,8 +247,7 @@ public class SpaceDetailView {
 			ps.setInt(1, spaceID);
 			final ResultSet spaceComment = ps.executeQuery();
 			while(spaceComment.next()) {			
-
-				boolean canApprove = (!spaceComment.getBoolean("APPROVED") && user.getAccessLevel()==9);
+				boolean canApprove = (!spaceComment.getBoolean("APPROVED") && (access==3 || access==9));
 				final int commentID = spaceComment.getInt("ID");
 
 				if(spaceComment.getBoolean("APPROVED") || canApprove){
@@ -292,7 +291,7 @@ public class SpaceDetailView {
 					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 					lblPosted.setText("Posted: " + sdf.format(spaceComment.getTimestamp("UPDATE_DATE")));
 
-					if( user.getAccessLevel()==9 || user.getID()==author.getID())	{	
+					if( access==9 || user.getID()==author.getID())	{	
 						Button btnEditComment = new Button(commentRow, SWT.NONE);
 						GridData gd_btnEditComment = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 						gd_btnEditComment.horizontalIndent = 5;
@@ -681,7 +680,7 @@ public class SpaceDetailView {
 						}
 					}
 				});
-				btnDeleteEntry.setEnabled( rowCount>1 && (user.getAccessLevel()==9 || user.getID()==epRow.getInt("AUTHOR_ID")) );
+				btnDeleteEntry.setEnabled( rowCount>1 && (access==9 || user.getID()==epRow.getInt("AUTHOR_ID")) );
 
 			} // end for
 
@@ -736,7 +735,7 @@ public class SpaceDetailView {
 		btnAddPhoto.setLayoutData(gd_btnAddPhoto);
 		btnAddPhoto.setImage(C.getImage("photo-add.png"));
 		btnAddPhoto.setText("Add");
-		btnAddPhoto.setEnabled(user.getAccessLevel() >= 2);
+		btnAddPhoto.setEnabled(access > 1);
 		btnAddPhoto.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -871,7 +870,7 @@ public class SpaceDetailView {
 		});
 		btnAddDoc.setImage(C.getImage("document-add.png"));
 		btnAddDoc.setText("Add");
-		btnAddDoc.setEnabled(user.getAccessLevel() >= 2);
+		btnAddDoc.setEnabled(access>1);
 
 		final Button btnOpenDoc = new Button(rowRight4, SWT.NONE);
 		btnOpenDoc.setAlignment(SWT.LEFT);
@@ -910,7 +909,7 @@ public class SpaceDetailView {
 			if (rowcount > 0) {
 				// docs exist - show table
 				btnOpenDoc.setVisible(true);
-				btnDeleteDoc.setVisible(user.getAccessLevel()==9);
+				btnDeleteDoc.setVisible(access==9);
 				final Table table = new Table(rowRight4, SWT.NONE | SWT.FULL_SELECTION);
 				table.setLayout(new FillLayout());
 				table.setBackground(C.FIELD_BGCOLOR);
@@ -1033,7 +1032,7 @@ public class SpaceDetailView {
 		btnSignOff.setLayoutData(gd_btnSignOff);
 		btnSignOff.setImage(C.getImage("bluetick.png"));
 		btnSignOff.setText("Authorize");
-		boolean showSO = (user.getAccessLevel()==9 && !signedoff && AuditController.isSpaceComplete(spaceID));
+		boolean showSO = (access>2 && !signedoff && AuditController.isSpaceComplete(spaceID));
 		btnSignOff.setEnabled(showSO);
 		btnSignOff.setVisible(showSO);
 

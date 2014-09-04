@@ -128,7 +128,7 @@ public final class C {
 	public static String HELPFILE_EP_AUDIT_CHECK = "audit_help.html";
 	public static String HELPFILE_EP_AUDIT_CLASS = "audit_help.html";
 	public static String HELPFILE_GENERIC = "help.html";
-	
+
 	// PDF report properties
 	public static String DISCLAIMER = "Some sort of disclaimer Lorem ipsum dolor sit amet, "
 			+ "consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
@@ -188,6 +188,19 @@ public final class C {
 		} else {
 			return null;
 		}
+	}
+
+	public static String doMD5(String str) {
+		try {
+			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+			byte[] array = md.digest(str.getBytes());
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < array.length; ++i) {
+				sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+			}
+			return sb.toString();
+		} catch (java.security.NoSuchAlgorithmException e) {}
+		return null;
 	}
 
 }

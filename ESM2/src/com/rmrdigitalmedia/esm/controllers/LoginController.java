@@ -50,7 +50,7 @@ public class LoginController {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		// submit login info for verification, if OK then run main App
 		String un = txt_Username.getText();
-		String pw = txt_Password.getText();
+		String pw = C.doMD5(txt_Password.getText());
 		shell.setCursor(new Cursor(display, SWT.CURSOR_ARROW));
 		if (un != "" && pw != "") {
 			LogController.log("LoginController: " + un + "/" + pw);
