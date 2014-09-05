@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
@@ -529,6 +530,44 @@ public class AuditController {
 
 	private static boolean isN(String s) {
 		return (s != null && s.equals("N"));
+	}
+
+	public static Hashtable<String, Object> getSpaceChecklistArray(int spaceID) {
+		Hashtable<String, Object> vals = new Hashtable<String, Object>();
+		if(AuditController.isSpaceSignedOff(spaceID)) {
+			return vals;
+		}
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public static Hashtable<String, Object> getSpaceClassificationArray(int spaceID) {
+		Hashtable<String, Object> vals = new Hashtable<String, Object>();
+		if(AuditController.isSpaceSignedOff(spaceID)) {
+			return vals;
+		}
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public static Hashtable<String, Object> getEntrypointChecklistArray(int entryID, int spaceID) {
+		Hashtable<String, Object> vals = new Hashtable<String, Object>();
+		if(AuditController.isSpaceSignedOff(spaceID)) {
+			return vals;
+		}
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public static Hashtable<String, Object> getEntrypointClassificationArray(int entryID, int spaceID) {
+		Hashtable<String, Object> vals = new Hashtable<String, Object>();
+		if(AuditController.isSpaceSignedOff(spaceID)) {
+			return vals;
+		}
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static void revokeSignOff(int spaceID) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
