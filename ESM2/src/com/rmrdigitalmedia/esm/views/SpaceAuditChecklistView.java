@@ -3,6 +3,7 @@ package com.rmrdigitalmedia.esm.views;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Hashtable;
 import java.util.Vector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -1017,6 +1018,7 @@ public class SpaceAuditChecklistView {
 		}
 		if(aRow != null) {
 			try {
+				Hashtable<String,Object> currentVals = AuditController.getSpaceChecklistArray(spaceID);
 				//1
 				aRow.setQ1DimsH(q1_txtH.getText());
 				aRow.setQ1DimsH(q1_txtH.getText());
@@ -1115,6 +1117,10 @@ public class SpaceAuditChecklistView {
 				if(q17_col4.getText()!=null) aRow.setQ17Comments(q17_col4.getText());		
 				// commit the transaction
 				aRow.update();
+				Hashtable<String,Object> newVals = AuditController.getSpaceChecklistArray(spaceID);
+				if(!newVals.equals(currentVals)) {
+					AuditController.revokeSignOff(spaceID);
+				}
 			} catch (SQLException e) {
 				LogController.logEvent(SpaceAuditChecklistView.class, C.FATAL, "ERROR UPDATE SPACE CHECKLIST ROW", e);
 			}
