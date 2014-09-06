@@ -4,13 +4,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+
 import javax.imageio.ImageIO;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.collect.ImmutableMap;
 
 public final class C {
@@ -102,6 +105,7 @@ public final class C {
 	public static String SPACE_ALERT_RED = "The space you have selected has been classified as RED.\nBe extra cautious as you proceed.";
 	public static String SPACE_NOT_AUTH = "This space has NOT been authorized.";
 	public static String COPYRIGHT = "   \u00a9Videotel 2014";
+	public static String SIGNOFF_REVOKE_MESSAGE = "This audit was previously signed off.\nAs you have made changes to the audit, it will need to be signed off again.";
 
 	// app screen titles
 	public static String APP_NAME = "Enclosed Spaces Management System";

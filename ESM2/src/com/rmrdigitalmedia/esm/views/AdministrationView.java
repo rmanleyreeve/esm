@@ -3,6 +3,7 @@ package com.rmrdigitalmedia.esm.views;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
@@ -16,6 +17,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -26,6 +28,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
+
 import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
@@ -43,6 +46,7 @@ import com.rmrdigitalmedia.esm.forms.EditVesselForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
+import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class AdministrationView {
 
@@ -537,12 +541,59 @@ public class AdministrationView {
 		lblDump.setBackground(C.APP_BGCOLOR);
 		btnDump.setToolTipText(lblDump.getText());
 
+		sep = new Label(rowRight1, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));	
+
 		// create local file
 		Button btnExport = new Button(rowRight1, SWT.NONE);
 		btnExport.setText("Data Export File");
+
+		Label lblExport = new Label(rowRight1, SWT.NONE);
+		lblExport.setText("Generate a data export file to send manually by email");
+		lblExport.setBackground(C.APP_BGCOLOR);
+		btnExport.setToolTipText(lblExport.getText());		
+		
+		Label lblExportOptions = new Label(rowRight1, SWT.HORIZONTAL);
+		lblExportOptions.setFont(C.FONT_11B);
+		lblExportOptions.setText("File Options:");
+		lblExportOptions.setBackground(C.APP_BGCOLOR);
+		lblExportOptions.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));	
+		
+		Composite exportOptions = new Composite(rowRight1, SWT.NONE);
+		exportOptions.setLayout(new RowLayout(SWT.HORIZONTAL));
+		GridData gd_exportOptions = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		gd_exportOptions.horizontalIndent = 5;
+		exportOptions.setLayoutData(gd_exportOptions);			
+		
+		final Combo select = new Combo(exportOptions, SWT.NONE);
+		select.setFont(C.FONT_9);
+		select.add("All Spaces");
+		select.setData("All Spaces",0);
+		try {
+			for(SpacesTable.Row sRow : SpacesTable.getRows("DELETED=FALSE")) {
+				String name = sRow.getName();
+				select.add(name);
+				select.setData(name, sRow.getID());
+			}
+		} catch (SQLException ex) {}
+		select.select(0);
+		
+		final Button radioExport_radio1 = new Button(exportOptions, SWT.RADIO);
+		radioExport_radio1.setText("All Data");
+		radioExport_radio1.setFont(C.FONT_9);
+		radioExport_radio1.setBackground(C.APP_BGCOLOR);
+		radioExport_radio1.setSelection(true);
+		
+		final Button radioExport_radio2 = new Button(exportOptions, SWT.RADIO);
+		radioExport_radio2.setText("Exclude Photos && Documents");
+		radioExport_radio2.setFont(C.FONT_9);
+		radioExport_radio2.setBackground(C.APP_BGCOLOR);
+
 		btnExport.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				int spaceID = (Integer) select.getData(select.getText());
+				boolean alldata = radioExport_radio1.getSelection();
 				if (DatabaseController.generateZipFile().exists()) {
 					EsmApplication.alert("Data Export file created successfully");
 					Program.launch(C.TMP_DIR);
@@ -552,17 +603,60 @@ public class AdministrationView {
 
 			}
 		});
-		Label lblExport = new Label(rowRight1, SWT.NONE);
-		lblExport.setText("Generate a data export file to send manually by email");
-		lblExport.setBackground(C.APP_BGCOLOR);
-		btnExport.setToolTipText(lblExport.getText());
+
+		sep = new Label(rowRight1, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));	
 
 		// create file and ftp to server
 		Button btnSend = new Button(rowRight1, SWT.NONE);
 		btnSend.setText("Send Data File");
+
+		Label lblSend = new Label(rowRight1, SWT.NONE);
+		lblSend.setText("Generate data export file and send to Videotel server");
+		lblSend.setBackground(C.APP_BGCOLOR);
+		btnSend.setToolTipText(lblSend.getText());
+
+		Label lblSendOptions = new Label(rowRight1, SWT.HORIZONTAL);
+		lblSendOptions.setFont(C.FONT_11B);
+		lblSendOptions.setText("File Options:");
+		lblSendOptions.setBackground(C.APP_BGCOLOR);
+		lblSendOptions.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));	
+		
+		Composite sendOptions = new Composite(rowRight1, SWT.NONE);
+		sendOptions.setLayout(new RowLayout(SWT.HORIZONTAL));
+		GridData gd_sendOptions = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		gd_sendOptions.horizontalIndent = 5;
+		sendOptions.setLayoutData(gd_sendOptions);			
+		
+		final Combo select2 = new Combo(sendOptions, SWT.NONE);
+		select2.setFont(C.FONT_9);
+		select2.add("All Spaces");
+		select2.setData("All Spaces",0);
+		try {
+			for(SpacesTable.Row sRow : SpacesTable.getRows("DELETED=FALSE")) {
+				String name = sRow.getName();
+				select2.add(name);
+				select2.setData(name, sRow.getID());
+			}
+		} catch (SQLException ex) {}
+		select2.select(0);
+		
+		final Button radioSend_radio1 = new Button(sendOptions, SWT.RADIO);
+		radioSend_radio1.setText("All Data");
+		radioSend_radio1.setFont(C.FONT_9);
+		radioSend_radio1.setBackground(C.APP_BGCOLOR);
+		radioSend_radio1.setSelection(true);
+		
+		final Button radioSend_radio2 = new Button(sendOptions, SWT.RADIO);
+		radioSend_radio2.setText("Exclude Photos && Documents");
+		radioSend_radio2.setFont(C.FONT_9);
+		radioSend_radio2.setBackground(C.APP_BGCOLOR);
+
 		btnSend.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				int spaceID = (Integer) select2.getData(select.getText());
+				boolean alldata = radioSend_radio1.getSelection();
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				if (InternetController.checkNetAccess()) {
 					File f = DatabaseController.generateZipFile();
@@ -582,15 +676,16 @@ public class AdministrationView {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 			}
 		});
-		Label lblSend = new Label(rowRight1, SWT.NONE);
-		lblSend.setText("Generate data export file and send to Videotel server");
-		lblSend.setBackground(C.APP_BGCOLOR);
-		btnSend.setToolTipText(lblSend.getText());
 
 
-
-
-
+		
+		
+		
+		
+		
+		
+		
+		
 
 		scrollPanelRight.setContent(compR);
 		scrollPanelRight.setExpandVertical(true);

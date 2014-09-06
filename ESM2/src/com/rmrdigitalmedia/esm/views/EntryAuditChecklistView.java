@@ -3,7 +3,9 @@ package com.rmrdigitalmedia.esm.views;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Vector;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -27,6 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -795,7 +798,12 @@ public class EntryAuditChecklistView {
 			LogController.logEvent(EntryAuditChecklistView.class, C.FATAL, "ERROR SELECT ENTRYPOINT CHECKLIST ROW", ex);
 		}
 		if(aRow != null) {
+			int spaceID = WindowController.currentSpaceId;
 			try {
+				spaceID = EntrypointsTable.getRow(entryID).getSpaceID();
+			} catch (SQLException e) {}
+			try {
+				HashMap<String,Object> currentVals = AuditController.getEntrypointChecklistArray(entryID, spaceID);
 				//1
 				if(q1_radio1.getSelection()) { aRow.setQ1Value((String)q1_radio1.getData()); }
 				else if(q1_radio2.getSelection()) { aRow.setQ1Value((String)q1_radio2.getData()); }
@@ -830,14 +838,14 @@ public class EntryAuditChecklistView {
 				if(q7_radio1.getSelection()) { 
 					aRow.setQ8Boolean( C.getRB(q8_radio1,q8_radio2) ); 
 				} else { 
-					aRow.setQ8Boolean(null); 
+					aRow.setQ8Boolean(""); 
 				}				
 				if(q8_col4.getText()!=null) aRow.setQ8Comments(q8_col4.getText());
 				//9
 				if(q7_radio1.getSelection()) { 
 					aRow.setQ9Boolean( C.getRB(q9_radio1,q9_radio2) ); 
 				} else { 
-					aRow.setQ9Boolean(null); 
+					aRow.setQ9Boolean(""); 
 				}
 				if(q9_col4.getText()!=null) aRow.setQ9Comments(q9_col4.getText());
 				//10
@@ -863,6 +871,13 @@ public class EntryAuditChecklistView {
 				if(q16_col4.getText()!=null) aRow.setQ16Comments(q16_col4.getText());
 				// commit the transaction
 				aRow.update();
+				HashMap<String,Object> newVals = AuditController.getEntrypointChecklistArray(entryID,spaceID);
+				System.out.println(currentVals.toString());
+				System.out.println(newVals.toString());
+				if(AuditController.isSpaceSignedOff(spaceID) && !newVals.equals(currentVals)) {
+					EsmApplication.alert(C.SIGNOFF_REVOKE_MESSAGE);
+					AuditController.revokeSignOff(spaceID);
+				}
 			} catch (SQLException e) {
 				LogController.logEvent(EntryAuditChecklistView.class, C.FATAL, "ERROR UPDATE ENTRYPOINT CHECKLIST ROW", e);
 			}

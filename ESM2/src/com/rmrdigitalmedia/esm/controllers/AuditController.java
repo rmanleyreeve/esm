@@ -3,9 +3,12 @@ package com.rmrdigitalmedia.esm.controllers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
@@ -125,10 +128,11 @@ public class AuditController {
 				max = 14;
 			}
 			percent = Math.round(((float) score / max) * 100);
-			progress = (int) Math.floor(percent / 10) * 10;	
+			progress = (int) Math.floor(percent / 10) * 10;
 			ps.close();
 			conn.close();
 		}		
+		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("SPACE_CHK_" + spaceID, progress);
 		// System.out.println("Calculating space "+userID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
 		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
@@ -230,6 +234,7 @@ public class AuditController {
 		if (status.contains(3) && !status.contains(1) && !status.contains(2)) {
 			light = "green";
 		}
+		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, progress);
 		EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, light);
 		//System.out.println("Calculating space "+spaceID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
@@ -321,6 +326,7 @@ public class AuditController {
 			ps.close();
 			conn.close();
 		}
+		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("ENTRY_CHK_" + entryID, progress);
 		// System.out.println("Calculating entry "+entryID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress);
 		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
@@ -419,6 +425,7 @@ public class AuditController {
 		if (status.contains(3) && !status.contains(1) && !status.contains(2)) {
 			light = "green";
 		}
+		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("ENTRY_CLASS_" + entryID, progress);
 		EsmApplication.appData.setField("ENTRY_STATUS_" + entryID, light);
 		//System.out.println("Calculating entry "+entryID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
@@ -517,6 +524,8 @@ public class AuditController {
 					//System.out.println("entry "+epID+" class<100");
 				}
 			}
+			epRow.close();
+			conn.close();
 		} catch (SQLException ex) {
 			complete = false;
 			LogController.logEvent(AuditController.class, C.ERROR, "DB error on completion query", ex);
@@ -532,42 +541,78 @@ public class AuditController {
 		return (s != null && s.equals("N"));
 	}
 
-	public static Hashtable<String, Object> getSpaceChecklistArray(int spaceID) {
-		Hashtable<String, Object> vals = new Hashtable<String, Object>();
-		if(AuditController.isSpaceSignedOff(spaceID)) {
-			return vals;
+	public static HashMap<String, Object> getResultsAsHashmap(String sql) {
+		HashMap<String, Object> vals = new HashMap<String, Object>();
+		try {
+			Connection conn = DatabaseController.createConnection();
+			ResultSet row = null;
+			Statement s = conn.createStatement();
+			row = s.executeQuery(sql);
+			ResultSetMetaData md = row.getMetaData();
+			int columns = md.getColumnCount();
+			vals = new HashMap<String, Object>(columns);
+			if (row!=null && row.next()){
+				for(int i=1; i<=columns; ++i){           
+					vals.put(md.getColumnName(i), row.getObject(i));
+				}
+			}
+			row.close();
+			conn.close();
+		} catch (SQLException e) {
+			LogController.logEvent(AuditController.class, C.ERROR, e);		
 		}
-		// TODO Auto-generated method stub
-		return null;
+		return vals;
 	}
-	public static Hashtable<String, Object> getSpaceClassificationArray(int spaceID) {
-		Hashtable<String, Object> vals = new Hashtable<String, Object>();
-		if(AuditController.isSpaceSignedOff(spaceID)) {
+
+
+	public static HashMap<String, Object> getSpaceChecklistArray(int spaceID) {
+		HashMap<String, Object> vals = new HashMap<String, Object>();
+		if(!AuditController.isSpaceSignedOff(spaceID)) {
 			return vals;
 		}
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "SELECT * FROM SPACE_CHECKLIST_AUDIT WHERE SPACE_ID="+spaceID;
+		vals = getResultsAsHashmap(sql);
+		return vals;
 	}
-	public static Hashtable<String, Object> getEntrypointChecklistArray(int entryID, int spaceID) {
-		Hashtable<String, Object> vals = new Hashtable<String, Object>();
-		if(AuditController.isSpaceSignedOff(spaceID)) {
+
+	public static HashMap<String, Object> getSpaceClassificationArray(int spaceID) {
+		HashMap<String, Object> vals = new HashMap<String, Object>();
+		if(!AuditController.isSpaceSignedOff(spaceID)) {
 			return vals;
 		}
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "SELECT * FROM SPACE_CLASSIFICATION_AUDIT WHERE SPACE_ID="+spaceID;
+		vals = getResultsAsHashmap(sql);
+		return vals;
 	}
-	public static Hashtable<String, Object> getEntrypointClassificationArray(int entryID, int spaceID) {
-		Hashtable<String, Object> vals = new Hashtable<String, Object>();
-		if(AuditController.isSpaceSignedOff(spaceID)) {
+	public static HashMap<String, Object> getEntrypointChecklistArray(int entryID, int spaceID) {
+		HashMap<String, Object> vals = new HashMap<String, Object>();
+		if(!AuditController.isSpaceSignedOff(spaceID)) {
 			return vals;
 		}
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "SELECT * FROM ENTRYPOINT_CHECKLIST_AUDIT WHERE ENTRYPOINT_ID="+entryID;
+		vals = getResultsAsHashmap(sql);
+		return vals;
+	}
+	public static HashMap<String, Object> getEntrypointClassificationArray(int entryID, int spaceID) {
+		HashMap<String, Object> vals = new HashMap<String, Object>();
+		if(!AuditController.isSpaceSignedOff(spaceID)) {
+			return vals;
+		}
+		String sql = "SELECT * FROM ENTRYPOINT_CLASSIFICATION_AUDIT WHERE ENTRYPOINT_ID="+entryID;
+		vals = getResultsAsHashmap(sql);
+		return vals;
 	}
 
 	public static void revokeSignOff(int spaceID) {
-		// TODO Auto-generated method stub
-		
+		try {
+			SpacesTable.Row sRow = SpacesTable.getRow(spaceID);
+			sRow.setSignedOff("FALSE");
+			sRow.setSignoffDate(null);
+			sRow.setSignoffID(null);
+			sRow.update();
+		} catch (SQLException e) {
+			LogController.logEvent(AuditController.class, C.ERROR, e);			
+		}
 	}
 
 }
