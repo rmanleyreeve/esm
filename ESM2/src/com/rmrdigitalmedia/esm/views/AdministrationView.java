@@ -594,7 +594,8 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				int spaceID = (Integer) select.getData(select.getText());
 				boolean alldata = radioExport_radio1.getSelection();
-				if (DatabaseController.generateZipFile().exists()) {
+				File f = DatabaseController.generateZipFile();
+				if (f.exists()) {					
 					EsmApplication.alert("Data Export file created successfully");
 					Program.launch(C.TMP_DIR);
 				} else {
