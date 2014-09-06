@@ -3,7 +3,9 @@ package com.rmrdigitalmedia.esm.views;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Vector;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -27,6 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -599,7 +602,12 @@ public class EntryAuditClassificationView {
 			LogController.logEvent(EntryAuditClassificationView.class, C.FATAL, "ERROR SELECT ENTRY CLASSIFICATION ROW", ex);
 		}
 		if(aRow != null) {
+			int spaceID = WindowController.currentSpaceId;
 			try {
+				spaceID = EntrypointsTable.getRow(entryID).getSpaceID();
+			} catch (SQLException e) {}
+			try {
+				HashMap<String,Object> currentVals = AuditController.getEntrypointClassificationArray(entryID,spaceID);
 				//1
 				if(q1_radio1.getSelection()) { aRow.setQ1Value(1); }
 				else if(q1_radio2.getSelection()) { aRow.setQ1Value(2); }
@@ -637,6 +645,13 @@ public class EntryAuditClassificationView {
 				if(q7_col5.getText()!=null) aRow.setQ7Comments(q7_col5.getText());
 				// commit the transaction
 				aRow.update();
+				HashMap<String,Object> newVals = AuditController.getEntrypointClassificationArray(entryID,spaceID);
+				System.out.println(currentVals.toString());
+				System.out.println(newVals.toString());
+				if(AuditController.isSpaceSignedOff(spaceID) && !newVals.equals(currentVals)) {
+					EsmApplication.alert(C.SIGNOFF_REVOKE_MESSAGE);
+					AuditController.revokeSignOff(spaceID);
+				}
 			} catch (SQLException e) {
 				LogController.logEvent(EntryAuditClassificationView.class, C.FATAL, "ERROR UPDATE ENTRY CLASSIFICATION ROW", e);
 			}

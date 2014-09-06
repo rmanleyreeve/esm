@@ -3,8 +3,9 @@ package com.rmrdigitalmedia.esm.views;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Vector;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -1018,7 +1020,7 @@ public class SpaceAuditChecklistView {
 		}
 		if(aRow != null) {
 			try {
-				Hashtable<String,Object> currentVals = AuditController.getSpaceChecklistArray(spaceID);
+				HashMap<String,Object> currentVals = AuditController.getSpaceChecklistArray(spaceID);
 				//1
 				aRow.setQ1DimsH(q1_txtH.getText());
 				aRow.setQ1DimsH(q1_txtH.getText());
@@ -1063,7 +1065,7 @@ public class SpaceAuditChecklistView {
 						aRow.setQ8Rating(0);
 					}	
 				} else { 
-					aRow.setQ8Boolean(null); aRow.setQ8Rating(0);
+					aRow.setQ8Boolean(""); aRow.setQ8Rating(0);
 				}
 				if(q8_col4.getText()!=null) aRow.setQ8Comments(q8_col4.getText());
 				//9
@@ -1077,7 +1079,7 @@ public class SpaceAuditChecklistView {
 						aRow.setQ9Rating(0);
 					}	
 				} else { 
-					aRow.setQ9Boolean(null); aRow.setQ9Rating(0);
+					aRow.setQ9Boolean(""); aRow.setQ9Rating(0);
 				}
 				if(q9_col4.getText()!=null) aRow.setQ9Comments(q9_col4.getText());
 				//10
@@ -1091,7 +1093,7 @@ public class SpaceAuditChecklistView {
 						aRow.setQ10Rating(0); 
 					}	
 				} else { 
-					aRow.setQ10Boolean(null); aRow.setQ10Rating(0);
+					aRow.setQ10Boolean(""); aRow.setQ10Rating(0);
 				}
 				if(q10_col4.getText()!=null) aRow.setQ10Comments(q10_col4.getText());
 				//11
@@ -1117,8 +1119,11 @@ public class SpaceAuditChecklistView {
 				if(q17_col4.getText()!=null) aRow.setQ17Comments(q17_col4.getText());		
 				// commit the transaction
 				aRow.update();
-				Hashtable<String,Object> newVals = AuditController.getSpaceChecklistArray(spaceID);
-				if(!newVals.equals(currentVals)) {
+				HashMap<String,Object> newVals = AuditController.getSpaceChecklistArray(spaceID);
+				System.out.println(currentVals.toString());
+				System.out.println(newVals.toString());
+				if(AuditController.isSpaceSignedOff(spaceID) && !newVals.equals(currentVals)) {
+					EsmApplication.alert(C.SIGNOFF_REVOKE_MESSAGE);
 					AuditController.revokeSignOff(spaceID);
 				}
 			} catch (SQLException e) {
