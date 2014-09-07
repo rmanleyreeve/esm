@@ -220,6 +220,7 @@ public class WindowController {
 		btnHelp.setLayoutData(fd_btnHelp);
 		btnHelp.setToolTipText("Help for this page");
 		btnHelp.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				// read text from disk
