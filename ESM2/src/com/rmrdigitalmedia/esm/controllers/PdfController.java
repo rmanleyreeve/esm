@@ -124,7 +124,7 @@ public class PdfController {
 	}
 
 	@SuppressWarnings("unused")
-	public static boolean buildAudit(int spaceID) throws DocumentException, SQLException {
+	public static boolean buildAudit(int spaceID, boolean includeBinaryData) throws DocumentException, SQLException {
 		Display.getCurrent().getActiveShell().setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_WAIT));
 		boolean ok = false;
 		if(!AuditController.isSpaceSignedOff(spaceID)) {
@@ -162,7 +162,7 @@ public class PdfController {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		
+
 		// doc properties
 		Document document = new Document(PageSize.A4, 20, 20, 20, 20);
 		document.addAuthor("Videotel ESM"); 
@@ -170,7 +170,7 @@ public class PdfController {
 		Rectangle r = document.getPageSize();
 		int h = (int) r.getHeight(); //842
 		int w = (int) r.getWidth(); //595
-		
+
 		// constants
 		int ls = 10, lH = 15, lW = 15, imgPad = 5, v, c = 0;
 		Font font1 = new Font(Font.HELVETICA, 15, Font.BOLD);
@@ -958,45 +958,46 @@ public class PdfController {
 
 			} // end entry points loop
 
+			if(includeBinaryData) {
+				// add comments & photos =========================================================================================
+				document.newPage();
 
-			// add comments & photos =========================================================================================
-			document.newPage();
-
-			p = new Paragraph("Additional Information", font1);
-			p.setSpacingBefore(ls);
-			document.add(p);			
-			p = new Paragraph("The following information comprises of comments and photographs supplied by the crew:", font2);
-			p.setSpacingAfter(ls);
-			document.add(p);
-
-			SpaceCommentsTable.Row[] cRows = SpaceCommentsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID+" ORDER BY ID DESC");
-			for(SpaceCommentsTable.Row cRow:cRows) {				
-				EsmUsersTable.Row author = EsmUsersTable.getRow(cRow.getAuthorID());
-				String auName = author.getForename() + " " + author.getSurname();
-				document.add(new Paragraph(auName,font3));
-				document.add(new Paragraph(cRow.getComment(),font5));
-				p = new Paragraph("Posted: " + sdf.format(cRow.getUpdateDate()),font3);
+				p = new Paragraph("Additional Information", font1);
+				p.setSpacingBefore(ls);
+				document.add(p);			
+				p = new Paragraph("The following information comprises of comments and photographs supplied by the crew:", font2);
 				p.setSpacingAfter(ls);
-				document.add(p);				
-			} // end comments
-			document.add(new Paragraph(" "));
+				document.add(p);
 
-			PhotoMetadataTable.Row[] pRows = PhotoMetadataTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID+" ORDER BY ID DESC");
-			for(PhotoMetadataTable.Row pRow:pRows) {
-				EsmUsersTable.Row author = EsmUsersTable.getRow(pRow.getAuthorID());
-				String auName = author.getForename() + " " + author.getSurname();
-				document.add(new Paragraph(auName,font3));
-				document.add(new Paragraph(pRow.getTitle(),font4));
-				int dataID = pRow.getDataID();
-				Image img = getImageFromDB(dataID);
-				img.setCompressionLevel(7);
-				img.scaleToFit(100, 100);
-				document.add(img);
-				p = new Paragraph("Posted: " + sdf.format(pRow.getUpdateDate()),font3);
-				p.setSpacingAfter(ls);
-				document.add(p);				
+				SpaceCommentsTable.Row[] cRows = SpaceCommentsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID+" ORDER BY ID DESC");
+				for(SpaceCommentsTable.Row cRow:cRows) {				
+					EsmUsersTable.Row author = EsmUsersTable.getRow(cRow.getAuthorID());
+					String auName = author.getForename() + " " + author.getSurname();
+					document.add(new Paragraph(auName,font3));
+					document.add(new Paragraph(cRow.getComment(),font5));
+					p = new Paragraph("Posted: " + sdf.format(cRow.getUpdateDate()),font3);
+					p.setSpacingAfter(ls);
+					document.add(p);				
+				} // end comments
+				document.add(new Paragraph(" "));
+
+				PhotoMetadataTable.Row[] pRows = PhotoMetadataTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID+" ORDER BY ID DESC");
+				for(PhotoMetadataTable.Row pRow:pRows) {
+					EsmUsersTable.Row author = EsmUsersTable.getRow(pRow.getAuthorID());
+					String auName = author.getForename() + " " + author.getSurname();
+					document.add(new Paragraph(auName,font3));
+					document.add(new Paragraph(pRow.getTitle(),font4));
+					int dataID = pRow.getDataID();
+					Image img = getImageFromDB(dataID);
+					img.setCompressionLevel(7);
+					img.scaleToFit(100, 100);
+					document.add(img);
+					p = new Paragraph("Posted: " + sdf.format(pRow.getUpdateDate()),font3);
+					p.setSpacingAfter(ls);
+					document.add(p);				
+				}
+				document.add(new Paragraph(" "));
 			}
-			document.add(new Paragraph(" "));
 
 			document.close(); // no need to close PDFwriter?
 			ok = true;

@@ -233,7 +233,7 @@ public class AdministrationView {
 				}
 			}
 		});
-		
+
 		// row - user management		
 		Group rowUsers = new Group(compL, SWT.NONE);
 		rowUsers.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -280,7 +280,7 @@ public class AdministrationView {
 		final Combo comboUsers = new Combo(rowUsers, SWT.DROP_DOWN | SWT.READ_ONLY);
 		comboUsers.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
 		refreshCombo(comboUsers);	
-		
+
 		final Button btnEditUser = new Button(rowUsers, SWT.NONE);
 		btnEditUser.setToolTipText("Edit the details for this User");
 		btnEditUser.setEnabled(false);
@@ -290,7 +290,7 @@ public class AdministrationView {
 		btnEditUserPass.setToolTipText("Change the password for this User");
 		btnEditUserPass.setEnabled(false);
 		btnEditUserPass.setText("Change Password");
-		
+
 		final Button btnDelUser = new Button(rowUsers, SWT.NONE);
 		btnDelUser.setToolTipText("Delete this User from the system");
 		GridData gd_btnDelUser = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -298,7 +298,7 @@ public class AdministrationView {
 		btnDelUser.setLayoutData(gd_btnDelUser);
 		btnDelUser.setEnabled(false);
 		btnDelUser.setText("Delete");
-		
+
 		// change password button behaviour
 		btnEditUserPass.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -307,7 +307,7 @@ public class AdministrationView {
 				if(eupf.complete()) {
 					EsmApplication.alert("The user password was updated!");
 				}
-			
+
 			}			
 		});
 		// edit button behaviour
@@ -552,19 +552,19 @@ public class AdministrationView {
 		lblExport.setText("Generate a data export file to send manually by email");
 		lblExport.setBackground(C.APP_BGCOLOR);
 		btnExport.setToolTipText(lblExport.getText());		
-		
+
 		Label lblExportOptions = new Label(rowRight1, SWT.HORIZONTAL);
 		lblExportOptions.setFont(C.FONT_11B);
 		lblExportOptions.setText("File Options:");
 		lblExportOptions.setBackground(C.APP_BGCOLOR);
 		lblExportOptions.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));	
-		
+
 		Composite exportOptions = new Composite(rowRight1, SWT.NONE);
 		exportOptions.setLayout(new RowLayout(SWT.HORIZONTAL));
 		GridData gd_exportOptions = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_exportOptions.horizontalIndent = 5;
 		exportOptions.setLayoutData(gd_exportOptions);			
-		
+
 		final Combo select = new Combo(exportOptions, SWT.NONE);
 		select.setFont(C.FONT_9);
 		select.add("All Spaces");
@@ -577,13 +577,13 @@ public class AdministrationView {
 			}
 		} catch (SQLException ex) {}
 		select.select(0);
-		
+
 		final Button radioExport_radio1 = new Button(exportOptions, SWT.RADIO);
 		radioExport_radio1.setText("All Data");
 		radioExport_radio1.setFont(C.FONT_9);
 		radioExport_radio1.setBackground(C.APP_BGCOLOR);
 		radioExport_radio1.setSelection(true);
-		
+
 		final Button radioExport_radio2 = new Button(exportOptions, SWT.RADIO);
 		radioExport_radio2.setText("Exclude Photos && Documents");
 		radioExport_radio2.setFont(C.FONT_9);
@@ -592,16 +592,22 @@ public class AdministrationView {
 		btnExport.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
+				File f = null;
 				int spaceID = (Integer) select.getData(select.getText());
 				boolean alldata = radioExport_radio1.getSelection();
-				File f = DatabaseController.generateZipFile();
-				if (f.exists()) {					
+				if(spaceID == 0) {
+					f = (alldata) ? DatabaseController.generateZipFile() : DatabaseController.generateZipFileNoBinary();
+				} else {
+					f = (alldata) ? DatabaseController.generateZipFileForSpace(spaceID) : DatabaseController.generateZipFileForSpaceNoBinary(spaceID);
+				}
+				if (f != null && f.exists()) {					
 					EsmApplication.alert("Data Export file created successfully");
 					Program.launch(C.TMP_DIR);
 				} else {
 					LogController.logEvent(this, C.ERROR, "Error exporting data");
 				}
-
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 			}
 		});
 
@@ -622,13 +628,13 @@ public class AdministrationView {
 		lblSendOptions.setText("File Options:");
 		lblSendOptions.setBackground(C.APP_BGCOLOR);
 		lblSendOptions.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));	
-		
+
 		Composite sendOptions = new Composite(rowRight1, SWT.NONE);
 		sendOptions.setLayout(new RowLayout(SWT.HORIZONTAL));
 		GridData gd_sendOptions = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_sendOptions.horizontalIndent = 5;
 		sendOptions.setLayoutData(gd_sendOptions);			
-		
+
 		final Combo select2 = new Combo(sendOptions, SWT.NONE);
 		select2.setFont(C.FONT_9);
 		select2.add("All Spaces");
@@ -641,13 +647,13 @@ public class AdministrationView {
 			}
 		} catch (SQLException ex) {}
 		select2.select(0);
-		
+
 		final Button radioSend_radio1 = new Button(sendOptions, SWT.RADIO);
 		radioSend_radio1.setText("All Data");
 		radioSend_radio1.setFont(C.FONT_9);
 		radioSend_radio1.setBackground(C.APP_BGCOLOR);
 		radioSend_radio1.setSelection(true);
-		
+
 		final Button radioSend_radio2 = new Button(sendOptions, SWT.RADIO);
 		radioSend_radio2.setText("Exclude Photos && Documents");
 		radioSend_radio2.setFont(C.FONT_9);
@@ -660,8 +666,13 @@ public class AdministrationView {
 				boolean alldata = radioSend_radio1.getSelection();
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				if (InternetController.checkNetAccess()) {
-					File f = DatabaseController.generateZipFile();
-					if (f.exists()) {					
+					File f = null;
+					if(spaceID == 0) {
+						f = (alldata) ? DatabaseController.generateZipFile() : DatabaseController.generateZipFileNoBinary();
+					} else {
+						f = (alldata) ? DatabaseController.generateZipFileForSpace(spaceID) : DatabaseController.generateZipFileForSpaceNoBinary(spaceID);
+					}
+					if (f != null && f.exists()) {					
 						if(InternetController.uploadFileFTP(f.getPath(), f.getName())) {
 							EsmApplication.alert("File uploaded successfully");
 						} else {
@@ -679,14 +690,14 @@ public class AdministrationView {
 		});
 
 
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
 
 		scrollPanelRight.setContent(compR);
 		scrollPanelRight.setExpandVertical(true);
