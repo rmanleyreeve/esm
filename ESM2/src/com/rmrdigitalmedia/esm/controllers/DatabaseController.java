@@ -27,7 +27,6 @@ import net.coobird.thumbnailator.Thumbnails;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.ProgressBar;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
@@ -52,9 +51,6 @@ class EmptyDataException extends Exception {
 }	
 
 public class DatabaseController {
-
-
-	public ProgressBar bar;
 
 	public DatabaseController() {
 		LogController.log("Running class " + this.getClass().getName());
@@ -112,7 +108,6 @@ public class DatabaseController {
 
 		} catch (SQLException e) {
 			LogController.logEvent(DatabaseController.class, C.FATAL, "DB SETUP FAILED", e);
-			// e.printStackTrace();
 			System.exit(0);
 		}
 		close(conn);
@@ -130,7 +125,7 @@ public class DatabaseController {
 			runQuery(sql);
 			LogController.log("OK");
 		} catch (SQLException e) {
-			LogController.logEvent(DatabaseController.class, C.ERROR, "SQL LOAD FAILED", e);
+			LogController.logEvent(DatabaseController.class, C.FATAL, "SQL LOAD FAILED", e);
 			AppLoader.die("Failed to load SQL file '" + fName + "'");
 		}
 	}
@@ -318,7 +313,6 @@ public class DatabaseController {
 		return img;
 	}
 
-
 	// DB EXPORT METHODS =============================================================================================================
 
 	public static File generateZipFile() {
@@ -368,6 +362,67 @@ public class DatabaseController {
 			for(SpacesTable.Row sRow:SpacesTable.getRows("DELETED=FALSE")) {
 				if(!sRow.isSignoffIDNull()) {
 					if(!PdfController.buildAudit(sRow.getID(), true)) {
+						pdf = false;
+					}
+				}
+			}
+		} catch (SQLException e) {
+			LogController.logEvent(PdfTest.class, C.ERROR, "Error getting DB data for PDF document", e);
+		} catch (DocumentException e) {
+			LogController.logEvent(PdfTest.class, C.ERROR, "Error getting PDF document", e);
+		}						
+		// zip up folder
+		File zf = null;
+		if(pdf && csv) {
+			zf = ZipController.createZipFile(new File(dir), 0);
+		}		
+		return zf;
+	}
+
+	public static File generateZipFileNoBinary() {
+		boolean csv = false;
+		boolean pdf = true;
+		String license = "";
+		try {
+			license = LicenseTable.getAllRows()[0].getLicensekey();
+		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
+		}
+		String dir = C.TMP_DIR + C.SEP + license;		
+		// CSV data from DB tables
+		try {
+			Connection conn = createConnection();
+			String[] tables = {
+					"VESSEL",
+					"LICENSE",
+					"ESM_USERS",
+					"SPACES",
+					"ENTRYPOINTS",
+					"SPACE_COMMENTS",
+					"SPACE_CHECKLIST_AUDIT",
+					"ENTRYPOINT_CHECKLIST_AUDIT",
+					"SPACE_CLASSIFICATION_AUDIT",
+					"ENTRYPOINT_CLASSIFICATION_AUDIT"
+			};
+			for(String table:tables) {
+				String fn = dir + C.SEP + table + ".csv";
+				String sql = "CALL CSVWRITE('" + fn + "', 'SELECT * FROM "+table+"', 'charset=UTF-8');";
+				Statement stmt = conn.createStatement();
+				stmt.executeQuery(sql);
+				stmt.close();
+				csv = true;
+				LogController.log("Exported: " + fn);
+			}
+			close(conn);
+		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Error creating CSV file", ex);		
+		}		
+		// PDF docs
+		PdfController.setPath(dir);
+		try {
+			for(SpacesTable.Row sRow:SpacesTable.getRows("DELETED=FALSE")) {
+				if(!sRow.isSignoffIDNull()) {
+					if(!PdfController.buildAudit(sRow.getID(), false)) {
 						pdf = false;
 					}
 				}
@@ -444,67 +499,6 @@ public class DatabaseController {
 		File zf = null;
 		if(pdf && csv) {
 			zf = ZipController.createZipFile(new File(dir), spaceID);
-		}		
-		return zf;
-	}
-
-	public static File generateZipFileNoBinary() {
-		boolean csv = false;
-		boolean pdf = true;
-		String license = "";
-		try {
-			license = LicenseTable.getAllRows()[0].getLicensekey();
-		} catch (SQLException ex) {
-			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
-		}
-		String dir = C.TMP_DIR + C.SEP + license;		
-		// CSV data from DB tables
-		try {
-			Connection conn = createConnection();
-			String[] tables = {
-					"VESSEL",
-					"LICENSE",
-					"ESM_USERS",
-					"SPACES",
-					"ENTRYPOINTS",
-					"SPACE_COMMENTS",
-					"SPACE_CHECKLIST_AUDIT",
-					"ENTRYPOINT_CHECKLIST_AUDIT",
-					"SPACE_CLASSIFICATION_AUDIT",
-					"ENTRYPOINT_CLASSIFICATION_AUDIT"
-			};
-			for(String table:tables) {
-				String fn = dir + C.SEP + table + ".csv";
-				String sql = "CALL CSVWRITE('" + fn + "', 'SELECT * FROM "+table+"', 'charset=UTF-8');";
-				Statement stmt = conn.createStatement();
-				stmt.executeQuery(sql);
-				stmt.close();
-				csv = true;
-				LogController.log("Exported: " + fn);
-			}
-			close(conn);
-		} catch (SQLException ex) {
-			LogController.logEvent(DatabaseController.class, C.FATAL, "Error creating CSV file", ex);		
-		}		
-		// PDF docs
-		PdfController.setPath(dir);
-		try {
-			for(SpacesTable.Row sRow:SpacesTable.getRows("DELETED=FALSE")) {
-				if(!sRow.isSignoffIDNull()) {
-					if(!PdfController.buildAudit(sRow.getID(), false)) {
-						pdf = false;
-					}
-				}
-			}
-		} catch (SQLException e) {
-			LogController.logEvent(PdfTest.class, C.ERROR, "Error getting DB data for PDF document", e);
-		} catch (DocumentException e) {
-			LogController.logEvent(PdfTest.class, C.ERROR, "Error getting PDF document", e);
-		}						
-		// zip up folder
-		File zf = null;
-		if(pdf && csv) {
-			zf = ZipController.createZipFile(new File(dir), 0);
 		}		
 		return zf;
 	}
