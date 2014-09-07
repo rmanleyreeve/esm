@@ -965,7 +965,7 @@ public class PdfController {
 				p = new Paragraph("Additional Information", font1);
 				p.setSpacingBefore(ls);
 				document.add(p);			
-				p = new Paragraph("The following information comprises of comments and photographs supplied by the crew:", font2);
+				p = new Paragraph("The following information comprises of comments and photographs supplied by the users of the system:", font2);
 				p.setSpacingAfter(ls);
 				document.add(p);
 
@@ -997,9 +997,9 @@ public class PdfController {
 					document.add(p);				
 				}
 				document.add(new Paragraph(" "));
-			}
+			} // end if include binary data
 
-			document.close(); // no need to close PDFwriter?
+			document.close();
 			ok = true;
 
 		} catch (DocumentException e) {
@@ -1020,8 +1020,5 @@ public class PdfController {
 		Display.getCurrent().getActiveShell().setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_ARROW));
 		return ok;
 	}
-
-
-
 
 }

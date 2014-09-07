@@ -48,6 +48,7 @@ import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
+@SuppressWarnings("unused")
 public class AdministrationView {
 
 	private static Label sep;
@@ -565,6 +566,7 @@ public class AdministrationView {
 		gd_exportOptions.horizontalIndent = 5;
 		exportOptions.setLayoutData(gd_exportOptions);			
 
+		/*
 		final Combo select = new Combo(exportOptions, SWT.NONE);
 		select.setFont(C.FONT_9);
 		select.add("All Spaces");
@@ -577,6 +579,7 @@ public class AdministrationView {
 			}
 		} catch (SQLException ex) {}
 		select.select(0);
+		 */
 
 		final Button radioExport_radio1 = new Button(exportOptions, SWT.RADIO);
 		radioExport_radio1.setText("All Data");
@@ -594,13 +597,16 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				File f = null;
-				int spaceID = (Integer) select.getData(select.getText());
 				boolean alldata = radioExport_radio1.getSelection();
+				/*
+				int spaceID = (Integer) select.getData(select.getText());
 				if(spaceID == 0) {
 					f = (alldata) ? DatabaseController.generateZipFile() : DatabaseController.generateZipFileNoBinary();
 				} else {
 					f = (alldata) ? DatabaseController.generateZipFileForSpace(spaceID) : DatabaseController.generateZipFileForSpaceNoBinary(spaceID);
 				}
+				 */
+				f = (alldata) ? DatabaseController.generateZipFile() : DatabaseController.generateZipFileNoBinary();
 				if (f != null && f.exists()) {					
 					EsmApplication.alert("Data Export file created successfully");
 					Program.launch(C.TMP_DIR);
@@ -635,6 +641,7 @@ public class AdministrationView {
 		gd_sendOptions.horizontalIndent = 5;
 		sendOptions.setLayoutData(gd_sendOptions);			
 
+		/*
 		final Combo select2 = new Combo(sendOptions, SWT.NONE);
 		select2.setFont(C.FONT_9);
 		select2.add("All Spaces");
@@ -647,6 +654,7 @@ public class AdministrationView {
 			}
 		} catch (SQLException ex) {}
 		select2.select(0);
+		 */
 
 		final Button radioSend_radio1 = new Button(sendOptions, SWT.RADIO);
 		radioSend_radio1.setText("All Data");
@@ -662,16 +670,19 @@ public class AdministrationView {
 		btnSend.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				int spaceID = (Integer) select2.getData(select.getText());
-				boolean alldata = radioSend_radio1.getSelection();
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				if (InternetController.checkNetAccess()) {
 					File f = null;
+					boolean alldata = radioSend_radio1.getSelection();
+					/*
+					int spaceID = (Integer) select2.getData(select.getText());
 					if(spaceID == 0) {
 						f = (alldata) ? DatabaseController.generateZipFile() : DatabaseController.generateZipFileNoBinary();
 					} else {
 						f = (alldata) ? DatabaseController.generateZipFileForSpace(spaceID) : DatabaseController.generateZipFileForSpaceNoBinary(spaceID);
 					}
+					 */
+					f = (alldata) ? DatabaseController.generateZipFile() : DatabaseController.generateZipFileNoBinary();
 					if (f != null && f.exists()) {					
 						if(InternetController.uploadFileFTP(f.getPath(), f.getName())) {
 							EsmApplication.alert("File uploaded successfully");
