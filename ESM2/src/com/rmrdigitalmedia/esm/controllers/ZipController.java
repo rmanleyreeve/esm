@@ -19,7 +19,7 @@ public class ZipController {
 
 	}
 
-	public static File createZipFile(File dir) {
+	public static File createZipFile(File dir, int spaceID) {
 		String t = ""+new Date().getTime();
 		String license = "";
 		try {
@@ -27,7 +27,7 @@ public class ZipController {
 		} catch (SQLException ex) {
 			LogController.logEvent(DatabaseController.class, C.FATAL, "Could not get license key", ex);
 		}
-		String zipName = dir.getParent() + C.SEP + license + "_" + t + ".zip";
+		String zipName = (spaceID==0) ? dir.getParent() + C.SEP + license + "_" + t + ".zip" : dir.getParent() + C.SEP + license + "_SPACE_" + spaceID + "_" + t + ".zip";
 		try {
 			FileOutputStream fos = new FileOutputStream(zipName);
 			ZipOutputStream zos = new ZipOutputStream(fos);			

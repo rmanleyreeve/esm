@@ -81,7 +81,7 @@ public class PdfTest {
 			public void widgetSelected(SelectionEvent arg0) {
 				try {
 					EsmApplication.appData = new AppData();
-					if (PdfController.buildAudit(id)) {						
+					if (PdfController.buildAudit(id, true)) {						
 						Program.launch(C.TMP_DIR + C.SEP + "SPACE_"+id+"_AUDIT.pdf");					
 					} else {
 						System.out.println("Failed to generate PDF");
