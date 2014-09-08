@@ -213,6 +213,7 @@ public class AdministrationView {
 				EditAdminForm eaf = new EditAdminForm(user.getID());
 				if(eaf.complete()) {
 					EsmApplication.alert("Your user record was updated!");
+					WindowController.showAdministration();
 				}
 			}
 		});
