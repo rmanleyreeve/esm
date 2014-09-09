@@ -1,7 +1,6 @@
 package com.rmrdigitalmedia.esm.forms;
 
 import java.sql.SQLException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -14,10 +13,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.models.PhotoDataTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 
 public class DeletePhotoDialog {
@@ -96,10 +93,12 @@ public class DeletePhotoDialog {
 				try {
 					PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow(id);
 					int dataID = pRow.getDataID();
-					PhotoDataTable.Row dRow = PhotoDataTable.getRow(dataID);
-					dRow.delete();
+					//PhotoDataTable.Row dRow = PhotoDataTable.getRow(dataID);
+					//dRow.delete();
 					LogController.log("Deleted photo " + dataID);
-					pRow.delete();
+					pRow.setDeleted("TRUE");
+					pRow.update();
+					//pRow.delete(); // DESTRUCTIVE
 					LogController.log("Deleted photo metadata " + id);
 					formOK = true;
 				} catch (SQLException ex) {

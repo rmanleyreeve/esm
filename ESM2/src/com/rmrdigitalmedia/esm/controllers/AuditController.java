@@ -499,11 +499,11 @@ public class AuditController {
 		boolean complete = true;
 		if ((Integer) EsmApplication.appData.getField("SPACE_CHK_" + spaceID) < 100) {
 			complete = false;
-			System.out.println("space check<100");
+			//System.out.println("space "+spaceID+" check<100");
 		}
 		if ((Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID) < 100) {
 			complete = false;
-			System.out.println("space class<100");
+			//System.out.println("space "+spaceID+" class<100");
 		}		
 		Connection conn = DatabaseController.createConnection();
 		PreparedStatement  ps = null;

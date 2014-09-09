@@ -93,8 +93,10 @@ public class DeleteDocumentDialog {
 			public void widgetSelected (SelectionEvent e) {
 				try {
 					DocDataTable.Row dRow = DocDataTable.getRow(id);
-					dRow.delete();
-					LogController.log("Deleted document " + id);
+					dRow.setDeleted("TRUE");
+					dRow.update();
+					//dRow.delete(); // DESTRUCTIVE
+					LogController.log("Document " + id + "marked as deleted");
 					formOK = true;
 				} catch (SQLException ex) {
 					LogController.logEvent(this, C.ERROR, ex);
