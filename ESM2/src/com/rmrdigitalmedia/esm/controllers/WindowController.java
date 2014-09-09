@@ -56,7 +56,9 @@ public class WindowController {
 	int titleH = 40;
 	int footerH = 15;
 	int buttonTop = 5;
-	Composite container, header, titleBar;
+	Composite container;
+	static Composite header;
+	Composite titleBar;
 	static Composite formHolder, pageSpacesList, pageSpaceDetail, pageAdministration, pageSpaceAudit, pageEntryAudit;
 	static Label pageTitle, logo, lblH;
 	static String displayName;
@@ -82,16 +84,21 @@ public class WindowController {
 		}
 	}
 
-	@SuppressWarnings("static-access")
 	public WindowController(EsmUsersTable.Row user) {
 		me = this;
 		WindowController.user = user;
 		isAdmin = (user.getAccessLevel()==9);
-		this.displayName = user.getRank() + " " + user.getForename() + " " + user.getSurname();
+		displayName = user.getRank() + " " + user.getForename() + " " + user.getSurname();
 		LogController.log("Running class " + this.getClass().getName());
 		LogController.log("Logged in user: " + displayName);
 	}
 
+	public static void getUserName() {
+		try {
+			EsmUsersTable.Row r = EsmUsersTable.getRow(user.getID());
+			displayName = r.getRank() + " " + r.getForename() + " " + r.getSurname();
+		} catch (SQLException e) {}
+	}
 	public void open() {
 		// set up main window
 		display = Display.getDefault();
@@ -131,12 +138,14 @@ public class WindowController {
 			txt = (String)EsmApplication.appData.getField("LOCATION_TYPE") + ": " + (String)EsmApplication.appData.getField("LOCATION_NAME") + "\n";
 			offset += 10;
 		} catch (Exception e1) { }
+		getUserName();
 		txt += "Current User: " + displayName;
 		lblH.setText(txt);
 		FormData fd_lblH = new FormData();
 		fd_lblH.left = new FormAttachment(logo, 10);
 		fd_lblH.top = new FormAttachment((headerH/2)-offset);
 		lblH.setLayoutData(fd_lblH);
+		header.layout();
 	}
 
 	protected void createContents() {
@@ -365,7 +374,7 @@ public class WindowController {
 		fd.bottom = new FormAttachment(100);
 		logo.setLayoutData (fd);
 
-		lblH = new Label(header,SWT.WRAP);
+		lblH = new Label(header,SWT.NONE);
 		lblH.setForeground(C.TITLEBAR_BGCOLOR);
 		lblH.setFont(C.HEADER_FONT);
 		lblH.setAlignment(SWT.LEFT);
