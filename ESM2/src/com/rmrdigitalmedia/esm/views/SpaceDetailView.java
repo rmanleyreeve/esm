@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.nebula.widgets.gallery.GalleryItem;
@@ -45,7 +44,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.io.Files;
 import com.itextpdf.text.DocumentException;
 import com.rmrdigitalmedia.esm.C;
@@ -68,7 +66,6 @@ import com.rmrdigitalmedia.esm.forms.EditEntrypointForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
-import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class SpaceDetailView {
@@ -244,7 +241,10 @@ public class SpaceDetailView {
 		try {
 			Connection conn = DatabaseController.createConnection();
 			PreparedStatement  ps = null;
-			String sql = "SELECT * FROM SPACE_COMMENTS WHERE DELETED=FALSE AND SPACE_ID=? ORDER BY ID DESC";
+			String sql = "SELECT SPACE_COMMENTS.*, ESM_USERS.FORENAME, ESM_USERS.SURNAME FROM SPACE_COMMENTS "
+					+ "INNER JOIN ESM_USERS ON ESM_USERS.ID = SPACE_COMMENTS.AUTHOR_ID "
+					+ "WHERE (SPACE_COMMENTS.DELETED = FALSE AND SPACE_COMMENTS.SPACE_ID=?) "
+					+ "ORDER BY SPACE_COMMENTS.ID DESC";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, spaceID);
 			final ResultSet spaceComment = ps.executeQuery();
@@ -263,14 +263,13 @@ public class SpaceDetailView {
 					commentRow.setLayout(gl_commentRow);
 					commentRow.setBackground(C.APP_BGCOLOR);
 
-					EsmUsersTable.Row author = EsmUsersTable.getRow(spaceComment.getInt("AUTHOR_ID"));
 					Label lblAuthor = new Label(commentRow, SWT.NONE);
 					GridData gd_lblAuthor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1);
 					gd_lblAuthor.horizontalIndent = 1;
 					lblAuthor.setLayoutData(gd_lblAuthor);
 					lblAuthor.setFont(C.FONT_9);
 					lblAuthor.setBackground(C.APP_BGCOLOR);
-					lblAuthor.setText(author.getForename() + " " + author.getSurname());		
+					lblAuthor.setText(spaceComment.getString("FORENAME") + " " + spaceComment.getString("SURNAME"));		
 
 					Text comment = new Text(commentRow, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY);
 					comment.setText(spaceComment.getString("COMMENT"));
@@ -293,7 +292,7 @@ public class SpaceDetailView {
 					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 					lblPosted.setText("Posted: " + sdf.format(spaceComment.getTimestamp("UPDATE_DATE")));
 
-					if( access==9 || user.getID()==author.getID())	{	
+					if( access==9 || user.getID()==spaceComment.getInt("AUTHOR_ID"))	{	
 						Button btnEditComment = new Button(commentRow, SWT.NONE);
 						GridData gd_btnEditComment = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 						gd_btnEditComment.horizontalIndent = 5;
@@ -760,84 +759,96 @@ public class SpaceDetailView {
 		btnOpenPhoto.setVisible(false);
 
 		// PHOTOS ===============================
-		PhotoMetadataTable.Row[] pRows = null;
 		try {
-			pRows = PhotoMetadataTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID+" ORDER BY ID DESC");
+			Connection conn = DatabaseController.createConnection();
+			PreparedStatement ps = null;
+			ResultSet pRow = null;
+			String sql = "SELECT * FROM PHOTO_METADATA WHERE DELETED=FALSE AND SPACE_ID=? ORDER BY ID DESC";
+			ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ps.setInt(1, spaceID);
+			pRow = ps.executeQuery();
+			int rowcount = 0;
+			if (pRow.last()) {
+				rowcount = pRow.getRow();
+				pRow.beforeFirst();
+			}				
+			if (rowcount > 0) {
+				// photos exist - show gallery
+				btnOpenPhoto.setVisible(true);
+				Composite gallHolder = new Composite(rowRight3, SWT.NONE);
+				GridData gd_gallHolder = new GridData(SWT.FILL, SWT.FILL, true, false);
+				gd_gallHolder.horizontalSpan = 3;
+				gallHolder.setLayoutData(gd_gallHolder);
+				gallHolder.setLayout(new GridLayout(1, true));
+				gallHolder.setBackground(C.FIELD_BGCOLOR);
+
+				final Gallery gallery = new Gallery(gallHolder, SWT.MULTI | SWT.H_SCROLL);
+				GridData gd_gallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+				gd_gallery.minimumHeight = C.THUMB_HEIGHT + 15;
+				gallery.setLayoutData(gd_gallery);
+				gallery.setBackground(C.FIELD_BGCOLOR);
+
+				NoGroupRenderer gr = new NoGroupRenderer();
+				gr.setMinMargin(0);
+				gr.setItemHeight(C.THUMB_HEIGHT);
+				gr.setItemWidth(C.THUMB_WIDTH);
+				gr.setAutoMargin(true);
+				gallery.setGroupRenderer(gr);
+				gallery.setToolTipText("Double-click a thumbnail image to open full size view");
+
+				DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
+				ir.setShowRoundedSelectionCorners(false);
+				gallery.setItemRenderer(ir);
+
+				GalleryItem group = new GalleryItem(gallery, SWT.NONE);
+
+				while(pRow.next()) {
+					int dataID = pRow.getInt("DATA_ID");
+					Image itemImage = DatabaseController.readImageDataThumb(dataID);	
+					if (itemImage != null) {
+						GalleryItem item = new GalleryItem(group, SWT.NONE);
+						item.setImage(itemImage);
+						item.setData("id", dataID);
+						item.setText(pRow.getString("TITLE")); 
+					}
+				}		
+				gallery.addMouseListener(new MouseListener() {
+					@Override
+					public void mouseDoubleClick(MouseEvent e) {
+						GalleryItem[] selection = gallery.getSelection();
+						if (selection == null || selection.length == 0)
+							return;
+						GalleryItem item = selection[0];
+						int _dataID = (Integer) item.getData("id");
+						LogController.log("Opening Image " + _dataID);
+						WindowController.showPhotoViewer(_dataID);
+					}
+					@Override
+					public void mouseDown(MouseEvent e) {
+						btnOpenPhoto.setEnabled( (gallery.getSelection().length > 0) );
+					}
+					@Override
+					public void mouseUp(MouseEvent e) {}
+				});
+
+				btnOpenPhoto.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						GalleryItem[] selection = gallery.getSelection();
+						if (selection == null)
+							return;
+						GalleryItem item = selection[0];
+						int _dataID = (Integer) item.getData("id");
+						LogController.log("Opening Image " + _dataID);
+						WindowController.showPhotoViewer(_dataID);					
+					}
+				});
+
+			} // endif photos > 0
 		} catch (SQLException ex) {
-			LogController.logEvent(me, C.ERROR, "Error getting photo metadata from database", ex);		}
-		if (pRows.length > 0) {
-			// photos exist - show gallery
-			btnOpenPhoto.setVisible(true);
-			Composite gallHolder = new Composite(rowRight3, SWT.NONE);
-			GridData gd_gallHolder = new GridData(SWT.FILL, SWT.FILL, true, false);
-			gd_gallHolder.horizontalSpan = 3;
-			gallHolder.setLayoutData(gd_gallHolder);
-			gallHolder.setLayout(new GridLayout(1, true));
-			gallHolder.setBackground(C.FIELD_BGCOLOR);
+			LogController.logEvent(me, C.ERROR, "Error getting photo metadata from database", ex);		
+		}
 
-			final Gallery gallery = new Gallery(gallHolder, SWT.MULTI | SWT.H_SCROLL);
-			GridData gd_gallery = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-			gd_gallery.minimumHeight = C.THUMB_HEIGHT + 15;
-			gallery.setLayoutData(gd_gallery);
-			gallery.setBackground(C.FIELD_BGCOLOR);
-
-			NoGroupRenderer gr = new NoGroupRenderer();
-			gr.setMinMargin(0);
-			gr.setItemHeight(C.THUMB_HEIGHT);
-			gr.setItemWidth(C.THUMB_WIDTH);
-			gr.setAutoMargin(true);
-			gallery.setGroupRenderer(gr);
-			gallery.setToolTipText("Double-click a thumbnail image to open full size view");
-
-			DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
-			ir.setShowRoundedSelectionCorners(false);
-			gallery.setItemRenderer(ir);
-
-			GalleryItem group = new GalleryItem(gallery, SWT.NONE);
-
-			for (PhotoMetadataTable.Row pRow : pRows) {
-				int dataID = pRow.getDataID();
-				Image itemImage = DatabaseController.readImageDataThumb(dataID);	
-				if (itemImage != null) {
-					GalleryItem item = new GalleryItem(group, SWT.NONE);
-					item.setImage(itemImage);
-					item.setData("id", dataID);
-					item.setText(pRow.getTitle()); 
-				}
-			}		
-			gallery.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseDoubleClick(MouseEvent e) {
-					GalleryItem[] selection = gallery.getSelection();
-					if (selection == null || selection.length == 0)
-						return;
-					GalleryItem item = selection[0];
-					int _dataID = (Integer) item.getData("id");
-					LogController.log("Opening Image " + _dataID);
-					WindowController.showPhotoViewer(_dataID);
-				}
-				@Override
-				public void mouseDown(MouseEvent e) {
-					btnOpenPhoto.setEnabled( (gallery.getSelection().length > 0) );
-				}
-				@Override
-				public void mouseUp(MouseEvent e) {}
-			});
-
-			btnOpenPhoto.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent arg0) {
-					GalleryItem[] selection = gallery.getSelection();
-					if (selection == null)
-						return;
-					GalleryItem item = selection[0];
-					int _dataID = (Integer) item.getData("id");
-					LogController.log("Opening Image " + _dataID);
-					WindowController.showPhotoViewer(_dataID);					
-				}
-			});
-
-		} // endif photos > 0
 
 		// row 4 - docs header & button bar		
 		Group rowRight4 = new Group(compR, SWT.NONE);
@@ -899,7 +910,10 @@ public class SpaceDetailView {
 			Connection conn = DatabaseController.createConnection();
 			PreparedStatement ps = null;
 			ResultSet dRow = null;
-			String sql = "SELECT DOC_DATA.*, ESM_USERS.FORENAME, ESM_USERS.SURNAME FROM DOC_DATA INNER JOIN ESM_USERS ON ESM_USERS.ID = DOC_DATA.AUTHOR_ID WHERE SPACE_ID=? ORDER BY DOC_DATA.ID DESC";
+			String sql = "SELECT DOC_DATA.*, ESM_USERS.FORENAME, ESM_USERS.SURNAME FROM DOC_DATA "
+					+ "INNER JOIN ESM_USERS ON ESM_USERS.ID = DOC_DATA.AUTHOR_ID "
+					+ "WHERE (DOC_DATA.DELETED = FALSE AND DOC_DATA.SPACE_ID=?) "
+					+ "ORDER BY DOC_DATA.ID DESC";
 			ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ps.setInt(1, spaceID);
 			dRow = ps.executeQuery();
@@ -942,7 +956,10 @@ public class SpaceDetailView {
 					}
 					title += ")";
 					//LogController.log("Document found: " + docID);
-					ImageData iconData = Program.findProgram(ext).getImageData();
+					ImageData iconData = C.getImage("default-doc.png").getImageData();
+					try {
+						iconData = Program.findProgram(ext).getImageData();
+					} catch (Exception ex) {}
 					Image itemImage = new Image(Display.getCurrent(), iconData);
 					TableItem item = new TableItem(table, SWT.NONE); 
 					item.setBackground(C.FIELD_BGCOLOR);
@@ -1058,7 +1075,7 @@ public class SpaceDetailView {
 		} else {
 			lblAuthName.setText(C.SPACE_NOT_AUTH);
 		}
-		
+
 		final Button btnPrint = new Button(rowRight5, SWT.NONE);
 		btnPrint.setToolTipText("Produce a printable PDF of the completed audit for this space and its entry points");
 		btnPrint.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
