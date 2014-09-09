@@ -173,9 +173,8 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				EditVesselForm evf = new EditVesselForm();					
 				if(evf.complete()) {
-					LogController.log(type + " edited in database");
+					EsmApplication.alert("Info updated in system.");
 					WindowController.setHeaderLabelText();
-					WindowController.showAdministration();				
 				}
 			}
 		});
@@ -212,8 +211,8 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				EditAdminForm eaf = new EditAdminForm(user.getID());
 				if(eaf.complete()) {
-					EsmApplication.alert("Your user record was updated!");
-					WindowController.showAdministration();
+					EsmApplication.alert("Your user record was updated.");
+					WindowController.setHeaderLabelText();
 				}
 			}
 		});
@@ -231,7 +230,7 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				EditUserPasswordForm eupf = new EditUserPasswordForm(user.getID());
 				if(eupf.complete()) {
-					EsmApplication.alert("Your user password was updated!");
+					EsmApplication.alert("Your user password was updated.");
 				}
 			}
 		});
@@ -259,16 +258,6 @@ public class AdministrationView {
 		GridData gd_btnAddUser = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
 		gd_btnAddUser.verticalIndent = 3;
 		btnAddUser.setLayoutData(gd_btnAddUser);
-		btnAddUser.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				AddUserForm auf = new AddUserForm();					
-				if(auf.complete()) {
-					LogController.log("New User saved in database");
-					WindowController.showAdministration();				
-				}
-			}
-		});
 		btnAddUser.setImage(C.getImage("add.png"));
 		btnAddUser.setText("Add User");
 
@@ -301,15 +290,25 @@ public class AdministrationView {
 		btnDelUser.setEnabled(false);
 		btnDelUser.setText("Delete");
 
+		// add user button behaviour
+		btnAddUser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				AddUserForm auf = new AddUserForm();					
+				if(auf.complete()) {
+					EsmApplication.alert("New User added to system.");
+					refreshCombo(comboUsers);
+				}
+			}
+		});
 		// change password button behaviour
 		btnEditUserPass.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				EditUserPasswordForm eupf = new EditUserPasswordForm(selectedUser);
 				if(eupf.complete()) {
-					EsmApplication.alert("The user password was updated!");
+					EsmApplication.alert("The user password was updated.");
 				}
-
 			}			
 		});
 		// edit button behaviour
@@ -318,7 +317,7 @@ public class AdministrationView {
 			public void widgetSelected(SelectionEvent arg0) {
 				EditUserForm euf = new EditUserForm(selectedUser);
 				if(euf.complete()) {
-					EsmApplication.alert("The user record was updated!");
+					EsmApplication.alert("The user record was updated.");
 					refreshCombo(comboUsers);
 					btnEditUser.setEnabled(false);
 					btnDelUser.setEnabled(false);
@@ -332,7 +331,7 @@ public class AdministrationView {
 				DeleteUserDialog dud = new DeleteUserDialog();					
 				if(dud.deleteOK(selectedUser)) {
 					LogController.log("User " + selectedUser + " marked as deleted in database");
-					EsmApplication.alert("The user record was deleted!");
+					EsmApplication.alert("The user record was deleted.");
 					refreshCombo(comboUsers);
 					btnEditUser.setEnabled(false);
 					btnDelUser.setEnabled(false);
@@ -609,7 +608,7 @@ public class AdministrationView {
 				 */
 				f = (alldata) ? DatabaseController.generateZipFile() : DatabaseController.generateZipFileNoBinary();
 				if (f != null && f.exists()) {					
-					EsmApplication.alert("Data Export file created successfully");
+					EsmApplication.alert("Data Export file created successfully.");
 					Program.launch(C.TMP_DIR);
 				} else {
 					LogController.logEvent(this, C.ERROR, "Error exporting data");
@@ -686,7 +685,7 @@ public class AdministrationView {
 					f = (alldata) ? DatabaseController.generateZipFile() : DatabaseController.generateZipFileNoBinary();
 					if (f != null && f.exists()) {					
 						if(InternetController.uploadFileFTP(f.getPath(), f.getName())) {
-							EsmApplication.alert("File uploaded successfully");
+							EsmApplication.alert("File created and uploaded successfully.");
 						} else {
 							LogController.logEvent(this, C.ERROR, "Error uploading file");
 						}					
@@ -695,15 +694,11 @@ public class AdministrationView {
 					}
 				} else {
 					LogController.logEvent(this, C.ERROR, "No internet connection for FTP export");
-					EsmApplication.alert("ERROR: No Internet connection");
+					EsmApplication.alert("ERROR: No Internet connection!");
 				}
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 			}
 		});
-
-
-
-
 
 
 
