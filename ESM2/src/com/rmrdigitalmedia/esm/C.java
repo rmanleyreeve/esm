@@ -190,7 +190,7 @@ public final class C {
 		} else if (no.getSelection()) {
 			return "N";
 		} else {
-			return null;
+			return "";
 		}
 	}
 

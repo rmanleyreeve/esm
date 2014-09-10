@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -34,6 +36,7 @@ public class PhotoViewer {
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
+			WindowController.user = EsmUsersTable.getRow(1);
 			Shell shell = new Shell();
 			new PhotoViewer(shell, 1);
 		} catch (Exception e) {
@@ -66,6 +69,14 @@ public class PhotoViewer {
 			shell.setImage(C.getImage(C.APP_ICON_16));
 			shell.setText("Videotel ESM");
 			shell.setSize(820, 750);
+			shell.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent ke) {
+					if (ke.keyCode == SWT.ESC) {
+						shell.dispose();
+					}
+				}
+			});
 
 			final Composite imgHolder = new Composite(shell, SWT.NONE);
 			GridLayout gl_imgHolder = new GridLayout(3, true);
@@ -185,6 +196,7 @@ public class PhotoViewer {
 			int y = bounds.y + ((bounds.height / 2) - (rect.height / 2));
 			shell.setLocation(x, y);
 			shell.open();
+
 
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch())
