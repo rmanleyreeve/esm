@@ -155,7 +155,7 @@ public class AppLoader {
 							@Override
 							public void run() {
 								// notify GUI
-								// System.out.println("COMPLETE");
+								// LogController.log("COMPLETE");
 							}
 
 						});

@@ -872,8 +872,8 @@ public class EntryAuditChecklistView {
 				// commit the transaction
 				aRow.update();
 				HashMap<String,Object> newVals = AuditController.getEntrypointChecklistArray(entryID,spaceID);
-				System.out.println(currentVals.toString());
-				System.out.println(newVals.toString());
+				LogController.log(currentVals.toString());
+				LogController.log(newVals.toString());
 				if(AuditController.isSpaceSignedOff(spaceID) && !newVals.equals(currentVals)) {
 					EsmApplication.alert(C.SIGNOFF_REVOKE_MESSAGE);
 					AuditController.revokeSignOff(spaceID);
