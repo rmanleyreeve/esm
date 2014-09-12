@@ -228,7 +228,7 @@ public class EditVesselForm {
 		Label lblOwner = new Label(form, SWT.NONE);
 		lblOwner.setBackground(C.APP_BGCOLOR);
 		lblOwner.setText("Owner:");	
-		owner = new Text(form, SWT.BORDER | SWT.MULTI);
+		owner = new Text(form, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		GridData gd_owner = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_owner.heightHint = 60;
 		gd_owner.widthHint = 240;

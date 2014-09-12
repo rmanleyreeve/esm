@@ -202,6 +202,8 @@ public class AddUserForm {
 			accessLevels.add(levels[i]);
 			accessLevels.setData(levels[i],i);
 		}
+		accessLevels.add("Administrator");
+		accessLevels.setData("Administrator",9);
 		accessLevels.select(1);
 		GridData gd_access = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_access.widthHint = 160;

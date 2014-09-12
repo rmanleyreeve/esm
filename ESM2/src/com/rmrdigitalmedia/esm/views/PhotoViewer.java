@@ -38,7 +38,7 @@ public class PhotoViewer {
 		try {
 			WindowController.user = EsmUsersTable.getRow(1);
 			Shell shell = new Shell();
-			new PhotoViewer(shell, 1);
+			new PhotoViewer(shell, 3);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

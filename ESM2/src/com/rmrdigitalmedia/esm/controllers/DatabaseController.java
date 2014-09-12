@@ -582,13 +582,11 @@ public class DatabaseController {
 		try {
 			EsmUsersTable.Row[] rows = EsmUsersTable.getRows("ACCESS_LEVEL=9 AND DELETED=FALSE");
 			LogController.log("Found: " + rows.length);
-			if (rows.length == 1) {
-				EsmUsersTable.Row row = rows[0];
+			if (rows.length > 0) {
 				ok = true;
-				LogController.log("Admin Found");
-				EsmApplication.appData.setField("ADMIN", row.getUsername());
+				LogController.log("Admin User(s) Found");
 			} else {
-				LogController.log("Admin NOT Found");
+				LogController.log("No Admin User Found");
 			}
 		} catch (SQLException e) {
 			LogController.logEvent(DatabaseController.class, C.ERROR, "Admin check", e);

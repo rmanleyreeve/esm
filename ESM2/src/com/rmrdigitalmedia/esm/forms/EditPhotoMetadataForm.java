@@ -142,7 +142,7 @@ public class EditPhotoMetadataForm {
 		Label lblSDesc = new Label(form, SWT.NONE);
 		lblSDesc.setBackground(C.APP_BGCOLOR);
 		lblSDesc.setText("Photo\nComment:");	
-		p_comment = new Text(form, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		p_comment = new Text(form, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		p_comment.setText(pRow.getComment());
 		GridData gd_sdesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_sdesc.heightHint = 80;

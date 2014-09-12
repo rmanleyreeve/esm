@@ -160,7 +160,7 @@ public class EntryAuditClassificationView {
 	}	
 	// comments field
 	private static Text MakeColumn5(Composite comp, boolean hide) {
-		Text comments = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		Text comments = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.MULTI | SWT.V_SCROLL);
 		comments.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		comments.setEditable(true);
 		comments.setFont(C.FONT_10);

@@ -165,7 +165,7 @@ public class SpaceAuditClassificationView {
 	}	
 	// comments field
 	private static Text MakeColumn5(Composite comp, boolean hide) {
-		Text comments = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		Text comments = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.MULTI | SWT.V_SCROLL);
 		comments.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		comments.setEditable(true);
 		comments.setFont(C.FONT_10);
@@ -267,7 +267,7 @@ public class SpaceAuditClassificationView {
 		lblHint.setText("Hint");
 		CLabel lblOptions = new CLabel(tbl, SWT.LEFT);
 		GridData gd_lblOptions = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gd_lblOptions.widthHint = 150;
+		gd_lblOptions.widthHint = 170;
 		gd_lblOptions.heightHint = colHeaderH;
 		lblOptions.setLayoutData(gd_lblOptions);
 		lblOptions.setBackground(C.AUDIT_COLHEADER_BGCOLOR);
@@ -545,17 +545,17 @@ public class SpaceAuditClassificationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(q7_radio1.getSelection()) {
-					EsmApplication.alert("Be aware to check moving contents");
+					EsmApplication.alert(C.SPACE_AUDIT_Q7_ALERT);
 					//new SpaceAlert(WindowController.getShell());	
 				}
 			}
 		});		
-		// Q7 toggle alert message
+		// Q8 toggle alert message
 		q8_radio1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(q8_radio1.getSelection()) {
-					EsmApplication.alert("Be aware to check rusty materials");
+					EsmApplication.alert(C.SPACE_AUDIT_Q8_ALERT);
 					//new SpaceAlert(WindowController.getShell());
 				}
 			}

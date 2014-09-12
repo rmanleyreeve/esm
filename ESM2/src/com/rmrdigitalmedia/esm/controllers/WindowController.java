@@ -297,6 +297,7 @@ public class WindowController {
 				checkSpaceAlert(currentSpaceId);
 			}
 		});
+	
 		btnViewSpaceDetails.setText("Details");
 		btnViewSpaceDetails.setFont(C.BUTTON_FONT);
 		btnViewSpaceDetails.setBackground(C.TITLEBAR_BGCOLOR);

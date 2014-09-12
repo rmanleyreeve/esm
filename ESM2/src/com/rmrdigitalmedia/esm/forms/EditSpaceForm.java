@@ -139,7 +139,7 @@ public class EditSpaceForm {
 		Label lblSDesc = new Label(form, SWT.NONE);
 		lblSDesc.setBackground(C.APP_BGCOLOR);
 		lblSDesc.setText("Space\nDescription:");	
-		s_description = new Text(form, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		s_description = new Text(form, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		s_description.setText(sRow.getDescription());
 		GridData gd_sdesc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_sdesc.heightHint = 80;
@@ -187,6 +187,7 @@ public class EditSpaceForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shell.setLocation (x, y);		  		
 		shell.setDefaultButton (ok);		
+		new Label(form, SWT.NONE);
 
 		shell.open ();
 		shell.layout();
