@@ -209,15 +209,19 @@ public class DatabaseController {
 	public static int insertImageData(File f) throws IOException, EmptyDataException {
 		long id = 0;
 		if(f.length()==0) {
+			LogController.log("Selected file appears to be empty!");
 			return 0;
-			//throw new EmptyDataException("The file appears to be empty");
 		}
 		String mimeType = FilesystemController.getMimeType(f);
-		Connection conn = createConnection();
 		BufferedImage bimg = ImageIO.read(f);
+		if (bimg == null) {
+			LogController.log("Selected file does not appear to be an image file!");
+			return 0;
+		}
 		int srcW = bimg.getWidth();
 		int srcH = bimg.getHeight();
 		OutputStream osF = new ByteArrayOutputStream();
+		Connection conn = createConnection();
 		try {
 			String sql = "INSERT INTO PHOTO_DATA (DATA_FULL, DATA_THUMB, MIME_TYPE, CREATED_DATE, REMOTE_IDENTIFIER) VALUES (?,?,?,?,?)";
 			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
