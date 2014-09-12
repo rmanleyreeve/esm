@@ -1092,11 +1092,18 @@ public class SpaceDetailView {
 
 		final Button btnPrint = new Button(rowRight5, SWT.NONE);
 		btnPrint.setToolTipText("Produce a printable PDF of the completed audit for this space and its entry points");
-		btnPrint.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		btnPrint.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		btnPrint.setImage(C.getImage("print.png"));
 		btnPrint.setText("Create Space Report (PDF)");
 		btnPrint.setEnabled(signedoff);
 		btnPrint.setVisible(signedoff);
+		
+		final Label btnPrintText = new Label(rowRight5, SWT.WRAP);
+		btnPrintText.setFont(C.FONT_8);
+		btnPrintText.setBackground(C.APP_BGCOLOR);
+		btnPrintText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		btnPrintText.setText("(This report includes the Space && Entrypoint Audits, comments and photos.\nIt does NOT include documents.)");
+		
 
 		btnSignOff.addSelectionListener(new SelectionAdapter() {
 			@Override
