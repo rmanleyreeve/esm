@@ -567,7 +567,7 @@ public class DatabaseController {
 		boolean ok = false;
 		try {
 			Connection conn = createConnection();
-			String fn = C.TMP_DIR + C.SEP + new Date().getTime() + "_dump.zip";
+			String fn = C.TMP_DIR + C.SEP + new Date().getTime() + "_db-backup.zip";
 			String sql = "BACKUP TO '" + fn + "';";
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);

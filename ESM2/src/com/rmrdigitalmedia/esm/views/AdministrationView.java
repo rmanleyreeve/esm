@@ -529,8 +529,8 @@ public class AdministrationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if (DatabaseController.dumpDatabase()) {
-					//Program.launch(C.TMP_DIR);
 					EsmApplication.alert("Backup completed successfully");
+					Program.launch(C.TMP_DIR);
 				} else {
 					LogController.logEvent(this, C.ERROR, "Error dumping data");
 				}
