@@ -58,7 +58,6 @@ import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.forms.AddEntrypointForm;
 import com.rmrdigitalmedia.esm.forms.AddSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.AddSpacePhotoForm;
-import com.rmrdigitalmedia.esm.forms.ApproveSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.DeleteDocumentDialog;
 import com.rmrdigitalmedia.esm.forms.DeleteEntrypointDialog;
 import com.rmrdigitalmedia.esm.forms.DeleteSpaceCommentDialog;
@@ -66,6 +65,7 @@ import com.rmrdigitalmedia.esm.forms.EditEntrypointForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceCommentForm;
 import com.rmrdigitalmedia.esm.forms.EditSpaceForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
+import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class SpaceDetailView {
@@ -183,7 +183,7 @@ public class SpaceDetailView {
 		description.setLayoutData(gd_description);
 		description.setText(sRow.getDescription());		
 
-		if(access == 9)	{	
+		if(access > 2)	{	
 			Button btnEditSpace = new Button(row1, SWT.RIGHT);
 			btnEditSpace.setText("Edit");
 			btnEditSpace.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1));
@@ -341,13 +341,27 @@ public class SpaceDetailView {
 						btnApproveComment.setFont(C.FONT_9);
 						btnApproveComment.addSelectionListener(new SelectionAdapter() {
 							@Override
-							public void widgetSelected(SelectionEvent arg0) {
+							public void widgetSelected(SelectionEvent arg0) {								
+								try {
+								SpaceCommentsTable.Row sRow;
+									sRow = SpaceCommentsTable.getRow(commentID);
+									sRow.setApproved("TRUE");
+									sRow.setUpdateDate(new Timestamp(new Date().getTime()));
+									sRow.update();
+									EsmApplication.alert("The comment was approved!");
+									WindowController.showSpaceDetail(spaceID);
+								} catch (SQLException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								/*
 								int id = commentID;
 								ApproveSpaceCommentForm ascf = new ApproveSpaceCommentForm(id);
 								if(ascf.complete()) {
 									EsmApplication.alert("The comment was approved!");
 									WindowController.showSpaceDetail(spaceID);
 								}
+								*/								
 							}
 						});
 					} else {
@@ -1080,7 +1094,7 @@ public class SpaceDetailView {
 		btnPrint.setToolTipText("Produce a printable PDF of the completed audit for this space and its entry points");
 		btnPrint.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		btnPrint.setImage(C.getImage("print.png"));
-		btnPrint.setText("Create Audit PDF");
+		btnPrint.setText("Create Space Report (PDF)");
 		btnPrint.setEnabled(signedoff);
 		btnPrint.setVisible(signedoff);
 
@@ -1092,9 +1106,10 @@ public class SpaceDetailView {
 					SpacesTable.Row uRow = SpacesTable.getRow(spaceID);
 					uRow.setSignedOff("TRUE");
 					uRow.setSignoffID(user.getID());
-					uRow.setSignoffDate(new Timestamp(new Date().getTime()));
+					Timestamp now = new Timestamp(new Date().getTime());
+					uRow.setSignoffDate(now);
 					uRow.update();
-					lblAuthName.setText(user.getForename() + " " + user.getSurname());
+					lblAuthName.setText(user.getForename() + " " + user.getSurname() + "  " + sdf.format(now));
 					btnSignOff.setEnabled(false);
 					btnPrint.setEnabled(true);
 					btnPrint.setVisible(true);

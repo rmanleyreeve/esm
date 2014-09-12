@@ -106,7 +106,10 @@ public final class C {
 	public static String SPACE_NOT_AUTH = "This space has NOT been authorized.";
 	public static String COPYRIGHT = "   \u00a9Videotel 2014";
 	public static String SIGNOFF_REVOKE_MESSAGE = "This audit was previously signed off.\nAs you have made changes to the audit, it will need to be signed off again.";
-
+	public static String SPACE_AUDIT_Q7_ALERT = "This is a potentially dangerous situation, please make sure that you understand why and how this can affect the condition of the space. "
+			+ "Read the hint that accompanies this question for more information and if necessary consult the officer in charge";
+	public static String SPACE_AUDIT_Q8_ALERT = "This is a potentially dangerous situation, please make sure that you understand why and how this can affect the condition of the space. "
+			+ "Read the hint that accompanies this question for more information and if necessary consult the officer in charge";
 	// app screen titles
 	public static String APP_NAME = "Enclosed Spaces Management System";
 	public static String SPACES_LIST_TITLE = "Classified Enclosed Spaces";

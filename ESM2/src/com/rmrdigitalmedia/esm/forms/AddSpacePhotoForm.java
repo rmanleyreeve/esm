@@ -168,7 +168,7 @@ public class AddSpacePhotoForm {
 		Label lblPComment = new Label(form, SWT.NONE);
 		lblPComment.setBackground(C.APP_BGCOLOR);
 		lblPComment.setText("Photo Comment:");		
-		p_comment = new Text(form, SWT.BORDER | SWT.MULTI);
+		p_comment = new Text(form, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		GridData gd_comment = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_comment.heightHint = 80;
 		gd_comment.widthHint = 400;
@@ -242,6 +242,8 @@ public class AddSpacePhotoForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shlVideotelEsm.setLocation (x, y);		  		
 		shlVideotelEsm.setDefaultButton (ok);		
+		new Label(form, SWT.NONE);
+		new Label(form, SWT.NONE);
 
 		shlVideotelEsm.open ();
 		shlVideotelEsm.layout();

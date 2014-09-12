@@ -130,7 +130,7 @@ public class EditSpaceCommentForm {
 		Label lblSComment = new Label(form, SWT.NONE);
 		lblSComment.setBackground(C.APP_BGCOLOR);
 		lblSComment.setText("Space\nComment:");		
-		s_comment = new Text(form, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		s_comment = new Text(form, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		s_comment.setText(cRow.getComment());
 		GridData gd_comment = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_comment.heightHint = 100;
@@ -179,6 +179,8 @@ public class EditSpaceCommentForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shlVideotelEsm.setLocation (x, y);		  		
 		shlVideotelEsm.setDefaultButton (ok);		
+		new Label(form, SWT.NONE);
+		new Label(form, SWT.NONE);
 
 		shlVideotelEsm.open ();
 		shlVideotelEsm.layout();
