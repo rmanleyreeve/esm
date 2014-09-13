@@ -1,4 +1,4 @@
-package com.rmrdigitalmedia.esm.forms;
+package com.rmrdigitalmedia.esm.dialogs;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

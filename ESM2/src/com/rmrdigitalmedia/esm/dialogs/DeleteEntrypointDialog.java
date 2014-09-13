@@ -1,4 +1,4 @@
-package com.rmrdigitalmedia.esm.forms;
+package com.rmrdigitalmedia.esm.dialogs;
 
 import java.sql.SQLException;
 
@@ -16,35 +16,37 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.models.DocDataTable;
+import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 
-public class DeleteDocumentDialog {
+public class DeleteEntrypointDialog {
 
 	private FormData fd_lblAProgramUpdate;
+	int entryID;
 	boolean formOK = false;
 
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			DeleteDocumentDialog ddd = new DeleteDocumentDialog();
-			ddd.deleteOK(0);
+			DeleteEntrypointDialog ded = new DeleteEntrypointDialog();
+			ded.deleteOK(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public DeleteDocumentDialog() {
+	public DeleteEntrypointDialog() {
 		LogController.log("Running class " + this.getClass().getName());		
 	}
 
 
-	public boolean deleteOK(final int id) {		
-
+	public boolean deleteOK(int _id) {
+		this.entryID = _id;
 		Display display = Display.getDefault();
-		final Shell dialog = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
-		dialog.setSize(250, 130);
+		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
+		dialog.setSize(280, 130);
 		dialog.setText("ESM Alert");
 		dialog.setImage(C.getImage(C.APP_ICON_16));
 		FormLayout formLayout = new FormLayout ();
@@ -55,7 +57,7 @@ public class DeleteDocumentDialog {
 
 		Label lblAProgramUpdate = new Label (dialog, SWT.NONE);
 		lblAProgramUpdate.setFont(C.FONT_10);
-		lblAProgramUpdate.setText ("You are about to permanently delete this document.\nAre you sure you want to continue?");
+		lblAProgramUpdate.setText ("You are about to delete this Entrypoint. All details that have been added will be lost.\nAre you sure you want to continue?");
 		FormData data;
 		fd_lblAProgramUpdate = new FormData ();
 		lblAProgramUpdate.setLayoutData (fd_lblAProgramUpdate);
@@ -72,7 +74,7 @@ public class DeleteDocumentDialog {
 		cancel.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				LogController.log("User cancelled delete dialog");
+				LogController.log("User cancelled delete entrypoint dialog");
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e1) {}
@@ -92,16 +94,26 @@ public class DeleteDocumentDialog {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
 				try {
-					DocDataTable.Row dRow = DocDataTable.getRow(id);
-					dRow.setDeleted("TRUE");
-					dRow.update();
-					//dRow.delete(); // DESTRUCTIVE
-					LogController.log("Document " + id + "marked as deleted");
+					/*
+					// THE DESTRUCTIVE WAY
+					EntrypointsTable.Row entry = EntrypointsTable.getRow(entryID);
+					LogController.log("Deleted entrypoint " + entryID);
+					entry.delete();					
+					formOK = true;
+					 */
+					//NON-DESTRUCTIVE
+					EntrypointsTable.Row entry = EntrypointsTable.getRow(entryID);
+					entry.setDeleted("TRUE");
+					entry.update();
+					LogController.log("Marked entrypoint " + entryID + " as deleted");
+					EsmApplication.appData.deleteField("ENTRY_CHK_" + entryID);
+					EsmApplication.appData.deleteField("ENTRY_CLASS_" + entryID);	
+					EsmApplication.appData.deleteField("ENTRY_STATUS_" + entryID);	
 					formOK = true;
 				} catch (SQLException ex) {
-					LogController.logEvent(this, C.ERROR, ex);
+					LogController.logEvent(this, C.WARNING, ex);
 					//ex.printStackTrace();
-					LogController.log("Error occurred deleting document");
+					LogController.log("Error occurred deleting entrypoint " + entryID);
 				}				
 				dialog.close();
 			}
@@ -119,7 +131,7 @@ public class DeleteDocumentDialog {
 		while (!dialog.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("Delete dialog closed");
+		LogController.log("Delete entrypoint dialog closed");
 		return formOK;
 	}
 

@@ -1,4 +1,4 @@
-package com.rmrdigitalmedia.esm.forms;
+package com.rmrdigitalmedia.esm.dialogs;
 
 import java.sql.Timestamp;
 import java.util.Date;

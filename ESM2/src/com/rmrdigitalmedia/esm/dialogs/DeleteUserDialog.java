@@ -1,6 +1,7 @@
-package com.rmrdigitalmedia.esm.forms;
+package com.rmrdigitalmedia.esm.dialogs;
 
 import java.sql.SQLException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -13,37 +14,38 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
+import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
-public class DeletePhotoDialog {
+public class DeleteUserDialog {
 
 	private FormData fd_lblAProgramUpdate;
-	int commentID;
+	int userID;
 	boolean formOK = false;
 
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			DeletePhotoDialog dpd = new DeletePhotoDialog();
-			dpd.deleteOK(0);
+			DeleteUserDialog dud = new DeleteUserDialog();
+			dud.deleteOK(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public DeletePhotoDialog() {
+	public DeleteUserDialog() {
 		LogController.log("Running class " + this.getClass().getName());		
 	}
 
 
-	public boolean deleteOK(final int id) {		
-
+	public boolean deleteOK(int _id) {
+		this.userID = _id;
 		Display display = Display.getDefault();
-		final Shell dialog = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
-		dialog.setSize(250, 130);
+		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
+		dialog.setSize(280, 130);
 		dialog.setText("ESM Alert");
 		dialog.setImage(C.getImage(C.APP_ICON_16));
 		FormLayout formLayout = new FormLayout ();
@@ -54,7 +56,7 @@ public class DeletePhotoDialog {
 
 		Label lblAProgramUpdate = new Label (dialog, SWT.NONE);
 		lblAProgramUpdate.setFont(C.FONT_10);
-		lblAProgramUpdate.setText ("You are about to permanently delete this Photo.\nAre you sure you want to continue?");
+		lblAProgramUpdate.setText ("You are about to delete this User. All details that have been added will be lost.\nAre you sure you want to continue?");
 		FormData data;
 		fd_lblAProgramUpdate = new FormData ();
 		lblAProgramUpdate.setLayoutData (fd_lblAProgramUpdate);
@@ -71,7 +73,7 @@ public class DeletePhotoDialog {
 		cancel.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				LogController.log("User cancelled delete dialog");
+				LogController.log("User cancelled delete user dialog");
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e1) {}
@@ -91,20 +93,23 @@ public class DeletePhotoDialog {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
 				try {
-					PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow(id);
-					int dataID = pRow.getDataID();
-					//PhotoDataTable.Row dRow = PhotoDataTable.getRow(dataID);
-					//dRow.delete();
-					LogController.log("Deleted photo " + dataID);
-					pRow.setDeleted("TRUE");
-					pRow.update();
-					//pRow.delete(); // DESTRUCTIVE
-					LogController.log("Deleted photo metadata " + id);
+					/*
+					// THE DESTRUCTIVE WAY
+					EsmUsersTable.Row user = EsmUsersTable.getRow(userID);
+					LogController.log("Deleted user " + userID);
+					user.delete();					
+					formOK = true;
+					 */
+					//NON-DESTRUCTIVE
+					EsmUsersTable.Row user = EsmUsersTable.getRow(userID);
+					user.setDeleted("TRUE");
+					user.update();
+					LogController.log("Marked user " + userID + " as deleted");
 					formOK = true;
 				} catch (SQLException ex) {
-					LogController.logEvent(this, C.ERROR, ex);
+					LogController.logEvent(this, C.WARNING, ex);
 					//ex.printStackTrace();
-					LogController.log("Error occurred deleting photo");
+					LogController.log("Error occurred deleting user " + userID);
 				}				
 				dialog.close();
 			}
