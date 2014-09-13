@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -19,12 +18,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
-import com.rmrdigitalmedia.esm.forms.DeletePhotoDialog;
+import com.rmrdigitalmedia.esm.dialogs.DeletePhotoDialog;
 import com.rmrdigitalmedia.esm.forms.EditPhotoMetadataForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;

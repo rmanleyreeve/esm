@@ -1,4 +1,4 @@
-package com.rmrdigitalmedia.esm.forms;
+package com.rmrdigitalmedia.esm.dialogs;
 
 import java.sql.SQLException;
 
@@ -16,36 +16,37 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
+import com.rmrdigitalmedia.esm.models.SpacesTable;
 
-public class DeleteSpaceCommentDialog {
+public class DeleteSpaceDialog {
 
 	private FormData fd_lblAProgramUpdate;
-	int commentID;
+	int spaceID;
 	boolean formOK = false;
 
 
 	public static void main (String [] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			DeleteSpaceCommentDialog dscd = new DeleteSpaceCommentDialog();
-			dscd.deleteOK(0);
+			DeleteSpaceDialog dsd = new DeleteSpaceDialog();
+			dsd.deleteOK(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public DeleteSpaceCommentDialog() {
+	public DeleteSpaceDialog() {
 		LogController.log("Running class " + this.getClass().getName());		
 	}
 
 
 	public boolean deleteOK(int _id) {
-		this.commentID = _id;
+		this.spaceID = _id;
 		Display display = Display.getDefault();
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
-		dialog.setSize(250, 130);
+		dialog.setSize(280, 130);
 		dialog.setText("ESM Alert");
 		dialog.setImage(C.getImage(C.APP_ICON_16));
 		FormLayout formLayout = new FormLayout ();
@@ -56,7 +57,7 @@ public class DeleteSpaceCommentDialog {
 
 		Label lblAProgramUpdate = new Label (dialog, SWT.NONE);
 		lblAProgramUpdate.setFont(C.FONT_10);
-		lblAProgramUpdate.setText ("You are about to delete this comment. All details that have been added will be lost.\nAre you sure you want to continue?");
+		lblAProgramUpdate.setText ("You are about to delete this Space. All details that have been added will be lost.\nAre you sure you want to continue?");
 		FormData data;
 		fd_lblAProgramUpdate = new FormData ();
 		lblAProgramUpdate.setLayoutData (fd_lblAProgramUpdate);
@@ -73,7 +74,7 @@ public class DeleteSpaceCommentDialog {
 		cancel.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
-				LogController.log("User cancelled delete dialog");
+				LogController.log("User cancelled delete space dialog");
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e1) {}
@@ -95,21 +96,36 @@ public class DeleteSpaceCommentDialog {
 				try {
 					/*
 					// THE DESTRUCTIVE WAY
-					SpaceCommentsTable.Row spaceComment = SpaceCommentsTable.getRow(metadataID);
-					LogController.log("Deleted space comment " + spaceComment.getID());
-					spaceComment.delete();											
+					for(EntrypointsTable.Row entryPoint:EntrypointsTable.getRows("SPACE_ID="+metadataID+" AND DELETED=FALSE")) {
+						for(EntrypointCommentsTable.Row entryComment:EntrypointCommentsTable.getRows("ENTRYPOINT_ID="+entryPoint.getID()+" AND DELETED=FALSE")) {
+							LogController.log("Deleted entrypoint comment " + entryComment.getID());
+							//entryComment.delete();
+						}
+						LogController.log("Deleted entrypoint " + entryPoint.getID());
+						entryPoint.delete();
+					}
+					for (SpaceCommentsTable.Row spaceComment:SpaceCommentsTable.getRows("SPACE_ID="+metadataID+" AND DELETED=FALSE")) {
+						LogController.log("Deleted space comment " + spaceComment.getID());
+						spaceComment.delete();						
+					}
+					SpacesTable.Row space = SpacesTable.getRow(metadataID);
+					LogController.log("Deleted space " + metadataID);
+					space.delete();					
 					formOK = true;
 					 */
 					//NON-DESTRUCTIVE
-					SpaceCommentsTable.Row comment = SpaceCommentsTable.getRow(commentID);
-					comment.setDeleted("TRUE");
-					comment.update();
-					LogController.log("Marked space comment " + commentID + " as deleted");
+					SpacesTable.Row space = SpacesTable.getRow(spaceID);
+					space.setDeleted("TRUE");
+					space.update();
+					LogController.log("Marked space " + spaceID + " as deleted");
+					EsmApplication.appData.deleteField("SPACE_CHK_" + spaceID);
+					EsmApplication.appData.deleteField("SPACE_CLASS_" + spaceID);	
+					EsmApplication.appData.deleteField("SPACE_STATUS_" + spaceID);	
 					formOK = true;
 				} catch (SQLException ex) {
 					LogController.logEvent(this, C.WARNING, ex);
 					//ex.printStackTrace();
-					LogController.log("Error occurred deleting space comment " + commentID);
+					LogController.log("Error occurred deleting space " + spaceID);
 				}				
 				dialog.close();
 			}
@@ -127,7 +143,7 @@ public class DeleteSpaceCommentDialog {
 		while (!dialog.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
-		LogController.log("Delete dialog closed");
+		LogController.log("Delete space dialog closed");
 		return formOK;
 	}
 

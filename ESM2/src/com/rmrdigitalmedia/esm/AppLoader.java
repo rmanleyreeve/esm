@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -15,16 +14,15 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
+import com.rmrdigitalmedia.esm.dialogs.LicenseDialog;
 import com.rmrdigitalmedia.esm.forms.AddAdminForm;
 import com.rmrdigitalmedia.esm.forms.AddVesselForm;
-import com.rmrdigitalmedia.esm.forms.LicenseDialog;
 
 @SuppressWarnings("unused")
 public class AppLoader {
