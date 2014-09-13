@@ -1,4 +1,4 @@
-package com.rmrdigitalmedia.esm.views;
+package com.rmrdigitalmedia.esm.dialogs;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
