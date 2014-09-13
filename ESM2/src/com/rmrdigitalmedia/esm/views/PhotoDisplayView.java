@@ -29,7 +29,7 @@ import com.rmrdigitalmedia.esm.forms.EditPhotoMetadataForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 
-public class PhotoViewer {
+public class PhotoDisplayView {
 	private static Object me;
 	PhotoMetadataTable.Row pRow = null;
 
@@ -38,13 +38,13 @@ public class PhotoViewer {
 		try {
 			WindowController.user = EsmUsersTable.getRow(1);
 			Shell shell = new Shell();
-			new PhotoViewer(shell, 3);
+			new PhotoDisplayView(shell, 3);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public PhotoViewer(final Shell appwin, final int dataID) {
+	public PhotoDisplayView(final Shell appwin, final int dataID) {
 		me = this;
 		try {
 			pRow = PhotoMetadataTable.getRow("DATA_ID", ""+dataID);

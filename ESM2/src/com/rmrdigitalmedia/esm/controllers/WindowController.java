@@ -36,7 +36,7 @@ import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.views.AdministrationView;
 import com.rmrdigitalmedia.esm.views.EntryAuditChecklistView;
 import com.rmrdigitalmedia.esm.views.EntryAuditClassificationView;
-import com.rmrdigitalmedia.esm.views.PhotoViewer;
+import com.rmrdigitalmedia.esm.views.PhotoDisplayView;
 import com.rmrdigitalmedia.esm.views.SpaceAlert;
 import com.rmrdigitalmedia.esm.views.SpaceAuditChecklistView;
 import com.rmrdigitalmedia.esm.views.SpaceAuditClassificationView;
@@ -562,7 +562,7 @@ public class WindowController {
 		showSpaceDetail(spaceID);
 	}
 	public static void showPhotoViewer(int dataID) {
-		new PhotoViewer(shell, dataID);			
+		new PhotoDisplayView(shell, dataID);			
 	}
 
 
