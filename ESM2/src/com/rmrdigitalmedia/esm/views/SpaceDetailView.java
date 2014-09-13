@@ -1103,6 +1103,7 @@ public class SpaceDetailView {
 		btnPrintText.setBackground(C.APP_BGCOLOR);
 		btnPrintText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		btnPrintText.setText("(This report includes the Space && Entrypoint Audits, comments and photos.\nIt does NOT include documents.)");
+		btnPrintText.setVisible(signedoff);
 		
 
 		btnSignOff.addSelectionListener(new SelectionAdapter() {
