@@ -52,7 +52,7 @@ public class AuditController {
 		int max = 0;
 		int score = 0;
 		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
+		PreparedStatement ps = null;
 		ResultSet row = null;
 		String sql = "SELECT * FROM SPACE_CHECKLIST_AUDIT WHERE SPACE_ID=?";
 		try {
@@ -130,6 +130,7 @@ public class AuditController {
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
 			ps.close();
+			row.close();
 			conn.close();
 		}		
 		if(progress > 100) { progress = 100; }
@@ -148,7 +149,7 @@ public class AuditController {
 		ArrayList<Integer> status = new ArrayList<Integer>();
 		String light = "null";		
 		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
+		PreparedStatement ps = null;
 		ResultSet row = null;
 		String sql = "SELECT * FROM SPACE_CLASSIFICATION_AUDIT WHERE SPACE_ID=?";
 		try {
@@ -223,6 +224,7 @@ public class AuditController {
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
 			ps.close();
+			row.close();
 			conn.close();
 		}
 		if(status.contains(1)) {
@@ -252,7 +254,7 @@ public class AuditController {
 		int max = 0;
 		int score = 0;
 		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
+		PreparedStatement ps = null;
 		ResultSet row = null;
 		String sql = "SELECT * FROM ENTRYPOINT_CHECKLIST_AUDIT WHERE ENTRYPOINT_ID=?";
 		try {
@@ -324,6 +326,7 @@ public class AuditController {
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
 			ps.close();
+			row.close();
 			conn.close();
 		}
 		if(progress > 100) { progress = 100; }
@@ -342,7 +345,7 @@ public class AuditController {
 		ArrayList<Integer> status = new ArrayList<Integer>();
 		String light = "null";
 		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
+		PreparedStatement ps = null;
 		ResultSet row = null;
 		String sql = "SELECT * FROM ENTRYPOINT_CLASSIFICATION_AUDIT WHERE ENTRYPOINT_ID=?";
 		try {
@@ -414,6 +417,7 @@ public class AuditController {
 			percent = Math.round(((float) score / max) * 100);
 			progress = (int) Math.floor(percent / 10) * 10;
 			ps.close();
+			row.close();
 			conn.close();
 		}
 		if(status.contains(1)) {
@@ -470,15 +474,15 @@ public class AuditController {
 			progress += (Integer) EsmApplication.appData.getField("SPACE_CHK_" + spaceID);
 			progress += (Integer) EsmApplication.appData.getField("SPACE_CLASS_" + spaceID);
 		} catch (Exception ex) {}		
-		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
-		ResultSet epRow = null;
-		String sql = "SELECT ID FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=?";
 		try {
+			Connection conn = DatabaseController.createConnection();
+			PreparedStatement ps = null;
+			ResultSet epRow = null;
+			String sql = "SELECT ID FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, spaceID);
 			epRow = ps.executeQuery();
-			while(epRow.next()) {
+			while(epRow!=null && epRow.next()) {
 				int epID = epRow.getInt("ID");
 				try {
 					progress += (Integer) EsmApplication.appData.getField("ENTRY_CHK_" + epID);
@@ -488,6 +492,9 @@ public class AuditController {
 					LogController.logEvent(AuditController.class, C.ERROR, "appdata set EP FAILED " + epID); 
 				}
 			}
+			ps.close();
+			epRow.close();
+			conn.close();
 		} catch (SQLException e) {
 			LogController.logEvent(AuditController.class, C.FATAL, e);		
 		}
@@ -505,11 +512,11 @@ public class AuditController {
 			complete = false;
 			//System.out.println("space "+spaceID+" class<100");
 		}		
-		Connection conn = DatabaseController.createConnection();
-		PreparedStatement  ps = null;
-		ResultSet epRow = null;
-		String sql = "SELECT ID FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=?";
 		try {
+			Connection conn = DatabaseController.createConnection();
+			PreparedStatement ps = null;
+			ResultSet epRow = null;
+			String sql = "SELECT ID FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, spaceID);
 			epRow = ps.executeQuery();
@@ -524,6 +531,7 @@ public class AuditController {
 					//System.out.println("entry "+epID+" class<100");
 				}
 			}
+			ps.close();
 			epRow.close();
 			conn.close();
 		} catch (SQLException ex) {
@@ -556,6 +564,7 @@ public class AuditController {
 					vals.put(md.getColumnName(i), row.getObject(i));
 				}
 			}
+			s.close();
 			row.close();
 			conn.close();
 		} catch (SQLException e) {

@@ -51,7 +51,7 @@ import org.eclipse.swt.events.TraverseEvent;
 @SuppressWarnings("unused")
 public class SpacesListView {
 
-	private static ResultSet sRows;
+	private static ResultSet sRows = null;
 	private static Label sep;
 	private static int rowHeight = 35;
 	private static int colHeaderH = 40;
@@ -213,7 +213,7 @@ public class SpacesListView {
 		lblHeaderSO.setFont(C.FONT_12B);
 
 		// get spaces from DB
-		try {		
+		try {
 			Connection conn = DatabaseController.createConnection();
 			String sql = "SELECT * FROM SPACES WHERE DELETED=FALSE AND LOWER(NAME) LIKE '%" + WindowController.searchFilter.toLowerCase() + "%'";
 			sRows = DatabaseController.getResultSet(conn, sql);
@@ -316,6 +316,7 @@ public class SpacesListView {
 						//gc.fillOval(x, 0, 18, 18);
 						x += 25;
 					}
+					ps.close();
 					eRows.close();
 				} catch (SQLException ex) {
 					LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading entry points from DB",ex);		
@@ -398,6 +399,8 @@ public class SpacesListView {
 
 			}
 			// end loop
+			sRows.close();
+			conn.close();
 		} catch (SQLException ex) {
 			LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading spaces from DB",ex);		
 		}
