@@ -248,7 +248,7 @@ public class SpaceDetailView {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, spaceID);
 			final ResultSet spaceComment = ps.executeQuery();
-			while(spaceComment.next()) {			
+			while(spaceComment!=null && spaceComment.next()) {		
 				boolean canApprove = (!spaceComment.getBoolean("APPROVED") && (access==3 || access==9));
 				final int commentID = spaceComment.getInt("ID");
 
@@ -524,8 +524,6 @@ public class SpaceDetailView {
 			}
 		});
 
-
-
 		// row 2 - audit header & button bar	==========================================================================	
 		Group rowRight2 = new Group(compR, SWT.NONE);
 		rowRight2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -600,7 +598,7 @@ public class SpaceDetailView {
 				epRow.beforeFirst();
 			}				
 			// for loop
-			while(epRow.next()) {	
+			while(epRow.next()) {
 				final int epID = epRow.getInt("ID");
 				String epName = epRow.getString("NAME");
 				lblEntryPoint = new CLabel(rowRight2, SWT.NONE);
@@ -696,9 +694,9 @@ public class SpaceDetailView {
 					}
 				});
 				btnDeleteEntry.setEnabled( rowCount>1 && (access==9 || user.getID()==epRow.getInt("AUTHOR_ID")) );
-
 			} // end for
-
+			epRow.close();
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -857,8 +855,9 @@ public class SpaceDetailView {
 						WindowController.showPhotoViewer(_dataID);					
 					}
 				});
-
+				pRow.close();
 			} // endif photos > 0
+			conn.close();
 		} catch (SQLException ex) {
 			LogController.logEvent(me, C.ERROR, "Error getting photo metadata from database", ex);		
 		}
@@ -981,7 +980,6 @@ public class SpaceDetailView {
 					item.setData("id", docID);
 					item.setImage(itemImage);
 				}	
-
 				table.addMouseListener(new MouseListener() {
 					@Override
 					public void mouseDoubleClick(MouseEvent e) {
@@ -1032,8 +1030,9 @@ public class SpaceDetailView {
 						}
 					}
 				});
-
-			} // endif docs > 0	
+				dRow.close();
+			} // endif docs > 0
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

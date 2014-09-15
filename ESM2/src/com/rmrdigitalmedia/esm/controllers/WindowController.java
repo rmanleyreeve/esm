@@ -70,6 +70,7 @@ public class WindowController {
 	private Label lblVtLogo;
 	private Label lblMrmLogo;
 	private static boolean isAdmin = false;
+	public static String searchFilter = "";
 
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
@@ -180,6 +181,7 @@ public class WindowController {
 		formHolder.setLayout(stackLayout);
 
 		// SPACES LISTING PAGE ======================================================
+		
 		pageSpacesList = new Composite (formHolder, SWT.NONE);
 
 		// SPACE DETAIL PAGE ======================================================
@@ -273,7 +275,7 @@ public class WindowController {
 				AddSpaceForm asf = new AddSpaceForm(user.getID());					
 				if(asf.complete()) {
 					LogController.log("New Space & Entry Point saved in database");
-					showSpacesList();					
+					showSpacesList("");					
 				}
 			}
 		});
@@ -294,8 +296,7 @@ public class WindowController {
 				LogController.log("Details Selection={" + currentSpaceId + "}");
 				checkSpaceAlert(currentSpaceId);
 			}
-		});
-	
+		});	
 		btnViewSpaceDetails.setText("Details");
 		btnViewSpaceDetails.setFont(C.BUTTON_FONT);
 		btnViewSpaceDetails.setBackground(C.TITLEBAR_BGCOLOR);
@@ -315,7 +316,7 @@ public class WindowController {
 				DeleteSpaceDialog dsd = new DeleteSpaceDialog();					
 				if(dsd.deleteOK(currentSpaceId)) {
 					LogController.log("Space "+currentSpaceId+" marked as deleted in database");
-					showSpacesList();						
+					showSpacesList(searchFilter);						
 				} else {
 					LogController.log("Space " + currentSpaceId + " not deleted");
 				}
@@ -336,7 +337,7 @@ public class WindowController {
 		btnSpacesList.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				showSpacesList();
+				showSpacesList(searchFilter);
 			}
 		});
 		btnSpacesList.setText("Spaces List");
@@ -417,13 +418,14 @@ public class WindowController {
 		foo.setLayoutData(fd_foo);
 		shell.setDefaultButton(foo);
 
-		showSpacesList();
+		showSpacesList("");
 	}
 
 
 	
 	// methods to display pages etc
-	void showSpacesList(){
+	public static void showSpacesList(String searchText){
+		searchFilter = searchText;
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
 		LogController.log("Displaying Spaces List");
 		SpacesListView.buildTable(pageSpacesList);
@@ -440,6 +442,7 @@ public class WindowController {
 		formHolder.layout();
 		shell.setCursor(new Cursor(display, SWT.CURSOR_ARROW));
 	}
+
 
 	public static void showAdministration() {
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));

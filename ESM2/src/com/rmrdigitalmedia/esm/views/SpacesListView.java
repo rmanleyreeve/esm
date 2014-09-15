@@ -1,8 +1,10 @@
 package com.rmrdigitalmedia.esm.views;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -19,6 +21,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -26,22 +29,25 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
+import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 
 @SuppressWarnings("unused")
 public class SpacesListView {
 
-	private static SpacesTable.Row[] sRows;
+	private static ResultSet sRows;
 	private static Label sep;
 	private static int rowHeight = 35;
 	private static int colHeaderH = 40;
@@ -52,6 +58,7 @@ public class SpacesListView {
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
+			EsmApplication.appData = new AppData();
 			Shell shell = new Shell();
 			shell.setSize(1380, 750);
 			shell.setLayout(new FillLayout(SWT.VERTICAL));
@@ -114,17 +121,42 @@ public class SpacesListView {
 		lblHeaderID.setBackground(C.BAR_BGCOLOR);
 		lblHeaderID.setFont(C.FONT_12B);
 		lblHeaderID.setText("ID");
-		// NAME
-		CLabel lblHeaderName = new CLabel(tbl, SWT.NONE);
+		// NAME		
+		Composite cmpHeaderName = new Composite(tbl, SWT.NONE);
+		GridData gd_cmpHeaderName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
+		gd_cmpHeaderName.minimumWidth = 200;
+		gd_cmpHeaderName.widthHint = 200;
+		gd_cmpHeaderName.heightHint = colHeaderH;
+		cmpHeaderName.setLayoutData(gd_cmpHeaderName);
+		cmpHeaderName.setBackground(C.BAR_BGCOLOR);
+		cmpHeaderName.setLayout(new GridLayout(3, false));
+		// title
+		CLabel lblHeaderName = new CLabel(cmpHeaderName, SWT.NONE);
 		lblHeaderName.setLeftMargin(5);
-		GridData gd_lblHeaderName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
-		gd_lblHeaderName.minimumWidth = 200;
-		gd_lblHeaderName.widthHint = 200;
-		gd_lblHeaderName.heightHint = colHeaderH;
-		lblHeaderName.setLayoutData(gd_lblHeaderName);
+		lblHeaderName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		lblHeaderName.setBackground(C.BAR_BGCOLOR);
 		lblHeaderName.setFont(C.FONT_12B);
 		lblHeaderName.setText("Name");
+		// search box
+		final Text txtSearch = new Text(cmpHeaderName, SWT.BORDER | SWT.SEARCH);
+		GridData gd_txtSearch = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		gd_txtSearch.heightHint = 18;
+		gd_txtSearch.widthHint = 140;
+		txtSearch.setLayoutData(gd_txtSearch);
+		txtSearch.setFont(C.FONT_9);
+		try {
+			txtSearch.setText(WindowController.searchFilter);
+		} catch (Exception e) {}
+		// search button
+		Button btnSearch = new Button(cmpHeaderName, SWT.NONE);
+		btnSearch.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		btnSearch.setText("Search");
+		btnSearch.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				WindowController.showSpacesList(txtSearch.getText());					
+			}
+		});
 		// COMPLETION STATUS
 		CLabel lblHeaderCS = new CLabel(tbl, SWT.NONE | SWT.CENTER);
 		lblHeaderCS.setLeftMargin(5);
@@ -169,184 +201,195 @@ public class SpacesListView {
 		lblHeaderSO.setFont(C.FONT_12B);
 
 		// get spaces from DB
-		try {
-			sRows = SpacesTable.getRows("DELETED=FALSE");
+		try {		
+			Connection conn = DatabaseController.createConnection();
+			String sql = "SELECT * FROM SPACES WHERE DELETED=FALSE AND LOWER(NAME) LIKE '%" + WindowController.searchFilter.toLowerCase() + "%'";
+			LogController.log(sql);
+			sRows = DatabaseController.getResultSet(conn, sql);
+			// start loop through spaces rows ==============================================
+			while(sRows!=null && sRows.next()) {
+				final int spaceID = sRows.getInt("ID");
+				// ID
+				final CLabel lblLoopID = new CLabel(tbl, SWT.NONE);
+				lblLoopID.setLeftMargin(5);
+				GridData gd_lblLoopID = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+				gd_lblLoopID.widthHint = 75;
+				gd_lblLoopID.heightHint = colHeaderH;
+				lblLoopID.setLayoutData(gd_lblLoopID);
+				lblLoopID.setBackground(C.FIELD_BGCOLOR);
+				lblLoopID.setFont(C.FONT_11B);
+				lblLoopID.setText(""+spaceID);
+				// NAME
+				final CLabel lblLoopName = new CLabel(tbl, SWT.NONE);
+				lblLoopName.setLeftMargin(5);
+				GridData gd_lblLoopName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
+				gd_lblLoopName.minimumWidth = 200;
+				gd_lblLoopName.widthHint = 200;
+				gd_lblLoopName.heightHint = colHeaderH;
+				lblLoopName.setLayoutData(gd_lblLoopName);
+				lblLoopName.setBackground(C.FIELD_BGCOLOR);
+				lblLoopName.setFont(C.FONT_11B);
+				//lblLoopName.setToolTipText("Double-click to view details of this enclosed space");
+				lblLoopName.setText(sRows.getString("NAME"));
+				// COMPLETION STATUS
+				final CLabel lblLoopCS = new CLabel(tbl, SWT.NONE | SWT.CENTER);
+				lblLoopCS.setLeftMargin(5);
+				GridData gd_lblLoopCS = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+				gd_lblLoopCS.widthHint = 160;
+				gd_lblLoopCS.heightHint = colHeaderH;
+				lblLoopCS.setLayoutData(gd_lblLoopCS);
+				lblLoopCS.setBackground(C.FIELD_BGCOLOR);
+				int cs = AuditController.calculateOverallCompletionStatus(spaceID);
+				lblLoopCS.setImage(C.getImage("Percent_"+ cs +".png"));
+				// INTERNAL CLASSIFICATION
+				final CLabel lblLoopIC = new CLabel(tbl, SWT.NONE | SWT.CENTER);
+				lblLoopIC.setLeftMargin(5);
+				GridData gd_lblLoopIC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+				gd_lblLoopIC.widthHint = 220;
+				gd_lblLoopIC.heightHint = colHeaderH;
+				lblLoopIC.setLayoutData(gd_lblLoopIC);
+				lblLoopIC.setBackground(C.FIELD_BGCOLOR);
+				String light = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);
+				if(light.equals("")) { light = "null"; }
+				lblLoopIC.setImage(C.getImage(light+".png"));
+				// ENTRY POINTS CLASSIFICATION
+				final CLabel lblLoopEPC = new CLabel(tbl, SWT.NONE | SWT.CENTER);
+				lblLoopEPC.setLeftMargin(5);
+				GridData gd_lblLoopEPC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+				gd_lblLoopEPC.widthHint = 220;
+				gd_lblLoopEPC.heightHint = colHeaderH;
+				lblLoopEPC.setLayoutData(gd_lblLoopEPC);
+				lblLoopEPC.setBackground(C.FIELD_BGCOLOR);
+				// build transparent image array
+				ImageData imgData = new ImageData(new AppData().getClass().getResourceAsStream("/img/blank.jpg"));		
+				int whitePixel = imgData.palette.getPixel(new RGB(255,255,255));
+				imgData.transparentPixel = whitePixel;
+				Image img = new Image(Display.getDefault(),imgData);
+				GC gc = new GC(img);
+				gc.setAntialias(SWT.OFF);
+				gc.setBackground(C.FIELD_BGCOLOR);
+				try {
+					sql = "SELECT * FROM ENTRYPOINTS WHERE DELETED=FALSE AND SPACE_ID=? ORDER BY ID DESC";
+					PreparedStatement ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+					ps.setInt(1, spaceID);
+					ResultSet eRows = ps.executeQuery();
+					int rowCount = 0;
+					if (eRows.last()) {
+						rowCount = eRows.getRow();
+						eRows.beforeFirst();
+					}				
+					int centreX = (imgStatusW/2) - 10;
+					int x=0;
+					switch (rowCount) {
+						case 1:
+							x = centreX;
+							break;
+						case 2:
+							x = (centreX - 20);
+							break;
+						case 3:
+							x = (centreX - 30);
+							break;
+						case 4:
+							x = (centreX - 40);
+							break;
+						case 5:
+							x = (centreX - 50);
+							break;
+					}
+					while(eRows.next())  {
+						String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+eRows.getInt("ID"));
+						if(epTL.equals("")) { epTL = "null"; }
+						gc.drawImage(C.getImage(epTL+".png"), x, 0);
+						//gc.setBackground(C.TRAFFICLIGHTS.get(epTL));
+						//gc.fillOval(x, 0, 18, 18);
+						x += 25;
+					}
+					eRows.close();
+				} catch (SQLException ex) {
+					LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading entry points from DB",ex);		
+				}
+				lblLoopEPC.setImage(img);	
+				// SIGNED OFF
+				final CLabel lblLoopSO = new CLabel(tbl, SWT.NONE);
+				lblLoopSO.setRightMargin(5);
+				lblLoopSO.setAlignment(SWT.CENTER);
+				GridData gd_lblLoopSO = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+				gd_lblLoopSO.widthHint = 75;
+				gd_lblLoopSO.heightHint = colHeaderH;
+				lblLoopSO.setLayoutData(gd_lblLoopSO);
+				lblLoopSO.setBackground(C.FIELD_BGCOLOR);
+				lblLoopSO.setImage( (AuditController.isSpaceSignedOff(spaceID)) ? C.getImage("bluetick.png") : C.getImage("null.png") );
+
+				CLabel[] tableRow = { lblLoopID,lblLoopName,lblLoopCS,lblLoopIC,lblLoopEPC,lblLoopSO };
+				tableRows.put(spaceID, tableRow);
+
+				// table row hover behaviour
+				lblLoopName.addMouseTrackListener(new MouseTrackAdapter() {
+					@Override
+					public void mouseEnter(MouseEvent arg0) {
+						for (CLabel l : tableRows.get(spaceID)) {
+							if(spaceID != selectedRow) {
+								l.setBackground(C.ROW_HIGHLIGHT);
+							}
+						}
+					}
+					@Override
+					public void mouseExit(MouseEvent arg0) {
+						for (CLabel l : tableRows.get(spaceID)) {
+							if(spaceID != selectedRow) {
+								l.setBackground(C.FIELD_BGCOLOR);
+							}
+						}
+					}
+				});
+				// click behaviour
+				lblLoopName.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseUp(MouseEvent arg0) {
+						selectedRow = (selectedRow != spaceID) ? spaceID : 0;
+						for (int key : tableRows.keySet()) {
+							if(key == selectedRow) {
+								LogController.log("Space " + spaceID + " selected");
+								for (CLabel l : tableRows.get(key)) {
+									// SELECT THIS ROW
+									l.setBackground(C.ROW_SELECTED);
+									l.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+									WindowController.currentSpaceId = spaceID;
+									WindowController.btnViewSpaceDetails.setEnabled(true);
+									if(WindowController.user.getAccessLevel()==9) {
+										WindowController.btnDeleteSpace.setEnabled(true);   
+									}
+								}
+							} else {
+								for (CLabel l : tableRows.get(key)) {
+									l.setBackground(C.FIELD_BGCOLOR);
+									l.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+									if(selectedRow==0) {
+										WindowController.currentSpaceId = 0;
+										WindowController.btnViewSpaceDetails.setEnabled(false);
+										WindowController.btnDeleteSpace.setEnabled(false);  
+									}
+								}
+							}
+						} // end for keyset
+					}
+				});
+				// double click behaviour
+				lblLoopName.addListener(SWT.MouseDoubleClick, new Listener() {
+					@Override
+					public void handleEvent(Event e) {
+						WindowController.currentSpaceId = spaceID;
+						LogController.log("User clicked item " + spaceID);
+						WindowController.checkSpaceAlert(spaceID);
+					}
+				});
+
+			}
+			// end loop
 		} catch (SQLException ex) {
 			LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading spaces from DB",ex);		
 		}
-		// start loop through spaces rows ==============================================
-		for (SpacesTable.Row sRow : sRows) {
-			final int spaceID = sRow.getID();
-			// ID
-			final CLabel lblLoopID = new CLabel(tbl, SWT.NONE);
-			lblLoopID.setLeftMargin(5);
-			GridData gd_lblLoopID = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-			gd_lblLoopID.widthHint = 75;
-			gd_lblLoopID.heightHint = colHeaderH;
-			lblLoopID.setLayoutData(gd_lblLoopID);
-			lblLoopID.setBackground(C.FIELD_BGCOLOR);
-			lblLoopID.setFont(C.FONT_11B);
-			lblLoopID.setText(""+spaceID);
-			// NAME
-			final CLabel lblLoopName = new CLabel(tbl, SWT.NONE);
-			lblLoopName.setLeftMargin(5);
-			GridData gd_lblLoopName = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
-			gd_lblLoopName.minimumWidth = 200;
-			gd_lblLoopName.widthHint = 200;
-			gd_lblLoopName.heightHint = colHeaderH;
-			lblLoopName.setLayoutData(gd_lblLoopName);
-			lblLoopName.setBackground(C.FIELD_BGCOLOR);
-			lblLoopName.setFont(C.FONT_11B);
-			//lblLoopName.setToolTipText("Double-click to view details of this enclosed space");
-			lblLoopName.setText(sRow.getName());
-			// COMPLETION STATUS
-			final CLabel lblLoopCS = new CLabel(tbl, SWT.NONE | SWT.CENTER);
-			lblLoopCS.setLeftMargin(5);
-			GridData gd_lblLoopCS = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-			gd_lblLoopCS.widthHint = 160;
-			gd_lblLoopCS.heightHint = colHeaderH;
-			lblLoopCS.setLayoutData(gd_lblLoopCS);
-			lblLoopCS.setBackground(C.FIELD_BGCOLOR);
-			int cs = AuditController.calculateOverallCompletionStatus(spaceID);
-			lblLoopCS.setImage(C.getImage("Percent_"+ cs +".png"));
-			// INTERNAL CLASSIFICATION
-			final CLabel lblLoopIC = new CLabel(tbl, SWT.NONE | SWT.CENTER);
-			lblLoopIC.setLeftMargin(5);
-			GridData gd_lblLoopIC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-			gd_lblLoopIC.widthHint = 220;
-			gd_lblLoopIC.heightHint = colHeaderH;
-			lblLoopIC.setLayoutData(gd_lblLoopIC);
-			lblLoopIC.setBackground(C.FIELD_BGCOLOR);
-			String light = (String) EsmApplication.appData.getField("SPACE_STATUS_"+spaceID);
-			if(light.equals("")) { light = "null"; }
-			lblLoopIC.setImage(C.getImage(light+".png"));
-			// ENTRY POINTS CLASSIFICATION
-			final CLabel lblLoopEPC = new CLabel(tbl, SWT.NONE | SWT.CENTER);
-			lblLoopEPC.setLeftMargin(5);
-			GridData gd_lblLoopEPC = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-			gd_lblLoopEPC.widthHint = 220;
-			gd_lblLoopEPC.heightHint = colHeaderH;
-			lblLoopEPC.setLayoutData(gd_lblLoopEPC);
-			lblLoopEPC.setBackground(C.FIELD_BGCOLOR);
-			// build transparent image array
-			ImageData imgData = new ImageData(new AppData().getClass().getResourceAsStream("/img/blank.jpg"));		
-			int whitePixel = imgData.palette.getPixel(new RGB(255,255,255));
-			imgData.transparentPixel = whitePixel;
-			Image img = new Image(Display.getDefault(),imgData);
-			GC gc = new GC(img);
-			gc.setAntialias(SWT.OFF);
-			gc.setBackground(C.FIELD_BGCOLOR);
-			EntrypointsTable.Row[] eRows;
-			try {
-				eRows = EntrypointsTable.getRows("DELETED=FALSE AND SPACE_ID="+spaceID+" ORDER BY ID DESC");
-				int centreX = (imgStatusW/2) - 10;
-				int x=0;
-				switch (eRows.length) {
-					case 1:
-						x = centreX;
-						break;
-					case 2:
-						x = (centreX - 20);
-						break;
-					case 3:
-						x = (centreX - 30);
-						break;
-					case 4:
-						x = (centreX - 40);
-						break;
-					case 5:
-						x = (centreX - 50);
-						break;
-				}
-				for (EntrypointsTable.Row eRow : eRows) {
-					String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+eRow.getID());
-					if(epTL.equals("")) { epTL = "null"; }
-					gc.drawImage(C.getImage(epTL+".png"), x, 0);
-					//gc.setBackground(C.TRAFFICLIGHTS.get(epTL));
-					//gc.fillOval(x, 0, 18, 18);
-					x += 25;
-				}
-			} catch (SQLException ex) {
-				LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading entry points from DB",ex);		
-			}
-			lblLoopEPC.setImage(img);	
-			// SIGNED OFF
-			final CLabel lblLoopSO = new CLabel(tbl, SWT.NONE);
-			lblLoopSO.setRightMargin(5);
-			lblLoopSO.setAlignment(SWT.CENTER);
-			GridData gd_lblLoopSO = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-			gd_lblLoopSO.widthHint = 75;
-			gd_lblLoopSO.heightHint = colHeaderH;
-			lblLoopSO.setLayoutData(gd_lblLoopSO);
-			lblLoopSO.setBackground(C.FIELD_BGCOLOR);
-			lblLoopSO.setImage( (AuditController.isSpaceSignedOff(spaceID)) ? C.getImage("bluetick.png") : C.getImage("null.png") );
-
-			CLabel[] tableRow = { lblLoopID,lblLoopName,lblLoopCS,lblLoopIC,lblLoopEPC,lblLoopSO };
-			tableRows.put(spaceID, tableRow);
-
-			// table row hover behaviour
-			lblLoopName.addMouseTrackListener(new MouseTrackAdapter() {
-				@Override
-				public void mouseEnter(MouseEvent arg0) {
-					for (CLabel l : tableRows.get(spaceID)) {
-						if(spaceID != selectedRow) {
-							l.setBackground(C.ROW_HIGHLIGHT);
-						}
-					}
-				}
-				@Override
-				public void mouseExit(MouseEvent arg0) {
-					for (CLabel l : tableRows.get(spaceID)) {
-						if(spaceID != selectedRow) {
-							l.setBackground(C.FIELD_BGCOLOR);
-						}
-					}
-				}
-			});
-			// click behaviour
-			lblLoopName.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseUp(MouseEvent arg0) {
-					selectedRow = (selectedRow != spaceID) ? spaceID : 0;
-					for (int key : tableRows.keySet()) {
-						if(key == selectedRow) {
-							LogController.log("Space " + spaceID + " selected");
-							for (CLabel l : tableRows.get(key)) {
-								// SELECT THIS ROW
-								l.setBackground(C.ROW_SELECTED);
-								l.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-								WindowController.currentSpaceId = spaceID;
-								WindowController.btnViewSpaceDetails.setEnabled(true);
-								if(WindowController.user.getAccessLevel()==9) {
-									WindowController.btnDeleteSpace.setEnabled(true);   
-								}
-							}
-						} else {
-							for (CLabel l : tableRows.get(key)) {
-								l.setBackground(C.FIELD_BGCOLOR);
-								l.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-								if(selectedRow==0) {
-									WindowController.currentSpaceId = 0;
-									WindowController.btnViewSpaceDetails.setEnabled(false);
-									WindowController.btnDeleteSpace.setEnabled(false);  
-								}
-							}
-						}
-					} // end for keyset
-				}
-			});
-			// double click behaviour
-			lblLoopName.addListener(SWT.MouseDoubleClick, new Listener() {
-				@Override
-				public void handleEvent(Event e) {
-					WindowController.currentSpaceId = spaceID;
-					LogController.log("User clicked item " + spaceID);
-					WindowController.checkSpaceAlert(spaceID);
-				}
-			});
-
-		}
-		// end loop
 
 
 		// redraw panel on window resize
