@@ -351,8 +351,7 @@ public class SpaceDetailView {
 									EsmApplication.alert("The comment was approved!");
 									WindowController.showSpaceDetail(spaceID);
 								} catch (SQLException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
+									LogController.logEvent(me, C.ERROR, e);
 								}
 								/*
 								int id = commentID;

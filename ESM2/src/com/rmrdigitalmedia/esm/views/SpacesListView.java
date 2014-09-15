@@ -10,6 +10,8 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
@@ -42,6 +44,8 @@ import com.rmrdigitalmedia.esm.models.EntrypointsTable;
 import com.rmrdigitalmedia.esm.models.SpacesTable;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseListener;
+import org.eclipse.swt.events.TraverseEvent;
 
 
 @SuppressWarnings("unused")
@@ -147,6 +151,14 @@ public class SpacesListView {
 		try {
 			txtSearch.setText(WindowController.searchFilter);
 		} catch (Exception e) {}
+		txtSearch.addTraverseListener(new TraverseListener() {
+			@Override
+			public void keyTraversed(TraverseEvent ke) {
+				if (ke.detail == SWT.TRAVERSE_RETURN) {
+					WindowController.showSpacesList(txtSearch.getText());		
+				}
+			}
+		});
 		// search button
 		Button btnSearch = new Button(cmpHeaderName, SWT.NONE);
 		btnSearch.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
@@ -204,7 +216,6 @@ public class SpacesListView {
 		try {		
 			Connection conn = DatabaseController.createConnection();
 			String sql = "SELECT * FROM SPACES WHERE DELETED=FALSE AND LOWER(NAME) LIKE '%" + WindowController.searchFilter.toLowerCase() + "%'";
-			LogController.log(sql);
 			sRows = DatabaseController.getResultSet(conn, sql);
 			// start loop through spaces rows ==============================================
 			while(sRows!=null && sRows.next()) {

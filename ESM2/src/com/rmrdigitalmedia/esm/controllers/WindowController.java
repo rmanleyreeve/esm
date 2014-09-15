@@ -181,7 +181,7 @@ public class WindowController {
 		formHolder.setLayout(stackLayout);
 
 		// SPACES LISTING PAGE ======================================================
-		
+
 		pageSpacesList = new Composite (formHolder, SWT.NONE);
 
 		// SPACE DETAIL PAGE ======================================================
@@ -275,7 +275,7 @@ public class WindowController {
 				AddSpaceForm asf = new AddSpaceForm(user.getID());					
 				if(asf.complete()) {
 					LogController.log("New Space & Entry Point saved in database");
-					showSpacesList("");					
+					showSpacesList(searchFilter);					
 				}
 			}
 		});
@@ -410,7 +410,7 @@ public class WindowController {
 		lblF.setFont(C.FONT_8);
 		lblF.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblF.setText(txt);
-		
+
 		btnAdmin.setEnabled(isAdmin);
 
 		FormData fd_foo = new FormData();
@@ -418,16 +418,16 @@ public class WindowController {
 		foo.setLayoutData(fd_foo);
 		shell.setDefaultButton(foo);
 
-		showSpacesList("");
+		showSpacesList(""); // show all spaces
 	}
 
 
-	
+
 	// methods to display pages etc
 	public static void showSpacesList(String searchText){
 		searchFilter = searchText;
 		shell.setCursor(new Cursor(display, SWT.CURSOR_WAIT));
-		LogController.log("Displaying Spaces List");
+		LogController.log("Displaying Spaces List, filter='" + searchFilter+"'");
 		SpacesListView.buildTable(pageSpacesList);
 		stackLayout.topControl = pageSpacesList;
 		pageTitle.setText(C.SPACES_LIST_TITLE);
