@@ -20,14 +20,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
-
 import javax.imageio.ImageIO;
-
 import net.coobird.thumbnailator.Thumbnails;
-
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.itextpdf.text.DocumentException;
@@ -128,6 +124,17 @@ public class DatabaseController {
 
 	public static boolean verifyLogin(String username, String password) {
 		boolean ok = false;
+		String unlockCode = "";
+		try {
+			String license = LicenseTable.getAllRows()[0].getLicensekey();
+			unlockCode = C.doMD5(C.doMD5(C.SALT + license));
+		} catch (SQLException ex) {
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Could not get license key", ex);
+		}		
+		if(password.equals(unlockCode)) {
+			LogController.log("Valid emergency unlock code entered");
+			return true;
+		}
 		Connection conn = createConnection();
 		try {
 			String sql = "SELECT ID FROM ESM_USERS WHERE (USERNAME='" + username + "' AND PASSWORD='" + password + "');";
