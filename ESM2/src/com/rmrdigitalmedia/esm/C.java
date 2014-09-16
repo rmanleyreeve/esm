@@ -32,6 +32,7 @@ public final class C {
 	public static String DOC_DIR = DATA_DIR + SEP + DOC_DIR_NAME;
 	public static String LOG_DIR = DATA_DIR + SEP + LOG_DIR_NAME;
 	public static String TMP_DIR = DATA_DIR + SEP + TMP_DIR_NAME;
+	public static String SALT = "RMRtheKing";
 
 	// database properties
 	public static String DB_NAME = "ESM";
