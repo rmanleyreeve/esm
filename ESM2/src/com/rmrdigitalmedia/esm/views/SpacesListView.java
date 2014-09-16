@@ -93,7 +93,7 @@ public class SpacesListView {
 		// scrolling frame to hold the grid panel
 		final ScrolledComposite scrollPanel = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.BORDER);
 		scrollPanel.setExpandHorizontal(true);
-
+		
 		// the grid panel that holds the various info rows
 		final Composite comp = new Composite(scrollPanel, SWT.NONE);
 		GridLayout gl_comp = new GridLayout(1, true);
@@ -405,15 +405,31 @@ public class SpacesListView {
 			LogController.logEvent(SpacesListView.class, C.ERROR, "Error loading spaces from DB",ex);		
 		}
 
-
-		// redraw panel on window resize
 		scrollPanel.setContent(comp);
 		scrollPanel.setExpandVertical(true);
+		
+		// redraw panel on window resize
 		scrollPanel.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
 				Rectangle r = scrollPanel.getClientArea();
 				scrollPanel.setMinSize(comp.computeSize(r.width, SWT.DEFAULT));
+			}
+		});
+		// mouse wheel scrolling
+		scrollPanel.setFocus();
+		scrollPanel.addListener(SWT.MouseWheel, new Listener() {
+			public void handleEvent(Event event) {
+				int wheelCount = event.count;
+				wheelCount = (int) Math.ceil(wheelCount / 3.0f);
+				while (wheelCount < 0) {
+					scrollPanel.getVerticalBar().setIncrement(4);
+					wheelCount++;
+				}
+				while (wheelCount > 0) {
+					scrollPanel.getVerticalBar().setIncrement(-4);
+					wheelCount--;
+				}
 			}
 		});
 
