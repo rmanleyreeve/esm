@@ -700,7 +700,6 @@ public class SpaceDetailView {
 			e.printStackTrace();
 		}
 
-
 		sep = new Label(rowRight2, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));		
 
@@ -855,12 +854,12 @@ public class SpaceDetailView {
 					}
 				});
 				pRow.close();
+				gallHolder.setFocus();
 			} // endif photos > 0
 			conn.close();
 		} catch (SQLException ex) {
 			LogController.logEvent(me, C.ERROR, "Error getting photo metadata from database", ex);		
 		}
-
 
 		// row 4 - docs header & button bar		
 		Group rowRight4 = new Group(compR, SWT.NONE);
@@ -1147,15 +1146,13 @@ public class SpaceDetailView {
 			}
 		});
 
-
-
-
-
 		//===============================================================================================
 
 		scrollPanelRight.setContent(compR);
 		scrollPanelRight.setExpandVertical(true);
 		scrollPanelRight.setExpandHorizontal(true);
+		
+		// redraw panel on window resize
 		scrollPanelRight.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
@@ -1163,9 +1160,21 @@ public class SpaceDetailView {
 				scrollPanelRight.setMinSize(compR.computeSize(r.width, SWT.DEFAULT));
 			}
 		});
-
-
-
+		// mouse wheel scrolling
+		scrollPanelRight.addListener(SWT.MouseWheel, new Listener() {
+			public void handleEvent(Event event) {
+				int wheelCount = event.count;
+				wheelCount = (int) Math.ceil(wheelCount / 3.0f);
+				while (wheelCount < 0) {
+					scrollPanelRight.getVerticalBar().setIncrement(4);
+					wheelCount++;
+				}
+				while (wheelCount > 0) {
+					scrollPanelRight.getVerticalBar().setIncrement(-4);
+					wheelCount--;
+				}
+			}
+		});
 
 		// final layout settings	
 		panels.setWeights(new int[] {11, 9});				
