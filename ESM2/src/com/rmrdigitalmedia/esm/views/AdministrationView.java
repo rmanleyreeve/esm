@@ -536,6 +536,7 @@ public class AdministrationView {
 			}
 		});
 		Label lblDump = new Label(rowRight1, SWT.WRAP);
+		lblDump.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
 		lblDump.setText("Create a complete backup of the entire database (for archiving or restore purposes)");
 		lblDump.setBackground(C.APP_BGCOLOR);
 		btnDump.setToolTipText(lblDump.getText());
@@ -548,6 +549,7 @@ public class AdministrationView {
 		btnExport.setText("Data Export File");
 
 		Label lblExport = new Label(rowRight1, SWT.WRAP);
+		lblExport.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
 		lblExport.setText("Generate a data export file to send manually by email");
 		lblExport.setBackground(C.APP_BGCOLOR);
 		btnExport.setToolTipText(lblExport.getText());		
@@ -623,6 +625,7 @@ public class AdministrationView {
 		btnSend.setText("Send Data File");
 
 		Label lblSend = new Label(rowRight1, SWT.WRAP);
+		lblSend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
 		lblSend.setText("Generate data export file and send automatically to Videotel server (requires Internet connection)");
 		lblSend.setBackground(C.APP_BGCOLOR);
 		btnSend.setToolTipText(lblSend.getText());
