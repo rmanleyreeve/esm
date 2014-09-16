@@ -1,8 +1,8 @@
 package com.rmrdigitalmedia.esm.forms;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -210,31 +209,41 @@ public class AddAdminForm {
 				Combo[] dates = {dd,mm,yyyy}; Validation.validateDates(dates);			
 				month = (Integer)mm.getData(mm.getText());				
 				if( Validation.validateFields(fields) && Validation.validateDates(dates) ) {
+					boolean exists = false;
 					try {
-						EsmUsersTable.Row row = EsmUsersTable.getRow();
-						row.setUsername(username.getText());
-						row.setPassword(C.doMD5(password.getText()));
-						row.setForename(forename.getText());
-						row.setSurname(surname.getText());
-						row.setRank(rank.getText());
-						row.setWorkIdentifier(workid.getText());
-						row.setAccessLevel(accesslevel);
-						row.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());
-						row.setCreatedDate(new Timestamp(new Date().getTime()));
-						row.setUpdateDate(new Timestamp(new Date().getTime()));
-						row.setDeleted("FALSE");
-						row.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
-						row.insert();
-						formOK = true;
-						LogController.log("Admin User added to database");
-						EsmApplication.appData.setField("ADMIN",username.getText());
-					} catch (Exception e1) {
-						LogController.logEvent(this, C.WARNING, e1);
-					}					
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {}
-					shell.close ();
+						if (EsmUsersTable.getRow("USERNAME", username.getText()) != null) {
+							exists = true;
+							username.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
+							EsmApplication.alert("This username already exists in the system");
+						}
+					} catch (SQLException e2) {}
+					if(!exists) {
+						try {
+							EsmUsersTable.Row row = EsmUsersTable.getRow();
+							row.setUsername(username.getText());
+							row.setPassword(C.doMD5(password.getText()));
+							row.setForename(forename.getText());
+							row.setSurname(surname.getText());
+							row.setRank(rank.getText());
+							row.setWorkIdentifier(workid.getText());
+							row.setAccessLevel(accesslevel);
+							row.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());
+							row.setCreatedDate(new Timestamp(new Date().getTime()));
+							row.setUpdateDate(new Timestamp(new Date().getTime()));
+							row.setDeleted("FALSE");
+							row.setRemoteIdentifier((String)EsmApplication.appData.getField("LICENSE"));
+							row.insert();
+							formOK = true;
+							LogController.log("Admin User added to database");
+							EsmApplication.appData.setField("ADMIN",username.getText());
+						} catch (Exception e1) {
+							LogController.logEvent(this, C.WARNING, e1);
+						}					
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {}
+						shell.close ();
+					}
 				} else {
 					Validation.validateError(myshell);;
 				}

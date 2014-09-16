@@ -3,7 +3,6 @@ package com.rmrdigitalmedia.esm.forms;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -24,8 +23,8 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
+import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
@@ -215,26 +214,37 @@ public class EditAdminForm {
 				Combo[] dates = {dd,mm,yyyy}; Validation.validateDates(dates);			
 				month = (Integer)mm.getData(mm.getText());
 				if( Validation.validateFields(fields) && Validation.validateDates(dates) ) {
+					boolean exists = false;
 					try {
-						uRow.setUsername(username.getText());
-						uRow.setForename(forename.getText());
-						uRow.setSurname(surname.getText());
-						uRow.setRank(rank.getText());
-						uRow.setWorkIdentifier(workid.getText());
-						uRow.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());
-						uRow.setCreatedDate(new Timestamp(new Date().getTime()));
-						uRow.setUpdateDate(new Timestamp(new Date().getTime()));
-						uRow.setDeleted("FALSE");
-						uRow.update();
-						formOK = true;
-						LogController.log("Administrator edited in database.");
-					} catch (Exception e1) {
-						LogController.logEvent(this, C.ERROR, e1);
-					}					
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {}
-					shell.close ();
+						String un = username.getText();
+						if (!uRow.getUsername().equals(un) && EsmUsersTable.getRow("USERNAME", un) != null) {
+							exists = true;
+							username.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
+							EsmApplication.alert("This username already exists in the system");
+						}
+					} catch (SQLException e2) {}
+					if(!exists) {
+						try {
+							uRow.setUsername(username.getText());
+							uRow.setForename(forename.getText());
+							uRow.setSurname(surname.getText());
+							uRow.setRank(rank.getText());
+							uRow.setWorkIdentifier(workid.getText());
+							uRow.setDob(yyyy.getText() + "-" + month + "-" + dd.getText());
+							uRow.setCreatedDate(new Timestamp(new Date().getTime()));
+							uRow.setUpdateDate(new Timestamp(new Date().getTime()));
+							uRow.setDeleted("FALSE");
+							uRow.update();
+							formOK = true;
+							LogController.log("Administrator edited in database.");
+						} catch (Exception e1) {
+							LogController.logEvent(this, C.ERROR, e1);
+						}					
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {}
+						shell.close ();
+					}
 				} else {
 					Validation.validateError(myshell);
 				}
