@@ -81,7 +81,7 @@ public class AdministrationView {
 		combo.setData("Select...", 0);
 		EsmUsersTable.Row[] uRows = null;
 		try {
-			uRows = EsmUsersTable.getRows("DELETED=FALSE AND ID <> "+user.getID());
+			uRows = EsmUsersTable.getRows("DELETED=FALSE AND ID <> "+user.getID() + " ORDER BY SURNAME");
 		} catch (SQLException ex) { }
 		for(EsmUsersTable.Row uRow:uRows) {
 			String un = uRow.getSurname().toUpperCase() + ", " + uRow.getForename() + " : "+ uRow.getRank();
