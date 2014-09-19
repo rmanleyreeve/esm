@@ -228,6 +228,7 @@ public class DatabaseController {
 		}
 		int srcW = bimg.getWidth();
 		int srcH = bimg.getHeight();
+		C.sop(srcW);
 		OutputStream osF = new ByteArrayOutputStream();
 		Connection conn = createConnection();
 		try {
@@ -243,6 +244,7 @@ public class DatabaseController {
 					ByteArrayOutputStream baos = (ByteArrayOutputStream) osF;
 					is = new ByteArrayInputStream((baos).toByteArray());
 					l = baos.size();
+					C.sop(l);
 				} catch (IOException ex) { 
 					LogController.logEvent(DatabaseController.class, C.ERROR, "insert full image", ex);
 				}
