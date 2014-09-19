@@ -741,11 +741,13 @@ public class EntryAuditChecklistView {
 			}
 		});
 
-		final Button btnProceed = new Button(footerRow, SWT.NONE);
-		btnProceed.setToolTipText("Save Checklist and go to Classification");
+		final Button btnProceed = new Button(footerRow, SWT.NONE | SWT.RIGHT_TO_LEFT);
+		btnProceed.setImage(C.getImage("next.png"));
+		btnProceed.setToolTipText("Save Checklist and proceed to Classification");
 		btnProceed.setBackground(C.APP_BGCOLOR);
 		btnProceed.setFont(C.FONT_11B);
 		btnProceed.setText("Entry Classification");
+		
 		btnProceed.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {

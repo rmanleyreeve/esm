@@ -552,7 +552,8 @@ public class EntryAuditClassificationView {
 		});
 
 		final Button btnProceed = new Button(footerRow, SWT.NONE);
-		btnProceed.setToolTipText("Save Classification and go to Checklist");
+		btnProceed.setImage(C.getImage("back.png"));
+		btnProceed.setToolTipText("Save Classification and return to Checklist");
 		btnProceed.setBackground(C.APP_BGCOLOR);
 		btnProceed.setFont(C.FONT_11B);
 		btnProceed.setText("Entry Checklist");
