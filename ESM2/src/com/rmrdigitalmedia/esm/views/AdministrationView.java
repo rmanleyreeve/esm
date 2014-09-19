@@ -144,7 +144,7 @@ public class AdministrationView {
 
 		// row - vessel management		
 		final String type = (String) EsmApplication.appData.getField("LOCATION_TYPE");
-		Group rowVessel = new Group(compL, SWT.NONE);
+		final Group rowVessel = new Group(compL, SWT.NONE);
 		rowVessel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout gl_rowVessel = new GridLayout(3, true);
 		gl_rowVessel.marginBottom = 5;
@@ -152,7 +152,7 @@ public class AdministrationView {
 		rowVessel.setLayout(gl_rowVessel);
 		rowVessel.setBackground(C.APP_BGCOLOR);
 
-		CLabel lblVessel = new CLabel(rowVessel, SWT.NONE);
+		final CLabel lblVessel = new CLabel(rowVessel, SWT.NONE);
 		GridData gd_lblVessel = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
 		gd_lblVessel.widthHint = 120;
 		lblVessel.setLayoutData(gd_lblVessel);
@@ -161,7 +161,7 @@ public class AdministrationView {
 		lblVessel.setImage(C.getImage("vessel.png"));
 		lblVessel.setText("Manage " + type + " Details");	
 
-		Button btnAddVessel = new Button(rowVessel, SWT.NONE);
+		final Button btnAddVessel = new Button(rowVessel, SWT.NONE | SWT.WRAP);
 		btnAddVessel.setToolTipText("Edit " + type + " Details");
 		GridData gd_btnAddVessel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1);
 		gd_btnAddVessel.verticalIndent = 3;
@@ -173,6 +173,10 @@ public class AdministrationView {
 				if(evf.complete()) {
 					EsmApplication.alert("Info updated in system.");
 					WindowController.setHeaderLabelText();
+					String _type = (String) EsmApplication.appData.getField("LOCATION_TYPE");
+					btnAddVessel.setText("Edit " + _type + " Details");
+					lblVessel.setText("Manage " + _type + " Details");	
+					rowVessel.layout();
 				}
 			}
 		});

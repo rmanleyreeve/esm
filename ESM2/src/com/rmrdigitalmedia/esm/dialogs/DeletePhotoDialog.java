@@ -15,8 +15,10 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
+import com.rmrdigitalmedia.esm.models.PhotoDataTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 
+@SuppressWarnings("unused")
 public class DeletePhotoDialog {
 
 	private FormData fd_lblAProgramUpdate;
@@ -93,13 +95,12 @@ public class DeletePhotoDialog {
 				try {
 					PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow(id);
 					int dataID = pRow.getDataID();
-					//PhotoDataTable.Row dRow = PhotoDataTable.getRow(dataID);
-					//dRow.delete();
-					LogController.log("Deleted photo " + dataID);
+					//PhotoDataTable.getRow(dataID).delete(); // delete binary data
+					//LogController.log("Deleted photo data " + dataID);
 					pRow.setDeleted("TRUE");
 					pRow.update();
 					//pRow.delete(); // DESTRUCTIVE
-					LogController.log("Deleted photo metadata " + id);
+					LogController.log("Photo metadata " + id + "marked as deleted");
 					formOK = true;
 				} catch (SQLException ex) {
 					LogController.logEvent(this, C.ERROR, ex);
