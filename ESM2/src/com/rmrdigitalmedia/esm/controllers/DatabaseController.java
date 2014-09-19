@@ -220,6 +220,7 @@ public class DatabaseController {
 			return 0;
 		}
 		String mimeType = FilesystemController.getMimeType(f);
+		System.out.println(mimeType);
 		BufferedImage bimg = ImageIO.read(f);
 		if (bimg == null) {
 			LogController.log("Selected file does not appear to be an image file!");
