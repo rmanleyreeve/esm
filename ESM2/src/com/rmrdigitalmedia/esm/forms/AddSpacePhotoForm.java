@@ -192,7 +192,10 @@ public class AddSpacePhotoForm {
 				if( Validation.validateFields(fields) ) {
 					try {
 						id = DatabaseController.insertImageData(new File(imgToUploadPath));
-					} catch (Exception ex) {}
+					} catch (Exception ex) {
+						LogController.logEvent(new DatabaseController(), C.ERROR, "method 'insertImageData' threw exception:", ex);
+						ex.printStackTrace();
+					}
 					if(id>0) {
 						try {
 							PhotoMetadataTable.Row pRow = PhotoMetadataTable.getRow();

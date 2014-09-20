@@ -20,10 +20,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
+
 import javax.imageio.ImageIO;
+
 import net.coobird.thumbnailator.Thumbnails;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.itextpdf.text.DocumentException;
@@ -37,6 +41,7 @@ import com.rmrdigitalmedia.esm.models.VesselCategoriesTable;
 import com.rmrdigitalmedia.esm.models.VesselTable;
 import com.rmrdigitalmedia.esm.models.VesselTypesTable;
 import com.rmrdigitalmedia.esm.test.PdfTest;
+
 
 @SuppressWarnings("serial")
 class EmptyDataException extends Exception {
@@ -219,16 +224,19 @@ public class DatabaseController {
 			LogController.log("Selected file appears to be empty!");
 			return 0;
 		}
-		String mimeType = FilesystemController.getMimeType(f);
-		System.out.println(mimeType);
-		BufferedImage bimg = ImageIO.read(f);
+		String mimeType = FilesystemController.getMimeType(f);		
+		BufferedImage bimg = null;
+		try {
+			bimg = ImageIO.read(f);
+		} catch (Exception ex) {
+			LogController.logEvent(DatabaseController.class, C.ERROR, "Could not read image", ex);
+		}		
 		if (bimg == null) {
-			LogController.log("Selected file does not appear to be an image file!");
+			LogController.log("Selected file does not appear to be a readable image file");
 			return 0;
 		}
 		int srcW = bimg.getWidth();
 		int srcH = bimg.getHeight();
-		C.sop(srcW);
 		OutputStream osF = new ByteArrayOutputStream();
 		Connection conn = createConnection();
 		try {
