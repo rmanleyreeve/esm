@@ -419,6 +419,7 @@ public class SpacesListView {
 		// mouse wheel scrolling
 		scrollPanel.setFocus();
 		scrollPanel.addListener(SWT.MouseWheel, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				int wheelCount = event.count;
 				wheelCount = (int) Math.ceil(wheelCount / 3.0f);
