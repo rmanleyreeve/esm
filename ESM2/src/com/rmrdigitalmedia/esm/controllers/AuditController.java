@@ -410,7 +410,7 @@ public class AuditController {
 				status.add(q7);
 			}				
 			max = 7;
-			String vh = EntrypointChecklistAuditTable.getRow(entryID).getQ7Value();
+			String vh = EntrypointChecklistAuditTable.getRow("ENTRYPOINT_ID", ""+entryID).getQ7Value();
 			if(vh!=null && vh.equals("HORIZONTAL") ) {
 				max--;
 			}
