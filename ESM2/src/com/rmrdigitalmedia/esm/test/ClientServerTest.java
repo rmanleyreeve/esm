@@ -10,7 +10,14 @@ public class ClientServerTest {
 	public static void main(String[] args) {
 
 		try {		
-			String connStr = "jdbc:h2:tcp://192.168.1.11//dbtest/ESM;";
+
+			/*
+			need to run this code on server
+			C:\Program Files (x86)\H2\bin>java -classpath h2-1.3.176.jar org.h2.tools.Server -tcp  -tcpAllowOthers
+
+			*/
+
+			String connStr = "jdbc:h2:tcp://192.168.1.2:9092//dbtest/ESM;";
 			Class.forName("org.h2.Driver");
 			Connection conn = DriverManager.getConnection(connStr, "sa", "");
 			System.out.println("Connected OK");
