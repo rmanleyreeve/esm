@@ -77,10 +77,13 @@ public class LoginController {
 		}
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public void createContents() {
 		shell = new Shell(display, SWT.ON_TOP);
 		final FillLayout fillLayout = new FillLayout();
-		fillLayout.marginHeight = 1;
+		fillLayout.type = SWT.VERTICAL;
 		shell.setLayout(fillLayout);
 		Rectangle s = C.getImage(C.SPLASH_IMAGE).getBounds();
 		shell.setSize(s.width, s.height);
@@ -99,8 +102,13 @@ public class LoginController {
 		// Setting the background of the composite with the image background for
 		// login dialog
 		final Label img_Label = new Label(composite, SWT.NONE);
-		img_Label.setLayoutData(new GridData(300, 250));
-		img_Label.setImage(C.getImage(C.SPLASH_IMAGE));
+		GridData gd_img_Label = new GridData(300, 254);
+		gd_img_Label.grabExcessHorizontalSpace = true;
+		gd_img_Label.grabExcessVerticalSpace = true;
+		img_Label.setLayoutData(gd_img_Label);
+		//img_Label.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		//img_Label.setImage(C.getImage(C.SPLASH_IMAGE));
+		img_Label.setBackgroundImage(C.getImage(C.SPLASH_IMAGE));
 
 		// Creating the composite which will contain the login related widgets
 		final Composite cmp_Login = new Composite(composite, SWT.NONE);
