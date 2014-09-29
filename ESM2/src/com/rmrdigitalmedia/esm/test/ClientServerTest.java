@@ -29,7 +29,7 @@ public class ClientServerTest {
 			Connection conn = DriverManager.getConnection(connStr, un, pw);
 			
 			System.out.println("Connected OK");
-			String sql = "SELECT NAME FROM _VESSEL_TYPES ORDER BY NAME ASC;";
+			String sql = "SELECT NAME FROM SPACES ORDER BY NAME ASC;";
 			PreparedStatement st = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
