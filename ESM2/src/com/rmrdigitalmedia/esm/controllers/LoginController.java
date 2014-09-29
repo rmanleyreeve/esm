@@ -106,8 +106,6 @@ public class LoginController {
 		gd_img_Label.grabExcessHorizontalSpace = true;
 		gd_img_Label.grabExcessVerticalSpace = true;
 		img_Label.setLayoutData(gd_img_Label);
-		//img_Label.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		//img_Label.setImage(C.getImage(C.SPLASH_IMAGE));
 		img_Label.setBackgroundImage(C.getImage(C.SPLASH_IMAGE));
 
 		// Creating the composite which will contain the login related widgets
@@ -133,7 +131,7 @@ public class LoginController {
 		clbl_UserLogin.setLayoutData(rowData);
 		String txt = "";
 		try {
-			//txt += (String) EsmApplication.appData.getField("LOCATION_NAME") + "\n";
+			txt += (String) EsmApplication.appData.getField("LOCATION_NAME") + "\n";
 		} catch (Exception e1) {
 		}
 		clbl_UserLogin.setText(txt + "User Login");
