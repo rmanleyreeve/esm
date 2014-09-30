@@ -121,7 +121,7 @@ public class InternetController {
 		// http://dataurl.net/#dataurlmaker - use this for images
 		Shell shell = new Shell(Display.getDefault());
 		shell.setLayout(new FillLayout());
-		shell.setText("Videotel ESM Help");
+		shell.setText(C.HELP_TITLE);
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32		
 		Browser browser;
 		try {

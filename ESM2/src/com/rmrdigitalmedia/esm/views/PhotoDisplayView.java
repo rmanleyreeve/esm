@@ -65,7 +65,7 @@ public class PhotoDisplayView {
 			rl_shell.marginWidth = 10;
 			shell.setLayout(rl_shell);
 			shell.setImage(C.getImage(C.APP_ICON_16));
-			shell.setText("Videotel ESM");
+			shell.setText(C.SHELL_TITLE);
 			shell.setSize(820, 750);
 			shell.addKeyListener(new KeyAdapter() {
 				@Override

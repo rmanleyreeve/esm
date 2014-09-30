@@ -60,7 +60,7 @@ public class AddAdminForm {
 		this.myshell = shell;
 		shell.setSize(450, 360);
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
-		shell.setText("Videotel ESM Setup");
+		shell.setText(C.SETUP_TITLE);
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 
 		Composite container = new Composite(shell,SWT.NONE);

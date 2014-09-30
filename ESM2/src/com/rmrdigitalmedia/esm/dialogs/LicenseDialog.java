@@ -46,7 +46,7 @@ public class LicenseDialog {
 
 	protected boolean validateKey(String key) {
 		// should be format xxxxx-xxxxx-xxxxx
-		// algo - remove dashes, last 7 digits + privateKey number should = first 7 digits
+		// algo - remove dashes, last 7 digits + privateKey number should = first 7 digits (8th digit is not used)
 		// check key format
 		if(
 				key.length() != 17 || 

@@ -53,7 +53,7 @@ public class SpaceAlert {
 
 		Label lblTitle = new Label(compTitle, SWT.NONE);
 		lblTitle.setAlignment(SWT.CENTER);
-		lblTitle.setFont(C.ALERT_TITLE);
+		lblTitle.setFont(C.FONT_ALERT_TITLE);
 		lblTitle.setText("CAUTION!");
 
 		Composite compIcon = new Composite(shell, SWT.NONE);

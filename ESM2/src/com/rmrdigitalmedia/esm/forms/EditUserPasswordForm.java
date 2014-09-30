@@ -63,7 +63,7 @@ public class EditUserPasswordForm {
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.myshell = shell;
 		shell.setSize(380, 200);
-		shell.setText("ESM Setup");
+		shell.setText(C.SETUP_TITLE);
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 
