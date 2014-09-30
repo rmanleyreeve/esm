@@ -21,7 +21,8 @@ public class ClientServerTest {
 
 			// for mysql
 			Class.forName("com.mysql.jdbc.Driver");	
-			String server = "192.168.1.30"; //www.rmrdigitalmedia.co.uk
+			String server = "192.168.1.30"; //networked
+			//String server = "www.rmrdigitalmedia.co.uk"; //internet
 			String db = "ta6rma_esm";
 			String un = "ta6rma_hostuser";
 			String pw = "theking";
