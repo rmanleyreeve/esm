@@ -46,7 +46,7 @@ public class DeleteSpaceCommentDialog {
 		Display display = Display.getDefault();
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		dialog.setSize(250, 130);
-		dialog.setText("ESM Alert");
+		dialog.setText(C.ALERT_TITLE);
 		dialog.setImage(C.getImage(C.APP_ICON_16));
 		FormLayout formLayout = new FormLayout ();
 		formLayout.marginWidth = 10;

@@ -84,7 +84,7 @@ public final class C {
 	public static Font FONT_11B = SWTResourceManager.getFont(FONT, 11 + FONT_ADD, SWT.BOLD);
 	public static Font FONT_12 = SWTResourceManager.getFont(FONT, 12 + FONT_ADD, SWT.NORMAL);
 	public static Font FONT_12B = SWTResourceManager.getFont(FONT, 12 + FONT_ADD, SWT.BOLD);
-	public static Font ALERT_TITLE = SWTResourceManager.getFont(FONT, 18 + FONT_ADD, SWT.BOLD);
+	public static Font FONT_ALERT_TITLE = SWTResourceManager.getFont(FONT, 18 + FONT_ADD, SWT.BOLD);
 
 	// web properties
 	public static String USER_AGENT = "Mozilla/5.0";
@@ -94,7 +94,6 @@ public final class C {
 	public static String FTP_SERVER = "ftp.rmrdigitalmedia.co.uk";
 	public static String FTP_USER = "esm@rmrdigitalmedia.co.uk";
 	public static String FTP_PASS = "Vide0tel";
-
 
 	// message text
 	public static String NEW_VERSION_ALERT = "New version available!";
@@ -108,6 +107,7 @@ public final class C {
 			+ "Read the hint that accompanies this question for more information and if necessary consult the officer in charge";
 	public static String SPACE_AUDIT_Q8_ALERT = "This is a potentially dangerous situation, please make sure that you understand why and how this can affect the condition of the space. "
 			+ "Read the hint that accompanies this question for more information and if necessary consult the officer in charge";
+	
 	// app screen titles
 	public static String APP_NAME = "Enclosed Spaces Management System";
 	public static String SPACES_LIST_TITLE = "Classified Enclosed Spaces";
@@ -117,6 +117,10 @@ public final class C {
 	public static String SPACE_AUDIT_CLASSIFICATION_PAGE_TITLE = "Internal Space Audit: Classification Questions";
 	public static String ENTRY_AUDIT_CLASSIFICATION_PAGE_TITLE = "Entry Point Audit: Classification Questions";
 	public static String HINT_TITLE = "Hint";
+	public static String SHELL_TITLE = "Videotel ESM";
+	public static String ALERT_TITLE = "ESM Alert";
+	public static String SETUP_TITLE = "Videotel ESM Setup";
+	public static String HELP_TITLE = "Videotel ESM Help";
 
 	// error severity
 	public static int NOTICE = 1;

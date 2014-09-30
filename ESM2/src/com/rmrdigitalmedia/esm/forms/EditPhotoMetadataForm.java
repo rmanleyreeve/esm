@@ -63,7 +63,7 @@ public class EditPhotoMetadataForm {
 		final Shell shell = new Shell (display, SWT.DIALOG_TRIM);
 		this.myshell = shell;
 		shell.setSize(500, 280);
-		shell.setText("Videotel ESM");
+		shell.setText(C.SHELL_TITLE);
 		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 

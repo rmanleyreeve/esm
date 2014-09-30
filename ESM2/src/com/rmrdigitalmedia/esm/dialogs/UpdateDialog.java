@@ -40,7 +40,7 @@ public class UpdateDialog {
 		final Shell dialog = new Shell (display,SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		dialog.setImage(C.getImage(C.APP_ICON_16));
 		dialog.setSize(234, 131);
-		dialog.setText("ESM Alert");
+		dialog.setText(C.ALERT_TITLE);
 		FormLayout formLayout = new FormLayout ();
 		formLayout.marginWidth = 10;
 		formLayout.marginHeight = 10;
