@@ -9,10 +9,10 @@ import org.eclipse.swt.widgets.Shell;
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.controllers.LoginController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.dialogs.HintAlert;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable.Row;
+import com.rmrdigitalmedia.esm.views.LoginView;
 
 public class EsmApplication {
 
@@ -101,7 +101,7 @@ public class EsmApplication {
 		Display display = loader.getDisplay();
 		loader.close();
 		loader.dispose();
-		LoginController login = new LoginController(display, rect);
+		LoginView login = new LoginView(display, rect);
 		login.createContents();
 	}
 
