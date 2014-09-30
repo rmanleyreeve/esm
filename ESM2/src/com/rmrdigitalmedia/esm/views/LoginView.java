@@ -1,9 +1,8 @@
-package com.rmrdigitalmedia.esm.controllers;
+package com.rmrdigitalmedia.esm.views;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.KeyAdapter;
@@ -27,14 +26,15 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
+import com.rmrdigitalmedia.esm.controllers.DatabaseController;
+import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
-public class LoginController {
+public class LoginView {
 
 	Shell shell;
 	private static Text txt_Password, txt_Username;
@@ -42,7 +42,7 @@ public class LoginController {
 	private Rectangle rect;
 	private Label alertTxt;
 
-	public LoginController(Display display, org.eclipse.swt.graphics.Rectangle rect) {
+	public LoginView(Display display, org.eclipse.swt.graphics.Rectangle rect) {
 		this.display = display;
 		this.rect = rect;
 		LogController.log("Running class " + this.getClass().getName());
