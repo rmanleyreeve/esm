@@ -94,15 +94,13 @@ public class PdfTest {
 		});
 		
 		Button btnNewButton = new Button(shell, SWT.NONE);
-		btnNewButton.setText("Blank PDF");
+		btnNewButton.setText("Blank Space PDF");
 		btnNewButton.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));		
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				PdfController.createBlankSpaceForm(1);
 				File pdf =  new File(C.DOC_DIR + C.SEP +  C.BLANK_SPACE_FORM);
-				if(!pdf.exists()) {
-					PdfController.createBlankSpaceForm(1);
-				}
 				if( Program.launch(pdf.getPath()) ) {
 					LogController.log("Opening blank Space Audit Form");
 				} else {
@@ -111,6 +109,21 @@ public class PdfTest {
 			}
 		});		
 		
+		Button btnNewButton2 = new Button(shell, SWT.NONE);
+		btnNewButton2.setText("Blank Entry PDF");
+		btnNewButton2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));		
+		btnNewButton2.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				PdfController.createBlankEntryForm(1);
+				File pdf =  new File(C.DOC_DIR + C.SEP +  C.BLANK_ENTRY_FORM);
+				if( Program.launch(pdf.getPath()) ) {
+					LogController.log("Opening blank Entry Audit Form");
+				} else {
+					LogController.logEvent(PdfTest.class, C.ERROR, "Cannot open blank Entry Audit Form!");
+				}
+			}
+		});		
 		
 		
 		shell.pack();
