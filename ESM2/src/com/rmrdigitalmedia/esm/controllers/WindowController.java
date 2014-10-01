@@ -67,8 +67,7 @@ public class WindowController {
 	public static String helpfile = C.HELPFILE_GENERIC;
 	public static EsmUsersTable.Row user;
 	SpacesTable.Row[] rows;
-	private Label lblVtLogo;
-	private Label lblMrmLogo;
+	private Label lblCustomerLogo;
 	private static boolean isAdmin = false;
 	public static String searchFilter = "";
 
@@ -380,22 +379,23 @@ public class WindowController {
 		lblH.setAlignment(SWT.LEFT);
 		lblH.setBackground(C.APP_BGCOLOR);
 		setHeaderLabelText();
-
-		lblMrmLogo = new Label(header, SWT.NONE);
-		lblMrmLogo.setImage(C.getImage("mrm_logo.png"));
-		lblMrmLogo.setBackground(C.APP_BGCOLOR);
+		
+		// customer logo area (500 x 50)		
+		lblCustomerLogo = new Label(header, SWT.NONE);
+		lblCustomerLogo.setBackground(C.APP_BGCOLOR);
 		FormData fd_lblmrmLogo = new FormData();
-		fd_lblmrmLogo.top = new FormAttachment(25);
-		fd_lblmrmLogo.right = new FormAttachment(100, -240);
-		lblMrmLogo.setLayoutData(fd_lblmrmLogo);
-
-		lblVtLogo = new Label(header, SWT.NONE);
-		lblVtLogo.setImage(C.getImage("vt_logo.png"));
-		lblVtLogo.setBackground(C.APP_BGCOLOR);
-		FormData fd_lblVtLogo = new FormData();
-		fd_lblVtLogo.top = new FormAttachment(25);
-		fd_lblVtLogo.right = new FormAttachment(100, -10);
-		lblVtLogo.setLayoutData(fd_lblVtLogo);
+		// look for customer logo
+		Image ci = C.getExtImage("customer_logo.png");
+		if(ci != null) {
+			lblCustomerLogo.setImage(ci);
+			LogController.log("Loading customer logo image");
+		} else {
+			lblCustomerLogo.setImage(C.getImage("default_logo.png"));
+			LogController.log("No customer logo found, using default");
+		}
+		fd_lblmrmLogo.top = new FormAttachment(8);
+		fd_lblmrmLogo.right = new FormAttachment(100, -5);
+		lblCustomerLogo.setLayoutData(fd_lblmrmLogo);
 
 		// read text from disk
 		String txt = C.APP_NAME + "\t" + C.COPYRIGHT;

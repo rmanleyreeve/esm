@@ -2,11 +2,11 @@ package com.rmrdigitalmedia.esm.test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -93,6 +92,27 @@ public class PdfTest {
 				shell.dispose();
 			}
 		});
+		
+		Button btnNewButton = new Button(shell, SWT.NONE);
+		btnNewButton.setText("Blank PDF");
+		btnNewButton.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));		
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				File pdf =  new File(C.DOC_DIR + C.SEP +  C.BLANK_SPACE_FORM);
+				if(!pdf.exists()) {
+					PdfController.createBlankSpaceForm(1);
+				}
+				if( Program.launch(pdf.getPath()) ) {
+					LogController.log("Opening blank Space Audit Form");
+				} else {
+					LogController.logEvent(PdfTest.class, C.ERROR, "Cannot open blank Space Audit Form!");
+				}
+			}
+		});		
+		
+		
+		
 		shell.pack();
 		shell.open();
 		while (!shell.isDisposed()) {

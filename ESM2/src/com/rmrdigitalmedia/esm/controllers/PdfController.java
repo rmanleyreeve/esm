@@ -16,11 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Display;
-
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -31,8 +29,12 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
@@ -1019,6 +1021,54 @@ public class PdfController {
 		LogController.log("Created PDF: "+fPath);
 		Display.getCurrent().getActiveShell().setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_ARROW));
 		return ok;
+	}
+
+
+	public static void createBlankSpaceForm(int spaceID) {
+		
+		 String spaceName = "";
+		try {
+			SpacesTable.Row sRow = SpacesTable.getRow(spaceID);
+			spaceName = sRow.getName();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			InputStream is = EsmApplication.class.getResourceAsStream("/pdf/" + C.BLANK_SPACE_FORM);
+			PdfReader pdfReader = new PdfReader(is);
+			Rectangle r = pdfReader.getPageSize(1);
+			int h = (int) r.getHeight(); //842
+			int w = (int) r.getWidth(); //595
+
+			String dest = C.DOC_DIR + C.SEP + C.BLANK_SPACE_FORM;
+			PdfStamper pdfStamper = new PdfStamper(pdfReader,	new FileOutputStream(dest));
+			Image image;
+			if(new File("customer_logo.png").exists()) {
+				image = Image.getInstance("customer_logo.png");				
+			} else {
+				image = getImageFromPath("/img/default_logo.png");
+			}			
+			for(int i=1; i<= pdfReader.getNumberOfPages(); i++){
+				PdfContentByte content = pdfStamper.getUnderContent(i);
+				image.scaleAbsolute(250, 25);
+				image.setAbsolutePosition(250, h-65);
+				content.addImage(image);
+			}
+			PdfContentByte meta = pdfStamper.getUnderContent(1);
+			meta.saveState();
+			meta.beginText();
+			meta.setFontAndSize(BaseFont.createFont(), 12);
+			meta.showTextAligned(Element.ALIGN_LEFT, spaceName, 155, h-260, 0);
+			meta.setFontAndSize(BaseFont.createFont(), 12);
+			meta.showTextAligned(Element.ALIGN_LEFT, ""+spaceID, 455, h-260, 0);
+			meta.endText();
+			meta.restoreState();			
+			pdfStamper.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}		
 	}
 
 }
