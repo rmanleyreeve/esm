@@ -1024,8 +1024,7 @@ public class PdfController {
 	}
 
 
-	public static void createBlankSpaceForm(int spaceID) {
-		
+	public static void createBlankSpaceForm(int spaceID) {		
 		 String spaceName = "";
 		try {
 			SpacesTable.Row sRow = SpacesTable.getRow(spaceID);
@@ -1039,7 +1038,6 @@ public class PdfController {
 			Rectangle r = pdfReader.getPageSize(1);
 			int h = (int) r.getHeight(); //842
 			int w = (int) r.getWidth(); //595
-
 			String dest = C.DOC_DIR + C.SEP + C.BLANK_SPACE_FORM;
 			PdfStamper pdfStamper = new PdfStamper(pdfReader,	new FileOutputStream(dest));
 			Image image;
@@ -1071,4 +1069,51 @@ public class PdfController {
 		}		
 	}
 
+	public static void createBlankEntryForm(int entryID) {		
+		 String epName = "";
+		try {
+			EntrypointsTable.Row epRow = EntrypointsTable.getRow(entryID);
+			epName = epRow.getName();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			InputStream is = EsmApplication.class.getResourceAsStream("/pdf/" + C.BLANK_ENTRY_FORM);
+			PdfReader pdfReader = new PdfReader(is);
+			Rectangle r = pdfReader.getPageSize(1);
+			int h = (int) r.getHeight(); //842
+			int w = (int) r.getWidth(); //595
+			String dest = C.DOC_DIR + C.SEP + C.BLANK_ENTRY_FORM;
+			PdfStamper pdfStamper = new PdfStamper(pdfReader,	new FileOutputStream(dest));
+			Image image;
+			if(new File("customer_logo.png").exists()) {
+				image = Image.getInstance("customer_logo.png");				
+			} else {
+				image = getImageFromPath("/img/default_logo.png");
+			}			
+			for(int i=1; i<= pdfReader.getNumberOfPages(); i++){
+				PdfContentByte content = pdfStamper.getUnderContent(i);
+				image.scaleAbsolute(250, 25);
+				image.setAbsolutePosition(250, h-65);
+				content.addImage(image);
+			}
+			PdfContentByte meta = pdfStamper.getUnderContent(1);
+			meta.saveState();
+			meta.beginText();
+			meta.setFontAndSize(BaseFont.createFont(), 12);
+			meta.showTextAligned(Element.ALIGN_LEFT, epName, 155, h-260, 0);
+			meta.setFontAndSize(BaseFont.createFont(), 12);
+			meta.showTextAligned(Element.ALIGN_LEFT, ""+entryID, 455, h-260, 0);
+			meta.endText();
+			meta.restoreState();			
+			pdfStamper.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	
+	
 }

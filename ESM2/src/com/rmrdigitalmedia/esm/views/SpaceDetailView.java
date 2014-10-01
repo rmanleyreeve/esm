@@ -32,6 +32,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -72,7 +73,7 @@ public class SpaceDetailView {
 	static Object me = new SpaceDetailView();
 	static EsmUsersTable.Row user = WindowController.user;
 	static int access = user.getAccessLevel();
-
+	static int selectedOption = 0;
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 	private static Label sep;
 
@@ -343,7 +344,7 @@ public class SpaceDetailView {
 							@Override
 							public void widgetSelected(SelectionEvent arg0) {								
 								try {
-								SpaceCommentsTable.Row sRow;
+									SpaceCommentsTable.Row sRow;
 									sRow = SpaceCommentsTable.getRow(commentID);
 									sRow.setApproved("TRUE");
 									sRow.setUpdateDate(new Timestamp(new Date().getTime()));
@@ -360,7 +361,7 @@ public class SpaceDetailView {
 									EsmApplication.alert("The comment was approved!");
 									WindowController.showSpaceDetail(spaceID);
 								}
-								*/								
+								 */								
 							}
 						});
 					} else {
@@ -468,7 +469,7 @@ public class SpaceDetailView {
 		// row 6 - print blank forms header ===============================================================
 		Group rowRight6 = new Group(compR, SWT.NONE);
 		rowRight6.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		GridLayout gl_rowRight6 = new GridLayout(3, false);
+		GridLayout gl_rowRight6 = new GridLayout(5, false);
 		gl_rowRight6.marginBottom = 5;
 		gl_rowRight6.marginHeight = 0;
 		rowRight6.setLayout(gl_rowRight6);
@@ -479,17 +480,25 @@ public class SpaceDetailView {
 		lblPrintDocs.setFont(C.FONT_12B);
 		lblPrintDocs.setBackground(C.APP_BGCOLOR);
 		lblPrintDocs.setText("Printable Audit Forms");	
+		lblPrintDocs.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 5, 1));
+
+		Label lblPrintSpaceDoc = new Label(rowRight6, SWT.NONE);
+		lblPrintSpaceDoc.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
+		lblPrintSpaceDoc.setFont(C.FONT_10B);
+		lblPrintSpaceDoc.setBackground(C.APP_BGCOLOR);
+		lblPrintSpaceDoc.setText("Space Audit:");
 
 		final Button btnPrintSpaceDoc = new Button(rowRight6, SWT.NONE);
 		btnPrintSpaceDoc.setToolTipText("Open a blank Enclosed Space Audit Form for printing");
 		GridData gd_btnPrintSpaceDoc = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
-		gd_btnPrintSpaceDoc.widthHint = 110;
+		//gd_btnPrintSpaceDoc.widthHint = 110;
 		gd_btnPrintSpaceDoc.verticalIndent = 3;
 		btnPrintSpaceDoc.setLayoutData(gd_btnPrintSpaceDoc);
-		btnPrintSpaceDoc.setText("Space Audit");
+		btnPrintSpaceDoc.setText("Go");
 		btnPrintSpaceDoc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				//PdfController.createBlankSpaceForm(spaceID);
 				File pdf =  new File(C.DOC_DIR + C.SEP +  C.BLANK_SPACE_FORM);
 				if(!pdf.exists()) {
 					FilesystemController.createBlankSpaceForm();
@@ -500,17 +509,36 @@ public class SpaceDetailView {
 					LogController.logEvent(me, C.ERROR, "Cannot open blank Space Audit Form!");
 				}
 			}
-		});		
+		});	
+
+		Label lblPrintEntryDoc = new Label(rowRight6, SWT.NONE);
+		GridData gd_lblPrintEntryDoc = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+		gd_lblPrintEntryDoc.horizontalIndent = 20;
+		lblPrintEntryDoc.setLayoutData(gd_lblPrintEntryDoc);
+		lblPrintEntryDoc.setFont(C.FONT_10B);
+		lblPrintEntryDoc.setBackground(C.APP_BGCOLOR);
+		lblPrintEntryDoc.setText("Entrypoint Audit:");	
+
+		final Combo selectEntryAudit = new Combo(rowRight6, SWT.NONE);
+		GridData gd_selectEntryAudit = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+		gd_selectEntryAudit.verticalIndent = 3;
+		selectEntryAudit.setLayoutData(gd_selectEntryAudit);
+		selectEntryAudit.setFont(C.FONT_9);
+		selectEntryAudit.add("Select...");
+		selectEntryAudit.setData("Select...",0);
+		selectEntryAudit.select(0);
 
 		final Button btnPrintEntryDoc = new Button(rowRight6, SWT.NONE);
-		btnPrintEntryDoc.setToolTipText("Open a blank Entry Point Audit Form for printing");
+		btnPrintEntryDoc.setEnabled(false);
+		btnPrintEntryDoc.setToolTipText("Open a blank Entrypoints Audit Form for printing");
 		GridData gd_btnPrintEntryDoc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_btnPrintEntryDoc.verticalIndent = 3;
 		btnPrintEntryDoc.setLayoutData(gd_btnPrintEntryDoc);
-		btnPrintEntryDoc.setText("Entry Point Audit");
+		btnPrintEntryDoc.setText("Go");
 		btnPrintEntryDoc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				//PdfController.createBlankEntryForm(selectedOption);
 				File pdf =  new File(C.DOC_DIR + C.SEP + C.BLANK_ENTRY_FORM);
 				if(!pdf.exists()) {
 					FilesystemController.createBlankEntryForm();
@@ -522,6 +550,16 @@ public class SpaceDetailView {
 				}
 			}
 		});
+
+		// dropdown behaviour
+		selectEntryAudit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				selectedOption = (Integer) selectEntryAudit.getData(selectEntryAudit.getText());
+				btnPrintEntryDoc.setEnabled(selectedOption > 0);
+			}
+		});
+
 
 		// row 2 - audit header & button bar	==========================================================================	
 		Group rowRight2 = new Group(compR, SWT.NONE);
@@ -597,9 +635,12 @@ public class SpaceDetailView {
 				epRow.beforeFirst();
 			}				
 			// for loop
-			while(epRow.next()) {
+			while(epRow.next()) {								
 				final int epID = epRow.getInt("ID");
-				String epName = epRow.getString("NAME");
+				String epName = epRow.getString("NAME");		
+				// blank form selector
+				selectEntryAudit.add(epName);
+				selectEntryAudit.setData(epName, epID);
 				lblEntryPoint = new CLabel(rowRight2, SWT.NONE);
 				lblEntryPoint.setFont(C.FONT_10);
 				gd_lblEntryPoint = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
@@ -1089,19 +1130,18 @@ public class SpaceDetailView {
 
 		final Button btnPrint = new Button(rowRight5, SWT.NONE);
 		btnPrint.setToolTipText("Produce a printable PDF of the completed audit for this space and its entry points");
-		btnPrint.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		btnPrint.setImage(C.getImage("print.png"));
 		btnPrint.setText("Create Space Report (PDF)");
 		btnPrint.setEnabled(signedoff);
 		btnPrint.setVisible(signedoff);
-		
+
 		final Label btnPrintText = new Label(rowRight5, SWT.WRAP);
 		btnPrintText.setFont(C.FONT_8);
 		btnPrintText.setBackground(C.APP_BGCOLOR);
 		btnPrintText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		btnPrintText.setText("(This report includes the Space && Entrypoint Audits, comments and photos.\nIt does NOT include documents.)");
 		btnPrintText.setVisible(signedoff);
-		
+
 
 		btnSignOff.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1151,7 +1191,7 @@ public class SpaceDetailView {
 		scrollPanelRight.setContent(compR);
 		scrollPanelRight.setExpandVertical(true);
 		scrollPanelRight.setExpandHorizontal(true);
-		
+
 		// redraw panel on window resize
 		scrollPanelRight.addControlListener(new ControlAdapter() {
 			@Override
