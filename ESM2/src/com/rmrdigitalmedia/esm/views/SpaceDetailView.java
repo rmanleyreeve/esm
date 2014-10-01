@@ -490,7 +490,7 @@ public class SpaceDetailView {
 		btnPrintSpaceDoc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				File pdf =  new File(C.DOC_DIR + C.SEP + "blank_space_form.pdf");
+				File pdf =  new File(C.DOC_DIR + C.SEP +  C.BLANK_SPACE_FORM);
 				if(!pdf.exists()) {
 					FilesystemController.createBlankSpaceForm();
 				}
@@ -511,7 +511,7 @@ public class SpaceDetailView {
 		btnPrintEntryDoc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				File pdf =  new File(C.DOC_DIR + C.SEP + "blank_entry_form.pdf");
+				File pdf =  new File(C.DOC_DIR + C.SEP + C.BLANK_ENTRY_FORM);
 				if(!pdf.exists()) {
 					FilesystemController.createBlankEntryForm();
 				}
