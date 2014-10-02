@@ -16,9 +16,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Display;
+
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -1024,6 +1026,7 @@ public class PdfController {
 	}
 
 
+	@SuppressWarnings("unused")
 	public static void createBlankSpaceForm(int spaceID) {		
 		 String spaceName = "";
 		try {
@@ -1069,6 +1072,7 @@ public class PdfController {
 		}		
 	}
 
+	@SuppressWarnings("unused")
 	public static void createBlankEntryForm(int entryID) {		
 		 String epName = "";
 		try {
