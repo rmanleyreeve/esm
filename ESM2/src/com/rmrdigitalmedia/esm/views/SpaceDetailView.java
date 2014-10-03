@@ -876,7 +876,7 @@ public class SpaceDetailView {
 					}
 					@Override
 					public void mouseDown(MouseEvent e) {
-						btnOpenPhoto.setEnabled( (gallery.getSelection().length > 0) );
+						btnOpenPhoto.setEnabled( (gallery.getSelection().length > 0 && e.stateMask==0x0) );
 					}
 					@Override
 					public void mouseUp(MouseEvent e) {}
@@ -887,11 +887,16 @@ public class SpaceDetailView {
 					public void widgetSelected(SelectionEvent arg0) {
 						GalleryItem[] selection = gallery.getSelection();
 						if (selection == null)
-							return;
-						GalleryItem item = selection[0];
-						int _dataID = (Integer) item.getData("id");
-						LogController.log("Opening Image " + _dataID);
-						WindowController.showPhotoViewer(_dataID);					
+							return;						
+						try {
+							GalleryItem item = selection[0];
+							int _dataID = (Integer) item.getData("id");
+							LogController.log("Opening Image " + _dataID);
+							WindowController.showPhotoViewer(_dataID);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}					
 					}
 				});
 				pRow.close();
