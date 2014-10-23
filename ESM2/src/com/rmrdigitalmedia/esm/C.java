@@ -86,14 +86,14 @@ public final class C {
 	public static Font FONT_12B = SWTResourceManager.getFont(FONT, 12 + FONT_ADD, SWT.BOLD);
 	public static Font FONT_ALERT_TITLE = SWTResourceManager.getFont(FONT, 18 + FONT_ADD, SWT.BOLD);
 
-	// web properties
+	// internet properties
 	public static String USER_AGENT = "Mozilla/5.0";
-	public static String REMOTE_URL = "http://www.rmrdigitalmedia.co.uk/esm/";
+	public static String REMOTE_URL = "http://www.esm-system.com/";
 	public static String LATEST_VERSION_URL = REMOTE_URL + "version.txt";
 	public static String UPDATE_URL = REMOTE_URL + "updates.php";
-	public static String FTP_SERVER = "ftp.rmrdigitalmedia.co.uk";
-	public static String FTP_USER = "esm@rmrdigitalmedia.co.uk";
-	public static String FTP_PASS = "Vide0tel";
+	public static String FTP_SERVER = "213.171.193.5";
+	public static String FTP_USER = "softwareconn";
+	public static String FTP_PASS = "f1letransfer@001";
 
 	// message text
 	public static String NEW_VERSION_ALERT = "New version available!";
