@@ -107,7 +107,8 @@ public final class C {
 			+ "Read the hint that accompanies this question for more information and if necessary consult the officer in charge";
 	public static String SPACE_AUDIT_Q8_ALERT = "This is a potentially dangerous situation, please make sure that you understand why and how this can affect the condition of the space. "
 			+ "Read the hint that accompanies this question for more information and if necessary consult the officer in charge";
-	
+	public static final String FIRST_LOGIN_TEXT = "First login terms and conditions go here";
+
 	// app screen titles
 	public static String APP_NAME = "Enclosed Spaces Management System";
 	public static String SPACES_LIST_TITLE = "Classified Enclosed Spaces";
