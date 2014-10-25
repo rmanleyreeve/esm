@@ -3,6 +3,7 @@ package com.rmrdigitalmedia.esm.views;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 import org.eclipse.swt.SWT;
@@ -23,10 +24,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -1120,6 +1119,7 @@ public class SpaceAuditChecklistView {
 				aRow.setQ17Boolean( C.getRB(q17_radio1,q17_radio2) );
 				if(q17_col4.getText()!=null) aRow.setQ17Comments(q17_col4.getText());		
 				// commit the transaction
+				aRow.setUpdateDate(new Timestamp(new Date().getTime()));
 				aRow.update();
 				HashMap<String,Object> newVals = AuditController.getSpaceChecklistArray(spaceID);
 				//LogController.log(currentVals.toString());

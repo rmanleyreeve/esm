@@ -1,12 +1,13 @@
 package com.rmrdigitalmedia.esm.models ;
 
-import java.util.Map ;
-import java.util.HashMap ;
-import java.sql.Connection ;
-import java.sql.SQLException ;
-import com.javaranch.common.Str ;
-import com.javaranch.db.DBResults ;
-import com.javaranch.db.TableFacade ;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+import com.javaranch.common.Str;
+import com.javaranch.db.DBResults;
+import com.javaranch.db.TableFacade;
 
 /** Strongly typed access to the database table "SPACE_CLASSIFICATION_AUDIT".
  *
@@ -64,11 +65,12 @@ public class SpaceClassificationAuditTable
     public static final String q7CommentsColumnName = "Q7_COMMENTS";
     public static final String q8BooleanColumnName = "Q8_BOOLEAN";
     public static final String q8CommentsColumnName = "Q8_COMMENTS";
+    public static final String updateDateColumnName = "UPDATE_DATE";
     public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        idColumnName , spaceIDColumnName , q1ValueColumnName , q1CommentsColumnName , q2ValueColumnName , q2CommentsColumnName , q3ValueColumnName , q3CommentsColumnName , q4ValueColumnName , q4CommentsColumnName , q5ValueColumnName , q5CommentsColumnName , q6ValueColumnName , q6CommentsColumnName , q7BooleanColumnName , q7CommentsColumnName , q8BooleanColumnName , q8CommentsColumnName , remoteIdentifierColumnName , 
+        idColumnName , spaceIDColumnName , q1ValueColumnName , q1CommentsColumnName , q2ValueColumnName , q2CommentsColumnName , q3ValueColumnName , q3CommentsColumnName , q4ValueColumnName , q4CommentsColumnName , q5ValueColumnName , q5CommentsColumnName , q6ValueColumnName , q6CommentsColumnName , q7BooleanColumnName , q7CommentsColumnName , q8BooleanColumnName , q8CommentsColumnName , updateDateColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -272,6 +274,7 @@ public class SpaceClassificationAuditTable
         private String q7Comments ;
         private String q8Boolean ;
         private String q8Comments ;
+        private Timestamp updateDate ;
         private String remoteIdentifier ;
 
         /** for internal use only!   If you need a row object, use getRow(). */
@@ -307,7 +310,8 @@ public class SpaceClassificationAuditTable
                 this.q7Comments = data[15];
                 this.q8Boolean = data[16];
                 this.q8Comments = data[17];
-                this.remoteIdentifier = data[18];
+                this.updateDate = Str.toTimestamp( data[18] );
+                this.remoteIdentifier = data[19];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -683,6 +687,17 @@ public class SpaceClassificationAuditTable
         }
 
 
+        public Timestamp getUpdateDate()
+        {
+            return updateDate ;
+        }
+
+        public void setUpdateDate( Timestamp updateDate )
+        {
+            this.updateDate = updateDate ;
+        }
+
+
         public String getRemoteIdentifier()
         {
             return remoteIdentifier ;
@@ -722,6 +737,7 @@ public class SpaceClassificationAuditTable
             data.put( q7CommentsColumnName , this.q7Comments );
             data.put( q8BooleanColumnName , this.q8Boolean );
             data.put( q8CommentsColumnName , this.q8Comments );
+            data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );
             data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
         }

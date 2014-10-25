@@ -10,11 +10,13 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -40,12 +42,6 @@ import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
-import com.rmrdigitalmedia.esm.models.EntrypointsTable;
-import com.rmrdigitalmedia.esm.models.SpacesTable;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TraverseListener;
-import org.eclipse.swt.events.TraverseEvent;
 
 
 @SuppressWarnings("unused")

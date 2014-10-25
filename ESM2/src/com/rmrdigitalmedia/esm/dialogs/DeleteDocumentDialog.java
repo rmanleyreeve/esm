@@ -1,7 +1,8 @@
 package com.rmrdigitalmedia.esm.dialogs;
 
 import java.sql.SQLException;
-
+import java.sql.Timestamp;
+import java.util.Date;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -14,7 +15,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.models.DocDataTable;
@@ -94,6 +94,7 @@ public class DeleteDocumentDialog {
 				try {
 					DocDataTable.Row dRow = DocDataTable.getRow(id);
 					dRow.setDeleted("TRUE");
+					dRow.setUpdateDate(new Timestamp(new Date().getTime()));
 					dRow.update();
 					//dRow.delete(); // DESTRUCTIVE
 					LogController.log("Document " + id + "marked as deleted");

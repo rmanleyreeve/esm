@@ -6,9 +6,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
@@ -618,6 +619,7 @@ public class AuditController {
 			sRow.setSignedOff("FALSE");
 			sRow.setSignoffDate(null);
 			sRow.setSignoffID(null);
+			sRow.setUpdateDate(new Timestamp(new Date().getTime()));
 			sRow.update();
 		} catch (SQLException e) {
 			LogController.logEvent(AuditController.class, C.ERROR, e);			
