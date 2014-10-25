@@ -44,7 +44,6 @@ import com.rmrdigitalmedia.esm.forms.EditVesselForm;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
-import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 @SuppressWarnings("unused")
 public class AdministrationView {

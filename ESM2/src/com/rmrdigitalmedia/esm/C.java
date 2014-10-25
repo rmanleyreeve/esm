@@ -107,6 +107,11 @@ public final class C {
 			+ "Read the hint that accompanies this question for more information and if necessary consult the officer in charge";
 	public static String SPACE_AUDIT_Q8_ALERT = "This is a potentially dangerous situation, please make sure that you understand why and how this can affect the condition of the space. "
 			+ "Read the hint that accompanies this question for more information and if necessary consult the officer in charge";
+	public static String DISCLAIMER = "This program is intended to reflect the best available "
+			+ "techniques and practices at the time of production. It is intended purely as comment. "
+			+ "No responsibility is accepted by Videotel, or by any firm, corporation or organisation "
+			+ "who or which has been in any way concerned with the production, supply or sale of this program "
+			+ "for accuracy of any information given hereon or for any omission here from.";
 	public static final String FIRST_LOGIN_TEXT = "First login terms and conditions go here";
 
 	// app screen titles
@@ -140,11 +145,6 @@ public final class C {
 	public static String HELPFILE_GENERIC = "help.html";
 
 	// PDF report properties
-	public static String DISCLAIMER = "This program is intended to reflect the best available "
-			+ "techniques and practices at the time of production. It is intended purely as comment. "
-			+ "No responsibility is accepted by Videotel, or by any firm, corporation or organisation "
-			+ "who or which has been in any way concerned with the production, supply or sale of this program "
-			+ "for accuracy of any information given hereon or for any omission here from.";
 	public static String SPACE_OVERALL_STATUS_MSG_RED = "It is advised that extreme caution is observed when using this space.";
 	public static String SPACE_OVERALL_STATUS_MSG_AMBER = "It is advised that caution is observed when using this space.";
 	public static String SPACE_OVERALL_STATUS_MSG_GREEN = "There are no significant hazards reported for this space.";

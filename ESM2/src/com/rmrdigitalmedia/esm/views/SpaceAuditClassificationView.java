@@ -3,9 +3,9 @@ package com.rmrdigitalmedia.esm.views;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -707,6 +706,7 @@ public class SpaceAuditClassificationView {
 				aRow.setQ8Boolean( C.getRB(q8_radio1,q8_radio2) );
 				if(q8_col5.getText()!=null) aRow.setQ8Comments(q8_col5.getText());
 				// commit the transaction
+				aRow.setUpdateDate(new Timestamp(new Date().getTime()));
 				aRow.update();
 				HashMap<String,Object> newVals = AuditController.getSpaceClassificationArray(spaceID);
 				//LogController.log(currentVals.toString());

@@ -1,6 +1,8 @@
 package com.rmrdigitalmedia.esm.dialogs;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -15,7 +17,6 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.LogController;
-import com.rmrdigitalmedia.esm.models.PhotoDataTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 
 @SuppressWarnings("unused")
@@ -98,6 +99,7 @@ public class DeletePhotoDialog {
 					//PhotoDataTable.getRow(dataID).delete(); // delete binary data
 					//LogController.log("Deleted photo data " + dataID);
 					pRow.setDeleted("TRUE");
+					pRow.setUpdateDate(new Timestamp(new Date().getTime()));
 					pRow.update();
 					//pRow.delete(); // DESTRUCTIVE
 					LogController.log("Photo metadata " + id + "marked as deleted");

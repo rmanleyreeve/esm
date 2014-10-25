@@ -1,7 +1,8 @@
 package com.rmrdigitalmedia.esm.dialogs;
 
 import java.sql.SQLException;
-
+import java.sql.Timestamp;
+import java.util.Date;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -14,7 +15,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -104,6 +104,7 @@ public class DeleteEntrypointDialog {
 					//NON-DESTRUCTIVE
 					EntrypointsTable.Row entry = EntrypointsTable.getRow(entryID);
 					entry.setDeleted("TRUE");
+					entry.setUpdateDate(new Timestamp(new Date().getTime()));
 					entry.update();
 					LogController.log("Marked entrypoint " + entryID + " as deleted");
 					EsmApplication.appData.deleteField("ENTRY_CHK_" + entryID);
