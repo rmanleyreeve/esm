@@ -3,6 +3,8 @@ package com.rmrdigitalmedia.esm.views;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.KeyAdapter;
@@ -55,12 +57,18 @@ public class LoginView {
 		String pw = C.doMD5(txt_Password.getText());
 		shell.setCursor(new Cursor(display, SWT.CURSOR_ARROW));
 		if (un != "" && pw != "") {
-			LogController.log("LoginController: " + un + "/" + pw);
+			LogController.log("LoginView: " + un + "/" + pw);
 			if (DatabaseController.verifyLogin(un, pw)) {
-				LogController.log("LoginController: Login OK");
+				LogController.log("LoginView: Login OK");
 				EsmUsersTable.Row user = null;
 				try {
 					user = EsmUsersTable.getRow("USERNAME", un);
+					if(user.getLastLogin()==null) {
+						// display t&c window on first login
+						EsmApplication.alert(C.FIRST_LOGIN_TEXT, "ESM Terms and Conditions");
+					}
+					user.setLastLogin(new Timestamp(new Date().getTime()));
+					user.update();
 					EsmApplication.appData.setField("ACCESS", user.getAccessLevel());
 				} catch (SQLException uex) {
 					LogController.logEvent(this, C.FATAL, uex);

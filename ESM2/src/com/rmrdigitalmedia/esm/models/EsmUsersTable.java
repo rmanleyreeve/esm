@@ -59,12 +59,13 @@ public class EsmUsersTable
     public static final String commentColumnName = "COMMENT";
     public static final String createdDateColumnName = "CREATED_DATE";
     public static final String updateDateColumnName = "UPDATE_DATE";
+    public static final String lastLoginColumnName = "LAST_LOGIN";
     public static final String deletedColumnName = "DELETED";
     public static final String remoteIdentifierColumnName = "REMOTE_IDENTIFIER";
 
     private static String[] allColumns =
     {
-        idColumnName , usernameColumnName , passwordColumnName , forenameColumnName , surnameColumnName , rankColumnName , workIdentifierColumnName , accessLevelColumnName , dobColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , deletedColumnName , remoteIdentifierColumnName , 
+        idColumnName , usernameColumnName , passwordColumnName , forenameColumnName , surnameColumnName , rankColumnName , workIdentifierColumnName , accessLevelColumnName , dobColumnName , commentColumnName , createdDateColumnName , updateDateColumnName , lastLoginColumnName , deletedColumnName , remoteIdentifierColumnName , 
     };
 
     /** You probably want to use the static methods for most of your access, but once in a while you might need to
@@ -257,6 +258,7 @@ public class EsmUsersTable
         private String comment ;
         private Timestamp createdDate ;
         private Timestamp updateDate ;
+        private Timestamp lastLogin ;
         private String deleted ;
         private String remoteIdentifier ;
 
@@ -282,8 +284,9 @@ public class EsmUsersTable
                 this.comment = data[9];
                 this.createdDate = Str.toTimestamp( data[10] );
                 this.updateDate = Str.toTimestamp( data[11] );
-                this.deleted = data[12];
-                this.remoteIdentifier = data[13];
+                this.lastLogin = Str.toTimestamp( data[12] );
+                this.deleted = data[13];
+                this.remoteIdentifier = data[14];
                 dataLoadedFromDatabase = true ;
             }
         }
@@ -453,6 +456,17 @@ public class EsmUsersTable
         }
 
 
+        public Timestamp getLastLogin()
+        {
+            return lastLogin ;
+        }
+
+        public void setLastLogin( Timestamp lastLogin )
+        {
+            this.lastLogin = lastLogin ;
+        }
+
+
         public String getDeleted()
         {
             return deleted ;
@@ -497,6 +511,7 @@ public class EsmUsersTable
             data.put( commentColumnName , this.comment );
             data.put( createdDateColumnName , this.createdDate == null ? null : this.createdDate.toString() );
             data.put( updateDateColumnName , this.updateDate == null ? null : this.updateDate.toString() );
+            data.put( lastLoginColumnName , this.lastLogin == null ? null : this.lastLogin.toString() );
             data.put( deletedColumnName , this.deleted );
             data.put( remoteIdentifierColumnName , this.remoteIdentifier );
             return data ;
