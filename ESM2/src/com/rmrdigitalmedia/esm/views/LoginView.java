@@ -65,7 +65,7 @@ public class LoginView {
 					user = EsmUsersTable.getRow("USERNAME", un);
 					if(user.getLastLogin()==null) {
 						// display t&c window on first login
-						EsmApplication.alert(C.FIRST_LOGIN_TEXT, "ESM Terms and Conditions");
+						EsmApplication.info(C.FIRST_LOGIN_TEXT, "ESM Terms and Conditions");
 					}
 					user.setLastLogin(new Timestamp(new Date().getTime()));
 					user.update();

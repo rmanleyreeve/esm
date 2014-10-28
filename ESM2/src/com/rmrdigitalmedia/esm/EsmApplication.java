@@ -80,6 +80,15 @@ public class EsmApplication {
 		}
 	}
 
+	public static boolean info(String msg, String title) {
+		Shell sh = new Shell();
+		MessageBox mb = new MessageBox(sh, SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
+		mb.setText(title);
+		mb.setMessage(msg);
+		int returnCode = mb.open();
+		return (returnCode == 32);
+	}
+
 	public static boolean confirm(String msg) {
 		Shell sh = new Shell();
 		MessageBox mb = new MessageBox(sh, SWT.ICON_QUESTION | SWT.YES | SWT.NO);

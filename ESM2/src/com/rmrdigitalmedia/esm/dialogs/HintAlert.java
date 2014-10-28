@@ -21,7 +21,7 @@ public class HintAlert {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
 			Shell shell = new Shell();
-			new HintAlert(shell, "Loading Space Detail page for user selection: Displaying Entry Point Audit Checklist for ID:4 Running class com.rmrdigitalmedia.esm.views.HintAlert Space alert closed");
+			new HintAlert(shell, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

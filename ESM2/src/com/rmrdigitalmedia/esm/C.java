@@ -112,7 +112,10 @@ public final class C {
 			+ "No responsibility is accepted by Videotel, or by any firm, corporation or organisation "
 			+ "who or which has been in any way concerned with the production, supply or sale of this program "
 			+ "for accuracy of any information given hereon or for any omission here from.";
-	public static final String FIRST_LOGIN_TEXT = "First login terms and conditions go here";
+	public static final String FIRST_LOGIN_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
+			+ "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+			+ "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
+			+ "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 	// app screen titles
 	public static String APP_NAME = "Enclosed Spaces Management System";
@@ -156,10 +159,14 @@ public final class C {
 		throw new AssertionError();
 	}
 
-	// public utility methods
+	
+	
+	// public utility methods ======================================================================
+	
 	public static void sop(Object s) {
 		System.out.println(s.toString());
 	}
+	
 	public static Image getExtImage(String imgpath) {
 		// test for non-image or system files
 		try {
