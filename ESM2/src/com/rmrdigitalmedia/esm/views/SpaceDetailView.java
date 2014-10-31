@@ -894,8 +894,7 @@ public class SpaceDetailView {
 							LogController.log("Opening Image " + _dataID);
 							WindowController.showPhotoViewer(_dataID);
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							LogController.logEvent(me, C.WARNING, "Error opening photo", e);		
 						}					
 					}
 				});
