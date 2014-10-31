@@ -1,6 +1,10 @@
 package com.rmrdigitalmedia.esm.views;
 
 import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import org.eclipse.swt.SWT;
@@ -9,9 +13,13 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -23,10 +31,15 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
+import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
@@ -45,12 +58,12 @@ import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 import com.rmrdigitalmedia.esm.models.PhotoMetadataTable;
 import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 
-@SuppressWarnings("unused")
 public class AdministrationView {
 
 	private static Label sep;
 	static EsmUsersTable.Row user = WindowController.user;
 	static int selectedUser = 0;
+	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 	static SpaceCommentsTable.Row[] _rows;
 
 	public static void main(String[] args) {
@@ -703,8 +716,143 @@ public class AdministrationView {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 			}
 		});
+		
+		
+		// row 2 - docs 		
+		Group rowRight2 = new Group(compR, SWT.NONE);
+		rowRight2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		GridLayout gl_rowRight4 = new GridLayout(2, false);
+		gl_rowRight4.marginBottom = 5;
+		gl_rowRight4.marginHeight = 0;
+		rowRight2.setLayout(gl_rowRight4);
+		rowRight2.setBackground(C.APP_BGCOLOR);
+		
+		
+		CLabel lblDocs = new CLabel(rowRight2, SWT.NONE);
+		lblDocs.setFont(C.FONT_12B);
+		lblDocs.setBackground(C.APP_BGCOLOR);
+		lblDocs.setImage(C.getImage("document.png"));
+		lblDocs.setText("Deleted Documents");	
 
+		final Button btnOpenDoc = new Button(rowRight2, SWT.NONE);
+		btnOpenDoc.setAlignment(SWT.LEFT);
+		btnOpenDoc.setToolTipText("View the selected document");
+		GridData gd_btnOpenDoc = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnOpenDoc.verticalIndent = 3;
+		btnOpenDoc.setLayoutData(gd_btnOpenDoc);
+		btnOpenDoc.setText("View");
+		btnOpenDoc.setEnabled(false);
+		btnOpenDoc.setVisible(false);
 
+		// DOCS ===============================
+		try {
+			Connection conn = DatabaseController.createConnection();
+			PreparedStatement ps = null;
+			ResultSet dRow = null;
+			String sql = "SELECT DOC_DATA.*, ESM_USERS.FORENAME, ESM_USERS.SURNAME FROM DOC_DATA "
+					+ "INNER JOIN ESM_USERS ON ESM_USERS.ID = DOC_DATA.AUTHOR_ID "
+					+ "WHERE (DOC_DATA.DELETED = TRUE) "
+					+ "ORDER BY DOC_DATA.ID DESC";
+			ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			dRow = ps.executeQuery();
+			int rowcount = 0;
+			if (dRow.last()) {
+				rowcount = dRow.getRow();
+				dRow.beforeFirst();
+			}				
+			if (rowcount > 0) {
+				// docs exist - show table
+				btnOpenDoc.setVisible(true);
+				final Table table = new Table(rowRight2, SWT.NONE | SWT.FULL_SELECTION);
+				table.setLayout(new FillLayout());
+				table.setBackground(C.FIELD_BGCOLOR);
+				GridData gd_table = new GridData(GridData.FILL_BOTH);
+				gd_table.grabExcessVerticalSpace = true;
+				gd_table.grabExcessHorizontalSpace=true;
+				gd_table.heightHint = 100;
+				gd_table.horizontalSpan = 4;
+				table.setLayoutData(gd_table);
+				table.setToolTipText("Double-click a document link to open");
+				table.addListener(SWT.MeasureItem, new Listener() {
+					@Override
+					public void handleEvent(Event event) {
+						event.height = 20;
+					}
+				});
+				// show files
+				// for loop
+				while(dRow.next()) {
+					int docID = dRow.getInt("ID");
+					String title = dRow.getString("TITLE");
+					String ext = Files.getFileExtension(title);	
+					title += "    (posted " + sdf.format(dRow.getTimestamp("CREATED_DATE"));
+					try { 
+						title += " by " + dRow.getString("FORENAME") + " " + dRow.getString("SURNAME");
+					} catch (SQLException e2) {
+						LogController.logEvent(AdministrationView.class, C.WARNING, e2);
+					}
+					title += ")";
+					ImageData iconData = C.getImage("default-doc.png").getImageData();
+					try {
+						iconData = Program.findProgram(ext).getImageData();
+					} catch (Exception ex) {}
+					Image itemImage = new Image(Display.getCurrent(), iconData);
+					TableItem item = new TableItem(table, SWT.NONE); 
+					item.setBackground(C.FIELD_BGCOLOR);
+					item.setText(title);
+					item.setData("id", docID);
+					item.setImage(itemImage);
+				}	
+				table.addMouseListener(new MouseListener() {
+					@Override
+					public void mouseDoubleClick(MouseEvent e) {
+						TableItem[] selection = table.getSelection();
+						int id = (Integer) selection[0].getData("id");
+						LogController.log("Opening Document " + id);
+						try {
+							File f = DatabaseController.readDocument(id);
+							Program.launch(f.getPath());
+							f.deleteOnExit();
+						} catch (IOException ex1) {
+							ex1.printStackTrace();
+						}
+					}
+					@Override
+					public void mouseDown(MouseEvent e) {	
+						btnOpenDoc.setEnabled(true);
+					}
+					@Override
+					public void mouseUp(MouseEvent arg0) {
+					}
+				});
+				btnOpenDoc.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						TableItem[] selection = table.getSelection();
+						int id = (Integer) selection[0].getData("id");
+						LogController.log("Opening Document " + id);
+						try {
+							File f = DatabaseController.readDocument(id);
+							Program.launch(f.getPath());
+							f.deleteOnExit();
+						} catch (IOException ex1) {
+							ex1.printStackTrace();
+						}
+					}
+				});
+				dRow.close();
+			} // endif docs > 0
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		
+		
+		
+		
+		
+		
+		
 
 
 
