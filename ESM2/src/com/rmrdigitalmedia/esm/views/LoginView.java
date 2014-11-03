@@ -34,6 +34,7 @@ import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
+import com.rmrdigitalmedia.esm.dialogs.UserAgreementDialog;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
 
 public class LoginView {
@@ -65,7 +66,8 @@ public class LoginView {
 					user = EsmUsersTable.getRow("USERNAME", un);
 					if(user.getLastLogin()==null) {
 						// display t&c window on first login
-						EsmApplication.info(C.FIRST_LOGIN_TEXT, "ESM Terms and Conditions");
+						//EsmApplication.info(C.FIRST_LOGIN_TEXT, "ESM Terms and Conditions");
+						new UserAgreementDialog(shell);
 					}
 					user.setLastLogin(new Timestamp(new Date().getTime()));
 					user.update();
