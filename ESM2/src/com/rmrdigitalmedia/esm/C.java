@@ -116,6 +116,7 @@ public final class C {
 			+ "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
 			+ "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
 			+ "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+	public static final String USER_AGREEMENT_TITLE = "ESM Application End User Terms and Conditions";;
 
 	// app screen titles
 	public static String APP_NAME = "Enclosed Spaces Management System";
