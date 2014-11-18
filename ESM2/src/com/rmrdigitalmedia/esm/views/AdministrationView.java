@@ -171,7 +171,7 @@ public class AdministrationView {
 		lblVessel.setFont(C.FONT_12B);
 		lblVessel.setBackground(C.APP_BGCOLOR);
 		lblVessel.setImage(C.getImage("vessel.png"));
-		lblVessel.setText("Manage " + type + " Details");	
+		lblVessel.setText(type + " Details");	
 
 		final Button btnAddVessel = new Button(rowVessel, SWT.NONE | SWT.WRAP);
 		btnAddVessel.setToolTipText("Edit " + type + " Details");
