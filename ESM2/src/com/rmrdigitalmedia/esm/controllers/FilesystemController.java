@@ -25,7 +25,7 @@ public class FilesystemController {
 		LogController.log("Running class " + this.getClass().getName());
 
 		// set up filesystem
-		LogController.log("Platform: " + C.OS);
+		LogController.log("Platform: " + C.PLATFORM);
 		datadir = new File(C.DATA_DIR);
 		LogController.log("PWD: " + current);
 

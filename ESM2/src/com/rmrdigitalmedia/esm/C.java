@@ -15,11 +15,20 @@ import com.google.common.collect.ImmutableMap;
 
 public final class C {
 
+	// system properties
+	public static String OS = System.getProperty("os.name");
+	public static String ARCHITECTURE = (
+			System.getenv("PROCESSOR_ARCHITECTURE").endsWith("64") || 
+			System.getenv("PROCESSOR_ARCHITEW6432") != null && System.getenv("PROCESSOR_ARCHITEW6432").endsWith("64")
+		) ? "64-bit" : "32-bit";			
+	public static String JVM = System.getProperty("java.vm.version");
+	public static String JVM_ARCHITECTURE = System.getProperty("sun.arch.data.model") + "-bit";		
+	
 	// app setup properties
-	public static String OS = (SWT.getPlatform());
+	public static String PLATFORM = (SWT.getPlatform());
 	public static String HOME_DIR = System.getProperty("user.home");
-	public static String INSTALL_DIR = (OS.equals("cocoa")) ? "Shared" : "All Users";
-	public static String SEP = (OS.equals("cocoa")) ? "/" : "\\";;
+	public static String INSTALL_DIR = (PLATFORM.equals("cocoa")) ? "Shared" : "All Users";
+	public static String SEP = (PLATFORM.equals("cocoa")) ? "/" : "\\";;
 	public static String DATA_DIR_NAME = "ESM Data";
 	public static String DOC_DIR_NAME = "docs";
 	public static String LOG_DIR_NAME = "logs";
@@ -67,8 +76,8 @@ public final class C {
 	public static Color ROW_SELECTED = SWTResourceManager.getColor(165, 200, 250); // #A5C8FA
 
 	// UI fonts
-	public static String FONT = (OS.equals("cocoa")) ? "Lucida Grande" : "Arial";
-	private static int FONT_ADD = (OS.equals("cocoa")) ? 2 : 0;
+	public static String FONT = (PLATFORM.equals("cocoa")) ? "Lucida Grande" : "Arial";
+	private static int FONT_ADD = (PLATFORM.equals("cocoa")) ? 2 : 0;
 	public static Font BUTTON_FONT = SWTResourceManager.getFont(FONT, 9 + FONT_ADD, SWT.NORMAL);
 	public static Font HEADER_FONT = SWTResourceManager.getFont(FONT, 13 + FONT_ADD, SWT.NORMAL);
 	public static Font FORM_HEADER_FONT = SWTResourceManager.getFont(FONT, 10 + FONT_ADD, SWT.BOLD);
