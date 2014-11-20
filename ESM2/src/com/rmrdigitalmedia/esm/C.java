@@ -17,13 +17,14 @@ public final class C {
 
 	// system properties
 	public static String OS = System.getProperty("os.name");
-	public static String ARCHITECTURE = (
-			System.getenv("PROCESSOR_ARCHITECTURE").endsWith("64") || 
-			System.getenv("PROCESSOR_ARCHITEW6432") != null && System.getenv("PROCESSOR_ARCHITEW6432").endsWith("64")
-		) ? "64-bit" : "32-bit";			
+	public static String ARCHITECTURE =  
+	OS.toLowerCase().contains("win") ? System.getenv("PROCESSOR_ARCHITECTURE") != null && System.getenv("PROCESSOR_ARCHITECTURE").endsWith("64") || 
+	System.getenv("PROCESSOR_ARCHITEW6432") != null && System.getenv("PROCESSOR_ARCHITEW6432").endsWith("64") ? "64-bit" : "32-bit" :
+	OS.toLowerCase().contains("mac") ? System.getProperty("os.arch") :
+	"";
 	public static String JVM = System.getProperty("java.vm.version");
 	public static String JVM_ARCHITECTURE = System.getProperty("sun.arch.data.model") + "-bit";		
-	
+
 	// app setup properties
 	public static String PLATFORM = (SWT.getPlatform());
 	public static String HOME_DIR = System.getProperty("user.home");
@@ -169,14 +170,14 @@ public final class C {
 		throw new AssertionError();
 	}
 
-	
-	
+
+
 	// public utility methods ======================================================================
-	
+
 	public static void sop(Object s) {
 		System.out.println(s.toString());
 	}
-	
+
 	public static Image getExtImage(String imgpath) {
 		// test for non-image or system files
 		try {
