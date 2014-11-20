@@ -28,6 +28,11 @@ public class EsmApplication {
 		// create log dir first
 		FilesystemController.createLogDir();
 		System.out.println("LOGFILE: " + LogController.logfile + "\n");
+		String arch = System.getenv("PROCESSOR_ARCHITECTURE");
+		String wow64Arch = System.getenv("PROCESSOR_ARCHITEW6432");
+		String realArch = (arch.endsWith("64") || wow64Arch != null && wow64Arch.endsWith("64")) ? "64" : "32";			
+		LogController.log("OS: " + System.getProperty("os.name") + " " + realArch+"-bit");
+		LogController.log("JVM: " + System.getProperty("java.vm.version") +" "+ System.getProperty("sun.arch.data.model")+"-bit");		
 		LogController.log("STARTING " + C.APP_NAME + "...\n");
 		LogController.log("Running class " + me.getClass().getName());
 		appData = new AppData();
