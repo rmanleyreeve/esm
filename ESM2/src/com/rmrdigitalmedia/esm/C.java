@@ -82,6 +82,7 @@ public final class C {
 	public static Font BUTTON_FONT = SWTResourceManager.getFont(FONT, 9 + FONT_ADD, SWT.NORMAL);
 	public static Font HEADER_FONT = SWTResourceManager.getFont(FONT, 13 + FONT_ADD, SWT.NORMAL);
 	public static Font FORM_HEADER_FONT = SWTResourceManager.getFont(FONT, 10 + FONT_ADD, SWT.BOLD);
+	public static Font FONT_7 = SWTResourceManager.getFont(FONT, 7 + FONT_ADD, SWT.NORMAL);
 	public static Font FONT_8 = SWTResourceManager.getFont(FONT, 8 + FONT_ADD, SWT.NORMAL);
 	public static Font FONT_8B = SWTResourceManager.getFont(FONT, 8 + FONT_ADD, SWT.BOLD);
 	public static Font FONT_8i = SWTResourceManager.getFont(FONT, 8 + FONT_ADD, SWT.ITALIC);
@@ -108,7 +109,7 @@ public final class C {
 	// message text
 	public static String NEW_VERSION_ALERT = "New version available!";
 	public static String EXIT_MSG = "***** PROGRAM EXIT ****\n\n\n";
-	public static String LOGIN_FAIL_MSG = "Username or Password not recognised.\nPlease try again.";
+	public static String LOGIN_FAIL_MSG = "Username or Password not recognised.\nIf you have forgotten your username or password, please contact your administrator.";
 	public static String SPACE_ALERT_RED = "The space you have selected has been classified as RED.\nBe extra cautious as you proceed.";
 	public static String SPACE_NOT_AUTH = "This space has NOT been authorized.";
 	public static String COPYRIGHT = "   \u00a9Videotel 2014";

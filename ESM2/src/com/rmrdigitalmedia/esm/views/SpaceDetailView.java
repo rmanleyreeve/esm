@@ -32,7 +32,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -173,7 +172,7 @@ public class SpaceDetailView {
 		lblDesc.setBackground(C.APP_BGCOLOR);
 		lblDesc.setText("Description:");		
 
-		Text description = new Text(row1, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		Text description = new Text(row1, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		description.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		description.setEditable(false);
 		description.setFont(C.FONT_12);
@@ -291,7 +290,10 @@ public class SpaceDetailView {
 					lblPosted.setFont(C.FONT_9);
 					lblPosted.setBackground(C.APP_BGCOLOR);
 					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
-					lblPosted.setText("Posted: " + sdf.format(spaceComment.getTimestamp("UPDATE_DATE")));
+					lblPosted.setText(
+							"Posted: " + sdf.format(spaceComment.getTimestamp("CREATED_DATE")) + "     " +
+									"Updated: " + sdf.format(spaceComment.getTimestamp("UPDATE_DATE")) + "     "
+							);
 
 					if( access==9 || user.getID()==spaceComment.getInt("AUTHOR_ID"))	{	
 						Button btnEditComment = new Button(commentRow, SWT.NONE);
@@ -519,6 +521,7 @@ public class SpaceDetailView {
 		lblPrintEntryDoc.setBackground(C.APP_BGCOLOR);
 		lblPrintEntryDoc.setText("Entrypoint Audit:");	
 
+		/*
 		final Combo selectEntryAudit = new Combo(rowRight6, SWT.NONE);
 		GridData gd_selectEntryAudit = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
 		gd_selectEntryAudit.verticalIndent = 3;
@@ -526,10 +529,11 @@ public class SpaceDetailView {
 		selectEntryAudit.setFont(C.FONT_9);
 		selectEntryAudit.add("Select...");
 		selectEntryAudit.setData("Select...",0);
-		selectEntryAudit.select(0);
+		selectEntryAudit.select(0);		
+		 */
 
 		final Button btnPrintEntryDoc = new Button(rowRight6, SWT.NONE);
-		btnPrintEntryDoc.setEnabled(false);
+		btnPrintEntryDoc.setEnabled(true);
 		btnPrintEntryDoc.setToolTipText("Open a blank Entrypoints Audit Form for printing");
 		GridData gd_btnPrintEntryDoc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_btnPrintEntryDoc.verticalIndent = 3;
@@ -551,6 +555,7 @@ public class SpaceDetailView {
 			}
 		});
 
+		/*
 		// dropdown behaviour
 		selectEntryAudit.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -559,7 +564,7 @@ public class SpaceDetailView {
 				btnPrintEntryDoc.setEnabled(selectedOption > 0);
 			}
 		});
-
+		*/
 
 		// row 2 - audit header & button bar	==========================================================================	
 		Group rowRight2 = new Group(compR, SWT.NONE);
@@ -614,6 +619,7 @@ public class SpaceDetailView {
 				WindowController.showSpaceAuditChecklist(spaceID);
 			}
 		});
+		btnShowSpaceAudit.setEnabled(access>1);
 		sep = new Label(rowRight2, SWT.SEPARATOR | SWT.HORIZONTAL);
 		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));		
 
@@ -639,8 +645,8 @@ public class SpaceDetailView {
 				final int epID = epRow.getInt("ID");
 				String epName = epRow.getString("NAME");		
 				// blank form selector
-				selectEntryAudit.add(epName);
-				selectEntryAudit.setData(epName, epID);
+				//selectEntryAudit.add(epName);
+				//selectEntryAudit.setData(epName, epID);
 				lblEntryPoint = new CLabel(rowRight2, SWT.NONE);
 				lblEntryPoint.setFont(C.FONT_10);
 				gd_lblEntryPoint = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
@@ -691,6 +697,7 @@ public class SpaceDetailView {
 						WindowController.showEntryAuditChecklist(epID);
 					}
 				});
+				btnShowEntryAudit.setEnabled(access>1);
 				// edit button
 				btnEditEntry = new Button(rowRight2, SWT.NONE);
 				btnEditEntry.setToolTipText("Edit details of the Entry Point");
@@ -710,6 +717,7 @@ public class SpaceDetailView {
 						}
 					}
 				});
+				btnEditEntry.setEnabled(access>1);
 				// delete button
 				btnDeleteEntry = new Button(rowRight2, SWT.NONE);
 				btnDeleteEntry.setToolTipText("Delete this Entry Point");

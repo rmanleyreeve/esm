@@ -207,8 +207,8 @@ public class LoginView {
 		final Button btnLogin = new Button(cmp_ButtonBar, SWT.FLAT | SWT.CENTER);
 		btnLogin.setFont(C.FONT_8B);
 		final FormData formData = new FormData();
-		formData.bottom = new FormAttachment(0, 28);
-		formData.top = new FormAttachment(0, 5);
+		formData.bottom = new FormAttachment(0, 24);
+		formData.top = new FormAttachment(0, 1);
 		formData.right = new FormAttachment(100, -25);
 		formData.left = new FormAttachment(100, -75);
 		btnLogin.setLayoutData(formData);
@@ -218,18 +218,17 @@ public class LoginView {
 		Composite alert = new Composite(cmp_ButtonBar, SWT.NONE);
 		alert.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		FormData fd_alert = new FormData();
-		fd_alert.bottom = new FormAttachment(btnLogin, 60, SWT.BOTTOM);
-		fd_alert.top = new FormAttachment(btnLogin, 5);
+		fd_alert.top = new FormAttachment(btnLogin, 3);
+		fd_alert.bottom = new FormAttachment(btnLogin, 64, SWT.BOTTOM);
 		fd_alert.left = new FormAttachment(0);
 		fd_alert.right = new FormAttachment(100);
 		alert.setLayoutData(fd_alert);
-		alertTxt = new Label(alert, SWT.NONE);
+		alertTxt = new Label(alert, SWT.WRAP);
 		alertTxt.setFont(C.FONT_8);
 		alertTxt.setLocation(0, 0);
 		alertTxt.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		alertTxt.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		alertTxt.setAlignment(SWT.CENTER);
-		alertTxt.setSize(195, 55);
+		alertTxt.setSize(195, 60);
 
 		btnLogin.addListener(SWT.Selection, new Listener() {
 			@Override
@@ -240,7 +239,11 @@ public class LoginView {
 
 		// Label for copyright info etc
 		final CLabel clbl_Message = new CLabel(cmp_Login, SWT.NONE);
-		clbl_Message.setFont(C.FONT_8);
+		clbl_Message.setRightMargin(0);
+		clbl_Message.setLeftMargin(0);
+		clbl_Message.setTopMargin(5);
+		clbl_Message.setBottomMargin(0);
+		clbl_Message.setFont(C.FONT_7);
 		clbl_Message.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		clbl_Message.setAlignment(SWT.CENTER);
 		final RowData rd_clbl_Message = new RowData();
