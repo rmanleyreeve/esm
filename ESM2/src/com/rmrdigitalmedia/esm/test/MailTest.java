@@ -4,21 +4,17 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
@@ -32,6 +28,7 @@ public class MailTest {
 		new MailTest();
 	}
 
+	@SuppressWarnings("unused")
 	private String enc(String p) {
 		if (p == null) {
 			p = "";
@@ -61,6 +58,7 @@ public class MailTest {
 		btnAdd.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));		
 		btnAdd.setText("Go");		
 		btnAdd.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("unused")
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				File f = DatabaseController.generateZipFile();

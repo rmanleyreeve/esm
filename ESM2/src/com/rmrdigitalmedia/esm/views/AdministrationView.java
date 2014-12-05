@@ -642,7 +642,7 @@ public class AdministrationView {
 
 		Label lblSend = new Label(rowRight1, SWT.WRAP);
 		lblSend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
-		lblSend.setText("Generate data export file and send automatically to Videotel server (requires Internet connection)");
+		lblSend.setText("Generate data export file and send automatically to ESM server (requires Internet connection)");
 		lblSend.setBackground(C.APP_BGCOLOR);
 		btnSend.setToolTipText(lblSend.getText());
 

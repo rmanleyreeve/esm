@@ -69,6 +69,7 @@ public class WindowController {
 	SpacesTable.Row[] rows;
 	private Label lblCustomerLogo;
 	private static boolean isAdmin = false;
+	private static boolean isApproved = true;
 	public static String searchFilter = "";
 
 	public static void main(String[] args) {
@@ -86,6 +87,7 @@ public class WindowController {
 		me = this;
 		WindowController.user = user;
 		isAdmin = (user.getAccessLevel()==9);
+		isApproved = (user.getAccessLevel()>1);
 		displayName = user.getRank() + " " + user.getForename() + " " + user.getSurname();
 		LogController.log("Running class " + this.getClass().getName());
 		LogController.log("Logged in user: " + displayName);
@@ -285,6 +287,7 @@ public class WindowController {
 		fd_btnAddSpace.top = new FormAttachment(titleBar,buttonTop);
 		fd_btnAddSpace.right = new FormAttachment(btnAdmin,-25);
 		btnAddSpace.setLayoutData(fd_btnAddSpace);
+		btnAddSpace.setEnabled(isApproved);
 
 		btnViewSpaceDetails = new Button(titleBar, SWT.PUSH);
 		btnViewSpaceDetails.setToolTipText("View details for the selected Enclosed Space");
@@ -433,6 +436,7 @@ public class WindowController {
 		pageTitle.setText(C.SPACES_LIST_TITLE);
 		helpfile = C.HELPFILE_SPACESLIST;
 		btnAddSpace.setVisible(true);
+		btnAddSpace.setEnabled(isApproved);
 		btnDeleteSpace.setVisible(true);
 		btnDeleteSpace.setEnabled(false);
 		btnViewSpaceDetails.setVisible(true);
