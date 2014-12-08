@@ -1122,8 +1122,8 @@ public class SpaceAuditChecklistView {
 				aRow.setUpdateDate(new Timestamp(new Date().getTime()));
 				aRow.update();
 				HashMap<String,Object> newVals = AuditController.getSpaceChecklistArray(spaceID);
-				//LogController.log(currentVals.toString());
-				//LogController.log(newVals.toString());
+				LogController.log("Old: " + currentVals.toString());
+				LogController.log("New: " + newVals.toString());
 				if(AuditController.isSpaceSignedOff(spaceID) && !newVals.equals(currentVals)) {
 					EsmApplication.alert(C.SIGNOFF_REVOKE_MESSAGE);
 					AuditController.revokeSignOff(spaceID);
