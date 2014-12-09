@@ -43,7 +43,7 @@ public final class C {
 
 	// database properties
 	public static String DB_NAME = "ESM";
-	public static String DB_CONN_STR = "jdbc:h2:~/../" + INSTALL_DIR + "/" + DATA_DIR_NAME + "/" + DB_NAME + ";MODE=MYSQL;IFEXISTS=TRUE";
+	public static String DB_CONN_STR = "jdbc:h2:~/../" + INSTALL_DIR + "/" + DATA_DIR_NAME + "/" + DB_NAME + ";MODE=MYSQL;IFEXISTS=TRUE;CACHE_SIZE=200000";
 	public static String DB_CONN_STR_SETUP = "jdbc:h2:~/../" + INSTALL_DIR + "/" + DATA_DIR_NAME + "/" + DB_NAME + ";MODE=MYSQL";
 	public static String DB_SETUP_FILE = "SETUP.sql";
 
