@@ -367,7 +367,8 @@ public class DatabaseController {
 			}
 			close(conn);
 		} catch (SQLException ex) {
-			LogController.logEvent(DatabaseController.class, C.FATAL, "Error creating CSV file", ex);		
+			LogController.logEvent(DatabaseController.class, C.FATAL, "Error creating CSV file", ex);
+			return new File("");
 		}		
 		// PDF docs
 		PdfController.setPath(dir);

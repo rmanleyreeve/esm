@@ -627,6 +627,7 @@ public class AdministrationView {
 					EsmApplication.alert("Data Export file created successfully.");
 					Program.launch(C.TMP_DIR);
 				} else {
+					EsmApplication.alert("Error exporting data");
 					LogController.logEvent(this, C.ERROR, "Error exporting data");
 				}
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
