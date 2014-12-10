@@ -52,7 +52,7 @@ public class EsmApplication {
 
 	public static void alert(String msg) {
 		try {
-			Shell sh = Display.getCurrent().getActiveShell();
+			Shell sh = new Shell(Display.getCurrent() == null ? Display.getDefault() : Display.getCurrent());
 			MessageBox mb = new MessageBox(sh, SWT.OK);
 			mb.setText("Alert");
 			mb.setMessage(msg);
@@ -63,7 +63,7 @@ public class EsmApplication {
 	}
 
 	public static Shell modalWait() {
-		Display display = Display.getDefault();
+		Display display = Display.getCurrent() == null ? Display.getDefault() : Display.getCurrent();
 		Shell shell = new Shell(display, SWT.APPLICATION_MODAL | SWT.ON_TOP);
 		shell.setSize(300,50);
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
@@ -83,7 +83,7 @@ public class EsmApplication {
 
 	public static void alert(String msg, String title) {
 		try {
-			Shell sh = Display.getCurrent().getActiveShell();
+			Shell sh = new Shell(Display.getCurrent() == null ? Display.getDefault() : Display.getCurrent());
 			MessageBox mb = new MessageBox(sh, SWT.OK);
 			mb.setText(title);
 			mb.setMessage(msg);
