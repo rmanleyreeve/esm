@@ -612,6 +612,8 @@ public class AdministrationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
+				Shell wait = EsmApplication.modalWait();
+				wait.open();
 				File f = null;
 				boolean alldata = radioExport_radio1.getSelection();
 				/*
@@ -623,7 +625,8 @@ public class AdministrationView {
 				}
 				 */
 				f = (alldata) ? DatabaseController.generateZipFile() : DatabaseController.generateZipFileNoBinary();
-				if (f != null && f.exists()) {					
+				wait.dispose();
+				if (f != null && f.exists()) {
 					EsmApplication.alert("Data Export file created successfully.");
 					Program.launch(C.TMP_DIR);
 				} else {
@@ -689,6 +692,8 @@ public class AdministrationView {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
+				Shell wait = EsmApplication.modalWait();
+				wait.open();
 				if (InternetController.checkNetAccess()) {
 					File f = null;
 					boolean alldata = radioSend_radio1.getSelection();
@@ -701,7 +706,8 @@ public class AdministrationView {
 					}
 					 */
 					f = (alldata) ? DatabaseController.generateZipFile() : DatabaseController.generateZipFileNoBinary();
-					if (f != null && f.exists()) {					
+					wait.dispose();
+					if (f != null && f.exists()) {
 						if(InternetController.uploadFileFTP(f.getPath(), f.getName())) {
 							EsmApplication.alert("File created and uploaded successfully.");
 						} else {
