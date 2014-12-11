@@ -29,7 +29,7 @@ public class MailTest {
 	}
 
 	@SuppressWarnings("unused")
-	private String enc(String p) {
+	private static String enc(String p) {
 		if (p == null) {
 			p = "";
 		}
