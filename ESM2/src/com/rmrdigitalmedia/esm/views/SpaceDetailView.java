@@ -1178,7 +1178,9 @@ public class SpaceDetailView {
 
 		btnPrint.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) { 
+			public void widgetSelected(SelectionEvent arg0) {
+				Shell wait = EsmApplication.modalWait();
+				wait.open();
 				try {
 					PdfController.setPath(C.TMP_DIR);
 					if (PdfController.buildAudit(spaceID, true)) {
@@ -1192,9 +1194,7 @@ public class SpaceDetailView {
 				} catch (SQLException e) {
 					LogController.logEvent(SpaceDetailView.class, C.ERROR, "Error getting DB data for PDF document", e);
 				}
-
-
-
+				wait.dispose();
 			}
 		});
 

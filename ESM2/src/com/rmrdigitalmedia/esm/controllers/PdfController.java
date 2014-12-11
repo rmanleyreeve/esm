@@ -36,6 +36,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.models.EntrypointChecklistAuditTable;
@@ -56,7 +57,7 @@ import com.rmrdigitalmedia.esm.test.PdfTest;
 
 public class PdfController {
 
-	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
+	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy  'at'  kk:mm");
 	private static String path = C.TMP_DIR;
 	static String fPath;
 
@@ -174,7 +175,7 @@ public class PdfController {
 		int w = (int) r.getWidth(); //595
 
 		// constants
-		int ls = 10, lH = 15, lW = 15, imgPad = 5, v, c = 0;
+		int ps = 20, ls = 10, lH = 15, lW = 15, imgPad = 5, v, c = 0;
 		Font font1 = new Font(Font.HELVETICA, 15, Font.BOLD);
 		Font font2 = new Font(Font.HELVETICA, 9,  Font.ITALIC);
 		Font font3 = new Font(Font.HELVETICA, 9, Font.BOLD);
@@ -204,13 +205,27 @@ public class PdfController {
 			document.open();
 
 			// header
-			Image logo = getImageFromPath("/img/esm-logo-horiz.png");
+			Image logo = getImageFromPath("/img/esm-logo-no-white-surround.png");
 			logo.setAbsolutePosition(10, h-70);
+			logo.scaleAbsolute(150, 44);
 			document.add(logo);
 
+			Image logo2 = getImageFromPath("/img/pdf_logo.png");
+			logo2.setAbsolutePosition(180, h-70);
+			logo2.scaleAbsolute(400, 40);
+			document.add(logo2);
+			
 			// summary of space
+			p = new Paragraph();
+			p.setSpacingBefore(ps*3);
+			LineSeparator line = new LineSeparator();
+			line.setLineWidth(1);
+			line.setPercentage(120);
+			p.add(line);
+			document.add(p);
+		
 			p = new Paragraph("Enclosed Space Report", font1);
-			p.setSpacingBefore(60);
+			p.setSpacingBefore(ps*3);
 			document.add(p);
 			p = new Paragraph(C.DISCLAIMER, font2);
 			p.setSpacingAfter(ls);
@@ -416,7 +431,7 @@ public class PdfController {
 			c3.addElement(new Phrase(spaceCheckRow.getQ17Comments(),font5));
 			tblSpaceCheck.addCell(c1); tblSpaceCheck.addCell(c2); tblSpaceCheck.addCell(c3);
 
-			tblSpaceCheck.setSpacingAfter(40);
+			tblSpaceCheck.setSpacingAfter(ps);
 			document.add(tblSpaceCheck);
 
 			// SPACE CLASSIFICATION table =============================================================
@@ -573,7 +588,7 @@ public class PdfController {
 			c4.addElement(new Phrase(spaceClassRow.getQ8Comments(),font5));
 			tblSpaceClass.addCell(c1); tblSpaceClass.addCell(c2); tblSpaceClass.addCell(c3); tblSpaceClass.addCell(c4);
 
-			tblSpaceClass.setSpacingAfter(40);
+			tblSpaceClass.setSpacingAfter(ps);
 			document.add(tblSpaceClass);
 
 			// overall classification stuff here...
@@ -602,7 +617,7 @@ public class PdfController {
 			os = new PdfPCell(tl,false);
 			os.setHorizontalAlignment(Element.ALIGN_CENTER); os.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			tblSpaceOverallStatus.addCell(os);
-			tblSpaceOverallStatus.setSpacingAfter(20);
+			tblSpaceOverallStatus.setSpacingAfter(ps);
 			document.add(tblSpaceOverallStatus);
 
 
@@ -784,7 +799,7 @@ public class PdfController {
 				c3.addElement(new Phrase(entryCheckRow.getQ16Comments(),font5));
 				tblEntryCheck.addCell(c1); tblEntryCheck.addCell(c2); tblEntryCheck.addCell(c3);
 
-				tblEntryCheck.setSpacingAfter(40);
+				tblEntryCheck.setSpacingAfter(ps);
 				document.add(tblEntryCheck);
 
 
@@ -924,7 +939,7 @@ public class PdfController {
 				c4.addElement(new Phrase(entryClassRow.getQ7Comments(),font5));
 				tblEntryClass.addCell(c1); tblEntryClass.addCell(c2); tblEntryClass.addCell(c3); tblEntryClass.addCell(c4);
 
-				tblEntryClass.setSpacingAfter(40);
+				tblEntryClass.setSpacingAfter(ps);
 				document.add(tblEntryClass);
 
 				// overall classification stuff here...
@@ -955,7 +970,7 @@ public class PdfController {
 				os = new PdfPCell(tl,false);
 				os.setHorizontalAlignment(Element.ALIGN_CENTER); os.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				tblEntryOverallStatus.addCell(os);
-				tblEntryOverallStatus.setSpacingAfter(20);
+				tblEntryOverallStatus.setSpacingAfter(ps);
 				document.add(tblEntryOverallStatus);
 
 			} // end entry points loop
