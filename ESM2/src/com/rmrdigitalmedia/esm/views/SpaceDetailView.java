@@ -1179,6 +1179,7 @@ public class SpaceDetailView {
 		btnPrint.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 				Shell wait = EsmApplication.modalWait();
 				wait.open();
 				try {
@@ -1195,6 +1196,7 @@ public class SpaceDetailView {
 					LogController.logEvent(SpaceDetailView.class, C.ERROR, "Error getting DB data for PDF document", e);
 				}
 				wait.dispose();
+				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 			}
 		});
 
