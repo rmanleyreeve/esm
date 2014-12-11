@@ -88,11 +88,12 @@ public class PdfTest {
 				} catch (DocumentException e) {
 					LogController.logEvent(PdfTest.class, C.ERROR, "Error getting PDF document", e);
 				} catch (SQLException e) {
-					LogController.logEvent(PdfTest.class, C.ERROR, "Error getting DB data for PDF document", e);				}
+					LogController.logEvent(PdfTest.class, C.ERROR, "Error getting DB data for PDF document", e);			
+				}
 				shell.dispose();
 			}
 		});
-		
+
 		Button btnNewButton = new Button(shell, SWT.NONE);
 		btnNewButton.setText("Blank Space PDF");
 		btnNewButton.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));		
@@ -108,7 +109,7 @@ public class PdfTest {
 				}
 			}
 		});		
-		
+
 		Button btnNewButton2 = new Button(shell, SWT.NONE);
 		btnNewButton2.setText("Blank Entry PDF");
 		btnNewButton2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));		
@@ -124,8 +125,8 @@ public class PdfTest {
 				}
 			}
 		});		
-		
-		
+
+
 		shell.pack();
 		shell.open();
 		while (!shell.isDisposed()) {
