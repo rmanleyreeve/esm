@@ -60,6 +60,10 @@ public class PdfTest {
 	}
 
 	public PdfTest() {
+		
+		EsmApplication.appData = new AppData(); 
+		EsmApplication.appData.setField("LOCATION_TYPE","Vessel");
+		EsmApplication.appData.setField("LOCATION_NAME","HMS Shiptalk");
 		//FilesystemController.createLogDir();
 		Display display = Display.getDefault();
 		final Shell shell = new Shell(SWT.DIALOG_TRIM );
@@ -74,7 +78,7 @@ public class PdfTest {
 		shell.setLayout(gl_shell);
 		Button btnAdd = new Button(shell, SWT.NONE);
 		btnAdd.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));		
-		btnAdd.setText("Execute");		
+		btnAdd.setText("Full Report");		
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -107,6 +111,7 @@ public class PdfTest {
 				} else {
 					LogController.logEvent(PdfTest.class, C.ERROR, "Cannot open blank Space Audit Form!");
 				}
+				shell.dispose();
 			}
 		});		
 
@@ -123,6 +128,7 @@ public class PdfTest {
 				} else {
 					LogController.logEvent(PdfTest.class, C.ERROR, "Cannot open blank Entry Audit Form!");
 				}
+				shell.dispose();
 			}
 		});		
 
