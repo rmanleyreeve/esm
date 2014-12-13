@@ -58,14 +58,14 @@ public class ApprovePhotoCommentForm {
 	public boolean complete() {
 
 		Display display = Display.getDefault();
-		final Shell shlVideotelEsm = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		ApprovePhotoCommentForm.myshell = shlVideotelEsm;
-		shlVideotelEsm.setSize(500, 250);
-		shlVideotelEsm.setText("Videotel ESM");
-		shlVideotelEsm.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
-		shlVideotelEsm.setLayout(new FillLayout(SWT.VERTICAL));
+		final Shell shell = new Shell (display, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		ApprovePhotoCommentForm.myshell = shell;
+		shell.setSize(500, 250);
+		shell.setText("Videotel ESM");
+		shell.setImages(new Image[] { C.getImage(C.APP_ICON_16), C.getImage(C.APP_ICON_32) }); // 16x16 & 32x32
+		shell.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Composite container = new Composite(shlVideotelEsm,SWT.NONE);
+		Composite container = new Composite(shell,SWT.NONE);
 		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));	
 		container.setLayout(new FormLayout());		
 
@@ -160,22 +160,33 @@ public class ApprovePhotoCommentForm {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e1) {}
-				shlVideotelEsm.close ();
+				shell.close ();
 			}
 		});	
 
+		shell.setDefaultButton(ok);
+		Button cancel = new Button (form, SWT.NONE);
+		cancel.setFont(C.FONT_10);
+		cancel.setText ("Cancel");
+		cancel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.dispose();
+			}
+		});
+
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
-		Rectangle rect = shlVideotelEsm.getBounds ();
+		Rectangle rect = shell.getBounds ();
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
-		shlVideotelEsm.setLocation (x, y);		  		
-		shlVideotelEsm.setDefaultButton (ok);		
+		shell.setLocation (x, y);		  		
+		shell.setDefaultButton (ok);		
 
-		shlVideotelEsm.open ();
-		shlVideotelEsm.layout();
+		shell.open ();
+		shell.layout();
 
-		while (!shlVideotelEsm.isDisposed()) {
+		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch ()) display.sleep ();
 		}
 		LogController.log("Approve Photo Comment form closed");	

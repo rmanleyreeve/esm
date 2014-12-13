@@ -251,6 +251,17 @@ public class EditAdminForm {
 			}
 		});	
 
+		shell.setDefaultButton(ok);
+		Button cancel = new Button (form, SWT.NONE);
+		cancel.setFont(C.FONT_10);
+		cancel.setText ("Cancel");
+		cancel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.dispose();
+			}
+		});
+
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
 		Rectangle rect = shell.getBounds ();

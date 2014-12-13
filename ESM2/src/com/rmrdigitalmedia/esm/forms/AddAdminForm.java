@@ -202,6 +202,7 @@ public class AddAdminForm {
 		ok.setToolTipText("Click to save details");
 		ok.setFont(C.FONT_10);
 		ok.setText ("Submit");
+		shell.setDefaultButton(ok);
 		ok.addSelectionListener (new SelectionAdapter () {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
@@ -250,6 +251,17 @@ public class AddAdminForm {
 			}
 		});	
 
+		Button cancel = new Button (form, SWT.NONE);
+		cancel.setFont(C.FONT_10);
+		cancel.setText ("Cancel");
+		cancel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.dispose();
+			}
+		});
+		
+		
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();
 		Rectangle rect = shell.getBounds ();
@@ -257,6 +269,8 @@ public class AddAdminForm {
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shell.setLocation (x, y);		  		
 		shell.setDefaultButton (ok);
+		new Label(form, SWT.NONE);
+		new Label(form, SWT.NONE);
 
 		shell.open ();
 		shell.layout();

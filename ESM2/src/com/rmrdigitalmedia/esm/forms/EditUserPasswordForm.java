@@ -154,7 +154,7 @@ public class EditUserPasswordForm {
 			@Override
 			public void widgetSelected (SelectionEvent e) {
 				Text[] fields = {newpass,confirmnewpass}; Validation.validateFields(fields);
-				if( Validation.validateFields(fields) && Validation.checkMatch(fields) ) {
+				if( Validation.validateFields(fields) && Validation.checkPwMatch(fields) ) {
 					try {
 						uRow.setPassword(C.doMD5(newpass.getText()));
 						uRow.setUpdateDate(new Timestamp(new Date().getTime()));
@@ -173,6 +173,17 @@ public class EditUserPasswordForm {
 				}
 			}
 		});	
+
+		shell.setDefaultButton(ok);
+		Button cancel = new Button (form, SWT.NONE);
+		cancel.setFont(C.FONT_10);
+		cancel.setText ("Cancel");
+		cancel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.dispose();
+			}
+		});
 
 		Monitor primary = display.getPrimaryMonitor ();
 		Rectangle bounds = primary.getBounds ();

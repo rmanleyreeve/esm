@@ -24,7 +24,7 @@ public class Validation {
 		return ok;
 	}
 
-	public static boolean checkMatch(Text[] req) {
+	public static boolean checkPwMatch(Text[] req) {
 		if(req.length != 2) return false;
 		boolean ok = true;
 		Text t1, t2;
@@ -35,7 +35,7 @@ public class Validation {
 				) {
 			t1.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
 			t2.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
-			errMsg = "Values do not match!";
+			errMsg = "Passwords do not match!";
 			ok = false;
 
 		}

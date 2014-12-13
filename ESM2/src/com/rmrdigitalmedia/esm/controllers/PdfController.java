@@ -16,9 +16,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Display;
+
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -30,6 +32,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -55,6 +58,7 @@ import com.rmrdigitalmedia.esm.models.SpacesTable;
 import com.rmrdigitalmedia.esm.models.VesselTable;
 import com.rmrdigitalmedia.esm.test.PdfTest;
 
+@SuppressWarnings("unused")
 public class PdfController {
 
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy  'at'  kk:mm");
@@ -126,7 +130,7 @@ public class PdfController {
 		return o;
 	}
 
-	@SuppressWarnings("unused")
+
 	public static boolean buildAudit(int spaceID, boolean includeBinaryData) throws DocumentException, SQLException {
 		Display.getCurrent().getActiveShell().setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_WAIT));
 		boolean ok = false;
@@ -210,11 +214,16 @@ public class PdfController {
 			logo.scaleAbsolute(150, 44);
 			document.add(logo);
 
-			Image logo2 = getImageFromPath("/img/pdf_logo.png");
-			logo2.setAbsolutePosition(180, h-70);
-			logo2.scaleAbsolute(400, 40);
+			Image logo2;
+			if(new File("customer_logo.png").exists()) {
+				logo2 = Image.getInstance("customer_logo.png");				
+			} else {
+				logo2 = getImageFromPath("/img/default_logo.png");
+			}						
+			logo2.scaleAbsolute(250, 25);
+			logo2.setAbsolutePosition(250, h-65);			
 			document.add(logo2);
-			
+
 			// summary of space
 			p = new Paragraph();
 			p.setSpacingBefore(ps*3);
@@ -223,7 +232,7 @@ public class PdfController {
 			line.setPercentage(120);
 			p.add(line);
 			document.add(p);
-		
+
 			p = new Paragraph("Enclosed Space Report", font1);
 			p.setSpacingBefore(ps*3);
 			document.add(p);
@@ -249,7 +258,8 @@ public class PdfController {
 			p = new Paragraph("Name: " + sRow.getName() + s(10) + "ID: " + spaceID, font3);
 			p.setSpacingAfter(ls);
 			document.add(p);
-			p = new Paragraph("Created By: " + authorName + s(5)
+			p = new Paragraph(
+					"Created By: " + authorName + s(5)
 					+ "Created Date: " + sdf.format(sRow.getCreatedDate()) + s(5)
 					+ "Last Modified: " + sdf.format(sRow.getUpdateDate()), 
 					font3);
@@ -1039,12 +1049,13 @@ public class PdfController {
 	}
 
 
-	@SuppressWarnings("unused")
 	public static void createBlankSpaceForm(int spaceID) {		
-		 String spaceName = "";
+		String spaceName = "", spaceDesc = "";
+		String locName = (String)EsmApplication.appData.getField("LOCATION_NAME");
 		try {
 			SpacesTable.Row sRow = SpacesTable.getRow(spaceID);
 			spaceName = sRow.getName();
+			spaceDesc = sRow.getDescription();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -1065,16 +1076,26 @@ public class PdfController {
 			for(int i=1; i<= pdfReader.getNumberOfPages(); i++){
 				PdfContentByte content = pdfStamper.getUnderContent(i);
 				image.scaleAbsolute(250, 25);
-				image.setAbsolutePosition(250, h-65);
+				image.setAbsolutePosition(300, h-60);
 				content.addImage(image);
 			}
 			PdfContentByte meta = pdfStamper.getUnderContent(1);
 			meta.saveState();
-			meta.beginText();
+			meta.beginText();				
+			// location
 			meta.setFontAndSize(BaseFont.createFont(), 12);
-			meta.showTextAligned(Element.ALIGN_LEFT, spaceName, 155, h-260, 0);
+			meta.showTextAligned(Element.ALIGN_LEFT, locName, 170, h-380, 0);
+			//space
 			meta.setFontAndSize(BaseFont.createFont(), 12);
-			meta.showTextAligned(Element.ALIGN_LEFT, ""+spaceID, 455, h-260, 0);
+			meta.showTextAligned(Element.ALIGN_LEFT, spaceName, 170, h-415, 0);
+			//ID
+			meta.setFontAndSize(BaseFont.createFont(), 12);
+			meta.showTextAligned(Element.ALIGN_LEFT, ""+spaceID, 140, h-452, 0);
+			//desc (wrapped text)
+			ColumnText ct = new ColumnText(meta);
+			//setSimpleColumn(Phrase, left, bottom, right, top, leading, alignment) 
+			ct.setSimpleColumn(new Phrase(spaceDesc),80, h-740, 540, h-500, 15, Element.ALIGN_LEFT | Element.ALIGN_TOP);
+			ct.go();			
 			meta.endText();
 			meta.restoreState();			
 			pdfStamper.close();
@@ -1085,12 +1106,17 @@ public class PdfController {
 		}		
 	}
 
-	@SuppressWarnings("unused")
 	public static void createBlankEntryForm(int entryID) {		
-		 String epName = "";
+		String epName = "", epDesc = "";
+		String spaceName = "";
+		int spaceID = 0;
+		String locName = (String)EsmApplication.appData.getField("LOCATION_NAME");
 		try {
 			EntrypointsTable.Row epRow = EntrypointsTable.getRow(entryID);
 			epName = epRow.getName();
+			epDesc = epRow.getDescription();
+			spaceID = epRow.getSpaceID();
+			spaceName = SpacesTable.getRow(spaceID).getName();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -1117,10 +1143,26 @@ public class PdfController {
 			PdfContentByte meta = pdfStamper.getUnderContent(1);
 			meta.saveState();
 			meta.beginText();
+			// location
 			meta.setFontAndSize(BaseFont.createFont(), 12);
-			meta.showTextAligned(Element.ALIGN_LEFT, epName, 155, h-260, 0);
+			meta.showTextAligned(Element.ALIGN_LEFT, locName, 170, h-378, 0);						
+			//entry
 			meta.setFontAndSize(BaseFont.createFont(), 12);
-			meta.showTextAligned(Element.ALIGN_LEFT, ""+entryID, 455, h-260, 0);
+			meta.showTextAligned(Element.ALIGN_LEFT, epName, 160, h-405, 0);
+			//entry ID
+			meta.setFontAndSize(BaseFont.createFont(), 12);
+			meta.showTextAligned(Element.ALIGN_LEFT, ""+entryID, 150, h-426, 0);			
+			//space
+			meta.setFontAndSize(BaseFont.createFont(), 12);
+			meta.showTextAligned(Element.ALIGN_LEFT, spaceName, 170, h-450, 0);
+			//space ID
+			meta.setFontAndSize(BaseFont.createFont(), 12);
+			meta.showTextAligned(Element.ALIGN_LEFT, ""+spaceID, 140, h-475, 0);			
+			//desc (wrapped text)
+			ColumnText ct = new ColumnText(meta);
+			//setSimpleColumn(Phrase, left, bottom, right, top, leading, alignment) 
+			ct.setSimpleColumn(new Phrase(epDesc),80, h-720, 540, h-525, 15, Element.ALIGN_LEFT | Element.ALIGN_TOP);
+			ct.go();			
 			meta.endText();
 			meta.restoreState();			
 			pdfStamper.close();
@@ -1130,7 +1172,7 @@ public class PdfController {
 			e.printStackTrace();
 		}		
 	}
-	
-	
-	
+
+
+
 }
