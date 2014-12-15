@@ -132,12 +132,12 @@ public class EsmApplication {
 	}
 
 	public static void appLogin(Shell loader) {
-		// ** APP LOADER IS DISPOSED NOW **
 		// display login form
 		Rectangle rect = loader.getBounds();
 		Display display = loader.getDisplay();
 		loader.close();
 		loader.dispose();
+		// ** APP LOADER IS DISPOSED NOW **
 		LoginView login = new LoginView(display, rect);
 		login.createContents();
 	}
@@ -183,7 +183,7 @@ public class EsmApplication {
 
 	public static void runApp(Row user, Shell loginWindow) {
 		// close login window now - all program setup is complete - open main app window
-		LogController.log("PROGRAM SETUP COMPLETED");
+		LogController.log("STARTING MAIN APPLICATION");
 		loginWindow.close();
 		loginWindow.dispose();
 		wc = new WindowController(user);
