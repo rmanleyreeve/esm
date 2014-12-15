@@ -93,7 +93,6 @@ public class WindowController {
 		displayName = user.getRank() + " " + user.getForename() + " " + user.getSurname();
 		LogController.log("Running class " + this.getClass().getName());
 		LogController.log("Logged in user: " + displayName);
-		C.sop("ACCESS win cont: "+user.getAccessLevel());
 	}
 	public static EsmUsersTable.Row getUser() {
 		return user;
@@ -113,8 +112,11 @@ public class WindowController {
 	}
 	public void open() {
 		// set up main window
-		display = Display.getDefault();
-		shell = new Shell();
+		display = Display.getCurrent();
+		for(Shell sh:display.getShells()) {
+			sh.dispose();
+		}
+		shell = new Shell(display);
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		shell.setText(C.APP_NAME);
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
@@ -389,7 +391,7 @@ public class WindowController {
 		fd_logo.bottom = new FormAttachment(100);
 		logo.setLayoutData (fd_logo);
 
-		lblH = new Label(header,SWT.BORDER | SWT.WRAP);
+		lblH = new Label(header,SWT.WRAP);
 		lblH.setForeground(C.TITLEBAR_BGCOLOR);
 		lblH.setFont(C.HEADER_FONT);
 		lblH.setAlignment(SWT.LEFT);
@@ -410,6 +412,7 @@ public class WindowController {
 					LogController.log("Logging Out");
 					user = null;
 					EsmApplication.appLogout(shell);
+					shell.dispose();
 				} else {
 					LogController.log("Logout cancelled");
 				}

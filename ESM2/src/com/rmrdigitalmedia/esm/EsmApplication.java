@@ -142,9 +142,8 @@ public class EsmApplication {
 	}
 
 
-	@SuppressWarnings("static-access")
 	public static void appLogout(Shell appwin) {
-		Display display = appwin.getDisplay();
+		Display display = Display.getDefault();//appwin.getDisplay();
 		Monitor primary = display.getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
 		int splashW = C.SPLASH_DEFAULT_WIDTH;
@@ -165,16 +164,17 @@ public class EsmApplication {
 	}
 
 	public static void appPreLoad(Row user, Shell loginWindow) {
-		C.sop("ACCESS preload: "+user.getAccessLevel());
 		// login window still open
 		// check for net access
-		if (InternetController.checkNetAccess()) {
-			// check for updates
-			LogController.log("Checking for updates...");
-			try {
-				InternetController.getUpdates();
-			} catch (IOException e) {
-				LogController.logEvent(me, C.WARNING, e);
+		if (C.CHECK_UPDATES) {
+			if (InternetController.checkNetAccess()) {
+				// check for updates
+				LogController.log("Checking for updates...");
+				try {
+					InternetController.getUpdates();
+				} catch (IOException e) {
+					LogController.logEvent(me, C.WARNING, e);
+				}
 			}
 		}
 		runApp(user, loginWindow);
