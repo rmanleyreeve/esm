@@ -117,6 +117,7 @@ public class WindowController {
 			sh.dispose();
 		}
 		shell = new Shell(display);
+		//shell = (display.getActiveShell()!=null) ?display.getActiveShell():new Shell();
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		shell.setText(C.APP_NAME);
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
@@ -410,9 +411,8 @@ public class WindowController {
 			public void widgetSelected(SelectionEvent arg0) {
 				if(EsmApplication.confirm(C.LOG_OUT_MSG)) {
 					LogController.log("Logging Out");
-					user = null;
-					EsmApplication.appLogout(shell);
-					shell.dispose();
+					user = null;					
+					EsmApplication.appLogout(shell);				
 				} else {
 					LogController.log("Logout cancelled");
 				}

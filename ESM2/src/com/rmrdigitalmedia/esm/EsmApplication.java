@@ -143,7 +143,11 @@ public class EsmApplication {
 
 
 	public static void appLogout(Shell appwin) {
-		Display display = Display.getDefault();//appwin.getDisplay();
+		appwin.close();
+		appwin.dispose();
+		wc.killUser();
+		wc = null;
+		Display display = Display.getDefault();
 		Monitor primary = display.getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
 		int splashW = C.SPLASH_DEFAULT_WIDTH;
@@ -155,10 +159,6 @@ public class EsmApplication {
 		int x = bounds.x + (bounds.width - splashW) / 2;
 		int y = bounds.y + (bounds.height - splashH) / 2;
 		Rectangle rect = new Rectangle(x,y,splashW,splashH);
-		wc.killUser();
-		wc = null;
-		appwin.close();
-		appwin.dispose();
 		LoginView login = new LoginView(display, rect);
 		login.createContents();					
 	}
