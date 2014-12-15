@@ -749,7 +749,7 @@ public class EntryAuditChecklistView {
 		btnProceed.setBackground(C.APP_BGCOLOR);
 		btnProceed.setFont(C.FONT_11B);
 		btnProceed.setText("Entry Classification");
-		
+
 		btnProceed.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -877,9 +877,9 @@ public class EntryAuditChecklistView {
 				aRow.setUpdateDate(new Timestamp(new Date().getTime()));
 				aRow.update();
 				HashMap<String,Object> newVals = AuditController.getEntrypointChecklistArray(entryID,spaceID);
-				LogController.log("Old: " + currentVals.toString());
-				LogController.log("New: " + newVals.toString());
 				if(AuditController.isSpaceSignedOff(spaceID) && !newVals.equals(currentVals)) {
+					LogController.log("Old: " + currentVals.toString());
+					LogController.log("New: " + newVals.toString());
 					EsmApplication.alert(C.SIGNOFF_REVOKE_MESSAGE);
 					AuditController.revokeSignOff(spaceID);
 				}
