@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -35,6 +36,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
@@ -42,7 +44,6 @@ import com.rmrdigitalmedia.esm.controllers.AuditController;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
-
 
 @SuppressWarnings("unused")
 public class SpacesListView {
@@ -89,7 +90,7 @@ public class SpacesListView {
 		// scrolling frame to hold the grid panel
 		final ScrolledComposite scrollPanel = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.BORDER);
 		scrollPanel.setExpandHorizontal(true);
-		
+
 		// the grid panel that holds the various info rows
 		final Composite comp = new Composite(scrollPanel, SWT.NONE);
 		GridLayout gl_comp = new GridLayout(1, true);
@@ -288,21 +289,21 @@ public class SpacesListView {
 					int centreX = (imgStatusW/2) - 10;
 					int x=0;
 					switch (rowCount) {
-						case 1:
-							x = centreX;
-							break;
-						case 2:
-							x = (centreX - 20);
-							break;
-						case 3:
-							x = (centreX - 30);
-							break;
-						case 4:
-							x = (centreX - 40);
-							break;
-						case 5:
-							x = (centreX - 50);
-							break;
+					case 1:
+						x = centreX;
+						break;
+					case 2:
+						x = (centreX - 20);
+						break;
+					case 3:
+						x = (centreX - 30);
+						break;
+					case 4:
+						x = (centreX - 40);
+						break;
+					case 5:
+						x = (centreX - 50);
+						break;
 					}
 					while(eRows.next())  {
 						String epTL = (String) EsmApplication.appData.getField("ENTRY_STATUS_"+eRows.getInt("ID"));
@@ -365,7 +366,7 @@ public class SpacesListView {
 									l.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 									WindowController.currentSpaceId = spaceID;
 									WindowController.btnViewSpaceDetails.setEnabled(true);
-									if(WindowController.user.getAccessLevel()==9) {
+									if(WindowController.getUser().getAccessLevel()==9) {
 										WindowController.btnDeleteSpace.setEnabled(true);   
 									}
 								}
@@ -403,7 +404,7 @@ public class SpacesListView {
 
 		scrollPanel.setContent(comp);
 		scrollPanel.setExpandVertical(true);
-		
+
 		// redraw panel on window resize
 		scrollPanel.addControlListener(new ControlAdapter() {
 			@Override

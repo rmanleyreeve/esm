@@ -2,6 +2,7 @@ package com.rmrdigitalmedia.esm.views;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -18,6 +19,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -34,7 +36,7 @@ public class PhotoDisplayView {
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
 		try {
-			WindowController.user = EsmUsersTable.getRow(1);
+			WindowController.setUser(EsmUsersTable.getRow(1));
 			Shell shell = new Shell();
 			new PhotoDisplayView(shell, 3);
 		} catch (Exception e) {
@@ -122,7 +124,7 @@ public class PhotoDisplayView {
 			imgComment.setFont(C.FONT_11);
 			imgComment.setText(pRow.getComment());
 
-			EsmUsersTable.Row user = WindowController.user;
+			EsmUsersTable.Row user = WindowController.getUser();
 			if (user.getAccessLevel() == 9 || user.getID() == pRow.getAuthorID()) {
 
 				Button btnEditComment = new Button(imgHolder, SWT.NONE);

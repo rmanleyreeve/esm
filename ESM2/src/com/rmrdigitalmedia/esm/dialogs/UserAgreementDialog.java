@@ -2,6 +2,7 @@ package com.rmrdigitalmedia.esm.dialogs;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.browser.Browser;
@@ -15,6 +16,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.C;
@@ -62,7 +64,10 @@ public class UserAgreementDialog {
 			Browser browser;
 			try {
 				browser = new Browser(shell, SWT.BORDER);
-				browser.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 2, 1));
+				GridData gd_browser = new GridData(SWT.CENTER, SWT.CENTER, true, true, 2, 1);
+				gd_browser.widthHint = 640;
+				gd_browser.heightHint = 480;
+				browser.setLayoutData(gd_browser);
 			} catch (SWTError e) {
 				LogController.logEvent(this, C.ERROR, "Could not instantiate Browser" + e.getMessage());
 				shell.dispose();
