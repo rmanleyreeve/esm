@@ -1126,9 +1126,9 @@ public class SpaceAuditChecklistView {
 				aRow.update();
 				HashMap<String,Object> newVals = AuditController.getSpaceChecklistArray(spaceID);
 				if(AuditController.isSpaceSignedOff(spaceID) && !newVals.equals(currentVals)) {
+					EsmApplication.alert(C.SIGNOFF_REVOKE_MESSAGE);
 					LogController.log("Old: " + currentVals.toString());
 					LogController.log("New: " + newVals.toString());
-					EsmApplication.alert(C.SIGNOFF_REVOKE_MESSAGE);
 					AuditController.revokeSignOff(spaceID);
 				}
 			} catch (SQLException e) {
