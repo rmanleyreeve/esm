@@ -108,7 +108,6 @@ public class SpaceDetailView {
 	public static void buildPage(final Composite parent, final int spaceID) {
 		user = WindowController.getUser();
 		access = user.getAccessLevel();
-		C.sop("ACCESS details: "+user.getAccessLevel());
 		LogController.log("Building Space Detail page");
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 		SpacesTable.Row sRow = null;
@@ -239,8 +238,7 @@ public class SpaceDetailView {
 		});
 		btnAddComment.setImage(C.getImage("comment-add.png"));
 		btnAddComment.setText("Add");
-		new Label(row2, SWT.NONE);
-		new Label(row2, SWT.NONE);
+		btnAddComment.setEnabled(access>0);
 
 		// loop through and display comments in descending order	
 		try {

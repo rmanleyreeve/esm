@@ -38,6 +38,8 @@ import com.rmrdigitalmedia.esm.controllers.DatabaseController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.dialogs.UserAgreementDialog;
 import com.rmrdigitalmedia.esm.models.EsmUsersTable;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class LoginView {
 
@@ -62,13 +64,19 @@ public class LoginView {
 		if (un != "" && pw != "") {
 			LogController.log("LoginView: " + un + "/" + pw);
 			if (DatabaseController.verifyLogin(un, pw)) {
-				LogController.log("LoginView: Login OK");
+				LogController.log("LoginView: LOGIN OK");
 				EsmUsersTable.Row user = null;
 				try {
 					user = EsmUsersTable.getRow("USERNAME", un);
+					if(user.getAccessLevel()==0) {
+						LogController.log("LoginView: USER DISABLED");
+						alertTxt.setText(C.LOGIN_ACCOUNT_DISABLED_MSG);
+						txt_Username.setText("");
+						txt_Password.setText("");
+						return;
+					}
 					if(user.getLastLogin()==null) {
 						// display t&c window on first login
-						//EsmApplication.info(C.FIRST_LOGIN_TEXT, "ESM Terms and Conditions");
 						new UserAgreementDialog(shell);
 					}
 					user.setLastLogin(new Timestamp(new Date().getTime()));
@@ -80,7 +88,7 @@ public class LoginView {
 				EsmApplication.appPreLoad(user, shell);
 				// LoginController will be disposed from now
 			} else {
-				LogController.log("LoginController: Login FAILED");
+				LogController.log("LoginView: LOGIN FAILED");
 				alertTxt.setText(C.LOGIN_FAIL_MSG);
 				txt_Username.setText("");
 				txt_Password.setText("");
@@ -209,19 +217,34 @@ public class LoginView {
 		final Button btnLogin = new Button(cmp_ButtonBar, SWT.FLAT | SWT.CENTER);
 		btnLogin.setFont(C.FONT_8B);
 		final FormData formData = new FormData();
-		formData.bottom = new FormAttachment(0, 24);
-		formData.top = new FormAttachment(0, 1);
-		formData.right = new FormAttachment(100, -25);
-		formData.left = new FormAttachment(100, -75);
+		formData.right = new FormAttachment(100, -14);
 		btnLogin.setLayoutData(formData);
 		btnLogin.setText("Login");
 		btnLogin.setToolTipText("Click to log in to the system");
+		
+		Button btnCancel = new Button(cmp_ButtonBar, SWT.NONE);
+		formData.top = new FormAttachment(btnCancel, 1, SWT.TOP);
+		formData.left = new FormAttachment(btnCancel, 6);
+		btnCancel.setFont(C.FONT_8B);
+		FormData fd_btnCancel = new FormData();
+		fd_btnCancel.top = new FormAttachment(0);
+		fd_btnCancel.left = new FormAttachment(0, 81);
+		btnCancel.setLayoutData(fd_btnCancel);
+		btnCancel.setText("Cancel");
+		btnCancel.setToolTipText("Cancel login and exit");
+		btnCancel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.dispose();
+			}
+			
+		});
 
 		Composite alert = new Composite(cmp_ButtonBar, SWT.NONE);
 		alert.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		FormData fd_alert = new FormData();
-		fd_alert.top = new FormAttachment(btnLogin, 3);
-		fd_alert.bottom = new FormAttachment(btnLogin, 64, SWT.BOTTOM);
+		fd_alert.top = new FormAttachment(0, 27);
+		fd_alert.bottom = new FormAttachment(100, 3);
 		fd_alert.left = new FormAttachment(0);
 		fd_alert.right = new FormAttachment(100);
 		alert.setLayoutData(fd_alert);

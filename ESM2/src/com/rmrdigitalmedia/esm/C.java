@@ -4,16 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.collect.ImmutableMap;
 
 public final class C {
@@ -45,7 +42,7 @@ public final class C {
 	public static String SALT = "RMRtheKing";
 	public static int SPLASH_DEFAULT_WIDTH = 500;
 	public static int SPLASH_DEFAULT_HEIGHT = 250;
-	
+	public static final boolean CHECK_UPDATES = false;	
 
 	// database properties
 	public static String DB_NAME = "ESM";
@@ -114,7 +111,7 @@ public final class C {
 
 	// message text
 	public static String NEW_VERSION_ALERT = "New version available!";
-	public static String EXIT_MSG = "***** PROGRAM EXIT ****\n\n\n";
+	public static String EXIT_MSG = "***** MAIN WINDOW CLOSED ****";
 	public static String LOGIN_FAIL_MSG = "Username or Password not recognised.\nIf you have forgotten your username or password, please contact your administrator.";
 	public static String SPACE_ALERT_RED = "The space you have selected has been classified as RED.\nBe extra cautious as you proceed.";
 	public static String SPACE_NOT_AUTH = "This space has NOT been authorized.";
@@ -135,6 +132,7 @@ public final class C {
 			+ "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 	public static final String USER_AGREEMENT_TITLE = "ESM Application End User Terms and Conditions";
 	public static final String LOG_OUT_MSG = "Are you sure you wish to log out of the ESM System?";
+	public static final String LOGIN_ACCOUNT_DISABLED_MSG = "ATTENTION\nYour account has been disabled.\nPlease contact your administrator.";
 
 	// app screen titles
 	public static String APP_NAME = "Enclosed Spaces Management System";
