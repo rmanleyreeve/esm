@@ -20,10 +20,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
+
 import javax.imageio.ImageIO;
+
 import net.coobird.thumbnailator.Thumbnails;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.itextpdf.text.DocumentException;

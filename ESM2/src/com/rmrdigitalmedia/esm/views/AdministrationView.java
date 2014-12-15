@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
@@ -39,6 +40,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
@@ -61,7 +63,7 @@ import com.rmrdigitalmedia.esm.models.SpaceCommentsTable;
 public class AdministrationView {
 
 	private static Label sep;
-	static EsmUsersTable.Row user = WindowController.user;
+	static EsmUsersTable.Row user;
 	static int selectedUser = 0;
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 	static SpaceCommentsTable.Row[] _rows;
@@ -132,7 +134,9 @@ public class AdministrationView {
 
 	public static void buildPage(final Composite parent) {
 		LogController.log("Building Administration page");
-
+		user = WindowController.getUser();
+		if(user.getAccessLevel()!=9) { return; }
+		
 		for (Control c : parent.getChildren()) {
 			c.dispose();
 		}

@@ -73,8 +73,8 @@ import com.rmrdigitalmedia.esm.models.SpacesTable;
 
 public class SpaceDetailView {
 	static Object me = new SpaceDetailView();
-	static EsmUsersTable.Row user = WindowController.user;
-	static int access = user.getAccessLevel();
+	static EsmUsersTable.Row user;
+	static int access;
 	static int selectedOption = 0;
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 	private static Label sep;
@@ -84,7 +84,6 @@ public class SpaceDetailView {
 		SimpleDateFormat t = new SimpleDateFormat("kk:mm");
 		return new String( "Date: " + d.format(ts) + "  Time: " + t.format(ts) );
 	}
-
 
 	public static void main(String[] args) {
 		// FOR WINDOW BUILDER DESIGN VIEW
@@ -107,6 +106,9 @@ public class SpaceDetailView {
 	}
 
 	public static void buildPage(final Composite parent, final int spaceID) {
+		user = WindowController.getUser();
+		access = user.getAccessLevel();
+		C.sop("ACCESS details: "+user.getAccessLevel());
 		LogController.log("Building Space Detail page");
 		parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_WAIT));
 		SpacesTable.Row sRow = null;

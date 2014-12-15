@@ -3,6 +3,7 @@ package com.rmrdigitalmedia.esm.controllers;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.AppData;
@@ -65,7 +67,7 @@ public class WindowController {
 	static StackLayout stackLayout;
 	public static int currentSpaceId = 0;
 	public static String helpfile = C.HELPFILE_GENERIC;
-	public static EsmUsersTable.Row user;
+	static EsmUsersTable.Row user;
 	SpacesTable.Row[] rows;
 	private Label lblCustomerLogo;
 	private static boolean isAdmin = false;
@@ -83,16 +85,26 @@ public class WindowController {
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	public WindowController(EsmUsersTable.Row user) {
-		me = this;
-		WindowController.user = user;
+		this.setUser(user);
 		isAdmin = (user.getAccessLevel()==9);
 		isApproved = (user.getAccessLevel()>1);
 		displayName = user.getRank() + " " + user.getForename() + " " + user.getSurname();
 		LogController.log("Running class " + this.getClass().getName());
 		LogController.log("Logged in user: " + displayName);
+		C.sop("ACCESS win cont: "+user.getAccessLevel());
 	}
-
+	public static EsmUsersTable.Row getUser() {
+		return user;
+	}
+	public static void setUser(EsmUsersTable.Row _user){
+		user = _user;
+	}
+	@SuppressWarnings("static-access")
+	public void killUser() {
+		this.user = null;
+	}
 	public static void getUserName() {
 		try {
 			EsmUsersTable.Row r = EsmUsersTable.getRow(user.getID());
@@ -133,17 +145,18 @@ public class WindowController {
 
 	public static void setHeaderLabelText() {
 		String txt = "";
-		int offset = 10;
+		int offset = 5;
 		try {
 			txt = (String)EsmApplication.appData.getField("LOCATION_TYPE") + ": " + (String)EsmApplication.appData.getField("LOCATION_NAME") + "\n";
-			offset += 10;
 		} catch (Exception e1) { }
 		getUserName();
 		txt += "Current User: " + displayName;
 		lblH.setText(txt);
 		FormData fd_lblH = new FormData();
+		fd_lblH.right = new FormAttachment(logo, 410, SWT.RIGHT);
+		fd_lblH.bottom = new FormAttachment(100, -3);
 		fd_lblH.left = new FormAttachment(logo, 10);
-		fd_lblH.top = new FormAttachment((headerH/2)-offset);
+		fd_lblH.top = new FormAttachment(offset);
 		lblH.setLayoutData(fd_lblH);
 		header.layout();
 	}
@@ -368,21 +381,41 @@ public class WindowController {
 		logo = new Label(header, SWT.TRANSPARENT);
 		logo.setImage(C.getImage("esm-logo-horiz.png"));
 		logo.setBackground(C.APP_BGCOLOR);
-		FormData fd = new FormData();
-		fd.top = new FormAttachment(0);
-		fd.height = 65;
-		fd.width = 120;
-		fd.left = new FormAttachment(0, 5);
-		fd.bottom = new FormAttachment(100);
-		logo.setLayoutData (fd);
+		FormData fd_logo = new FormData();
+		fd_logo.top = new FormAttachment(0);
+		fd_logo.height = 65;
+		fd_logo.width = 120;
+		fd_logo.left = new FormAttachment(0, 5);
+		fd_logo.bottom = new FormAttachment(100);
+		logo.setLayoutData (fd_logo);
 
-		lblH = new Label(header,SWT.NONE);
+		lblH = new Label(header,SWT.BORDER | SWT.WRAP);
 		lblH.setForeground(C.TITLEBAR_BGCOLOR);
 		lblH.setFont(C.HEADER_FONT);
 		lblH.setAlignment(SWT.LEFT);
 		lblH.setBackground(C.APP_BGCOLOR);
 		setHeaderLabelText();
-		
+
+		Button btnLogOut = new Button(header, SWT.NONE);
+		btnLogOut.setImage(SWTResourceManager.getImage(WindowController.class, "/img/logoff.png"));
+		btnLogOut.setText("Log Out");
+		FormData fd_btnLogOut = new FormData();
+		fd_btnLogOut.top = new FormAttachment(0, 15);
+		fd_btnLogOut.left = new FormAttachment(lblH, 10);
+		btnLogOut.setLayoutData (fd_btnLogOut);
+		btnLogOut.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(EsmApplication.confirm(C.LOG_OUT_MSG)) {
+					LogController.log("Logging Out");
+					user = null;
+					EsmApplication.appLogout(shell);
+				} else {
+					LogController.log("Logout cancelled");
+				}
+			}
+		});
+
 		// customer logo area (500 x 50)		
 		lblCustomerLogo = new Label(header, SWT.NONE);
 		lblCustomerLogo.setBackground(C.APP_BGCOLOR);

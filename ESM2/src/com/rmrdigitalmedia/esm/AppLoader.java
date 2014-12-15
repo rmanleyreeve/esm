@@ -2,6 +2,7 @@ package com.rmrdigitalmedia.esm;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -14,6 +15,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -117,7 +119,9 @@ public class AppLoader {
 		Monitor primary = display.getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
 		Rectangle rect = splash.getBounds();
-		//LogController.log("Splash Screen Size: " + rect.width + ":" + rect.height);
+		LogController.log("Splash Screen Size: " + rect.width + ":" + rect.height);
+		EsmApplication.appData.setField("SPLASH_W", rect.width);
+		EsmApplication.appData.setField("SPLASH_H", rect.height);		
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		splash.setLocation(x, y);

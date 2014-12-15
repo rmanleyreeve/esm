@@ -1,6 +1,7 @@
 package com.rmrdigitalmedia.esm;
 
 import java.io.IOException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
@@ -9,6 +10,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -35,8 +37,9 @@ public class EsmApplication {
 		LogController.log("JVM: " + C.JVM +", "+ C.JVM_ARCHITECTURE);
 		LogController.log("STARTING " + C.APP_NAME + "...\n");
 		LogController.log("Running class " + me.getClass().getName());
+		// dynamic data store
 		appData = new AppData();
-
+		// application loader
 		loader = new AppLoader(display);
 		while (!display.isDisposed() && display.getShells().length != 0 && !Display.getCurrent().getShells()[0].isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -119,7 +122,7 @@ public class EsmApplication {
 		mb.setText("Attention");
 		mb.setMessage(msg);
 		int returnCode = mb.open();
-		return (returnCode == 32);
+		return (returnCode == SWT.YES);
 	}
 
 	public static void hint(String text) {
@@ -138,7 +141,31 @@ public class EsmApplication {
 		login.createContents();
 	}
 
+
+	@SuppressWarnings("static-access")
+	public static void appLogout(Shell appwin) {
+		Display display = appwin.getDisplay();
+		Monitor primary = display.getPrimaryMonitor();
+		Rectangle bounds = primary.getBounds();
+		int splashW = C.SPLASH_DEFAULT_WIDTH;
+		int splashH = C.SPLASH_DEFAULT_HEIGHT;					
+		try {
+			splashW = (Integer) EsmApplication.appData.getField("SPLASH_W");
+			splashH = (Integer) EsmApplication.appData.getField("SPLASH_H");
+		} catch (Exception ex) {					}					
+		int x = bounds.x + (bounds.width - splashW) / 2;
+		int y = bounds.y + (bounds.height - splashH) / 2;
+		Rectangle rect = new Rectangle(x,y,splashW,splashH);
+		wc.killUser();
+		wc = null;
+		appwin.close();
+		appwin.dispose();
+		LoginView login = new LoginView(display, rect);
+		login.createContents();					
+	}
+
 	public static void appPreLoad(Row user, Shell loginWindow) {
+		C.sop("ACCESS preload: "+user.getAccessLevel());
 		// login window still open
 		// check for net access
 		if (InternetController.checkNetAccess()) {

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -29,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.C;
 import com.rmrdigitalmedia.esm.EsmApplication;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -42,7 +44,7 @@ import com.rmrdigitalmedia.esm.models.SpaceClassificationQuestionsTable;
 @SuppressWarnings("unused")
 public class SpaceAuditClassificationView {
 
-	private static Row user = WindowController.user;
+	private static Row user;
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
 	private static Label sep;
 	private static int qNum;
@@ -186,6 +188,7 @@ public class SpaceAuditClassificationView {
 	}
 
 	public static void buildPage(final Composite parent, final int spaceID) {
+		user = WindowController.getUser();
 
 		for (Control c:parent.getChildren()) {
 			c.dispose();

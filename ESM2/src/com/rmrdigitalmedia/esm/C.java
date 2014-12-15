@@ -4,13 +4,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+
 import javax.imageio.ImageIO;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.google.common.collect.ImmutableMap;
 
 public final class C {
@@ -40,6 +43,9 @@ public final class C {
 	public static String LOG_DIR = DATA_DIR + SEP + LOG_DIR_NAME;
 	public static String TMP_DIR = DATA_DIR + SEP + TMP_DIR_NAME;
 	public static String SALT = "RMRtheKing";
+	public static int SPLASH_DEFAULT_WIDTH = 500;
+	public static int SPLASH_DEFAULT_HEIGHT = 250;
+	
 
 	// database properties
 	public static String DB_NAME = "ESM";
@@ -80,7 +86,7 @@ public final class C {
 	public static String FONT = (PLATFORM.equals("cocoa")) ? "Lucida Grande" : "Arial";
 	private static int FONT_ADD = (PLATFORM.equals("cocoa")) ? 2 : 0;
 	public static Font BUTTON_FONT = SWTResourceManager.getFont(FONT, 9 + FONT_ADD, SWT.NORMAL);
-	public static Font HEADER_FONT = SWTResourceManager.getFont(FONT, 13 + FONT_ADD, SWT.NORMAL);
+	public static Font HEADER_FONT = SWTResourceManager.getFont(FONT, 12 + FONT_ADD, SWT.NORMAL);
 	public static Font FORM_HEADER_FONT = SWTResourceManager.getFont(FONT, 10 + FONT_ADD, SWT.BOLD);
 	public static Font FONT_7 = SWTResourceManager.getFont(FONT, 7 + FONT_ADD, SWT.NORMAL);
 	public static Font FONT_8 = SWTResourceManager.getFont(FONT, 8 + FONT_ADD, SWT.NORMAL);
@@ -127,7 +133,8 @@ public final class C {
 			+ "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
 			+ "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
 			+ "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-	public static final String USER_AGREEMENT_TITLE = "ESM Application End User Terms and Conditions";;
+	public static final String USER_AGREEMENT_TITLE = "ESM Application End User Terms and Conditions";
+	public static final String LOG_OUT_MSG = "Are you sure you wish to log out of the ESM System?";
 
 	// app screen titles
 	public static String APP_NAME = "Enclosed Spaces Management System";
