@@ -33,6 +33,7 @@ public class EsmApplication {
 		// create log dir first
 		FilesystemController.createLogDir();
 		System.out.println("LOGFILE: " + LogController.logfile + "\n");
+		LogController.log("\n\n**********************************************************************");
 		LogController.log("OS: " + C.OS  +", "+  C.ARCHITECTURE);
 		LogController.log("JVM: " + C.JVM +", "+ C.JVM_ARCHITECTURE);
 		LogController.log("STARTING " + C.APP_NAME + "...\n");
