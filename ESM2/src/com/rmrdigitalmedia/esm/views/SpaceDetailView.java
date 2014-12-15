@@ -1166,6 +1166,7 @@ public class SpaceDetailView {
 					Timestamp now = new Timestamp(new Date().getTime());
 					uRow.setSignoffDate(now);
 					uRow.update();
+					LogController.log("Space "+spaceID+" Signed off by user " + user.getID());
 					lblAuthName.setText(user.getForename() + " " + user.getSurname() + "  " + sdf.format(now));
 					btnSignOff.setEnabled(false);
 					btnPrint.setEnabled(true);

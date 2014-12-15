@@ -622,6 +622,7 @@ public class AuditController {
 			sRow.setSignoffID(null);
 			sRow.setUpdateDate(new Timestamp(new Date().getTime()));
 			sRow.update();
+			LogController.log("Space "+spaceID+" Sign-off Revoked");
 		} catch (SQLException e) {
 			LogController.logEvent(AuditController.class, C.ERROR, e);			
 		}
