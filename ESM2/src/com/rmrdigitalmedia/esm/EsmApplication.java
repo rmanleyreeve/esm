@@ -1,7 +1,9 @@
 package com.rmrdigitalmedia.esm;
 
 import java.io.IOException;
-
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Date;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
@@ -10,7 +12,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -33,10 +34,21 @@ public class EsmApplication {
 		// create log dir first
 		FilesystemController.createLogDir();
 		System.out.println("LOGFILE: " + LogController.logfile + "\n");
-		LogController.log("\n\n**********************************************************************");
+		try {
+			LogController.write("\n************************************************************************************");
+		} catch (IOException e) {}
+		try {
+			URL url = this.getClass().getResource("/txt/version.txt");
+			URLConnection uc = url.openConnection();
+			Date buildDate = new Date(uc.getLastModified());
+			LogController.log("Build date: " + buildDate);	
+			uc.getInputStream().close();
+		} catch (IOException e) {
+			LogController.log("Build date not available");	
+		}
 		LogController.log("OS: " + C.OS  +", "+  C.ARCHITECTURE);
 		LogController.log("JVM: " + C.JVM +", "+ C.JVM_ARCHITECTURE);
-		LogController.log("STARTING " + C.APP_NAME + "...\n");
+		LogController.log("STARTING " + C.APP_NAME);
 		LogController.log("Running class " + me.getClass().getName());
 		// dynamic data store
 		appData = new AppData();
