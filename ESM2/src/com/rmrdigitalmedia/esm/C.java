@@ -111,7 +111,9 @@ public final class C {
 
 	// message text
 	public static String NEW_VERSION_ALERT = "New version available!";
-	public static String EXIT_MSG = "***** MAIN WINDOW CLOSED ****";
+	public static String CLOSE_MSG = "***** MAIN WINDOW CLOSED ****";
+	public static String EXIT_MSG = "***** PROGRAM EXIT ****";
+	public static String LOGIN_CANCEL_MSG = "***** LOGIN CANCELLED ****";
 	public static String LOGIN_FAIL_MSG = "Username or Password not recognised.\nIf you have forgotten your username or password, please contact your administrator.";
 	public static String SPACE_ALERT_RED = "The space you have selected has been classified as RED.\nBe extra cautious as you proceed.";
 	public static String SPACE_NOT_AUTH = "This space has NOT been authorized.";

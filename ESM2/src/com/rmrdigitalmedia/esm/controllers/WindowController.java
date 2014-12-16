@@ -143,7 +143,7 @@ public class WindowController {
 			}
 		}
 		display.dispose();
-		LogController.log(C.EXIT_MSG);
+		LogController.log(C.CLOSE_MSG);
 	}
 
 	public static void setHeaderLabelText() {

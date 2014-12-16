@@ -173,6 +173,7 @@ public class LoginView {
 			@Override
 			public void keyPressed(KeyEvent ke) {
 				if (ke.keyCode == SWT.ESC) {
+					LogController.log(C.LOGIN_CANCEL_MSG);					
 					shell.dispose();
 				}
 			}
@@ -195,6 +196,7 @@ public class LoginView {
 					submit();
 				}
 				if (ke.keyCode == SWT.ESC) {
+					LogController.log(C.LOGIN_CANCEL_MSG);					
 					shell.dispose();
 				}
 			}
@@ -235,6 +237,7 @@ public class LoginView {
 		btnCancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				LogController.log(C.LOGIN_CANCEL_MSG);					
 				shell.dispose();
 			}
 			
