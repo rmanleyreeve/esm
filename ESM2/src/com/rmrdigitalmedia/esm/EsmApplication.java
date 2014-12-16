@@ -33,9 +33,9 @@ public class EsmApplication {
 
 		// create log dir first
 		FilesystemController.createLogDir();
-		System.out.println("LOGFILE: " + LogController.logfile + "\n");
+		System.out.println("LOGFILE: " + LogController.logfile);
 		try {
-			LogController.write("\n************************************************************************************");
+			LogController.write("\n\n\n************************************************************************************");
 		} catch (IOException e) {}
 		try {
 			URL url = this.getClass().getResource("/txt/version.txt");
