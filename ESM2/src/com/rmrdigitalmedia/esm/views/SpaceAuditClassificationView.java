@@ -714,6 +714,7 @@ public class SpaceAuditClassificationView {
 				HashMap<String,Object> newVals = AuditController.getSpaceClassificationArray(spaceID);
 				if(AuditController.isSpaceSignedOff(spaceID) && !newVals.equals(currentVals)) {
 					EsmApplication.alert(C.SIGNOFF_REVOKE_MESSAGE);
+					LogController.log("Revoking Signoff status, space classification audit data has changed");
 					LogController.log("Old: " + currentVals.toString());
 					LogController.log("New: " + newVals.toString());
 					AuditController.revokeSignOff(spaceID);
