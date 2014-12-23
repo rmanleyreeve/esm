@@ -1151,7 +1151,7 @@ public class PdfController {
 			meta.showTextAligned(Element.ALIGN_LEFT, epName, 160, h-405, 0);
 			//entry ID
 			meta.setFontAndSize(BaseFont.createFont(), 12);
-			meta.showTextAligned(Element.ALIGN_LEFT, ""+entryID, 150, h-426, 0);			
+			meta.showTextAligned(Element.ALIGN_LEFT, ""+entryID, 150, h-428, 0);			
 			//space
 			meta.setFontAndSize(BaseFont.createFont(), 12);
 			meta.showTextAligned(Element.ALIGN_LEFT, spaceName, 170, h-450, 0);

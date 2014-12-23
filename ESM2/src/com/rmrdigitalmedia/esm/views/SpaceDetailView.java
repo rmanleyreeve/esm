@@ -534,7 +534,7 @@ public class SpaceDetailView {
 		selectEntryAudit.select(0);		
 
 		final Button btnPrintEntryDoc = new Button(rowRight6, SWT.NONE);
-		btnPrintEntryDoc.setEnabled(true);
+		btnPrintEntryDoc.setEnabled(false);
 		btnPrintEntryDoc.setToolTipText("Create a blank Entrypoints Audit Form for printing");
 		GridData gd_btnPrintEntryDoc = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_btnPrintEntryDoc.verticalIndent = 3;
