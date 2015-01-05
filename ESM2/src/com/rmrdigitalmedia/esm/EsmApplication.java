@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
@@ -12,6 +13,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.rmrdigitalmedia.esm.controllers.FilesystemController;
 import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
@@ -35,7 +37,7 @@ public class EsmApplication {
 		FilesystemController.createLogDir();
 		System.out.println("LOGFILE: " + LogController.logfile);
 		try {
-			LogController.write(System.lineSeparator() + System.lineSeparator() +"************************************************************************************");
+			LogController.write(System.getProperty("line.separator") + System.getProperty("line.separator") +"************************************************************************************");
 		} catch (IOException e) {}
 		try {
 			URL url = this.getClass().getResource("/txt/version.txt");
