@@ -74,7 +74,7 @@ public class AuditController {
 			if (isN(q2) || (isY(q2) && C.notNullOrEmpty(row.getString("Q2_DESC")))) {
 				score += 1;
 			}
-			if (row.getString("Q3_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q3_BOOLEAN"))) {
 				score += 1;
 			}
 			String q4 = row.getString("Q4_BOOLEAN");
@@ -82,15 +82,15 @@ public class AuditController {
 					|| (isY(q4) && C.notNullOrEmpty(row.getString("Q4_DIMS_H")) && C.notNullOrEmpty(row.getString("Q4_DIMS_W")))) {
 				score += 1;
 			}
-			if (row.getString("Q5_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q5_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q6_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q6_BOOLEAN"))) {
 				score += 1;
 			}
 			String q7 = row.getString("Q7_BOOLEAN");
 			if (isN(q7) || (isY(q7) && row.getInt("Q7_RATING") != 0)) {
-				score += 1;
+				score += 1; 
 			}
 			String q8 = row.getString("Q8_BOOLEAN");
 			if (isN(q8) || (isY(q8) && row.getInt("Q8_RATING") != 0)) {
@@ -98,31 +98,31 @@ public class AuditController {
 			}
 			String q9 = row.getString("Q9_BOOLEAN");
 			if (isN(q9) || (isY(q9) && row.getInt("Q9_RATING") != 0)) {
-				score += 1;
+				score += 1; 
 			}
 			String q10 = row.getString("Q10_BOOLEAN");
 			if (isN(q10) || (isY(q10) && row.getInt("Q10_RATING") != 0)) {
 				score += 1;
 			}
-			if (row.getString("Q11_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q11_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q12_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q12_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q13_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q13_BOOLEAN"))) {
+				score += 1; 
+			}
+			if (C.notNullOrEmpty(row.getString("Q14_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q14_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q15_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q15_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q16_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q16_BOOLEAN") != null) {
-				score += 1;
-			}
-			if (row.getString("Q6_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q17_BOOLEAN"))) {
 				score += 1;
 			}
 			max = 17;
@@ -137,8 +137,8 @@ public class AuditController {
 		}		
 		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("SPACE_CHK_" + spaceID, progress);
-		// System.out.println("Calculating space "+userID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
-		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
+		LogController.log("Calculating space "+spaceID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
+		//LogController.log("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	// INTERNAL SPACE CLASSIFICATION
@@ -199,7 +199,7 @@ public class AuditController {
 				status.add(q6);
 			}
 			String q7 = row.getString("Q7_BOOLEAN");
-			if (q7 != null) {
+			if (C.notNullOrEmpty(q7)) {
 				score += 1;
 				if (isY(q7)) {
 					status.add(1);
@@ -208,7 +208,7 @@ public class AuditController {
 				}
 			} // N = green
 			String q8 = row.getString("Q8_BOOLEAN");
-			if (q8 != null) {
+			if (C.notNullOrEmpty(q8)) {
 				score += 1;
 				if (isY(q8)) {
 					status.add(1);
@@ -241,9 +241,9 @@ public class AuditController {
 		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, progress);
 		EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, light);
-		//System.out.println("Calculating space "+spaceID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
-		//System.out.println("Space " + spaceID + " status array: " + status.toString());
-		//System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
+		LogController.log("Calculating space "+spaceID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
+		LogController.log("Space " + spaceID + " status array: " + status.toString());
+		//LogController.log("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	// =========================================================================================================================
@@ -271,10 +271,10 @@ public class AuditController {
 			if (q1 != null) {
 				score += 1;
 			}
-			if (q1 != null && q1.equals("OUTSIDE") && row.getString("Q2_BOOLEAN") != null) {
+			if (q1 != null && q1.equals("OUTSIDE") && C.notNullOrEmpty(row.getString("Q2_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q3_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q3_BOOLEAN"))) {
 				score += 1;
 			}
 			if (row.getString("Q4_VALUE") != null) {
@@ -283,7 +283,7 @@ public class AuditController {
 			if (C.notNullOrEmpty(row.getString("Q5_DIMS_H")) && C.notNullOrEmpty(row.getString("Q5_DIMS_W"))) {
 				score += 1;
 			}
-			if (row.getString("Q6_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q6_BOOLEAN"))) {
 				score += 1;
 			}
 			String q7 = row.getString("Q7_VALUE");
@@ -296,25 +296,25 @@ public class AuditController {
 			if (q7 != null && q7.equals("VERTICAL")	&& row.getString("Q9_BOOLEAN") != null) {
 				score += 1;
 			}
-			if (row.getString("Q10_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q10_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q11_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q11_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q12_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q12_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q13_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q13_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q14_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q14_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q15_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q15_BOOLEAN"))) {
 				score += 1;
 			}
-			if (row.getString("Q16_BOOLEAN") != null) {
+			if (C.notNullOrEmpty(row.getString("Q16_BOOLEAN"))) {
 				score += 1;
 			}
 			max = 16;
@@ -333,8 +333,8 @@ public class AuditController {
 		}
 		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("ENTRY_CHK_" + entryID, progress);
-		// System.out.println("Calculating entry "+entryID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress);
-		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
+		LogController.log("Calculating entry "+entryID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress);
+		//LogController.log("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	// ENTRY POINT CLASSIFICATION
@@ -369,7 +369,7 @@ public class AuditController {
 				status.add(q2);
 			}
 			String q3 = row.getString("Q3_BOOLEAN");
-			if (q3 != null) {
+			if (C.notNullOrEmpty(q3)) {
 				score += 1;
 				if (isY(q3)) {
 					status.add(3);
@@ -389,7 +389,7 @@ public class AuditController {
 				}
 			}
 			String q5 = row.getString("Q5_BOOLEAN");
-			if (q5 != null) {
+			if (C.notNullOrEmpty(q5)) {
 				score += 1;
 				if (isY(q5)) {
 					status.add(3);
@@ -398,7 +398,7 @@ public class AuditController {
 				}
 			} // Y = green
 			String q6 = row.getString("Q6_BOOLEAN");
-			if (q6 != null) {
+			if (C.notNullOrEmpty(q6)) {
 				score += 1;
 				if (isY(q6)) {
 					status.add(3);
@@ -434,8 +434,9 @@ public class AuditController {
 		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("ENTRY_CLASS_" + entryID, progress);
 		EsmApplication.appData.setField("ENTRY_STATUS_" + entryID, light);
-		//System.out.println("Calculating entry "+entryID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
-		//System.out.println("Entry " + entryID + " status array: " + status.toString());
+		LogController.log("Calculating entry "+entryID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
+		LogController.log("Entry " + entryID + " status array: " + status.toString());
+		//LogController.log("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
 	public static boolean isSpaceSignedOff(int spaceID) {
