@@ -70,7 +70,7 @@ public class EsmApplication {
 
 	public static void alert(String msg) {
 		try {
-			Shell sh = new Shell(Display.getCurrent() == null ? Display.getDefault() : Display.getCurrent());
+			Shell sh = new Shell(Display.getCurrent() == null ? Display.getDefault() : Display.getCurrent(), SWT.ON_TOP);
 			MessageBox mb = new MessageBox(sh, SWT.OK);
 			mb.setText("Alert");
 			mb.setMessage(msg);
@@ -101,7 +101,7 @@ public class EsmApplication {
 
 	public static void alert(String msg, String title) {
 		try {
-			Shell sh = new Shell(Display.getCurrent() == null ? Display.getDefault() : Display.getCurrent());
+			Shell sh = new Shell(Display.getCurrent() == null ? Display.getDefault() : Display.getCurrent(), SWT.ON_TOP);
 			MessageBox mb = new MessageBox(sh, SWT.OK);
 			mb.setText(title);
 			mb.setMessage(msg);
