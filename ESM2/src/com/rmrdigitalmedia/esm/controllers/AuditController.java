@@ -44,6 +44,7 @@ public class AuditController {
 			LogController.logEvent(AuditController.class, C.FATAL, "Initial Space audits calculation", e1);
 		}
 		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
+		EsmApplication.appData.setField("INIT", 1);
 	}
 
 	// INTERNAL SPACE CHECKLIST
@@ -137,7 +138,7 @@ public class AuditController {
 		}		
 		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("SPACE_CHK_" + spaceID, progress);
-		LogController.log("Calculating space "+spaceID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
+		//LogController.log("Calculating space "+spaceID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
 		//LogController.log("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
@@ -241,8 +242,8 @@ public class AuditController {
 		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("SPACE_CLASS_" + spaceID, progress);
 		EsmApplication.appData.setField("SPACE_STATUS_" + spaceID, light);
-		LogController.log("Calculating space "+spaceID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
-		LogController.log("Space " + spaceID + " status array: " + status.toString());
+		//LogController.log("Calculating space "+spaceID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
+		//LogController.log("Space " + spaceID + " status array: " + status.toString());
 		//LogController.log("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
@@ -333,7 +334,7 @@ public class AuditController {
 		}
 		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("ENTRY_CHK_" + entryID, progress);
-		LogController.log("Calculating entry "+entryID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress);
+		//LogController.log("Calculating entry "+entryID+" checklist: " + score + "/" + max + "=" + percent + "% -> progress=" + progress);
 		//LogController.log("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
@@ -434,8 +435,8 @@ public class AuditController {
 		if(progress > 100) { progress = 100; }
 		EsmApplication.appData.setField("ENTRY_CLASS_" + entryID, progress);
 		EsmApplication.appData.setField("ENTRY_STATUS_" + entryID, light);
-		LogController.log("Calculating entry "+entryID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
-		LogController.log("Entry " + entryID + " status array: " + status.toString());
+		//LogController.log("Calculating entry "+entryID+" classification: " + score + "/" + max + "=" + percent + "% -> progress=" + progress );
+		//LogController.log("Entry " + entryID + " status array: " + status.toString());
 		//LogController.log("Elapsed: "+ (System.currentTimeMillis() - startTime));
 	}
 
@@ -445,6 +446,7 @@ public class AuditController {
 			String s = SpacesTable.getRow(spaceID).getSignedOff();
 			so = (s!=null && s.equals("TRUE"));
 		} catch (SQLException e) {
+			LogController.logEvent(AuditController.class, C.ERROR, e);
 		}
 		return so;
 	}

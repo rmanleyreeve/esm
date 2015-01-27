@@ -2,7 +2,6 @@ package com.rmrdigitalmedia.esm;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -15,7 +14,6 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.rmrdigitalmedia.esm.controllers.AuditController;
@@ -72,7 +70,7 @@ public class AppLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		String[] varr = vtxt[0].trim().split("\\.");
 		String build = vtxt[1];
 		EsmApplication.appData.setField("VERSION", vtxt[0].trim());
@@ -80,7 +78,7 @@ public class AppLoader {
 		EsmApplication.appData.setField("MINOR", Integer.parseInt(varr[1]));
 		EsmApplication.appData.setField("POINT", Integer.parseInt(varr[2]));
 		EsmApplication.appData.setField("BUILD", build);
-		
+
 		final Shell splash = new Shell(SWT.ON_TOP);
 		AppLoader.myshell = splash;
 		FormLayout layout = new FormLayout();
@@ -157,17 +155,19 @@ public class AppLoader {
 							@Override
 							public void run() {
 								// notify GUI
-								// LogController.log("COMPLETE");
+								//LogController.log("INIT COMPLETE");
+								//EsmApplication.appData.setField("INIT", 1);
 							}
 
 						});
 					}
 				};
 				// do initial audit calculations in background thread
+				EsmApplication.appData.setField("INIT", 0);
 				auditInit.start();
 
 				// check license key in DB
-				splashMessage("Checking License Key");
+				splashMessage("Checking license key");
 				if (!DatabaseController.checkLicenseKey()) {
 					// open license key dialog
 					EsmApplication.alert(myshell, "License key not found!");
@@ -183,7 +183,7 @@ public class AppLoader {
 				update(); // 60%
 
 				// check/set up new admin user
-				splashMessage("Checking for Administrator account");
+				splashMessage("Checking administrator account");
 				if (!DatabaseController.checkAdmin()) {
 					// open admin user dialog
 					EsmApplication.alert(myshell, "System Administrator not found!");
@@ -199,7 +199,7 @@ public class AppLoader {
 				update(); // 80%
 
 				// check/set up new admin user
-				splashMessage("Checking Vessel/Installation Details");
+				splashMessage("Checking Vessel/Installation details");
 				if (!DatabaseController.checkVessel()) {
 					// open admin user dialog
 					EsmApplication.alert(myshell, "Vessel/Installation info not found!");
@@ -214,8 +214,16 @@ public class AppLoader {
 				}
 				update(); // 100%
 
+				// wait for audits
+				splashMessage("Calculating audit status");
+				while ( (Integer) EsmApplication.appData.getField("INIT")==0 ) {	}
 				// init setup OK, now go to login screen
 				// LOADER IS DISPOSED NOW
+				update();
+				splashMessage("Audit status complete");
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {}
 				EsmApplication.appLogin(splash);
 			}
 		});
