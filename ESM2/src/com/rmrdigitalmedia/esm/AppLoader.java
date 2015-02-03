@@ -30,17 +30,28 @@ public class AppLoader {
 	private static Object me;
 	public static ProgressBar pbar;
 	public static Label pmsg;
-	private final int SPLASH_MAX = 100;
+	private final static int SPLASH_MAX = 100;
 	static Shell myshell;
-	private static int pc = 20;
+	private static int pc = 15;
 
 	public static void update() {
 		try {
-			Thread.sleep(100);
+			Thread.sleep(50);
 		} catch (InterruptedException e1) {
 		}
 		pbar.setSelection(pbar.getSelection() + pc);
 		LogController.log("Progress: " + pbar.getSelection() + "%");
+	}
+
+	public static void update(int amt) {
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e1) {
+		}
+		if(pbar.getSelection()< SPLASH_MAX ) {
+			pbar.setSelection(pbar.getSelection() + amt);
+			//LogController.log("Progress: " + pbar.getSelection() + "%");
+		}
 	}
 
 	public static void splashMessage(String txt) {
@@ -135,7 +146,7 @@ public class AppLoader {
 				FilesystemController fs = new FilesystemController();
 				fs.checkFS();
 				splashMessage("File system integrity check complete");
-				update(); // 20%
+				update(); // 1
 
 				// check/set up database
 				LogController.log("Starting database check");
@@ -143,7 +154,7 @@ public class AppLoader {
 				DatabaseController db = new DatabaseController();
 				db.checkDB();
 				splashMessage("Database integrity check complete");
-				update(); // 40%
+				update(); // 2
 
 				// background thread
 				Thread auditInit = new Thread() {
@@ -180,7 +191,7 @@ public class AppLoader {
 						System.exit(0);
 					}
 				}
-				update(); // 60%
+				update(); // 3
 
 				// check/set up new admin user
 				splashMessage("Checking administrator account");
@@ -196,7 +207,7 @@ public class AppLoader {
 						System.exit(0);
 					}
 				}
-				update(); // 80%
+				update(); // 4
 
 				// check/set up new admin user
 				splashMessage("Checking Vessel/Installation details");
@@ -212,11 +223,11 @@ public class AppLoader {
 						System.exit(0);
 					}
 				}
-				update(); // 100%
+				update(); // 5
 
 				// wait for audits
 				splashMessage("Calculating audit status");
-				while ( (Integer) EsmApplication.appData.getField("INIT")==0 ) {	}
+				while ( (Integer) EsmApplication.appData.getField("INIT")==0 ) {	update(1); }
 				// init setup OK, now go to login screen
 				// LOADER IS DISPOSED NOW
 				update();
