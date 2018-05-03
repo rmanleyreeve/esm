@@ -64,6 +64,27 @@ public class UploadController {
 		return null;
 	}
 
+	public static String uploadDbUpgradeDialog() {
+		LogController.log("Opening db upgrade select dialog");
+		final FileDialog dialog = new FileDialog(new Shell(), SWT.OPEN);
+		dialog.setText("Select the database upgrade file");
+		String platform = SWT.getPlatform();
+		String[] filterNames = new String[] { "Upgrade Files", "All Files (*)" };
+		String[] filterExtensions = new String[] { "*.sql", "*" };
+		String filterPath = C.HOME_DIR + C.SEP + "Documents";
+		if (platform.equals("win32") || platform.equals("wpf")) {
+			filterNames = new String[] { "Upgrade Files", "All Files (*.*)" };
+		}
+		dialog.setFilterNames(filterNames);
+		dialog.setFilterExtensions(filterExtensions);
+		dialog.setFilterPath(filterPath);
+		dialog.open();
+		if (!dialog.getFileName().equals("")) {
+			String fullPath = dialog.getFilterPath() + C.SEP + dialog.getFileName();
+			return fullPath;
+		}
+		return null;
+	}
 
 	public static boolean uploadSpaceDocument(int spaceID, int authorID) {
 		int id = 0;

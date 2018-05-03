@@ -45,6 +45,7 @@ public class AuditController {
 		}
 		// System.out.println("Elapsed: "+ (System.currentTimeMillis() - startTime));
 		EsmApplication.appData.setField("INIT", 1);
+		//LogController.log("INIT COMPLETE");
 	}
 
 	// INTERNAL SPACE CHECKLIST

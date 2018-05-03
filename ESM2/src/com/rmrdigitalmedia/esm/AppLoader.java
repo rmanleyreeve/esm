@@ -166,8 +166,6 @@ public class AppLoader {
 							@Override
 							public void run() {
 								// notify GUI
-								//LogController.log("INIT COMPLETE");
-								//EsmApplication.appData.setField("INIT", 1);
 							}
 
 						});

@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
@@ -40,7 +39,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-
 import com.google.common.io.Files;
 import com.rmrdigitalmedia.esm.AppData;
 import com.rmrdigitalmedia.esm.C;
@@ -50,6 +48,7 @@ import com.rmrdigitalmedia.esm.controllers.InternetController;
 import com.rmrdigitalmedia.esm.controllers.LogController;
 import com.rmrdigitalmedia.esm.controllers.WindowController;
 import com.rmrdigitalmedia.esm.dialogs.DeleteUserDialog;
+import com.rmrdigitalmedia.esm.forms.AddDbUpgradeForm;
 import com.rmrdigitalmedia.esm.forms.AddUserForm;
 import com.rmrdigitalmedia.esm.forms.ApprovePhotoCommentForm;
 import com.rmrdigitalmedia.esm.forms.EditAdminForm;
@@ -538,7 +537,7 @@ public class AdministrationView {
 		lblDB.setFont(C.FONT_12B);
 		lblDB.setBackground(C.APP_BGCOLOR);
 		lblDB.setImage(C.getImage("db.png"));
-		lblDB.setText("Data Export Functions");	
+		lblDB.setText("Database Administration");	
 
 		// db dump
 		Button btnDump = new Button(rowRight1, SWT.NONE);
@@ -727,15 +726,36 @@ public class AdministrationView {
 				parent.getShell().setCursor(new Cursor(parent.getDisplay(), SWT.CURSOR_ARROW));
 			}
 		});
+		sep = new Label(rowRight1, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));	
+
+		// db upgrade
+		Button btnUpgrade = new Button(rowRight1, SWT.NONE);
+		btnUpgrade.setText("Database Upgrade");
+		btnUpgrade.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				AddDbUpgradeForm aduf = new AddDbUpgradeForm(user.getID());					
+				if(aduf.complete()) {
+					LogController.log("Database upgrade completed successfully.");
+				}
+			}
+		});
+		Label lblUpgrade = new Label(rowRight1, SWT.WRAP);
+		lblUpgrade.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
+		lblUpgrade.setText("Perform a database upgrade using the Upgrade File sent to you by Videotel");
+		lblUpgrade.setBackground(C.APP_BGCOLOR);
+		btnDump.setToolTipText(lblUpgrade.getText());
+
+
 		
-		
-		// row 2 - docs 		
+		// row 3 - docs 		
 		Group rowRight2 = new Group(compR, SWT.NONE);
 		rowRight2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		GridLayout gl_rowRight4 = new GridLayout(2, false);
-		gl_rowRight4.marginBottom = 5;
-		gl_rowRight4.marginHeight = 0;
-		rowRight2.setLayout(gl_rowRight4);
+		GridLayout gl_rowRight2 = new GridLayout(2, false);
+		gl_rowRight2.marginBottom = 5;
+		gl_rowRight2.marginHeight = 0;
+		rowRight2.setLayout(gl_rowRight2);
 		rowRight2.setBackground(C.APP_BGCOLOR);
 		
 		
