@@ -46,7 +46,7 @@ public class LicenseDialog {
 
 	protected boolean validateKey(String key) {
 		// should be format xxxxx-xxxxx-xxxxx
-		// algo - remove dashes, last 7 digits + privateKey number should = first 7 digits (8th digit is not used)
+		// algo - remove dashes, first 7 digits should equal next 7 digits + privateKey number reversed (last digit is not used)
 		// check key format
 		if(
 				key.length() != 17 || 
@@ -57,8 +57,10 @@ public class LicenseDialog {
 		}
 		String kStr = key.replaceAll("-", "");		
 		int numA = Integer.parseInt(kStr.substring(0,7));
-		int numB = Integer.parseInt(kStr.substring(8, 15));		
-		if(numB + privateKey == numA) {
+		int numB = Integer.parseInt(kStr.substring(7, 14));
+		int numC = (numB + privateKey);
+		int Cmun = Integer.parseInt(new StringBuffer(String.valueOf(numC)).reverse().toString());
+		if(Cmun == numA) {
 			LogController.log("License is valid");
 			return true;
 		}		
