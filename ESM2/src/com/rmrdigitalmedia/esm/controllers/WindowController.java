@@ -198,7 +198,6 @@ public class WindowController {
 		formHolder.setLayout(stackLayout);
 
 		// SPACES LISTING PAGE ======================================================
-
 		pageSpacesList = new Composite (formHolder, SWT.NONE);
 
 		// SPACE DETAIL PAGE ======================================================

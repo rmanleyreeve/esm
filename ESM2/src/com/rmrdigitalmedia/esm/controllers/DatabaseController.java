@@ -192,6 +192,11 @@ public class DatabaseController {
 		LogController.log("Document inserted into DB OK");			
 		return (int) id;
 	}
+	
+	public static boolean upgradeDatabase(File f) {
+		boolean ok = false;
+		return ok;
+	}
 
 	public static File readDocument(int id) throws IOException {
 		Connection conn = createConnection();

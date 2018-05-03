@@ -20,8 +20,7 @@ public final class C {
 	public static String ARCHITECTURE =  
 	OS.toLowerCase().contains("win") ? System.getenv("PROCESSOR_ARCHITECTURE") != null && System.getenv("PROCESSOR_ARCHITECTURE").endsWith("64") || 
 	System.getenv("PROCESSOR_ARCHITEW6432") != null && System.getenv("PROCESSOR_ARCHITEW6432").endsWith("64") ? "64-bit" : "32-bit" :
-	OS.toLowerCase().contains("mac") ? System.getProperty("os.arch") :
-	"";
+	OS.toLowerCase().contains("mac") ? System.getProperty("os.arch") : "";
 	public static String JVM = System.getProperty("java.vm.version");
 	public static String JVM_ARCHITECTURE = System.getProperty("sun.arch.data.model") + "-bit";		
 
@@ -29,7 +28,7 @@ public final class C {
 	public static String PLATFORM = (SWT.getPlatform());
 	public static String HOME_DIR = System.getProperty("user.home");
 	public static String INSTALL_DIR = (PLATFORM.equals("cocoa")) ? "Shared" : "All Users";
-	public static String SEP = (PLATFORM.equals("cocoa")) ? "/" : "\\";;
+	public static String SEP = (PLATFORM.equals("cocoa")) ? "/" : "\\";
 	public static String DATA_DIR_NAME = "ESM Data";
 	public static String DOC_DIR_NAME = "docs";
 	public static String LOG_DIR_NAME = "logs";
