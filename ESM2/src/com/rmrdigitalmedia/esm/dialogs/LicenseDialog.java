@@ -46,7 +46,7 @@ public class LicenseDialog {
 
 	protected boolean validateKey(String key) {
 		// should be format xxxxx-xxxxx-xxxxx
-		// algo - remove dashes, first 7 digits should equal next 7 digits + privateKey number reversed (last digit is not used)
+		// algo - remove dashes, first 7 digits should equal next 7 digits reversed + privateKey (last digit is not used)
 		// check key format
 		if(
 				key.length() != 17 || 
@@ -57,10 +57,8 @@ public class LicenseDialog {
 		}
 		String kStr = key.replaceAll("-", "");		
 		int numA = Integer.parseInt(kStr.substring(0,7));
-		int numB = Integer.parseInt(kStr.substring(7, 14));
-		int numC = (numB + privateKey);
-		int Cmun = Integer.parseInt(new StringBuffer(String.valueOf(numC)).reverse().toString());
-		if(Cmun == numA) {
+		int numB = Integer.parseInt(new StringBuffer(kStr.substring(7, 14)).reverse().toString());
+		if((numB + privateKey) == numA) {
 			LogController.log("License is valid");
 			return true;
 		}		
@@ -122,10 +120,6 @@ public class LicenseDialog {
 		data.bottom = new FormAttachment (cancel, 0, SWT.DEFAULT);
 		text.setLayoutData (data);
 		text.setText("");
-
-		// TODO for development ONLY
-		//text.setText("22356-81122-26817");
-
 		text.setFocus();
 		Button ok = new Button (dialog, SWT.PUSH);
 		ok.setFont(C.FONT_10);
